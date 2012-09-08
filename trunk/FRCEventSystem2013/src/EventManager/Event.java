@@ -53,12 +53,14 @@ final class TimerEvent extends Event
 public abstract class Event {
 	private boolean eventIsCancelled;
 	private TimerEvent timerEvent;
-	private String referenceName;
+	protected String referenceName;
 	
 	public Event() {referenceName = this.toString();}
+	
 	abstract public void execute();
 	final public void cancelEvent() {eventIsCancelled = true; DebugLog.log(4, referenceName, "Event " + referenceName + " has been cancelled!");}
-	final public boolean shouldRun() {return !eventIsCancelled;}
+	final public void cancelTimedEvent() {timerEvent.cancelEvent();}
+	final protected boolean shouldRun() {return !eventIsCancelled;}
 	final public void registerEvent() {EventManager.addSingleEvent(this);}
 	final public void registerEvent(int p) {EventManager.addSingleEvent(this, p);}
 	final public void registerIterable() {EventManager.addContinuousEvent(this);}
@@ -66,7 +68,6 @@ public abstract class Event {
 	final public void registerTimedEvent(int time) 
 	{
 		try {
-			//DebugLog.log(4, referenceName, "Telling timerEvent to register self");
 			timerEvent.setTargetTime(time);
 		} catch(Exception e)
 		{

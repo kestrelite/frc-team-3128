@@ -7,14 +7,14 @@ import ListenerManager.*;
 class TestEvent1 extends Event
 {
 	public void execute() {
-		DebugLog.log(3, this.toString(), "Hello!");
+		DebugLog.log(3, referenceName, "Hello!");
 	}
 }
 
 class ExitProgramTimer extends Event
 {
 	public void execute() {
-		DebugLog.log(3, this.toString(), "Shutdown enabled.");
+		DebugLog.log(3, referenceName, "Shutdown enabled.");
 		Global.shutdown = true;
 	}
 }
@@ -24,7 +24,6 @@ class HelloListenerTrigger extends Event
 	public void execute() {
 		ListenerManager.callListener("sayHello");
 	}
-	
 }
 
 public class Global {
@@ -32,7 +31,6 @@ public class Global {
 	public final static Event testEvent1 = new TestEvent1();
 	public final static Event exitProgramTimer = new ExitProgramTimer();
 	public final static Event helloListenerTrigger = new HelloListenerTrigger();
-	
 	public       static boolean shutdown = false;
 	
 	public Global() {}
@@ -55,7 +53,7 @@ public class Global {
 		helloListenerTrigger.prepareTimer();
 		exitProgramTimer.prepareTimer();
 		
-		exitProgramTimer.registerTimedEvent(10000);
+		exitProgramTimer.registerTimedEvent(20000);
 		helloListenerTrigger.registerTimedEvent(3000);
 	}
 }

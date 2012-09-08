@@ -42,7 +42,7 @@ public class ListenerManager {
 		for(int i = 0; i < ListenerManager.trigger.size(); i++)
 			if(ListenerManager.trigger.get(i) == link) 
 			{
-				DebugLog.log(4, referenceName, "Listener link " + link + " called Event " + event.get(i).toString());
+				DebugLog.log(4, referenceName, "Listener link " + link + " triggered Event " + event.get(i).toString());
 				ListenerManager.event.get(i).execute();
 			}
 	}
