@@ -57,7 +57,7 @@ public abstract class Event {
 	
 	public Event() {referenceName = this.toString();}
 	abstract public void execute();
-	final public void cancelEvent() {eventIsCancelled = true;}
+	final public void cancelEvent() {eventIsCancelled = true; DebugLog.log(4, referenceName, "Event " + referenceName + " has been cancelled!");}
 	final public boolean shouldRun() {return !eventIsCancelled;}
 	final public void registerEvent() {EventManager.addSingleEvent(this);}
 	final public void registerEvent(int p) {EventManager.addSingleEvent(this, p);}

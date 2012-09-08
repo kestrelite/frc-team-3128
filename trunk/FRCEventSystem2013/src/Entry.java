@@ -8,9 +8,7 @@ public class Entry {
 		Global.initialize();
 		DebugLog.log(3, "Main", "Program started.");
 		while(!Global.shutdown)
-		{
 			EventManager.processEvents();
-		}
 		DebugLog.log(3, "Main", "Program exit successful.");
 	}
 }

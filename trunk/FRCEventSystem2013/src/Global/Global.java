@@ -44,18 +44,18 @@ public class Global {
 	
 	public static void initialize()
 	{
-		new DebugLog(3);
+		new DebugLog(4);
 		DebugLog.log(4, referenceName, "Initializing Event Manager...");
 		new EventManager();
-		//EventManager.addSingleEvent(TestEvent1);
-		//EventManager.removeEvent(TestEvent1);
+		
+		testEvent1.registerEvent();
 		
 		ListenerManager.addListener(testEvent1, "sayHello");
 		
 		helloListenerTrigger.prepareTimer();
 		exitProgramTimer.prepareTimer();
 		
-		exitProgramTimer.registerTimedEvent(5000);
+		exitProgramTimer.registerTimedEvent(10000);
 		helloListenerTrigger.registerTimedEvent(3000);
 	}
 }

@@ -23,13 +23,13 @@ public class EventManager {
 	private static ArrayList<Boolean> singleEventList = new ArrayList<Boolean>();
 	private static ArrayList<Boolean> deleteFlag = new ArrayList<Boolean>();
 	private static String referenceName = "EventManager";
-	private static IPSCounter n = new IPSCounter();
+	private static IPSCounter ipsCounter = new IPSCounter();
 	
 	public EventManager()
 	{
 		//EventManager.referenceName = this.toString();
-		DebugLog.log(3, EventManager.referenceName, "Event manager started.");
-		n.registerIterable(1);
+		DebugLog.log(4, EventManager.referenceName, "Event manager started.");
+		ipsCounter.registerIterable(1);
 	}
 	
 	private static void insertIntoEvents(Event e, int p, boolean single)
@@ -94,6 +94,11 @@ public class EventManager {
 		{
 			Event event = eventList.get(i);
 			if(event.shouldRun()) event.execute();
+			if(!event.shouldRun())
+			{
+				DebugLog.log(4, referenceName, "Cancelled event " + event.toString() + " being marked for deletion.");
+				deleteFlag.set(i, true);
+			}
 			if(singleEventList.get(i)) 
 			{
 				DebugLog.log(4, referenceName, "Marking single event " + event.toString() + " for deletion."); 
@@ -134,5 +139,19 @@ public class EventManager {
 		}
 		if(removedEventCount == 0) DebugLog.log(2, referenceName, "removeEvent was called but no event was marked for deletion!");
 		if(removedEventCount > 1) DebugLog.log(4, referenceName, "removeEvent was called, and " + removedEventCount + " events were marked for deletion.");
+	}
+	
+	public static void dropEvents()
+	{
+		DebugLog.log(4, referenceName, "Dropped " + eventList.size() + " events.");
+		eventList.clear();
+		priorityList.clear();
+		singleEventList.clear();
+		deleteFlag.clear();
+	}
+	
+	public static void stopIPSCounter()
+	{
+		EventManager.ipsCounter.cancelEvent();
 	}
 }
