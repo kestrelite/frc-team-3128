@@ -22,12 +22,12 @@ public class EventManager {
 	private static ArrayList<Integer> priorityList = new ArrayList<Integer>();
 	private static ArrayList<Boolean> singleEventList = new ArrayList<Boolean>();
 	private static ArrayList<Boolean> deleteFlag = new ArrayList<Boolean>();
-	private static String referenceName;
+	private static String referenceName = "EventManager";
 	private static IPSCounter n = new IPSCounter();
 	
 	public EventManager()
 	{
-		EventManager.referenceName = this.toString();
+		//EventManager.referenceName = this.toString();
 		DebugLog.log(3, EventManager.referenceName, "Event manager started.");
 		n.registerIterable(1);
 	}

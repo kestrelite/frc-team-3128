@@ -17,7 +17,7 @@ public class DebugLog {
 		if(i == 2) level = "**WARN";
 		if(i == 3) level = "INFO";
 		if(i >= 4) level = "DEBUG";
-		
+		// TODO this output needs to be beautificated for better reading
 		if(i <= DebugLog.logDetail) System.out.println("[" + System.currentTimeMillis() + "] [" + level + "] [" + tag + "] " + text);
 	}
 }
