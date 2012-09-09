@@ -1,9 +1,9 @@
 package edu.wpi.first.wpilibj.templates.Controller;
 
-import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.templates.DebugLog;
 import edu.wpi.first.wpilibj.templates.EventManager.Event;
+import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
 
 public class Controller extends Event {
     private Joystick xControl;
@@ -16,7 +16,7 @@ public class Controller extends Event {
             DebugLog.log(2, this.toString(), "Controller checks called before controller bind! Ignoring controller checks.");
             return;
         }
-        
+
         try {
             boolean updateJoy1 = false;
             boolean updateJoy2 = false;

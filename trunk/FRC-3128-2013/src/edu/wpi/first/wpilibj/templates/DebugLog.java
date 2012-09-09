@@ -12,7 +12,7 @@ public class DebugLog {
 	}
 	
 	public static void log(int lvl, String tag, String text) {
-		String     level = "[UNKN]  ";
+		String       level = "[UNKN]  ";
 		if(lvl <= 0) level = "[ERROR] ";
 		if(lvl == 1) level = "[SEVERE]";
 		if(lvl == 2) level = "[**WARN]";
