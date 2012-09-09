@@ -6,12 +6,7 @@ import edu.wpi.first.wpilibj.templates.Global;
 final class TimerEvent extends Event {
     private Event linkedEvent;
     private long targetTimeMillis = -1;
-    private String referenceName;
     private String linkedReferenceName;
-
-    public TimerEvent() {
-        referenceName = this.toString();
-    }
 
     public final void setTargetTime(long millis) {
         DebugLog.log(4, referenceName, "Event " + linkedEvent.toString() + " set for " + millis + " msec from now.");

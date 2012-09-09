@@ -1,10 +1,10 @@
 package edu.wpi.first.wpilibj.templates.PneumaticsManager;
 
-import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.templates.DebugLog;
 import edu.wpi.first.wpilibj.templates.EventManager.Event;
+import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
 import java.util.Vector;
 
 class LockAllPistons extends Event {
