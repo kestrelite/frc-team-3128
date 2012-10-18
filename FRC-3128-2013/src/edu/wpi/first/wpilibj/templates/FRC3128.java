@@ -1,4 +1,4 @@
-package edu.wpi.first.wpilibj.templates;
+/*package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.templates.EventManager.EventManager;
@@ -25,4 +25,4 @@ public class FRC3128 extends IterativeRobot {
     public void teleopContinuous() {
         EventManager.processEvents();
     }
-}
+}*/

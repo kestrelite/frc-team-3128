@@ -15,7 +15,7 @@ class IPSCounter extends Event {
         }
         int timeDiff = (int) (Global.getSystemTimeMillis() - firstSystemTime);
         samples++;
-        if(samples % 150000000 == 0)
+        if(samples % 150000 == 0)
             DebugLog.log(4, referenceName, "Average IPS reading: " + (samples / ((float) (timeDiff / 1000.0))) + ", samples: " + samples + ", timeDiff " + timeDiff);
     }
 }
@@ -30,7 +30,7 @@ public class EventManager {
 
     public EventManager() {
         DebugLog.log(4, EventManager.referenceName, "Event manager started.");
-        ipsCounter.registerIterable(1);
+        //ipsCounter.registerIterable();
     }
 
     private static void insertIntoEvents(Event e, int p, boolean single) {
@@ -140,5 +140,9 @@ public class EventManager {
 
     public static void stopIPSCounter() {
         EventManager.ipsCounter.cancelEvent();
+    }
+    
+    public static void startIPSCounter() {
+        EventManager.ipsCounter.registerIterable();
     }
 }

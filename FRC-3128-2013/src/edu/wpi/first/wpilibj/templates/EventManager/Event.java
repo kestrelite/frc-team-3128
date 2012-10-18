@@ -66,17 +66,17 @@ public abstract class Event {
         EventManager.addSingleEvent(this);
     }
 
-    final public void registerEvent(int p) {
+    /*final public void registerEvent(int p) {
         EventManager.addSingleEvent(this, p);
-    }
+    }*/ //Priorities disabled
 
     final public void registerIterable() {
         EventManager.addContinuousEvent(this);
     }
 
-    final public void registerIterable(int p) {
+    /*final public void registerIterable(int p) {
         EventManager.addContinuousEvent(this, p);
-    }
+    }*/ //Priorities disabled until further notice
 
     final public void registerTimedEvent(int time) {
         try {
