@@ -36,7 +36,12 @@ public class ListenerManager {
         for(int i = 0; i < ListenerManager.trigger.size(); i++)
             if(((Integer) ListenerManager.trigger.elementAt(i)).intValue() == link) {
                 DebugLog.log(4, referenceName, "Listener link " + link + " triggered Event " + ((Event) event.elementAt(i)).toString());
-                ((Event) ListenerManager.event.elementAt(i)).execute();
+                try {
+                    ((Event) ListenerManager.event.elementAt(i)).execute();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                    DebugLog.log(-2, ((Event) ListenerManager.event.elementAt(i)).toString(), "Error in Listener event: " + e.getMessage());
+                }
             }
     }
 
