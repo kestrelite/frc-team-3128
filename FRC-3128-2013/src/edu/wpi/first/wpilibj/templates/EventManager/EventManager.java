@@ -150,11 +150,7 @@ public class EventManager {
         EventManager.ipsCounter.registerIterable();
     }
     
-    public static void pauseEventProcessing() {
-        EventManager.eventProcessingPaused = true;
-    }
-    
-    public static void unpauseEventProcessing() {
-        EventManager.eventProcessingPaused = false;
+    public static void toggleEventProcessing() {
+        EventManager.eventProcessingPaused = !EventManager.eventProcessingPaused;
     }
 }
