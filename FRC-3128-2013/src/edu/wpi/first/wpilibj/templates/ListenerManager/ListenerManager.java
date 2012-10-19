@@ -40,6 +40,8 @@ public class ListenerManager {
                     ((Event) ListenerManager.event.elementAt(i)).execute();
                 } catch(Exception e) {
                     e.printStackTrace();
+                    ListenerManager.event.removeElementAt(i);
+                    ListenerManager.trigger.removeElementAt(i);
                     DebugLog.log(-2, ((Event) ListenerManager.event.elementAt(i)).toString(), "Error in Listener event: " + e.getMessage());
                 }
             }
