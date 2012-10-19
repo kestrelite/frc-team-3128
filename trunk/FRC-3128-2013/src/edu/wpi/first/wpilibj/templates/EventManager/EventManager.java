@@ -27,12 +27,13 @@ public class EventManager {
     private static Vector b_deleteFlag = new Vector();
     private static String referenceName = "EventManager";
     private static IPSCounter ipsCounter = new IPSCounter();
-
     private static boolean eventProcessingPaused = false;
-    private static final boolean duplicateEventCheck = true;
-    
+    private static final boolean duplicateEventCheck = false;
+
     public EventManager() {
         DebugLog.log(4, EventManager.referenceName, "Event manager started.");
+        if(!duplicateEventCheck)
+            DebugLog.log(4, EventManager.referenceName, "Event Manager is NOT checking for duplicate events");
     }
 
     private static void insertIntoEvents(Event e, int p, boolean single) {
@@ -56,7 +57,8 @@ public class EventManager {
     }
 
     private static void checkForDuplicates(Event e) {
-        if(!EventManager.duplicateEventCheck) return;
+        if(!EventManager.duplicateEventCheck)
+            return;
         for(int i = 0; i < e_eventList.size(); i++)
             if(e.equals((Event) e_eventList.elementAt(i)))
                 DebugLog.log(2, referenceName, "Event ( ^ ) being registered is a duplicate of another event!");
@@ -87,13 +89,18 @@ public class EventManager {
     }
 
     public static void processEvents() {
-        if(EventManager.eventProcessingPaused) return;
+        if(EventManager.eventProcessingPaused)
+            return;
         cleanupEvents();
 
         for(int i = 0; i < e_eventList.size(); i++) {
             Event event = (Event) e_eventList.elementAt(i);
-            if(event.shouldRun())
-                event.execute();
+            if(event.shouldRun()) {
+                try{event.execute();} catch(Exception e) {
+                    e.printStackTrace();
+                    DebugLog.log(-2, event.referenceName, "Error in event: " + e.getMessage());
+                }
+            }
             if(!event.shouldRun()) {
                 DebugLog.log(4, referenceName, "Cancelled event " + event.toString() + " being marked for deletion.");
                 b_deleteFlag.setElementAt(Boolean.TRUE, i);
@@ -145,11 +152,11 @@ public class EventManager {
     public static void stopIPSCounter() {
         EventManager.ipsCounter.cancelEvent();
     }
-    
+
     public static void startIPSCounter() {
         EventManager.ipsCounter.registerIterable();
     }
-    
+
     public static void toggleEventProcessing() {
         EventManager.eventProcessingPaused = !EventManager.eventProcessingPaused;
     }
