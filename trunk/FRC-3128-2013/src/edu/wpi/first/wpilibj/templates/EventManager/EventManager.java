@@ -99,6 +99,7 @@ public class EventManager {
                 try{event.execute();} catch(Exception e) {
                     e.printStackTrace();
                     DebugLog.log(-2, event.referenceName, "Error in event: " + e.getMessage());
+                    b_deleteFlag.setElementAt(Boolean.TRUE, i);
                 }
             }
             if(!event.shouldRun()) {
