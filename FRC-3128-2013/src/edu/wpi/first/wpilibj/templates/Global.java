@@ -3,7 +3,6 @@ package edu.wpi.first.wpilibj.templates;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Watchdog;
-import edu.wpi.first.wpilibj.templates.Controller.Controller;
 import edu.wpi.first.wpilibj.templates.EventManager.Event;
 import edu.wpi.first.wpilibj.templates.EventManager.EventManager;
 
@@ -21,20 +20,6 @@ class DriveEvent extends Event {
         Global.mRB.set(y);
         Global.mLF.set(y);
         Global.mRF.set(y);
-    }
-}
-
-class RobotIsAlive extends Event {
-    public void execute() {
-        DebugLog.log(4, this.referenceName, "Robot is still alive.");
-        this.registerTimedEvent(10000);
-    }
-}
-
-
-class StartIPSCounter extends Event {
-    public void execute() {
-        EventManager.startIPSCounter();
     }
 }
 
@@ -59,21 +44,12 @@ public class Global {
 
     public static void initialize() {
         DebugLog.setLogLevel(4);
+        //EventManager.startIPSCounter();
         WatchdogEvent.registerIterable();
-        EventManager.startIPSCounter();
-        //(new StartIPSCounter()).registerTimedEvent(2000);
-        //DriveEvent d = new DriveEvent();
-        //d.registerIterable();
-        //RobotIsAlive h = new RobotIsAlive();
-        //h.registerEvent();
-        //SAMPLE CODE
-        //Controller.bindToController(1);
-        //PneumaticsManager.compressorStateOn();
+        
     }
 
     public static void initializeAuto() {
-        
-        //PneumaticsManager.lockPistons();
     }
 
     public static void initializeTeleop() {

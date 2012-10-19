@@ -2,7 +2,7 @@ package edu.wpi.first.wpilibj.templates.Controller;
 
 import edu.wpi.first.wpilibj.templates.DebugLog;
 
-public class ButtonMap {
+public class XButtonMap {
     public static final int A = 1;
     public static final int B = 2;
     public static final int X = 3;

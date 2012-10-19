@@ -46,6 +46,12 @@ public abstract class Event {
     public Event() {
         referenceName = this.toString();
     }
+    
+    public Event(boolean isTimerEvent) {
+        referenceName = this.toString();
+        this.timerEvent = new TimerEvent();
+        timerEvent.linkEvent(this);
+    }
 
     abstract public void execute();
 
