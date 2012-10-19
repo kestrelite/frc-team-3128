@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.templates.DebugLog;
 import edu.wpi.first.wpilibj.templates.EventManager.Event;
 import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
 
-public class Controller extends Event {
+public class XControl extends Event {
     private Joystick xControl;
     private boolean controllerBound = false;
     public double x1, y1, x2, y2, triggers;
@@ -49,7 +49,7 @@ public class Controller extends Event {
 
             for(int i = 1; i <= 10; i++) {
                 if(buttonsPressed[i] != xControl.getRawButton(i))
-                    ListenerManager.callListener("button" + ButtonMap.getBtnString(i) + (xControl.getRawButton(i) ? "Down" : "Up"));
+                    ListenerManager.callListener("button" + XButtonMap.getBtnString(i) + (xControl.getRawButton(i) ? "Down" : "Up"));
                 buttonsPressed[i] = xControl.getRawButton(i);
             }
         } catch(NullPointerException e) {

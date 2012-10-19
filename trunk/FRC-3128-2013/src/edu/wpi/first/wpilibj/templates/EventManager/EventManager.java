@@ -15,7 +15,7 @@ class IPSCounter extends Event {
         }
         int timeDiff = (int) (Global.getSystemTimeMillis() - firstSystemTime);
         samples++;
-        if(samples % 150000 == 0)
+        if(samples % 200000 == 0)
             DebugLog.log(4, referenceName, "Average IPS reading: " + (samples / ((float) (timeDiff / 1000.0))) + ", samples: " + samples + ", timeDiff " + timeDiff);
     }
 }
@@ -28,9 +28,11 @@ public class EventManager {
     private static String referenceName = "EventManager";
     private static IPSCounter ipsCounter = new IPSCounter();
 
+    private static boolean eventProcessingPaused = false;
+    private static final boolean duplicateEventCheck = true;
+    
     public EventManager() {
         DebugLog.log(4, EventManager.referenceName, "Event manager started.");
-        //ipsCounter.registerIterable();
     }
 
     private static void insertIntoEvents(Event e, int p, boolean single) {
@@ -54,6 +56,7 @@ public class EventManager {
     }
 
     private static void checkForDuplicates(Event e) {
+        if(!EventManager.duplicateEventCheck) return;
         for(int i = 0; i < e_eventList.size(); i++)
             if(e.equals((Event) e_eventList.elementAt(i)))
                 DebugLog.log(2, referenceName, "Event ( ^ ) being registered is a duplicate of another event!");
@@ -84,6 +87,7 @@ public class EventManager {
     }
 
     public static void processEvents() {
+        if(EventManager.eventProcessingPaused) return;
         cleanupEvents();
 
         for(int i = 0; i < e_eventList.size(); i++) {
@@ -144,5 +148,13 @@ public class EventManager {
     
     public static void startIPSCounter() {
         EventManager.ipsCounter.registerIterable();
+    }
+    
+    public static void pauseEventProcessing() {
+        EventManager.eventProcessingPaused = true;
+    }
+    
+    public static void unpauseEventProcessing() {
+        EventManager.eventProcessingPaused = false;
     }
 }
