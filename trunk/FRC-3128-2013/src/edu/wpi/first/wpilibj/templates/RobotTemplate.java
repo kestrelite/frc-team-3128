@@ -24,6 +24,10 @@ public class RobotTemplate extends IterativeRobot {
         
     }
     
+    public void teleopContinuous() {
+        EventManager.processEvents();
+    }
+    
     public void disabledContinuous() {
         EventManager.processEvents();
     }
