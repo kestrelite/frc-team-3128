@@ -10,7 +10,14 @@ public class XControl extends Event {
     private boolean controllerBound = false;
     public double x1, y1, x2, y2, triggers;
     private boolean[] buttonsPressed = {false, false, false, false, false, false, false, false, false, false};
-
+    
+    public XControl(int port) {
+        super();
+        xControl = new Joystick(port);
+        this.registerIterable();
+        DebugLog.log(4, referenceName, "Controller added self to event manager!");
+    }
+    
     public void execute() {
         if(!controllerBound) {
             DebugLog.log(2, this.toString(), "Controller checks called before controller bind! Ignoring controller checks.");
@@ -22,34 +29,25 @@ public class XControl extends Event {
             boolean updateJoy2 = false;
             boolean updateTriggers = false;
 
-            if(x1 != xControl.getRawAxis(1))
-                updateJoy1 = true;
-            if(x2 != xControl.getRawAxis(4))
-                updateJoy2 = true;
-            if(y1 != xControl.getRawAxis(2))
-                updateJoy1 = true;
-            if(y2 != xControl.getRawAxis(5))
-                updateJoy2 = true;
-            if(triggers != xControl.getRawAxis(3))
-                updateTriggers = true;
+            if(x1 != xControl.getRawAxis(XControlMap.x1Axis))       updateJoy1 = true;
+            if(x2 != xControl.getRawAxis(XControlMap.x2Axis))       updateJoy2 = true;
+            if(y1 != xControl.getRawAxis(XControlMap.y1Axis))       updateJoy1 = true;
+            if(y2 != xControl.getRawAxis(XControlMap.y2Axis))       updateJoy2 = true;
+            if(triggers != xControl.getRawAxis(XControlMap.trAxis)) updateTriggers = true;
 
-            x1 = xControl.getRawAxis(1);
-            x2 = xControl.getRawAxis(4);
-            y1 = xControl.getRawAxis(2);
-            y2 = xControl.getRawAxis(5);
+            x1 = xControl.getRawAxis(XControlMap.x1Axis);
+            x2 = xControl.getRawAxis(XControlMap.x2Axis);
+            y1 = xControl.getRawAxis(XControlMap.y1Axis);
+            y2 = xControl.getRawAxis(XControlMap.y2Axis);
 
-            if(updateJoy1)
-                ListenerManager.callListener("updateJoy1");
-            if(updateJoy2)
-                ListenerManager.callListener("updateJoy2");
-            if(updateTriggers)
-                ListenerManager.callListener("updateTriggers");
-            if(updateJoy1 || updateJoy2 || updateTriggers)
-                ListenerManager.callListener("updateDrive");
+            if(updateJoy1) ListenerManager.callListener("updateJoy1");
+            if(updateJoy2) ListenerManager.callListener("updateJoy2");
+            if(updateTriggers) ListenerManager.callListener("updateTriggers");
+            if(updateJoy1 || updateJoy2 || updateTriggers) ListenerManager.callListener("updateDrive");
 
             for(int i = 1; i <= 10; i++) {
                 if(buttonsPressed[i] != xControl.getRawButton(i))
-                    ListenerManager.callListener("button" + XButtonMap.getBtnString(i) + (xControl.getRawButton(i) ? "Down" : "Up"));
+                    ListenerManager.callListener("button" + XControlMap.getBtnString(i) + (xControl.getRawButton(i) ? "Down" : "Up"));
                 buttonsPressed[i] = xControl.getRawButton(i);
             }
         } catch(NullPointerException e) {
@@ -58,7 +56,7 @@ public class XControl extends Event {
         }
     }
 
-    public void bindToController(int port) {
-        xControl = new Joystick(port);
-    }
+    //public void bindToController(int port) {
+    //    xControl = new Joystick(port);
+    //}
 }

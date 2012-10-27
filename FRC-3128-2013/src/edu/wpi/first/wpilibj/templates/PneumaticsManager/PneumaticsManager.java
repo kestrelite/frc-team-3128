@@ -42,37 +42,37 @@ public class PneumaticsManager {
         return new PistonID(dualSolenoidList.size() - 1);
     }
 
-    public static void pistonStateLocked(PistonID id) {
+    public static void setPistonStateLocked(PistonID id) {
         ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).lockPiston();
     }
 
-    public static void pistonStateUnlocked(PistonID id) {
+    public static void setPistonStateUnlocked(PistonID id) {
         ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).unlockPiston();
     }
 
-    public static void pistonStateOn(PistonID id) {
+    public static void setPistonStateOn(PistonID id) {
         ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).setPistonOn();
     }
 
-    public static void pistonStateOff(PistonID id) {
+    public static void setPistonStateOff(PistonID id) {
         ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).setPistonOff();
     }
 
-    public static void compressorStateOn() {
+    public static void setCompressorStateOn() {
         if(PneumaticsManager.compressorSet)
             PneumaticsManager.c.start();
         if(!PneumaticsManager.compressorSet)
-            DebugLog.log(2, referenceName, "Compressor is being started without being instantiated!");
+            DebugLog.log(2, referenceName, "Compressor is being started without first being instantiated!");
     }
 
-    public static void compressorStateOff() {
+    public static void setCompressorStateOff() {
         if(PneumaticsManager.compressorSet)
             PneumaticsManager.c.start();
         if(!PneumaticsManager.compressorSet)
-            DebugLog.log(2, referenceName, "Compressor is being stopped without being instantiated!");
+            DebugLog.log(2, referenceName, "Compressor is being stopped without first being instantiated!");
     }
 
-    public static void lockPistons() {
+    public static void lockAllPistons() {
         for(int i = 0; i < dualSolenoidList.size(); i++)
             ((DualSolenoid) dualSolenoidList.elementAt(i)).lockPiston();
     }

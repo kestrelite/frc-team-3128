@@ -64,7 +64,7 @@ public class EventManager {
                 DebugLog.log(2, referenceName, "Event ( ^ ) being registered is a duplicate of another event!");
     }
 
-    protected static void addContinuousEvent(Event e, int i) {
+    /*protected static void addContinuousEvent(Event e, int i) {
         DebugLog.log(3, referenceName, "Adding CONTINUOUS event " + e.toString());
         checkForDuplicates(e);
         insertIntoEvents(e, i, false);
@@ -74,7 +74,7 @@ public class EventManager {
         DebugLog.log(4, referenceName, "Adding SINGLE event " + e.toString());
         checkForDuplicates(e);
         insertIntoEvents(e, i, true);
-    }
+    }*/
 
     protected static void addSingleEvent(Event e) {
         DebugLog.log(4, referenceName, "Adding SINGLE event " + e.toString());

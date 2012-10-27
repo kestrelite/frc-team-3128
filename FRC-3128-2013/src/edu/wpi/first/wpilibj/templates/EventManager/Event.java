@@ -11,7 +11,7 @@ final class TimerEvent extends Event {
     public final void setTargetTime(long millis) {
         DebugLog.log(4, referenceName, "Event " + linkedEvent.toString() + " set for " + millis + " msec from now.");
         targetTimeMillis = Global.getSystemTimeMillis() + millis;
-        EventManager.addContinuousEvent(this, 1);
+        EventManager.addContinuousEvent(this);
     }
 
     private final void destroyTimer() {
@@ -74,18 +74,10 @@ public abstract class Event {
         EventManager.addSingleEvent(this);
     }
 
-    /*final public void registerEvent(int p) {
-        EventManager.addSingleEvent(this, p);
-    }*/ //Priorities disabled
-
     final public void registerIterable() {
         EventManager.addContinuousEvent(this);
     }
-
-    /*final public void registerIterable(int p) {
-        EventManager.addContinuousEvent(this, p);
-    }*/ //Priorities disabled until further notice
-
+    
     final public void registerTimedEvent(int time) {
         try {
             timerEvent.setTargetTime(time);
