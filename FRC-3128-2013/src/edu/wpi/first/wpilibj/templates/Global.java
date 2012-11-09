@@ -20,7 +20,7 @@ public class Global {
 
     public static void initializeRobot() {
         DebugLog.setLogLevel(4);
-        (new WatchdogEvent()).registerIterable();
+        (new WatchdogEvent()).registerIterableEvent();
     }
 
     public static void initializeDisabled() {

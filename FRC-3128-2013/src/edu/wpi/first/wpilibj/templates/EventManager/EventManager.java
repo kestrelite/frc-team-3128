@@ -1,7 +1,6 @@
 package edu.wpi.first.wpilibj.templates.EventManager;
 
 import edu.wpi.first.wpilibj.templates.DebugLog;
-import edu.wpi.first.wpilibj.templates.Global;
 import java.util.Vector;
 
 class IPSCounter extends Event {
@@ -155,7 +154,7 @@ public class EventManager {
     }
 
     public static void startIPSCounter() {
-        EventManager.ipsCounter.registerIterable();
+        EventManager.ipsCounter.registerIterableEvent();
     }
 
     public static void toggleEventProcessing() {

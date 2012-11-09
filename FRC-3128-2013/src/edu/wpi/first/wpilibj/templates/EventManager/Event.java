@@ -1,7 +1,6 @@
 package edu.wpi.first.wpilibj.templates.EventManager;
 
 import edu.wpi.first.wpilibj.templates.DebugLog;
-import edu.wpi.first.wpilibj.templates.Global;
 
 final class TimerEvent extends Event {
     private Event linkedEvent;
@@ -70,11 +69,11 @@ public abstract class Event {
         return !eventIsCancelled;
     }
 
-    final public void registerEvent() {
+    final public void registerSingleEvent() {
         EventManager.addSingleEvent(this);
     }
 
-    final public void registerIterable() {
+    final public void registerIterableEvent() {
         EventManager.addContinuousEvent(this);
     }
     
