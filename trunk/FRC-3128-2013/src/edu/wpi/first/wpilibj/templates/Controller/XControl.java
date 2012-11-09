@@ -7,9 +7,8 @@ import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
 
 public class XControl extends Event {
     private Joystick xControl;
-    private boolean controllerBound = false;
     public double x1, y1, x2, y2, triggers;
-    private boolean[] buttonsPressed = {false, false, false, false, false, false, false, false, false, false};
+    private boolean[] buttonsPressed = {false, false, false, false, false, false, false, false, false, false, false};
     
     public XControl(int port) {
         super();
@@ -19,11 +18,6 @@ public class XControl extends Event {
     }
     
     public void execute() {
-        if(!controllerBound) {
-            DebugLog.log(2, this.toString(), "Controller checks called before controller bind! Ignoring controller checks.");
-            return;
-        }
-
         try {
             boolean updateJoy1 = false;
             boolean updateJoy2 = false;
@@ -45,7 +39,7 @@ public class XControl extends Event {
             if(updateTriggers) ListenerManager.callListener("updateTriggers");
             if(updateJoy1 || updateJoy2 || updateTriggers) ListenerManager.callListener("updateDrive");
 
-            for(int i = 1; i <= 10; i++) {
+            for(int i = 1; i < 11; i++) {
                 if(buttonsPressed[i] != xControl.getRawButton(i))
                     ListenerManager.callListener("button" + XControlMap.getBtnString(i) + (xControl.getRawButton(i) ? "Down" : "Up"));
                 buttonsPressed[i] = xControl.getRawButton(i);
