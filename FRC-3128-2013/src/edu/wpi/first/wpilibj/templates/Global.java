@@ -1,9 +1,11 @@
 package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.templates.Controller.XControl;
 import edu.wpi.first.wpilibj.templates.Controller.XControlMap;
 import edu.wpi.first.wpilibj.templates.EventManager.Event;
 import edu.wpi.first.wpilibj.templates.EventManager.EventManager;
+import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
 
 class WatchdogEvent extends Event {
     public void execute() {
@@ -11,7 +13,8 @@ class WatchdogEvent extends Event {
     }
 }
 
-class DriveTank extends Event {
+
+/*class DriveTank extends Event {
     public void execute() {
         double x = Global.joy.getRawAxis(1)/1.25;
         double y = -Global.joy.getRawAxis(2)/1.25;
@@ -43,23 +46,25 @@ class CatapultOff extends Event {
             Global.catapultTwo.set(true);
         }
     }
-}
+}*/
 
 public class Global {
     public final static String referenceName = "Global";
-    public final static EventManager eventManager = new EventManager();
-    public final static Jaguar mLB = new Jaguar(1, 3);
-    public final static Jaguar mRB = new Jaguar(1, 6);
-    public final static Jaguar mLF = new Jaguar(1, 2); //Works
-    public final static Jaguar mRF = new Jaguar(1, 1); //Works
-    //public final static Jaguar mBAD1 = new Jaguar(1, 9);
-    public final static Jaguar mBAD2 = new Jaguar(1, 4); //Works
-    public final static Joystick joy = new Joystick(1);
- 
-    public final static Compressor comp = new Compressor(1, 1, 1, 1);
-    public final static Solenoid catapultOne = new Solenoid(1, 3);
-    public final static Solenoid catapultTwo = new Solenoid(1, 4);
     public static boolean shutdown = false;
+    public final static EventManager eventManager = new EventManager();
+    //public final static Jaguar mLB = new Jaguar(1, 3);
+    //public final static Jaguar mRB = new Jaguar(1, 6);
+    //public final static Jaguar mLF = new Jaguar(1, 2); //Works
+    //public final static Jaguar mRF = new Jaguar(1, 1); //Works
+    //public final static Jaguar mBAD1 = new Jaguar(1, 9);
+    //public final static Jaguar mBAD2 = new Jaguar(1, 4); //Works
+    //public final static Joystick joy = new Joystick(1);
+ 
+    //public final static Compressor comp = new Compressor(1, 1, 1, 1);
+    //public final static Solenoid catapultOne = new Solenoid(1, 3);
+    //public final static Solenoid catapultTwo = new Solenoid(1, 4);
+   
+    public static XControl xControl1 = new XControl(1);
 
     public static long getSystemTimeMillis() {
         return System.currentTimeMillis();
@@ -67,13 +72,6 @@ public class Global {
 
     public static void initializeRobot() {
         DebugLog.setLogLevel(4);
-        
-        (new WatchdogEvent()).registerIterable();
-        (new DriveTank()).registerIterable();
-        (new CatapultOn()).registerIterable();
-        (new CatapultOff()).registerIterable();
-        
-        comp.start();
     }
 
     public static void initializeAuto() {

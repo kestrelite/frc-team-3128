@@ -31,7 +31,7 @@ public class ListenerManager {
     }
 
     public static void callListener(int link) {
-        DebugLog.log(4, referenceName, "Listener trigger has been called: " + link);
+        //DebugLog.log(4, referenceName, "Listener trigger has been called: " + link);
 
         for(int i = 0; i < ListenerManager.trigger.size(); i++)
             if(((Integer) ListenerManager.trigger.elementAt(i)).intValue() == link) {
