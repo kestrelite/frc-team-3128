@@ -37,7 +37,7 @@ public class ListenerManager {
             if(((Integer) ListenerManager.trigger.elementAt(i)).intValue() == link) {
                 DebugLog.log(4, referenceName, "Listener link " + link + " triggered Event " + ((Event) event.elementAt(i)).toString());
                 try {
-                    ((Event) ListenerManager.event.elementAt(i)).registerEvent();
+                    ((Event) ListenerManager.event.elementAt(i)).registerSingleEvent();
                 } catch(Exception e) {
                     e.printStackTrace();
                     ListenerManager.event.removeElementAt(i);
