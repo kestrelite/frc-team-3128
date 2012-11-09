@@ -10,10 +10,10 @@ class IPSCounter extends Event {
 
     public void execute() {
         if(firstSystemTime == -1) {
-            firstSystemTime = Global.getSystemTimeMillis();
+            firstSystemTime = System.currentTimeMillis();
             return;
         }
-        int timeDiff = (int) (Global.getSystemTimeMillis() - firstSystemTime);
+        int timeDiff = (int) (System.currentTimeMillis() - firstSystemTime);
         samples++;
         if(samples % 200000 == 0)
             DebugLog.log(4, referenceName, "Average IPS reading: " + (samples / ((float) (timeDiff / 1000.0))) + ", samples: " + samples + ", timeDiff " + timeDiff);

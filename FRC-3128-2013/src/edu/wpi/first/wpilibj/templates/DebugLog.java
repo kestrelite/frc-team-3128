@@ -23,7 +23,7 @@ public class DebugLog {
 		if(tag.length() > DebugLog.maxTagLength && lvl <= DebugLog.logDetail) DebugLog.maxTagLength = tag.length();
 		if(lvl <= DebugLog.logDetail) 
 		{
-			System.out.print("["+Global.getSystemTimeMillis() + "] " + level + " [" + (tag.substring(0, 4).equals("edu.")?tag.substring(initTagLength):tag) + "] ");
+			System.out.print("["+System.currentTimeMillis() + "] " + level + " [" + (tag.substring(0, 4).equals("edu.")?tag.substring(initTagLength):tag) + "] ");
 			for(int i = 0; i < maxTagLength - tag.length(); i++)
 				System.out.print(" ");
 			System.out.println(text);

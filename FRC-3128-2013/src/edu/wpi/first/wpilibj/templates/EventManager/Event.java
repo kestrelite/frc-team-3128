@@ -10,7 +10,7 @@ final class TimerEvent extends Event {
 
     public final void setTargetTime(long millis) {
         DebugLog.log(4, referenceName, "Event " + linkedEvent.toString() + " set for " + millis + " msec from now.");
-        targetTimeMillis = Global.getSystemTimeMillis() + millis;
+        targetTimeMillis = System.currentTimeMillis() + millis;
         EventManager.addContinuousEvent(this);
     }
 
@@ -25,7 +25,7 @@ final class TimerEvent extends Event {
             this.destroyTimer();
         }
 
-        if(Global.getSystemTimeMillis() > targetTimeMillis) {
+        if(System.currentTimeMillis() > targetTimeMillis) {
             DebugLog.log(4, referenceName, "Running timed event " + linkedReferenceName);
             linkedEvent.execute();
             this.destroyTimer();
