@@ -10,7 +10,7 @@ public class RobotTemplate extends IterativeRobot {
     }
     
     public void disabledInit() {
-        Global.robotReset();
+        //Global.robotReset();
         Global.initializeDisabled();
     }
     
@@ -36,7 +36,7 @@ public class RobotTemplate extends IterativeRobot {
     }
     
     public void teleopInit() {
-        Global.robotReset();
+        //Global.robotReset();
         Global.initializeTeleop();
     }
     
