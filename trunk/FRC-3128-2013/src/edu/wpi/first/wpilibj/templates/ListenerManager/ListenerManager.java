@@ -30,6 +30,17 @@ public class ListenerManager {
         callListener(link.hashCode());
     }
 
+    public static void dropEvent(Event e) {
+        int n = 0;
+        while(n != -1) {
+            n = ListenerManager.event.lastIndexOf(e);
+            if(n == -1) break;
+            ListenerManager.event.removeElementAt(n);
+            ListenerManager.trigger.removeElementAt(n);
+            DebugLog.log(4, referenceName, "Listener link number " + n + " sliced from event " + e.toString());
+        }
+    }
+    
     public static void callListener(int link) {
         //DebugLog.log(4, referenceName, "Listener trigger has been called: " + link);
 

@@ -2,6 +2,7 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.templates.Controller.XControl;
+import edu.wpi.first.wpilibj.templates.DriveMecanum.DriveMecanum;
 import edu.wpi.first.wpilibj.templates.EventManager.Event;
 import edu.wpi.first.wpilibj.templates.EventManager.EventManager;
 import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
@@ -41,7 +42,8 @@ public class Global {
     public static void initializeRobot() {
         DebugLog.setLogLevel(4);
         (new WatchdogEvent()).registerIterableEvent();
-        ListenerManager.addListener((new DriveTank()), "updateJoy1");
+        //ListenerManager.addListener((new DriveTank()), "updateJoy1");
+        DriveMecanum d = new DriveMecanum();
     }
 
     public static void initializeDisabled() {
