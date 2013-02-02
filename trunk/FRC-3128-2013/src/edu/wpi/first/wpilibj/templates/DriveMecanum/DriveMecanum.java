@@ -4,7 +4,13 @@ import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
 
 class DriveFree extends Event {
     public void execute() {
-        
+	double r = Global.getMag(XControl.x1, XControl.y1);
+	double th = Global.getTh(XControl.x1, XControl.y1);
+	
+        Global.mLF = r*Math.sin(th+(Math.PI/4)) + XControl.x2;
+	Global.mRF = r*Math.cos(th+(Math.PI/4)) - XControl.x2;
+	Global.mLB = r*Math.cos(th+(Math.PI/4)) + XControl.x2;
+	Global.mRB = r*Math.sin(th+(Math.PI/4)) - XControl.x2;
     }
 }
 
@@ -32,10 +38,16 @@ public class DriveMecanum {
     protected static boolean driveIsFree = false;
     
     public DriveMecanum() {
-        ListenerManager.addListener(dFree, "updateDrive");
-        
+        if(driveIsFree)  ListenerManager.addListener(dFree, "updateDrive");
+        if(!driveIsFree) ListenerManager.addListener(dTrack, "updateDrive");
+	
         ListenerManager.addListener(new BtnFire(),"buttonADown");
         ListenerManager.addListener(new DriveModeSwitch(), "buttonXDown");
+    }
+    
+    public DriveMecanum(boolean isFree) {
+	this.driveIsFree = isFree;
+	this.DriveMecanum(); //canyouraedtihs
     }
     
     protected static void switchDriveMode() {

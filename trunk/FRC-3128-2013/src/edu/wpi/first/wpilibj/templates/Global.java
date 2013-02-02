@@ -39,11 +39,19 @@ public class Global {
     public final static Jaguar mRF = new Jaguar(1, 3);
     public static XControl xControl1 = new XControl(1);
 
+    public static double getMag(double x1, double y1) {
+	return MathUtil.sqrt(Math.pow(x1,2) + Math.pow(y1,2));
+    }
+	
+    public static double getTh(double x1, double y1) {
+	return MathUtil.atan2(y1,x1);
+    }
+    
     public static void initializeRobot() {
         DebugLog.setLogLevel(4);
         (new WatchdogEvent()).registerIterableEvent();
         //ListenerManager.addListener((new DriveTank()), "updateJoy1");
-        DriveMecanum d = new DriveMecanum();
+        DriveMecanum d = new DriveMecanum(true);
     }
 
     public static void initializeDisabled() {
