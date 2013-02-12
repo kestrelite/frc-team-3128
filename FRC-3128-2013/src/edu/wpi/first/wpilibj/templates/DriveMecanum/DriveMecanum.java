@@ -1,16 +1,18 @@
 package edu.wpi.first.wpilibj.templates.DriveMecanum;
+
 import edu.wpi.first.wpilibj.templates.EventManager.Event;
+import edu.wpi.first.wpilibj.templates.Global;
 import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
 
 class DriveFree extends Event {
     public void execute() {
-	double r = Global.getMag(XControl.x1, XControl.y1);
-	double th = Global.getTh(XControl.x1, XControl.y1);
+	double r = Global.getMag(Global.xControl1.x1, Global.xControl1.y1);
+	double th = Global.getTh(Global.xControl1.x1, Global.xControl1.y1);
 	
-        Global.mLF = r*Math.sin(th+(Math.PI/4)) + XControl.x2;
-	Global.mRF = r*Math.cos(th+(Math.PI/4)) - XControl.x2;
-	Global.mLB = r*Math.cos(th+(Math.PI/4)) + XControl.x2;
-	Global.mRB = r*Math.sin(th+(Math.PI/4)) - XControl.x2;
+        Global.mLF.set(r*Math.sin(th+(Math.PI/4)) + Global.xControl1.x2);
+	Global.mRF.set(r*Math.cos(th+(Math.PI/4)) - Global.xControl1.x2);
+	Global.mLB.set(r*Math.cos(th+(Math.PI/4)) + Global.xControl1.x2);
+	Global.mRB.set(r*Math.sin(th+(Math.PI/4)) - Global.xControl1.x2);
     }
 }
 
@@ -36,18 +38,14 @@ public class DriveMecanum {
     private static DriveTracking dTrack = new DriveTracking();
     private static DriveFree     dFree  = new DriveFree();
     protected static boolean driveIsFree = false;
-    
-    public DriveMecanum() {
+        
+    public DriveMecanum(boolean isFree) {
+	driveIsFree = isFree;
         if(driveIsFree)  ListenerManager.addListener(dFree, "updateDrive");
         if(!driveIsFree) ListenerManager.addListener(dTrack, "updateDrive");
 	
         ListenerManager.addListener(new BtnFire(),"buttonADown");
         ListenerManager.addListener(new DriveModeSwitch(), "buttonXDown");
-    }
-    
-    public DriveMecanum(boolean isFree) {
-	this.driveIsFree = isFree;
-	this.DriveMecanum(); //canyouraedtihs
     }
     
     protected static void switchDriveMode() {

@@ -1,5 +1,6 @@
 package edu.wpi.first.wpilibj.templates;
 
+import com.sun.squawk.util.MathUtils;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.templates.Controller.XControl;
 import edu.wpi.first.wpilibj.templates.DriveMecanum.DriveMecanum;
@@ -40,17 +41,17 @@ public class Global {
     public static XControl xControl1 = new XControl(1);
 
     public static double getMag(double x1, double y1) {
-	return MathUtil.sqrt(Math.pow(x1,2) + Math.pow(y1,2));
+	return Math.sqrt(MathUtils.pow(x1,2) + MathUtils.pow(y1,2));
     }
 	
     public static double getTh(double x1, double y1) {
-	return MathUtil.atan2(y1,x1);
+	return MathUtils.atan2(y1,x1);
     }
     
     public static void initializeRobot() {
         DebugLog.setLogLevel(4);
         (new WatchdogEvent()).registerIterableEvent();
-        //ListenerManager.addListener((new DriveTank()), "updateJoy1");
+        
         DriveMecanum d = new DriveMecanum(true);
     }
 
