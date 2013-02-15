@@ -11,12 +11,6 @@ import frc3128.ListenerManager.ListenerManager;
 import frc3128.PneumaticsManager.PistonID;
 import frc3128.PneumaticsManager.PneumaticsManager;
 
-class WatchdogEvent extends Event {
-    public void execute() {
-        Watchdog.getInstance().feed();
-    }
-}
-
 class DriveTank extends Event {
     public void execute() {
         double x = Global.xControl1.x1;
@@ -51,13 +45,10 @@ public class Global {
     }
 	
     public static double getTh(double x1, double y1) {
-	return MathUtils.atan2(y1,x1);
+        return MathUtils.atan2(y1,x1);
     }
     
     public static void initializeRobot() {
-        DebugLog.setLogLevel(2);
-        (new WatchdogEvent()).registerIterableEvent();
-        
         DriveMecanum d = new DriveMecanum(true);
     }
 
