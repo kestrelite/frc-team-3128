@@ -1,9 +1,9 @@
-package edu.wpi.first.wpilibj.templates.Controller;
+package frc3128.Controller;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.templates.DebugLog;
-import edu.wpi.first.wpilibj.templates.EventManager.Event;
-import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
+import frc3128.DebugLog;
+import frc3128.EventManager.Event;
+import frc3128.ListenerManager.ListenerManager;
 
 public class XControl extends Event {
     private Joystick xControl;

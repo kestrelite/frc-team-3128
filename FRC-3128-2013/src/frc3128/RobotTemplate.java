@@ -1,8 +1,8 @@
-package edu.wpi.first.wpilibj.templates;
+package frc3128;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
-import edu.wpi.first.wpilibj.templates.EventManager.EventManager;
+import frc3128.EventManager.EventManager;
 
 public class RobotTemplate extends IterativeRobot {
     public void robotInit() {

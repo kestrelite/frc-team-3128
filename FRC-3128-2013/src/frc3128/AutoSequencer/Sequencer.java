@@ -1,7 +1,7 @@
-package edu.wpi.first.wpilibj.templates.AutoSequencer;
+package frc3128.AutoSequencer;
 
-import edu.wpi.first.wpilibj.templates.DebugLog;
-import edu.wpi.first.wpilibj.templates.EventManager.Event;
+import frc3128.DebugLog;
+import frc3128.EventManager.Event;
 import java.util.Vector;
 
 public class Sequencer extends Event {

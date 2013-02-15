@@ -1,6 +1,6 @@
-package edu.wpi.first.wpilibj.templates.Controller;
+package frc3128.Controller;
 
-import edu.wpi.first.wpilibj.templates.DebugLog;
+import frc3128.DebugLog;
 
 public class XControlMap {
     public static final int A = 1;
