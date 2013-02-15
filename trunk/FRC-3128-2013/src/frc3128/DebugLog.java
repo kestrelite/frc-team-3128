@@ -1,4 +1,4 @@
-package edu.wpi.first.wpilibj.templates;
+package frc3128;
 
 public class DebugLog {
 	static int logDetail = 3;

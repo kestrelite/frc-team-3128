@@ -1,4 +1,4 @@
-package edu.wpi.first.wpilibj.templates.PneumaticsManager;
+package frc3128.PneumaticsManager;
 
 import edu.wpi.first.wpilibj.Solenoid;
 

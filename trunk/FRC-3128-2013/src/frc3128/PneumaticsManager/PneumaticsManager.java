@@ -1,10 +1,10 @@
-package edu.wpi.first.wpilibj.templates.PneumaticsManager;
+package frc3128.PneumaticsManager;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.templates.DebugLog;
-import edu.wpi.first.wpilibj.templates.EventManager.Event;
-import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
+import frc3128.DebugLog;
+import frc3128.EventManager.Event;
+import frc3128.ListenerManager.ListenerManager;
 import java.util.Vector;
 
 class LockAllPistons extends Event {
@@ -43,11 +43,17 @@ public class PneumaticsManager {
     }
 
     public static void setPistonStateLocked(PistonID id) {
-        ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).lockPiston();
+        if(!id.getInversion())
+            ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).lockPiston();
+        else
+            ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).unlockPiston();
     }
 
     public static void setPistonStateUnlocked(PistonID id) {
-        ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).unlockPiston();
+        if(!id.getInversion())
+            ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).unlockPiston();
+        else
+            ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).lockPiston();
     }
 
     public static void setPistonStateOn(PistonID id) {
@@ -62,14 +68,14 @@ public class PneumaticsManager {
         if(PneumaticsManager.compressorSet)
             PneumaticsManager.c.start();
         if(!PneumaticsManager.compressorSet)
-            DebugLog.log(2, referenceName, "Compressor is being started without first being instantiated!");
+            DebugLog.log(1, referenceName, "Compressor is being started without first being instantiated!");
     }
 
     public static void setCompressorStateOff() {
         if(PneumaticsManager.compressorSet)
             PneumaticsManager.c.start();
         if(!PneumaticsManager.compressorSet)
-            DebugLog.log(2, referenceName, "Compressor is being stopped without first being instantiated!");
+            DebugLog.log(1, referenceName, "Compressor is being stopped without first being instantiated!");
     }
 
     public static void lockAllPistons() {

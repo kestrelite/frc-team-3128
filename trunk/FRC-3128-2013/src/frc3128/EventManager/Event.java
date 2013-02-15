@@ -1,6 +1,6 @@
-package edu.wpi.first.wpilibj.templates.EventManager;
+package frc3128.EventManager;
 
-import edu.wpi.first.wpilibj.templates.DebugLog;
+import frc3128.DebugLog;
 
 final class TimerEvent extends Event {
     private Event linkedEvent;

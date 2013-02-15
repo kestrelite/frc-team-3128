@@ -1,8 +1,8 @@
-package edu.wpi.first.wpilibj.templates.DriveMecanum;
+package frc3128.DriveMecanum;
 
-import edu.wpi.first.wpilibj.templates.EventManager.Event;
-import edu.wpi.first.wpilibj.templates.Global;
-import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
+import frc3128.EventManager.Event;
+import frc3128.Global;
+import frc3128.ListenerManager.ListenerManager;
 
 class DriveFree extends Event {
     public void execute() {

@@ -1,12 +1,15 @@
-package edu.wpi.first.wpilibj.templates;
+package frc3128;
 
 import com.sun.squawk.util.MathUtils;
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.templates.Controller.XControl;
-import edu.wpi.first.wpilibj.templates.DriveMecanum.DriveMecanum;
-import edu.wpi.first.wpilibj.templates.EventManager.Event;
-import edu.wpi.first.wpilibj.templates.EventManager.EventManager;
-import edu.wpi.first.wpilibj.templates.ListenerManager.ListenerManager;
+import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.Watchdog;
+import frc3128.Controller.XControl;
+import frc3128.DriveMecanum.DriveMecanum;
+import frc3128.EventManager.Event;
+import frc3128.EventManager.EventManager;
+import frc3128.ListenerManager.ListenerManager;
+import frc3128.PneumaticsManager.PistonID;
+import frc3128.PneumaticsManager.PneumaticsManager;
 
 class WatchdogEvent extends Event {
     public void execute() {
@@ -32,14 +35,17 @@ class DriveTank extends Event {
 
 public class Global {
     public final static String referenceName = "Global";
-    public static boolean shutdown = false;
-    public final static EventManager eventManager = new EventManager();
+    public       static boolean shutdown = false;
+    public final static EventManager      eventManager = new EventManager();
+    public       static XControl          xControl1 = new XControl(1);
+    public       static PneumaticsManager pnManager = new PneumaticsManager(1,1,1,1);
     public final static Jaguar mLB = new Jaguar(1, 1);
     public final static Jaguar mRB = new Jaguar(1, 4);
     public final static Jaguar mLF = new Jaguar(1, 2);
     public final static Jaguar mRF = new Jaguar(1, 3);
-    public static XControl xControl1 = new XControl(1);
-
+    public       static PistonID pst1 = PneumaticsManager.addPiston(1, 2, 3, 4);
+    public       static PistonID pst2;
+    
     public static double getMag(double x1, double y1) {
 	return Math.sqrt(MathUtils.pow(x1,2) + MathUtils.pow(y1,2));
     }
@@ -49,7 +55,7 @@ public class Global {
     }
     
     public static void initializeRobot() {
-        DebugLog.setLogLevel(4);
+        DebugLog.setLogLevel(2);
         (new WatchdogEvent()).registerIterableEvent();
         
         DriveMecanum d = new DriveMecanum(true);
