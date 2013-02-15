@@ -1,7 +1,14 @@
 package frc3128.EventManager;
 
+import edu.wpi.first.wpilibj.Watchdog;
 import frc3128.DebugLog;
 import java.util.Vector;
+
+class WatchdogEvent extends Event {
+    public void execute() {
+        Watchdog.getInstance().feed();
+    }
+}
 
 class IPSCounter extends Event {
     long firstSystemTime = -1;
@@ -31,6 +38,7 @@ public class EventManager {
 
     public EventManager() {
         DebugLog.log(4, EventManager.referenceName, "Event manager started.");
+        (new WatchdogEvent()).registerIterableEvent();
         if(!duplicateEventCheck)
             DebugLog.log(4, EventManager.referenceName, "Event Manager is NOT checking for duplicate events");
     }
@@ -56,8 +64,7 @@ public class EventManager {
     }
 
     private static void checkForDuplicates(Event e) {
-        if(!EventManager.duplicateEventCheck)
-            return;
+        if(!EventManager.duplicateEventCheck) return;
         for(int i = 0; i < e_eventList.size(); i++)
             if(e.equals((Event) e_eventList.elementAt(i)))
                 DebugLog.log(2, referenceName, "Event ( ^ ) being registered is a duplicate of another event!");

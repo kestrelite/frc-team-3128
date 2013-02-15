@@ -1,7 +1,7 @@
 package frc3128;
 
 public class DebugLog {
-	static int logDetail = 3;
+	static int logDetail = 2;
 	private static int maxTagLength = 0;
 	private static final int initTagLength = 32;
         
