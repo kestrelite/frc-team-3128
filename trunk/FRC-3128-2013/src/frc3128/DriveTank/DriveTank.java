@@ -44,7 +44,7 @@ class AdjustTilt extends Event {
         
         if(angle <= 0 || angle >= 0){
             for(char q = 1; q <= 50; ++q){
-                double gyr = Global.TiltGyro.getAngle();
+                double gyr = Global.tiltGyro.getAngle();
                 angle = ((angle + gyr)/q);
             }
             if(angle > 0)angle = zeroSet();//Assuming platform is completely forward at zero; moving back gives negative values

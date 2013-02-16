@@ -41,6 +41,17 @@ public class ListenerManager {
         }
     }
     
+    public static boolean dropEvent(Class c) {
+        boolean eventDropped = false;
+        for(int i = 0; i < ListenerManager.event.size(); i++) {
+            if(((Event)ListenerManager.event.elementAt(i)).getClass().equals(c)) {
+                ListenerManager.dropEvent((Event)ListenerManager.event.elementAt(i));
+                eventDropped = true;
+            }
+        }
+        return eventDropped;
+    }
+    
     public static void callListener(int link) {
         for(int i = 0; i < ListenerManager.trigger.size(); i++)
             if(((Integer) ListenerManager.trigger.elementAt(i)).intValue() == link) {
