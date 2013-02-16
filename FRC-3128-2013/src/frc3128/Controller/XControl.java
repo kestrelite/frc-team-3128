@@ -11,7 +11,6 @@ public class XControl extends Event {
     private boolean[] buttonsPressed = {false, false, false, false, false, false, false, false, false, false, false};
     
     public XControl(int port) {
-        super();
         xControl = new Joystick(port);
         this.registerIterableEvent();
         DebugLog.log(4, referenceName, "Controller added self to event manager!");
@@ -49,8 +48,4 @@ public class XControl extends Event {
             this.cancelEvent();
         }
     }
-
-    //public void bindToController(int port) {
-    //    xControl = new Joystick(port);
-    //}
 }
