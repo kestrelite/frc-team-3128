@@ -16,15 +16,15 @@ public class Global {
     public final static String referenceName = "Global";
     public       static boolean shutdown = false;
     public final static EventManager eventManager = new EventManager();
-    public       static XControl xControl1 = new XControl(1);
-    public       static PneumaticsManager pnManager = new PneumaticsManager(1, 1, 1, 1);
-    public       static Connection cameraCon = new Connection();
+    public final static XControl xControl1 = new XControl(1);
+    public final static PneumaticsManager pnManager = new PneumaticsManager(1, 1, 1, 1);
+    public final static Connection cameraCon = new Connection();
 
     public final static Jaguar mLB = new Jaguar(1, 1);
     public final static Jaguar mRB = new Jaguar(1, 4);
     public final static Jaguar mLF = new Jaguar(1, 2);
     public final static Jaguar mRF = new Jaguar(1, 3);
-    public       static PistonID pst1 = PneumaticsManager.addPiston(1, 2, 3, 4);
+    //public       static PistonID pst1 = PneumaticsManager.addPiston(1, 2, 3, 4);
     public       static PistonID pst2;
     public       static Gyro rotationGyro = new Gyro(1,9); //Port numbers must be reassigned.
     
