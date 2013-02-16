@@ -2,6 +2,7 @@ package frc3128;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import frc3128.EventManager.EventManager;
 
 public class RobotTemplate extends IterativeRobot {
@@ -13,7 +14,7 @@ public class RobotTemplate extends IterativeRobot {
         Global.initializeDisabled();
     }
     
-    public void disabledPeriodic() {
+    public void disabledPeriodic() {        
         Watchdog.getInstance().feed();
     }
     

@@ -1,22 +1,38 @@
-
 import edu.wpi.first.smartdashboard.camera.WPICameraExtension;
 import edu.wpi.first.smartdashboard.properties.DoubleProperty;
 import edu.wpi.first.smartdashboard.properties.IntegerProperty;
 import edu.wpi.first.wpijavacv.*;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Camera extends WPICameraExtension {
 
     public static final String NAME = "Camera Target Tracker";
     public final IntegerProperty threshold = new IntegerProperty(this, "Threshold", 180);
     public final DoubleProperty contourPolygonApproximationPct = new DoubleProperty(this, "Polygon Approximation %", 45);
-    NetworkTable table = NetworkTable.getTable("camera");
+    private boolean runOnce = true;
+    NetworkTable table;
+
     WPIColor targetColor = new WPIColor(0, 255, 0);
     WPIColor contourColor = new WPIColor(17, 133, 133);
 
+
     @Override
     public WPIImage processImage(WPIColorImage rawImage) {
+                if (runOnce) {
+            NetworkTable.setTeam(3128);
+            NetworkTable.setServerMode();
+            try {
+                NetworkTable.initialize();
+            } catch (IOException ex) {
+                Logger.getLogger(Camera.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            table = NetworkTable.getTable("camera");
+            runOnce = false;
+        }
         WPIBinaryImage blue = rawImage.getBlueChannel().getThreshold(threshold.getValue());
         WPIBinaryImage green = rawImage.getGreenChannel().getThreshold(threshold.getValue());
         WPIBinaryImage red = rawImage.getRedChannel().getThreshold(threshold.getValue());
@@ -109,7 +125,7 @@ public class Camera extends WPICameraExtension {
 
         synchronized (table) {
             //table.beginTransaction();
-
+            table.putBoolean("verify", true);
             if (square != null) {
                 double distance = (1564.4 / Math.sqrt(squareArea) - 0.5719) * 12;
                 table.putBoolean("found", true);
