@@ -12,7 +12,6 @@ class Drive extends Event {
 
         if (Math.abs(y) < 0.15) y = 0;
         if (Math.abs(x) < 0.15) x = 0;
-        //Global.mTilt.set(y);
         
         Global.mLB.set(-1.0 * ((y - (x / 1.5)) / 1.3));
         Global.mRB.set(-1.0 * (-(y + (x / 1.5))));
@@ -48,6 +47,5 @@ public class DriveTank {
         ListenerManager.addListener(new TiltStop(), "buttonRBUp");
         ListenerManager.addListener(new TiltDown(), "buttonLBDown");
         ListenerManager.addListener(new TiltStop(), "buttonLBUp");
-        ListenerManager.addListener(new TiltToY2(), "updateJoy2");
     }
 }
