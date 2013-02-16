@@ -7,19 +7,29 @@ import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Watchdog;
 import frc3128.Controller.XControl;
 import frc3128.DriveTank.DriveTank;
+import frc3128.EventManager.Event;
 import frc3128.EventManager.EventManager;
 import frc3128.ListenerManager.ListenerManager;
 import frc3128.PneumaticsManager.PistonID;
 import frc3128.PneumaticsManager.PneumaticsManager;
+
+
+class DebugOutputs extends Event {
+    public void execute() {
+        DebugLog.log(4, referenceName, "X1:" + Global.xControl1.x1 + ", Y1:" + Global.xControl1.y1);
+        DebugLog.log(4, referenceName, "Y2: " + Global.xControl1.y2);
+        DebugLog.log(4, referenceName, "gTilt:"+Global.gTilt.getAngle() + ", gTurn:"+Global.gTurn.getAngle());
+    }
+}
 
 public class Global {
     public final static String referenceName = "Global";
     public       static boolean shutdown = false;
 
     public final static EventManager eventManager = new EventManager();
-    public       static XControl xControl1 = new XControl(1);
+    public final static XControl xControl1 = new XControl(1);
     public       static DriveTank driveTank;
-    public static PneumaticsManager pnManager = new PneumaticsManager(1, 1, 1, 2);    
+    public final static PneumaticsManager pnManager = new PneumaticsManager(1, 1, 1, 2);    
     
     public final static Jaguar mLB = new Jaguar(1, 3);
     public final static Jaguar mRB = new Jaguar(1, 1);
@@ -30,8 +40,8 @@ public class Global {
     public final static Relay camLight = new Relay(1, Relay.Direction.kForward);
     public final static Gyro gTilt = null, gTurn = new Gyro(1,1);
 
-    //public static PistonID pst1 = PneumaticsManager.addPiston(1, 2, 3, 4);
-    public static PistonID pst2;
+    //public      static PistonID pst1 = PneumaticsManager.addPiston(1, 2, 3, 4);
+    public       static PistonID pst2;
 
     public static double getMag(double x1, double y1) {
         return Math.sqrt(MathUtils.pow(x1, 2) + MathUtils.pow(y1, 2));
@@ -42,8 +52,8 @@ public class Global {
     }
 
     public static void initializeRobot() {
-        //camLight.set(Relay.Value.kOff);
-        DebugLog.setLogLevel(4);
+        DebugLog.setLogLevel(3);
+        PneumaticsManager.setCompressorStateOff();
     }
 
     public static void initializeDisabled() {}
