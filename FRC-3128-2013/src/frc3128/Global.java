@@ -1,6 +1,7 @@
 package frc3128;
 
 import com.sun.squawk.util.MathUtils;
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Watchdog;
 import frc3128.Connection.Connection;
@@ -25,7 +26,8 @@ public class Global {
     public final static Jaguar mRF = new Jaguar(1, 3);
     public       static PistonID pst1 = PneumaticsManager.addPiston(1, 2, 3, 4);
     public       static PistonID pst2;
-
+    public       static Gyro rotationGyro = new Gyro(1,9); //Port numbers must be reassigned.
+    
     public static void initializeRobot() {
         DriveTank d = new DriveTank();
     }
