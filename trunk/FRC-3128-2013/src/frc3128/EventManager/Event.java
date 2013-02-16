@@ -13,7 +13,7 @@ final class TimerEvent extends Event {
         EventManager.addContinuousEvent(this);
     }
 
-    private final void destroyTimer() {
+    private void destroyTimer() {
         targetTimeMillis = -1;
         EventManager.removeEvent(this);
     }
