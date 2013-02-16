@@ -29,7 +29,7 @@ public class Global {
     public final static EventManager eventManager = new EventManager();
     public final static XControl xControl1 = new XControl(1);
     public       static DriveTank driveTank;
-    public final static PneumaticsManager pnManager = new PneumaticsManager(1, 1, 1, 2);    
+    public final static PneumaticsManager pnManager = new PneumaticsManager(1, 1, 1, 2);
     
     public final static Jaguar mLB = new Jaguar(1, 3);
     public final static Jaguar mRB = new Jaguar(1, 1);
