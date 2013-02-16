@@ -1,10 +1,9 @@
 package frc3128.DriveTank;
 
-import edu.wpi.first.wpilibj.Relay;
-import frc3128.DebugLog;
 import frc3128.EventManager.Event;
 import frc3128.Global;
 import frc3128.ListenerManager.ListenerManager;
+import frc3128.TiltControl.TiltToY2;
 
 class Drive extends Event {
     public void execute() {
@@ -40,10 +39,6 @@ class TiltStop extends Event {
     }
 }
 
-//class GyroTilt extends Event {
-//    public
-//}
-
 public class DriveTank {
     private static Drive drive = new Drive();
 
@@ -53,6 +48,6 @@ public class DriveTank {
         ListenerManager.addListener(new TiltStop(), "buttonRBUp");
         ListenerManager.addListener(new TiltDown(), "buttonLBDown");
         ListenerManager.addListener(new TiltStop(), "buttonLBUp");
-        ListenerManager.addListener(new AdjustTilt(), "updateJoy2");
+        ListenerManager.addListener(new TiltToY2(), "updateJoy2");
     }
 }

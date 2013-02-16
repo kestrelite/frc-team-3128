@@ -1,7 +1,5 @@
 package frc3128.TiltControl;
 
-import edu.wpi.first.wpilibj.Gyro;
-import frc3128.DebugLog;
 import frc3128.EventManager.Event;
 import frc3128.Global;
 import frc3128.ListenerManager.ListenerManager;
@@ -21,8 +19,8 @@ public class TiltToAngle extends Event {
         double y2 = Global.xControl1.y2;
         
         if(1==1) throw new Error("Must set gyro polarization");
-        if(Math.abs(Global.tiltGyro.getAngle() - this.targetAngle) > thresh)
-            Global.mTilt.set((Global.tiltGyro.getAngle() - this.targetAngle)/35.0);
+        if(Math.abs(Global.gTilt.getAngle() - this.targetAngle) > thresh)
+            Global.mTilt.set((Global.gTilt.getAngle() - this.targetAngle)/35.0);
         else {
             if(this.restoreY2) ListenerManager.addListener((new TiltToY2()), "updateJoy2");
             this.cancelEvent();
