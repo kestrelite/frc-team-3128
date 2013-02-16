@@ -24,9 +24,11 @@ public class Global {
     public final static Jaguar mRB = new Jaguar(1, 4);
     public final static Jaguar mLF = new Jaguar(1, 2);
     public final static Jaguar mRF = new Jaguar(1, 3);
+    public final static Jaguar mTilt = new Jaguar(1, 6);   // I remember port 6 working while testing
     //public       static PistonID pst1 = PneumaticsManager.addPiston(1, 2, 3, 4);
     public       static PistonID pst2;
     public       static Gyro rotationGyro = new Gyro(1,9); //Port numbers must be reassigned.
+    public       static Gyro TiltGyro;
     
     public static void initializeRobot() {
         DriveTank d = new DriveTank();
