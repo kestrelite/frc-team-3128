@@ -60,6 +60,13 @@ public class Global {
     public static double getTh(double x1, double y1) {
         return MathUtils.atan2(y1, x1);
     }
+    
+    public static void StopDrive() {
+        Global.mLB.set(0);
+        Global.mLF.set(0);
+        Global.mRB.set(0);
+        Global.mRF.set(0);
+    }
 
     public static void initializeRobot() {
         DebugLog.setLogLevel(3);
