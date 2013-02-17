@@ -18,7 +18,15 @@ class DebugOutputs extends Event {
     public void execute() {
         DebugLog.log(4, referenceName, "X1:" + Global.xControl1.x1 + ", Y1:" + Global.xControl1.y1);
         DebugLog.log(4, referenceName, "Y2: " + Global.xControl1.y2);
-        DebugLog.log(4, referenceName, "gTilt:"+Global.gTilt.getAngle() + ", gTurn:"+Global.gTurn.getAngle());
+        DebugLog.log(3, referenceName, "gTilt:"+Global.gTilt.getAngle() + ", gTurn:"+Global.gTurn.getAngle());
+    }
+}
+
+
+class ResetGyro extends Event {
+    public void execute() {
+        Global.gTilt.reset();
+        Global.gTurn.reset();
     }
 }
 
@@ -37,8 +45,8 @@ public class Global {
     public final static Jaguar mRF = new Jaguar(1, 4);
     public final static Jaguar mTilt = new Jaguar(1, 6);
 
-    public final static Relay camLight = new Relay(1, Relay.Direction.kForward);
-    public final static Gyro gTilt = null, gTurn = new Gyro(1,1);
+    public       static Relay camLight = new Relay(1, 1, Relay.Direction.kForward);
+    public final static Gyro gTilt = new Gyro(1, 2), gTurn = new Gyro(1,1);
 
     //public      static PistonID pst1 = PneumaticsManager.addPiston(1, 2, 3, 4);
     public       static PistonID pst2;
@@ -54,13 +62,19 @@ public class Global {
     public static void initializeRobot() {
         DebugLog.setLogLevel(3);
         PneumaticsManager.setCompressorStateOff();
+        (new DebugOutputs()).registerIterableEvent();
+        Global.gTilt.reset(); Global.gTurn.reset();
+        ListenerManager.addListener((new ResetGyro()), "buttonADown");
     }
 
-    public static void initializeDisabled() {}
+    public static void initializeDisabled() {
+        PneumaticsManager.setCompressorStateOff();
+    }
 
     public static void initializeAuto() {}
 
     public static void initializeTeleop() {
+        //camLight.set(Relay.Value.kOn);
         driveTank = new DriveTank();
     }
 
@@ -73,5 +87,9 @@ public class Global {
         EventManager.dropEvents();
         ListenerManager.dropListeners();
         Watchdog.getInstance().kill();
+    }
+
+    static void disabledTeleop() {
+        PneumaticsManager.setCompressorStateOff();
     }
 }
