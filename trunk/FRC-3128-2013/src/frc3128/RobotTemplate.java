@@ -39,6 +39,10 @@ public class RobotTemplate extends IterativeRobot {
         Global.initializeTeleop();
     }
     
+    public void teleopDisabled() {
+        Global.disabledTeleop();
+    }
+    
     public void teleopPeriodic() {
         Watchdog.getInstance().feed();        
     }

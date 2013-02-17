@@ -24,14 +24,16 @@ public class PneumaticsManager {
         PneumaticsManager.c = c;
         PneumaticsManager.compressorSet = true;
         ListenerManager.addListener(new LockAllPistons(), "lockPistons");
+        PneumaticsManager.c.stop();
     }
 
     public PneumaticsManager(int a, int b, int c, int d) {
         PneumaticsManager.c = new Compressor(a, b, c, d);
         PneumaticsManager.compressorSet = true;
         ListenerManager.addListener(new LockAllPistons(), "lockPistons");
+        PneumaticsManager.c.stop();
     }
-
+    
     public static PistonID addPiston(Solenoid solA, Solenoid solB) {
         dualSolenoidList.addElement(new DualSolenoid(solA, solB));
         return new PistonID(dualSolenoidList.size() - 1);
@@ -73,7 +75,7 @@ public class PneumaticsManager {
 
     public static void setCompressorStateOff() {
         if(PneumaticsManager.compressorSet)
-            PneumaticsManager.c.start();
+            PneumaticsManager.c.stop();
         if(!PneumaticsManager.compressorSet)
             DebugLog.log(1, referenceName, "Compressor is being stopped without first being instantiated!");
     }

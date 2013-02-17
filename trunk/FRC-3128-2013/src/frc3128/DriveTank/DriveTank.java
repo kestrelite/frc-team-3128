@@ -1,5 +1,6 @@
 package frc3128.DriveTank;
 
+import edu.wpi.first.wpilibj.Relay;
 import frc3128.EventManager.Event;
 import frc3128.Global;
 import frc3128.ListenerManager.ListenerManager;
@@ -12,7 +13,7 @@ class Drive extends Event {
 
         if (Math.abs(y) < 0.15) y = 0;
         if (Math.abs(x) < 0.15) x = 0;
-        
+                
         Global.mLB.set(-1.0 * ((y - (x / 1.5)) / 1.3));
         Global.mRB.set(-1.0 * (-(y + (x / 1.5))));
         Global.mLF.set(-1.0 * ((y - (x / 1.5)) / 1.3));
