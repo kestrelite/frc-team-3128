@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Watchdog;
 import frc3128.Controller.XControl;
 import frc3128.DriveTank.DriveTank;
+import frc3128.DriveTank.TurnToAngle;
 import frc3128.EventManager.Event;
 import frc3128.EventManager.EventManager;
 import frc3128.ListenerManager.ListenerManager;
@@ -44,6 +45,7 @@ public class Global {
     public final static Jaguar mLF = new Jaguar(1, 2);
     public final static Jaguar mRF = new Jaguar(1, 4);
     public final static Jaguar mTilt = new Jaguar(1, 6);
+    public final static Jaguar frShoot = new Jaguar(1, 7);
 
     public       static Relay camLight = new Relay(1, 1, Relay.Direction.kForward);
     public final static Gyro gTilt = new Gyro(1, 2), gTurn = new Gyro(1,1);
@@ -65,6 +67,7 @@ public class Global {
         (new DebugOutputs()).registerIterableEvent();
         Global.gTilt.reset(); Global.gTurn.reset();
         ListenerManager.addListener((new ResetGyro()), "buttonADown");
+        //(new TurnToAngle(30.0)).registerIterableEvent();
     }
 
     public static void initializeDisabled() {
