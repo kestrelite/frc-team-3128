@@ -39,6 +39,18 @@ class TiltStop extends Event {
     }
 }
 
+class ShootDisc extends Event {
+    public void execute() {
+        Global.frShoot.set(-0.95);
+    }
+}
+
+class IdleDisc extends Event {
+    public void execute() {
+        Global.frShoot.set(0);
+    }
+}
+
 public class DriveTank {
     private static Drive drive = new Drive();
 
@@ -48,5 +60,8 @@ public class DriveTank {
         ListenerManager.addListener(new TiltStop(), "buttonRBUp");
         ListenerManager.addListener(new TiltDown(), "buttonLBDown");
         ListenerManager.addListener(new TiltStop(), "buttonLBUp");
+        ListenerManager.addListener(new ShootDisc(), "buttonADown");
+        ListenerManager.addListener(new IdleDisc(), "buttonAUp");
+        
     }
 }
