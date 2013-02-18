@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.Relay;
  */
 public class RobotTemplate extends IterativeRobot {
 
+    double angle = 0;
     
     public final static Compressor cAir = new Compressor(1, 1, 1, 2);
     public final static Joystick joy = new Joystick(1);
@@ -53,38 +54,49 @@ public class RobotTemplate extends IterativeRobot {
         else{
             mLB.set((joy.getRawAxis(2) - joy.getRawAxis(1))/2);
             mLF.set((joy.getRawAxis(2) - joy.getRawAxis(1))/2);
-            mRB.set((joy.getRawAxis(2) + joy.getRawAxis(1))/2);
-            mRF.set((joy.getRawAxis(2) + joy.getRawAxis(1))/2);
+            mRB.set((joy.getRawAxis(2) + joy.getRawAxis(1))/-2);
+            mRF.set((joy.getRawAxis(2) + joy.getRawAxis(1))/-2);
         }
     }
     
-//    public void setTiltAngle() {
-//        double y2 = -joy.getRawAxis(5);
-//        
-//        if(y2 > angle) angle = y2;
-//        else if(angle < 0) 
-//        if(Math.abs(gTilt.getAngle() - angle*35.0) > 1)
-//            mTilt.set((gTilt.getAngle() - angle*35.0)/35.0);
-//        else
-//            mTilt.set(0);
-//    }
+    public void setTiltY2() {
+        double y2 = -35 * (joy.getRawAxis(5));
+        
+        if(y2 > angle && angle >= 0) angle = y2;
+        else if(angle > 0 && y2 < 0) angle += y2;
+        else if(angle < 0) angle = 0;
+        if(Math.abs(angle - gTilt.getAngle()) > 1) mTilt.set((angle - gTilt.getAngle())/35.0);
+        else mTilt.set(0);
+    }
+    
+    public void setTiltAngle(double oh) {
+        if(Math.abs(oh - gTilt.getAngle()) > 1) mTilt.set((oh - gTilt.getAngle())/35.0);
+        else mTilt.set(0);
+    }
+        
+    
     
     public void checkButtons() {
         if(joy.getRawButton(1)) pHopper.set(DoubleSolenoid.Value.kReverse);
         else pHopper.set(DoubleSolenoid.Value.kForward);
-        if(joy.getRawButton(5)) mTilt.set(0.4);
-        else if(joy.getRawButton(6)) mTilt.set(-0.4);
-        else mTilt.set(0);
+        
+//        if(joy.getRawButton(5)) mTilt.set(0.4);
+//        else if(joy.getRawButton(6)) mTilt.set(-0.4);
+//        else mTilt.set(0);
+        
         if(joy.getRawButton(9)) mShoot.set(1.0);
         else mShoot.set(0);
+        
+        if(joy.getRawButton(10)){ angle = 0; setTiltAngle(angle);}
+        else {
+            if(Math.abs(joy.getRawAxis(5)) < .05) mTilt.set(0);
+            else setTiltY2();
+        }
     }
     
     public void robotInit() {
         
-        
-        cAir.start();
         gTilt.reset(); gTurn.reset();
-        camLight.set(Relay.Value.kOn);
         pHopper.set(DoubleSolenoid.Value.kForward);
         stopDrive();
     }
@@ -93,13 +105,15 @@ public class RobotTemplate extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+        teleopPeriodic();
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        //double angle = 0;
+        cAir.start();
+        camLight.set(Relay.Value.kOn);
         
         for(;;){
             startDrive();
