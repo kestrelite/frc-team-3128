@@ -102,6 +102,6 @@ public class DriveTank {
         ListenerManager.addListener(new PistonFlip(), "buttonAUp");
         ListenerManager.addListener(new SpinOn(), "buttonBDown");
         ListenerManager.addListener(new SpinOff(), "buttonBUp");
-        ListenerManager.addListener(new TiltY2(), "UpdateJoy2");
+        ListenerManager.addListener(new TiltY2(), "updateJoy2");
     }
 }
