@@ -62,6 +62,19 @@ class PistonFlip extends Event {
     }
 }
 
+
+class SpinOn extends Event {
+    public void execute() {
+        Global.mShoot.set(1.0);
+    }
+}
+
+class SpinOff extends Event {
+    public void execute() {
+        Global.mShoot.set(0);
+    }
+}
+
 public class DriveTank {
     private static Drive drive = new Drive();
 
@@ -72,5 +85,8 @@ public class DriveTank {
         ListenerManager.addListener(new TiltDown(), "buttonLBDown");
         ListenerManager.addListener(new TiltStop(), "buttonLBUp");
         ListenerManager.addListener(new PistonFlip(), "buttonADown");
+        ListenerManager.addListener(new PistonFlip(), "buttonAUp");
+        ListenerManager.addListener(new SpinOn(), "buttonBDown");
+        ListenerManager.addListener(new SpinOff(), "buttonBUp");
     }
 }
