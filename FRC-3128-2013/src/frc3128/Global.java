@@ -43,7 +43,7 @@ public class Global {
     public final static Gyro gTilt = new Gyro(1, 2), gTurn = new Gyro(1,1);
 
     public final static PistonID pst1 = PneumaticsManager.addPiston(1, 1, 1, 2, true, false);
-    public       static PistonID pst2;
+    public       static PistonID pst2 = PneumaticsManager.addPiston(1, 3, 1, 4, true, false);
 
     public static double getMag(double x1, double y1) {
         return Math.sqrt(MathUtils.pow(x1, 2) + MathUtils.pow(y1, 2));
@@ -55,6 +55,7 @@ public class Global {
 
     public static void initializeRobot() {
         DebugLog.setLogLevel(4);
+        //(new DebugOutputs()).registerIterableEvent();
         PneumaticsManager.setCompressorStateOn();
         Global.gTilt.reset(); Global.gTurn.reset();
         Global.camLight.set(Relay.Value.kOn);
