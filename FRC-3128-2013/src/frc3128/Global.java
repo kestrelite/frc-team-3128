@@ -24,57 +24,51 @@ class DebugOutputs extends Event {
 
 public class Global {
     public final static String referenceName = "Global";
-    public       static boolean shutdown = false;
 
     public final static EventManager eventManager = new EventManager();
-    public final static XControl xControl1 = new XControl(1);
-    public       static DriveTank driveTank;
+    public       static XControl xControl1;
+
     public final static PneumaticsManager pnManager = new PneumaticsManager(1, 1, 1, 2);
-    
-    public final static Jaguar mLB = new Jaguar(1, 3);
-    public final static Jaguar mRB = new Jaguar(1, 1);
-    public final static Jaguar mLF = new Jaguar(1, 2);
-    public final static Jaguar mRF = new Jaguar(1, 4);
-    public final static Jaguar mTilt = new Jaguar(1, 6);
+    public final static PistonID pst1 = PneumaticsManager.addPiston(1, 1, 1, 2, true, false);
+    public final static PistonID pst2 = PneumaticsManager.addPiston(1, 3, 1, 4, true, false);
+
+    public       static DriveTank driveTank;
+    public final static Jaguar mLB   = new Jaguar(1, 3);
+    public final static Jaguar mRB   = new Jaguar(1, 1);
+    public final static Jaguar mLF   = new Jaguar(1, 2);
+    public final static Jaguar mRF   = new Jaguar(1, 4);
+    public final static Jaguar mTilt  = new Jaguar(1, 6);
     public final static Jaguar mShoot = new Jaguar(1, 7);
 
-    public static SmartDashboard sDash = new SmartDashboard();    
+    public final static Gyro gTilt = new Gyro(1, 2);
+    public final static Gyro gTurn = new Gyro(1,1);
+
     public       static Relay camLight = new Relay(1, 1, Relay.Direction.kForward);
-    public final static Gyro gTilt = new Gyro(1, 2), gTurn = new Gyro(1,1);
-
-    public final static PistonID pst1 = PneumaticsManager.addPiston(1, 1, 1, 2, true, false);
-    public       static PistonID pst2 = PneumaticsManager.addPiston(1, 3, 1, 4, true, false);
-
-    public static double getMag(double x1, double y1) {
-        return Math.sqrt(MathUtils.pow(x1, 2) + MathUtils.pow(y1, 2));
-    }
-
-    public static double getTh(double x1, double y1) {
-        return MathUtils.atan2(y1, x1);
-    }
-
+    
     public static void initializeRobot() {
-        DebugLog.setLogLevel(4);
-        //(new DebugOutputs()).registerIterableEvent();
-        PneumaticsManager.setCompressorStateOn();
         Global.gTilt.reset(); Global.gTurn.reset();
-        Global.camLight.set(Relay.Value.kOn);
-        driveTank = new DriveTank();
+        DebugLog.setLogLevel(4);
+        PneumaticsManager.setCompressorStateOff();
     }
 
     public static void initializeDisabled() {
         PneumaticsManager.setCompressorStateOff();
+        Global.camLight.set(Relay.Value.kOff);
     }
 
-    public static void initializeAuto() {}
+    public static void initializeAuto() {
+        EventManager.dropEvents(); ListenerManager.dropListeners();
+        Global.gTilt.reset(); Global.gTurn.reset();
+        PneumaticsManager.setCompressorStateOn();
+        Global.camLight.set(Relay.Value.kOn);
+    }
 
     public static void initializeTeleop() {
+        EventManager.dropEvents(); ListenerManager.dropListeners();
+        Global.gTilt.reset();
         PneumaticsManager.setCompressorStateOn();
-    }
-
-    public static void robotReset() {
-        EventManager.dropEvents();
-        ListenerManager.dropListeners();
+        Global.camLight.set(Relay.Value.kOn);
+        Global.xControl1 = new XControl(1);
     }
 
     public static void robotKill() {
@@ -82,8 +76,12 @@ public class Global {
         ListenerManager.dropListeners();
         Watchdog.getInstance().kill();
     }
+    
+    public static double getMag(double x1, double y1) {
+        return Math.sqrt(MathUtils.pow(x1, 2) + MathUtils.pow(y1, 2));
+    }
 
-    static void disabledTeleop() {
-        PneumaticsManager.setCompressorStateOff();
+    public static double getTh(double x1, double y1) {
+        return MathUtils.atan2(y1, x1);
     }
 }
