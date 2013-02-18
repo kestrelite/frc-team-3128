@@ -2,7 +2,7 @@ package frc3128.AutoSequencer;
 
 import frc3128.EventManager.Event;
 
-abstract class AutoEvent extends Event {
+public abstract class AutoEvent extends Event {
     private long startTime = -1;
     
     final protected void startIntrTimer() {
