@@ -8,27 +8,27 @@ public class RobotTemplate extends IterativeRobot {
         Global.initializeRobot();
     }
 
-    public void teleopInit() {
-        Global.initializeTeleop();
-    }
-    
-    public void autonomousInit() {
-        Global.initializeAuto();
-    }
-    
     public void disabledInit() {
         Global.initializeDisabled();
     }
 
-    public void teleopPeriodic() {
-        EventManager.processEvents();
+    public void autonomousInit() {
+        Global.initializeAuto();
     }
    
-    public void autonomousPeriodic() {
-        EventManager.processEvents();
+    public void teleopInit() {
+        Global.initializeTeleop();
     }
     
     public void disabledPeriodic() {        
+        EventManager.processEvents();
+    }
+
+    public void autonomousPeriodic() {
+        EventManager.processEvents();
+    }
+
+    public void teleopPeriodic() {
         EventManager.processEvents();
     }
 }
