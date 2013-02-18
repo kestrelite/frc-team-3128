@@ -12,12 +12,14 @@ public class RobotTemplate extends IterativeRobot {
         Global.initializeDisabled();
     }
 
+    boolean autonomousHasBeenInit = false;
     public void autonomousInit() {
-        Global.initializeAuto();
+        if(!autonomousHasBeenInit) {Global.initializeAuto(); autonomousHasBeenInit = true;}
     }
-   
+    
+    boolean teleopHasBeenInit = false;
     public void teleopInit() {
-        Global.initializeTeleop();
+        if(!teleopHasBeenInit) {Global.initializeTeleop(); teleopHasBeenInit = true;}
     }
     
     public void disabledPeriodic() {        

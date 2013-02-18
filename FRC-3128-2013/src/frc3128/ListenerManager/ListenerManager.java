@@ -57,7 +57,7 @@ public class ListenerManager {
         for(int i = 0; i < ListenerManager.trigger.size(); i++)
             if(((Integer) ListenerManager.trigger.elementAt(i)).intValue() == link) {
                 try {
-                    ((Event) ListenerManager.event.elementAt(i)).registerSingleEvent();
+                    ((Event) ListenerManager.event.elementAt(i)).execute();
                 } catch(Exception e) {
                     e.printStackTrace();
                     ListenerManager.event.removeElementAt(i);

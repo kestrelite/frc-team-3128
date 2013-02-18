@@ -44,17 +44,15 @@ public class Global {
     public final static Gyro gTilt = new Gyro(1, 2);
     public final static Gyro gTurn = new Gyro(1,1);
 
-    public       static Relay camLight = new Relay(1, 1, Relay.Direction.kForward);
+    public final static Relay camLight = new Relay(1, 1, Relay.Direction.kForward);
     
     public static void initializeRobot() {
         Global.gTilt.reset(); Global.gTurn.reset();
-        DebugLog.setLogLevel(2);
+        DebugLog.setLogLevel(3);
         PneumaticsManager.setCompressorStateOff();
     }
 
     public static void initializeDisabled() {
-        PneumaticsManager.setCompressorStateOff();
-        Global.camLight.set(Relay.Value.kOff);
     }
 
     public static void initializeAuto() {

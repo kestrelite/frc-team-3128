@@ -4,11 +4,7 @@ import edu.wpi.first.smartdashboard.properties.DoubleProperty;
 import edu.wpi.first.smartdashboard.properties.IntegerProperty;
 import edu.wpi.first.wpijavacv.*;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.smartdashboard.*;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Camera extends WPICameraExtension {
 
@@ -19,25 +15,21 @@ public class Camera extends WPICameraExtension {
     WPIColor targetColor = new WPIColor(0, 255, 0);
     WPIColor contourColor = new WPIColor(17, 133, 133);
     private boolean onFirstRun = true;
-    
+
     @Override
     public WPIImage processImage(WPIColorImage rawImage) {
-        //System.out.println("LVMIEALJFALJF" + this.table.isConnected());
-        if(onFirstRun) {
+        if (onFirstRun) {
             this.table = NetworkTable.getTable("camera");
             onFirstRun = false;
         }
         WPIBinaryImage blue = rawImage.getBlueChannel().getThreshold(threshold.getValue());
         WPIBinaryImage green = rawImage.getGreenChannel().getThreshold(threshold.getValue());
         WPIBinaryImage red = rawImage.getRedChannel().getThreshold(threshold.getValue());
-        // Does the thresholding;
 
         WPIBinaryImage colorsCombined = blue.getAnd(red).getAnd(green);
-        //Mixes the paint;
 
         colorsCombined.erode(2);
         colorsCombined.dilate(6);
-        //Gets rid of small stuff and fills holes;
 
         WPIContour[] contours = colorsCombined.findContours();
         rawImage.drawContours(contours, contourColor, 3);
@@ -45,10 +37,8 @@ public class Camera extends WPICameraExtension {
 
         for (WPIContour c : contours) {
             double ratio = ((double) c.getHeight()) / ((double) c.getWidth());
-            //if (ratio < 1.5 && ratio > .75)
             if (1 == 1) {
                 polygons.add(c.approxPolygon(contourPolygonApproximationPct.getValue()));
-                //Makes polygons around edges;
             }
         }
         ArrayList<WPIPolygon> possiblePolygons = new ArrayList<WPIPolygon>();
@@ -75,8 +65,7 @@ public class Camera extends WPICameraExtension {
                 int qCenterX = (q.getX() + (q.getWidth() / 2));
                 int pCenterY = (p.getY() + (p.getHeight() / 2));
                 int qCenterY = (q.getY() + (q.getHeight() / 2));
-//                    rawImage.drawPoint(new WPIPoint(pCenterX, pCenterY), targetColor, 5);
-//                    rawImage.drawPoint(new WPIPoint(qCenterX, qCenterY), targetColor, 5);
+
                 if (Math.abs(pCenterX - qCenterX) < 20 && Math.abs(pCenterY - qCenterY) < 20) {
                     int pArea = Math.abs(p.getArea());
                     int qArea = Math.abs(q.getArea());
@@ -84,7 +73,6 @@ public class Camera extends WPICameraExtension {
                         if (square.getY() < p.getY()) {
                             continue;
                         }
-                        // if we already have a square, and it is lower, doesn't add anything
                     }
                     if (pArea > qArea) {
                         square = p;
@@ -101,7 +89,7 @@ public class Camera extends WPICameraExtension {
                     int y2 = Math.abs(v[2].getY() - v[1].getY());
                     int y3 = Math.abs(v[3].getY() - v[2].getY());
                     int y4 = Math.abs(v[0].getY() - v[3].getY());
-                    if (y1 > x1) { // first segment isvertical
+                    if (y1 > x1) {
                         heightRatio = (double) y1 / y3;
                     } else {
                         heightRatio = (double) y2 / y4;
