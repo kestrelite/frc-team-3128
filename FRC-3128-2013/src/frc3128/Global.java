@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Watchdog;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc3128.Controller.XControl;
 import frc3128.DriveTank.DriveTank;
 import frc3128.EventManager.Event;

@@ -15,10 +15,10 @@ class LockAllPistons extends Event {
 }
 
 public class PneumaticsManager {
-    private static Compressor c;
-    private static boolean compressorSet = false;
+    private   static Compressor c;
+    private   static boolean compressorSet = false;
     protected static Vector dualSolenoidList = new Vector();
-    private final static String referenceName = "PneumaticsManager";
+    private   static final String referenceName = "PneumaticsManager";
 
     public PneumaticsManager(Compressor c) {
         PneumaticsManager.c = c;
