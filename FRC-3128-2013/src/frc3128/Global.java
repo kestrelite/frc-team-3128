@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Watchdog;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc3128.Connection.Connection;
 import frc3128.Controller.XControl;
 import frc3128.DriveTank.DriveTank;
 import frc3128.EventManager.Event;
@@ -46,7 +48,7 @@ public class Global {
     
     public static void initializeRobot() {
         Global.gTilt.reset(); Global.gTurn.reset();
-        DebugLog.setLogLevel(4);
+        DebugLog.setLogLevel(2);
         PneumaticsManager.setCompressorStateOff();
     }
 
@@ -68,6 +70,8 @@ public class Global {
         PneumaticsManager.setCompressorStateOn();
         Global.camLight.set(Relay.Value.kOn);
         Global.xControl1 = new XControl(1);
+        driveTank = new DriveTank();
+        (new Connection()).registerIterableEvent();
     }
 
     public static void robotKill() {
