@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package edu.wpi.first.wpilibj.templates;
 
 
@@ -16,13 +9,6 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
- */
 public class RobotTemplate extends IterativeRobot {
 
     double angle = 0;
@@ -74,8 +60,6 @@ public class RobotTemplate extends IterativeRobot {
         else mTilt.set(0);
     }
         
-    
-    
     public void checkButtons() {
         if(joy.getRawButton(1)) pHopper.set(DoubleSolenoid.Value.kReverse);
         else pHopper.set(DoubleSolenoid.Value.kForward);
@@ -100,17 +84,11 @@ public class RobotTemplate extends IterativeRobot {
         pHopper.set(DoubleSolenoid.Value.kForward);
         stopDrive();
     }
-
-    /**
-     * This function is called periodically during autonomous
-     */
+    
     public void autonomousPeriodic() {
         teleopPeriodic();
     }
 
-    /**
-     * This function is called periodically during operator control
-     */
     public void teleopPeriodic() {
         cAir.start();
         camLight.set(Relay.Value.kOn);
