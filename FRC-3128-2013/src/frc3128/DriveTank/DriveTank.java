@@ -26,25 +26,28 @@ class Drive extends Event {
     }
 }
 
+class TiltY2 extends Event {
+     
+    double angle = 0;
+ 
+    public void execute() {
+        double y2 = -Global.xControl1.y2;
+        
+        if(y2 > angle && angle >= 0) angle = y2;
+        else if(angle > 0 && y2 < 0) angle += y2;
+        else if(angle < 0) angle = 0;
+        if(Math.abs(angle - Global.gTilt.getAngle()) > 1) Global.mTilt.set((angle - Global.gTilt.getAngle())/35.0);
+        
+        else Global.mTilt.set(0);
+    }
+}
+
 class TiltUp extends Event {
     public void execute() {
         Global.mTilt.set(0.4);
     }
 }
- class TiltY2 extends Event {
-     
- 
-    public void execute() {
-        double y2 = -35 * (joy.getRawAxis(5));
-        
-        if(y2 > angle && angle >= 0) angle = y2;
-        else if(angle > 0 && y2 < 0) angle += y2;
-        else if(angle < 0) angle = 0;
-        if(Math.abs(angle - gTilt.getAngle()) > 1) mTilt.set((angle - gTilt.getAngle())/35.0);
-        
-        else mTilt.set(0);
-    }
- }
+
 
 class TiltDown extends Event {
     public void execute() {
