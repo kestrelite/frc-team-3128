@@ -31,6 +31,20 @@ class TiltUp extends Event {
         Global.mTilt.set(0.4);
     }
 }
+ class TiltY2 extends Event {
+     
+ 
+    public void execute() {
+        double y2 = -35 * (joy.getRawAxis(5));
+        
+        if(y2 > angle && angle >= 0) angle = y2;
+        else if(angle > 0 && y2 < 0) angle += y2;
+        else if(angle < 0) angle = 0;
+        if(Math.abs(angle - gTilt.getAngle()) > 1) mTilt.set((angle - gTilt.getAngle())/35.0);
+        
+        else mTilt.set(0);
+    }
+ }
 
 class TiltDown extends Event {
     public void execute() {
@@ -88,5 +102,6 @@ public class DriveTank {
         ListenerManager.addListener(new PistonFlip(), "buttonAUp");
         ListenerManager.addListener(new SpinOn(), "buttonBDown");
         ListenerManager.addListener(new SpinOff(), "buttonBUp");
+        ListenerManager.addListener(new TiltY2(), "UpdateJoy2");
     }
 }
