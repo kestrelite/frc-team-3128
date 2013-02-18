@@ -1,13 +1,10 @@
 package frc3128.DriveTank;
 
-import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc3128.EventManager.Event;
 import frc3128.Global;
 import frc3128.ListenerManager.ListenerManager;
 import frc3128.PneumaticsManager.PneumaticsManager;
-import frc3128.TiltControl.TiltToY2;
 
 class Drive extends Event {
     public void execute() {
@@ -58,8 +55,6 @@ class IdleDisc extends Event {
         Global.mShoot.set(0);
     }
 }
-
-
 
 class PistonFlip extends Event {
     public void execute() {

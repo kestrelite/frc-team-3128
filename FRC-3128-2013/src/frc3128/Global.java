@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc3128.Connection.Connection;
 import frc3128.Controller.XControl;
 import frc3128.DriveTank.DriveTank;
 import frc3128.EventManager.Event;
@@ -53,13 +52,6 @@ public class Global {
     public static double getTh(double x1, double y1) {
         return MathUtils.atan2(y1, x1);
     }
-    
-    public static void StopDrive() {
-        Global.mLB.set(0);
-        Global.mLF.set(0);
-        Global.mRB.set(0);
-        Global.mRF.set(0);
-    }
 
     public static void initializeRobot() {
         DebugLog.setLogLevel(4);
@@ -67,7 +59,6 @@ public class Global {
         Global.gTilt.reset(); Global.gTurn.reset();
         Global.camLight.set(Relay.Value.kOn);
         driveTank = new DriveTank();
-        //(new Connection()).registerIterableEvent();
     }
 
     public static void initializeDisabled() {
