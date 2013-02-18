@@ -56,7 +56,7 @@ public class RobotTemplate extends IterativeRobot {
     }
     
     public void setTiltAngle(double oh) {
-        if(Math.abs(oh - gTilt.getAngle()) > 1) mTilt.set((oh - gTilt.getAngle())/35.0);
+        if(Math.abs(oh - gTilt.getAngle()) > 1) mTilt.set(((oh - gTilt.getAngle())/35.0)+0.2);
         else mTilt.set(0);
     }
         
