@@ -2,23 +2,20 @@ package frc3128;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import frc3128.EventManager.EventManager;
+import frc3128.ListenerManager.ListenerManager;
 
 public class RobotTemplate extends IterativeRobot {
     public void robotInit() {
         Global.initializeRobot();
     }
-    
+   
     public void disabledInit() {
         Global.initializeDisabled();
     }
     
     public void disabledPeriodic() {        
         Watchdog.getInstance().feed();
-    }
-    
-    public void disabledContinuous() {
         EventManager.processEvents();
     }
     
@@ -29,9 +26,6 @@ public class RobotTemplate extends IterativeRobot {
     
     public void autonomousPeriodic() {
         Watchdog.getInstance().feed();
-    }
-    
-    public void autonomousContinuous() {
         EventManager.processEvents();
     }
     
@@ -39,15 +33,9 @@ public class RobotTemplate extends IterativeRobot {
         Global.initializeTeleop();
     }
     
-    public void teleopDisabled() {
-        Global.disabledTeleop();
-    }
-    
     public void teleopPeriodic() {
-        Watchdog.getInstance().feed();        
-    }
-    
-    public void teleopContinuous() {
+        //System.out.println(System.currentTimeMillis());
+        Watchdog.getInstance().feed();
         EventManager.processEvents();
     }
 }

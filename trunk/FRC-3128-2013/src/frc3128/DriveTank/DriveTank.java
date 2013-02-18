@@ -1,13 +1,21 @@
 package frc3128.DriveTank;
 
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc3128.EventManager.Event;
 import frc3128.Global;
 import frc3128.ListenerManager.ListenerManager;
+import frc3128.PneumaticsManager.PneumaticsManager;
 import frc3128.TiltControl.TiltToY2;
 
 class Drive extends Event {
     public void execute() {
+        try {
+            SmartDashboard.putNumber("Init", 5);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         double x = Global.xControl1.x1;
         double y = Global.xControl1.y1;
 
@@ -41,13 +49,21 @@ class TiltStop extends Event {
 
 class ShootDisc extends Event {
     public void execute() {
-        Global.frShoot.set(-0.95);
+        Global.mShoot.set(-0.95);
     }
 }
 
 class IdleDisc extends Event {
     public void execute() {
-        Global.frShoot.set(0);
+        Global.mShoot.set(0);
+    }
+}
+
+
+
+class PistonFlip extends Event {
+    public void execute() {
+        PneumaticsManager.setPistonInvertState(Global.pst1);
     }
 }
 
@@ -60,8 +76,6 @@ public class DriveTank {
         ListenerManager.addListener(new TiltStop(), "buttonRBUp");
         ListenerManager.addListener(new TiltDown(), "buttonLBDown");
         ListenerManager.addListener(new TiltStop(), "buttonLBUp");
-        ListenerManager.addListener(new ShootDisc(), "buttonADown");
-        ListenerManager.addListener(new IdleDisc(), "buttonAUp");
-        
+        ListenerManager.addListener(new PistonFlip(), "buttonADown");
     }
 }

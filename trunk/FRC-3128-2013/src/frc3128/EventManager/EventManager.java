@@ -90,18 +90,21 @@ public class EventManager {
         for(int i = 0; i < e_eventList.size(); i++) {
             Event event = (Event) e_eventList.elementAt(i);
             if(event.shouldRun()) {
-                try{event.execute();} catch(Exception e) {
+                try{
+                    //DebugLog.log(4, referenceName, "Running event " + event.referenceName); 
+                    event.execute();
+                } catch(Exception e) {
                     e.printStackTrace();
                     DebugLog.log(-2, event.referenceName, "Error in event: " + e.getMessage());
                     b_deleteFlag.setElementAt(Boolean.TRUE, i);
                 }
             }
             if(!event.shouldRun()) {
-                DebugLog.log(4, referenceName, "Cancelled event " + event.toString() + " being marked for deletion.");
+                //DebugLog.log(4, referenceName, "Cancelled event " + event.toString() + " being marked for deletion.");
                 b_deleteFlag.setElementAt(Boolean.TRUE, i);
             }
             if(((Boolean) b_singleEventList.elementAt(i)).booleanValue()) {
-                DebugLog.log(4, referenceName, "Marking single event " + event.toString() + " for deletion.");
+                //DebugLog.log(4, referenceName, "Marking single event " + event.toString() + " for deletion.");
                 b_deleteFlag.setElementAt(Boolean.TRUE, i);
             }
         }
@@ -118,8 +121,8 @@ public class EventManager {
                 i--;
                 count++;
             }
-        if(count != 0)
-            DebugLog.log(4, referenceName, "cleanupEvents removed " + count + " marked events from the queue.");
+        //if(count != 0)
+            //DebugLog.log(4, referenceName, "cleanupEvents removed " + count + " marked events from the queue.");
     }
 
     protected static void removeEvent(Event e) {

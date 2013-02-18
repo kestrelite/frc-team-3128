@@ -5,29 +5,21 @@ import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Watchdog;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc3128.Connection.Connection;
 import frc3128.Controller.XControl;
 import frc3128.DriveTank.DriveTank;
-import frc3128.DriveTank.TurnToAngle;
 import frc3128.EventManager.Event;
 import frc3128.EventManager.EventManager;
 import frc3128.ListenerManager.ListenerManager;
 import frc3128.PneumaticsManager.PistonID;
 import frc3128.PneumaticsManager.PneumaticsManager;
 
-
 class DebugOutputs extends Event {
     public void execute() {
         DebugLog.log(4, referenceName, "X1:" + Global.xControl1.x1 + ", Y1:" + Global.xControl1.y1);
         DebugLog.log(4, referenceName, "Y2: " + Global.xControl1.y2);
         DebugLog.log(3, referenceName, "gTilt:"+Global.gTilt.getAngle() + ", gTurn:"+Global.gTurn.getAngle());
-    }
-}
-
-
-class ResetGyro extends Event {
-    public void execute() {
-        Global.gTilt.reset();
-        Global.gTurn.reset();
     }
 }
 
@@ -45,12 +37,13 @@ public class Global {
     public final static Jaguar mLF = new Jaguar(1, 2);
     public final static Jaguar mRF = new Jaguar(1, 4);
     public final static Jaguar mTilt = new Jaguar(1, 6);
-    public final static Jaguar frShoot = new Jaguar(1, 7);
+    public final static Jaguar mShoot = new Jaguar(1, 7);
 
+    public static SmartDashboard sDash = new SmartDashboard();    
     public       static Relay camLight = new Relay(1, 1, Relay.Direction.kForward);
     public final static Gyro gTilt = new Gyro(1, 2), gTurn = new Gyro(1,1);
 
-    //public      static PistonID pst1 = PneumaticsManager.addPiston(1, 2, 3, 4);
+    public final static PistonID pst1 = PneumaticsManager.addPiston(1, 1, 1, 2, true, false);
     public       static PistonID pst2;
 
     public static double getMag(double x1, double y1) {
@@ -69,12 +62,12 @@ public class Global {
     }
 
     public static void initializeRobot() {
-        DebugLog.setLogLevel(3);
-        PneumaticsManager.setCompressorStateOff();
-        (new DebugOutputs()).registerIterableEvent();
+        DebugLog.setLogLevel(4);
+        PneumaticsManager.setCompressorStateOn();
         Global.gTilt.reset(); Global.gTurn.reset();
-        ListenerManager.addListener((new ResetGyro()), "buttonADown");
-        //(new TurnToAngle(30.0)).registerIterableEvent();
+        Global.camLight.set(Relay.Value.kOn);
+        driveTank = new DriveTank();
+        //(new Connection()).registerIterableEvent();
     }
 
     public static void initializeDisabled() {
@@ -84,8 +77,7 @@ public class Global {
     public static void initializeAuto() {}
 
     public static void initializeTeleop() {
-        //camLight.set(Relay.Value.kOn);
-        driveTank = new DriveTank();
+        PneumaticsManager.setCompressorStateOn();
     }
 
     public static void robotReset() {
