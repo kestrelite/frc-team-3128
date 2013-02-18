@@ -110,10 +110,10 @@ public class EventManager {
         }
     }
 
-    private static void cleanupEvents() {
+    protected static void cleanupEvents() {
         int count = 0;
         for(int i = 0; i < b_deleteFlag.size(); i++)
-            if(((Boolean) b_deleteFlag.elementAt(i)).booleanValue()) {
+            if(((Boolean) b_deleteFlag.elementAt(i)).booleanValue() || !((Event)e_eventList.elementAt(i)).shouldRun()) {
                 e_eventList.removeElementAt(i);
                 i_priorityList.removeElementAt(i);
                 b_singleEventList.removeElementAt(i);
@@ -121,8 +121,6 @@ public class EventManager {
                 i--;
                 count++;
             }
-        //if(count != 0)
-            //DebugLog.log(4, referenceName, "cleanupEvents removed " + count + " marked events from the queue.");
     }
 
     protected static void removeEvent(Event e) {

@@ -58,6 +58,7 @@ public abstract class Event {
 
     final public void cancelEvent() {
         eventIsCancelled = true;
+        EventManager.removeEvent(this);
         //DebugLog.log(4, referenceName, "Event " + referenceName + " has been cancelled!");
     }
 

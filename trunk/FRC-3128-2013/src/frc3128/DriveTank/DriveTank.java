@@ -22,34 +22,38 @@ class Drive extends Event {
 
 class TiltLock extends Event {
     private double angle = 0;
+    private boolean isLocked = false;
     
-    public void lockAt(double angle) {
+    public void lockTo(double angle) {
         this.angle = angle;
-        this.registerIterableEvent();
+        this.isLocked = true;
     }
     
-    public void lockToGyro() {
-        this.angle = Global.gTilt.getAngle();
-        this.registerIterableEvent();
-    }
+    public void lockReturn() {
+        this.isLocked = true;
+    }    
     
+    public void disableLock() {
+        this.isLocked = false;
+    }
+
     public void execute() {
-        if(Math.abs(angle - Global.gTilt.getAngle()) > 1) Global.mTilt.set((angle - Global.gTilt.getAngle())/25.0);
-        else Global.mTilt.set(0);
+        if(isLocked && Math.abs(angle - Global.gTilt.getAngle()) > 1.5) 
+                Global.mTilt.set(-1.0*(angle - Global.gTilt.getAngle())/80.0);
+        else if(isLocked) Global.mTilt.set(0);
     }
 }
 
 class TiltUp extends Event {
     public void execute() {
-        DriveTank.tLock.cancelEvent();
+        DriveTank.tLock.disableLock();
         Global.mTilt.set(0.4);
     }
 }
 
-
 class TiltDown extends Event {
     public void execute() {
-        DriveTank.tLock.cancelEvent();
+        DriveTank.tLock.disableLock();
         Global.mTilt.set(-0.4);
     }
 }
@@ -57,7 +61,7 @@ class TiltDown extends Event {
 class TiltStop extends Event {
     public void execute() {
         Global.mTilt.set(0);
-        DriveTank.tLock.lockToGyro();
+        DriveTank.tLock.lockTo(Global.gTilt.getAngle());
     }
 }
 
@@ -103,6 +107,6 @@ public class DriveTank {
 
         ListenerManager.addListener(new SpinToggle(), "buttonBDown");
         (new PistonFlip()).registerSingleEvent();
-        DriveTank.tLock.lockToGyro();
+        Global.gTilt.reset(); DriveTank.tLock.lockTo(Global.gTilt.getAngle()); tLock.registerIterableEvent();
     }
 }

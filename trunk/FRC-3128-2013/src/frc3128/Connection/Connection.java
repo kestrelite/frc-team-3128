@@ -9,6 +9,6 @@ public class Connection extends Event {
     public Connection() {
     }
     public void execute() {
-        //System.out.println("Dist: ");
+        //DebugLog.log(3, referenceName, Double.toString(NetworkTable.getTable("camera").getNumber("xoffset")));
     }
 }

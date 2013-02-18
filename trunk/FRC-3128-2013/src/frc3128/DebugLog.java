@@ -1,7 +1,7 @@
 package frc3128;
 
 public class DebugLog {
-    static int logDetail = 2;
+    private static int logDetail = 2;
     private static int maxTagLength = 0;
     private static final int initTagLength = 32;
 
@@ -25,7 +25,8 @@ public class DebugLog {
         if(lvl == 2) level = "[**WARN]";
         if(lvl == 3) level = "[INFO]  ";
         if(lvl == 4) level = "[DEBUG] ";
-
+        if(lvl == 5) level = "[STREAM]";
+        
         if(tag.length() > DebugLog.maxTagLength && lvl <= DebugLog.logDetail)
             DebugLog.maxTagLength = tag.length();
         
