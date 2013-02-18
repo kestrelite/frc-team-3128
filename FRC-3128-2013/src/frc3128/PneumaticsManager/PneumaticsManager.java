@@ -34,13 +34,13 @@ public class PneumaticsManager {
         PneumaticsManager.c.stop();
     }
     
-    public static PistonID addPiston(Solenoid solA, Solenoid solB) {
-        dualSolenoidList.addElement(new DualSolenoid(solA, solB));
+    public static PistonID addPiston(Solenoid solA, Solenoid solB, boolean solAState, boolean solBState) {
+        dualSolenoidList.addElement(new DualSolenoid(solA, solB, solAState, solBState));
         return new PistonID(dualSolenoidList.size() - 1);
     }
 
-    public static PistonID addPiston(int a, int b, int c, int d) {
-        dualSolenoidList.addElement(new DualSolenoid(new Solenoid(a, b), new Solenoid(c, d)));
+    public static PistonID addPiston(int a, int b, int c, int d, boolean solAState, boolean solBState) {
+        dualSolenoidList.addElement(new DualSolenoid(new Solenoid(a, b), new Solenoid(c, d), solAState, solBState));
         return new PistonID(dualSolenoidList.size() - 1);
     }
 
@@ -66,6 +66,10 @@ public class PneumaticsManager {
         ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).setPistonOff();
     }
 
+    public static void setPistonInvertState(PistonID id) {
+        ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).setPistonInverted();
+    }
+    
     public static void setCompressorStateOn() {
         if(PneumaticsManager.compressorSet)
             PneumaticsManager.c.start();

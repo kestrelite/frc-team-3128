@@ -39,8 +39,10 @@ public class XControl extends Event {
             if(updateJoy1 || updateJoy2 || updateTriggers) ListenerManager.callListener("updateDrive");
 
             for(int i = 1; i < 11; i++) {
-                if(buttonsPressed[i] != xControl.getRawButton(i))
+                if(buttonsPressed[i] != xControl.getRawButton(i)) {
                     ListenerManager.callListener("button" + XControlMap.getBtnString(i) + (xControl.getRawButton(i) ? "Down" : "Up"));
+                    DebugLog.log(4, referenceName, "Button " + XControlMap.getBtnString(i) + (xControl.getRawButton(i)==true?" pressed.":" released."));
+                }
                 buttonsPressed[i] = xControl.getRawButton(i);
             }
         } catch(NullPointerException e) {

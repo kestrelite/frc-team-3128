@@ -10,6 +10,7 @@ public class ListenerManager {
     static String referenceName = "ListenerManager";
 
     public static void addListener(Event e, String link) {
+        DebugLog.log(4, "ListenerManager", "Added " + e.toString() + " to " + link);
         addListener(e, link.hashCode());
     }
 
@@ -17,7 +18,7 @@ public class ListenerManager {
         for(int i = 0; i < event.size(); i++)
             if((Event) event.elementAt(i) == e)
                 if(((Integer) ListenerManager.trigger.elementAt(i)).intValue() == link)
-                    DebugLog.log(2, referenceName, "Duplicate event/trigger pair was added to the ListenerManager!");
+                    DebugLog.log(1, referenceName, "Duplicate event/trigger pair was added to the ListenerManager!");
     }
 
     public static void addListener(Event e, int link) {
@@ -55,7 +56,7 @@ public class ListenerManager {
     public static void callListener(int link) {
         for(int i = 0; i < ListenerManager.trigger.size(); i++)
             if(((Integer) ListenerManager.trigger.elementAt(i)).intValue() == link) {
-                DebugLog.log(4, referenceName, "Listener link " + link + " triggered Event " + ((Event) event.elementAt(i)).toString());
+                //DebugLog.log(4, referenceName, "Listener link " + link + " triggered Event " + ((Event) event.elementAt(i)).toString());
                 try {
                     ((Event) ListenerManager.event.elementAt(i)).registerSingleEvent();
                 } catch(Exception e) {
