@@ -1,8 +1,9 @@
 package frc3128.AutoTarget;
 
+import com.sun.squawk.util.MathUtils;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import frc3128.Targeting.TiltTarget;
-import frc3128.Targeting.TurnToCenter;
+import frc3128.Connection.Connection;
+import frc3128.DriveTank.StopDrive;
 import frc3128.EventManager.Event;
 import frc3128.EventManager.EventSequence.EventSequencer;
 import frc3128.EventManager.EventSequence.SequenceEvent;
@@ -10,40 +11,57 @@ import frc3128.Global;
 import frc3128.PneumaticsManager.PneumaticsManager;
 
 public class AutoAim extends Event {
-    EventSequencer aAim = new EventSequencer();
+    EventSequencer aAim;
     public void execute() {
+        aAim = new EventSequencer();
         aAim.addEvent(new AutoTurn());
-        //aAim.addEvent(new AutoTilt());
+        //aAim.addEvent(new AutoLock());
         //aAim.addEvent(new AutoFire());
         aAim.startSequence();
     }
 }
 
 class AutoTurn extends SequenceEvent {
-    double thresh = 5.0;
+    double xOff = 0, thresh = 5.0;
     
-    public boolean exitConditionMet() {
-        return (NetworkTable.getTable("camera").getNumber("xoffset") < thresh ? true : false);
+    public void execute() {
+        xOff = NetworkTable.getTable("camera").getNumber("xoffset");
+        if (Math.abs(xOff) > thresh) {
+            Global.mLB.set(((-xOff) / 90) - .2);
+            Global.mLF.set(((-xOff) / 90) - .2);
+            Global.mRB.set(((-xOff) / -90) + .2);
+            Global.mRF.set(((-xOff) / -90) + .2);
+        } else (new StopDrive()).registerSingleEvent();
     }
 
-    public void execute() {
-        (new TurnToCenter()).registerIterableEvent();
+    public boolean exitConditionMet() {
+        return (Math.abs(xOff) < thresh);
     }
 }
 
-class AutoTilt extends SequenceEvent {
-    public boolean exitConditionMet() {
-        return true;
+class AutoLock extends SequenceEvent {
+    private double angle = 0;
+    private double max = -31.0;
+    private double thShift = 5.0;
+    private double thresh = 3.0;
+    
+    public void execute() {
+        this.angle = 180*(MathUtils.atan2(92, Connection.distToGoal))/(Math.PI)+thShift;
+        
+        if(this.angle < this.max) this.angle = this.max; if(this.angle > -1) this.angle = 0;
+        if(Math.abs(angle - Global.gTilt.getAngle()) > 1) 
+                Global.mTilt.set(-1.0*(angle - Global.gTilt.getAngle())/40.0+0.1);
+        else Global.mTilt.set(.20);
     }
 
-    public void execute() {
-        (new TiltTarget()).registerIterableEvent();
+    public boolean exitConditionMet() {
+        return (Math.abs(Global.gTilt.getAngle()-this.angle) < thresh);
     }
 }
 
 class AutoFire extends SequenceEvent {
     public boolean exitConditionMet() {
-        return (this.getRunTimeMillis() > 1750);
+        return (this.getRunTimeMillis() > 2000);
     }
 
     private long lastTime = -1;

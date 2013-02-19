@@ -2,6 +2,7 @@ package frc3128.DriveTank;
 
 import com.sun.squawk.util.MathUtils;
 import frc3128.Connection.Connection;
+import frc3128.DebugLog;
 import frc3128.EventManager.Event;
 import frc3128.Global;
 import frc3128.ListenerManager.ListenerManager;
@@ -54,8 +55,8 @@ class PistonFlip extends Event {
 class SpinToggle extends Event {
     boolean spinRunning = false;
     public void execute() {
-        Global.mShoot.set((spinRunning) ? 0 : -1.0);
-        Global.mShoot2.set((spinRunning) ? 0 : -1.0);
+        Global.mShoot.set((spinRunning) ? -0.15 : -1.0);
+        Global.mShoot2.set((spinRunning) ? -0.15 : -1.0);
         spinRunning = !spinRunning;
     }
 }
@@ -75,7 +76,7 @@ public class DriveTank {
 
         ListenerManager.addListener(new SpinToggle(), "buttonBDown");
         (new PistonFlip()).registerSingleEvent();
-        Global.gTilt.reset(); //MUST be taken out for Autonomous on full game
+        Global.gTilt.reset(); DebugLog.log(2, "DriveTank", "GTilt reset starting manual! **Remove for autonomous**");
         (new TiltTarget()).registerIterableEvent(); tLock.registerIterableEvent();
     }
 }
