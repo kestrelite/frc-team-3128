@@ -6,8 +6,8 @@ import frc3128.EventManager.Event;
 import frc3128.Global;
 import frc3128.ListenerManager.ListenerManager;
 import frc3128.PneumaticsManager.PneumaticsManager;
-import frc3128.DriveTank.Tilt.TargetTilt;
-import frc3128.DriveTank.Tilt.TiltLock;
+import frc3128.Targeting.TiltTarget;
+import frc3128.Targeting.TiltLock;
 
 class Drive extends Event {
     public void execute() {
@@ -76,6 +76,6 @@ public class DriveTank {
         ListenerManager.addListener(new SpinToggle(), "buttonBDown");
         (new PistonFlip()).registerSingleEvent();
         Global.gTilt.reset(); //MUST be taken out for Autonomous on full game
-        (new TargetTilt()).registerIterableEvent(); tLock.registerIterableEvent();
+        (new TiltTarget()).registerIterableEvent(); tLock.registerIterableEvent();
     }
 }

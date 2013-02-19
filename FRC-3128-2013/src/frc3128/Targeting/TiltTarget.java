@@ -1,11 +1,11 @@
-package frc3128.DriveTank.Tilt;
+package frc3128.Targeting;
 
 import com.sun.squawk.util.MathUtils;
 import frc3128.Connection.Connection;
 import frc3128.DriveTank.DriveTank;
 import frc3128.EventManager.Event;
 
-public class TargetTilt extends Event {
+public class TiltTarget extends Event {
     double thShift = 9.0;
     double targetTh = 0;
     public void execute() {
