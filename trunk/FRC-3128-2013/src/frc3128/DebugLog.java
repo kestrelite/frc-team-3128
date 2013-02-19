@@ -20,7 +20,7 @@ public class DebugLog {
 
     public static void log(int lvl, String tag, String text) {
         String level = "[UNKN]  ";
-        if(lvl <= 0) level = "[ERROR" + lvl + "] ";
+        if(lvl <= 0) level = "[ERROR" + Math.abs(lvl) + "] ";
         if(lvl == 1) level = "[SEVERE]";
         if(lvl == 2) level = "[**WARN]";
         if(lvl == 3) level = "[INFO]  ";
@@ -31,8 +31,9 @@ public class DebugLog {
             DebugLog.maxTagLength = tag.length();
         
         if(lvl <= DebugLog.logDetail) {
-            System.out.print("[" + System.currentTimeMillis() + "] " + level + " [" + (tag.substring(0, 4).equals("edu.")?tag.substring(
-                    initTagLength):tag) + "] ");
+            System.out.print("[" + System.currentTimeMillis() + "] " + 
+                    level + " [" + 
+                    (tag.substring(0, 4).equals("edu.")?tag.substring(initTagLength):tag) + "] ");
             for(int i = 0; i < maxTagLength - tag.length(); i++)
                 System.out.print(" ");
             System.out.println(text);

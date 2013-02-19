@@ -8,7 +8,7 @@ final class TimerEvent extends Event {
     private String linkedReferenceName;
 
     public final void setTargetTime(long millis) {
-        //DebugLog.log(4, referenceName, "Event " + linkedEvent.toString() + " set for " + millis + " msec from now.");
+        DebugLog.log(4, referenceName, "Event " + linkedEvent.toString() + " set for " + millis + " msec from now.");
         targetTimeMillis = System.currentTimeMillis() + millis;
         EventManager.addContinuousEvent(this);
     }
@@ -25,13 +25,13 @@ final class TimerEvent extends Event {
         }
 
         if(System.currentTimeMillis() > targetTimeMillis) {
-            //DebugLog.log(4, referenceName, "Running timed event " + linkedReferenceName);
+            DebugLog.log(4, referenceName, "Running timed event " + linkedReferenceName);
             linkedEvent.execute();
             this.destroyTimer();
         }
     }
 
-    final public void linkEvent(Event e) {
+    public final void linkEvent(Event e) {
         this.linkedEvent = e;
         this.linkedReferenceName = this.linkedEvent.toString();
     }
@@ -59,7 +59,7 @@ public abstract class Event {
     final public void cancelEvent() {
         eventIsCancelled = true;
         EventManager.removeEvent(this);
-        //DebugLog.log(4, referenceName, "Event " + referenceName + " has been cancelled!");
+        DebugLog.log(4, referenceName, "Event " + referenceName + " has been cancelled!");
     }
 
     final public void cancelTimedEvent() {

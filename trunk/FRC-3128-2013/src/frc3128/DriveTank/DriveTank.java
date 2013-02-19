@@ -114,6 +114,7 @@ public class DriveTank {
         ListenerManager.addListener(new SpinOn(), "buttonBDown");
         ListenerManager.addListener(new SpinOff(), "buttonXDown");
         (new PistonFlip()).registerSingleEvent();
-        Global.gTilt.reset(); DriveTank.tLock.lockTo(10); tLock.registerIterableEvent();
+        Global.gTilt.reset(); //MUST be taken out for Autonomous on full game
+        DriveTank.tLock.lockTo(10); tLock.registerIterableEvent();
     }
 }

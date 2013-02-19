@@ -1,6 +1,5 @@
 package edu.wpi.first.wpilibj.templates;
 
-
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Gyro;
@@ -10,7 +9,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
 
 public class RobotTemplate extends IterativeRobot {
-
     double angle = 0;
     
     public final static Compressor cAir = new Compressor(1, 1, 1, 2);
@@ -23,7 +21,7 @@ public class RobotTemplate extends IterativeRobot {
     public final static Jaguar mTilt = new Jaguar(1, 6);
     public final static Jaguar mShoot = new Jaguar(1, 7); 
    
-    public       static Relay camLight = new Relay(1, 1, Relay.Direction.kForward);
+    public final static Relay camLight = new Relay(1, 1, Relay.Direction.kForward);
     public final static Gyro gTilt = new Gyro(1, 2), gTurn = new Gyro(1,1);
 
     public final static DoubleSolenoid pHopper = new DoubleSolenoid(1, 1, 2), pst2 = new DoubleSolenoid(1, 3, 4);
@@ -79,7 +77,6 @@ public class RobotTemplate extends IterativeRobot {
     }
     
     public void robotInit() {
-        
         gTilt.reset(); gTurn.reset();
         pHopper.set(DoubleSolenoid.Value.kForward);
         stopDrive();

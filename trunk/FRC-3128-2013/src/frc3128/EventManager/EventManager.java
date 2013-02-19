@@ -42,7 +42,7 @@ public class EventManager {
         if(!duplicateEventCheck)
             DebugLog.log(4, EventManager.referenceName, "Event Manager is NOT checking for duplicate events");
     }
-
+    
     private static void insertIntoEvents(Event e, int p, boolean single) {
         int insertIndex = -1;
         for(int i = 0; i < i_priorityList.size(); i++) {
@@ -91,20 +91,20 @@ public class EventManager {
             Event event = (Event) e_eventList.elementAt(i);
             if(event.shouldRun()) {
                 try{
-                    //DebugLog.log(4, referenceName, "Running event " + event.referenceName); 
+                    DebugLog.log(5, referenceName, "Running event " + event.referenceName); 
                     event.execute();
                 } catch(Exception e) {
                     e.printStackTrace();
-                    DebugLog.log(-2, event.referenceName, "Error in event: " + e.getMessage());
+                    DebugLog.log(-3, event.referenceName, "Error in event: " + e.getMessage());
                     b_deleteFlag.setElementAt(Boolean.TRUE, i);
                 }
             }
             if(!event.shouldRun()) {
-                //DebugLog.log(4, referenceName, "Cancelled event " + event.toString() + " being marked for deletion.");
+                DebugLog.log(5, referenceName, "Cancelled event " + event.toString() + " being marked for deletion.");
                 b_deleteFlag.setElementAt(Boolean.TRUE, i);
             }
             if(((Boolean) b_singleEventList.elementAt(i)).booleanValue()) {
-                //DebugLog.log(4, referenceName, "Marking single event " + event.toString() + " for deletion.");
+                DebugLog.log(5, referenceName, "Marking single event " + event.toString() + " for deletion.");
                 b_deleteFlag.setElementAt(Boolean.TRUE, i);
             }
         }
@@ -127,14 +127,14 @@ public class EventManager {
         int removedEventCount = 0;
         for(int i = 0; i < e_eventList.size(); i++)
             if(e.equals((Event) e_eventList.elementAt(i))) {
-                DebugLog.log(4, referenceName, "Marking event " + ((Event) e_eventList.elementAt(i)).toString() + " for deletion.");
+                DebugLog.log(5, referenceName, "By request, marking event " + ((Event) e_eventList.elementAt(i)).toString() + " for deletion.");
                 b_deleteFlag.setElementAt(Boolean.TRUE, i);
                 removedEventCount++;
             }
         if(removedEventCount == 0)
             DebugLog.log(2, referenceName, "removeEvent was called but no event was marked for deletion!");
         if(removedEventCount > 1)
-            DebugLog.log(4, referenceName, "removeEvent was called, and " + removedEventCount + " events were marked for deletion.");
+            DebugLog.log(5, referenceName, "removeEvent was called, and " + removedEventCount + " events were marked for deletion.");
     }
 
     public static void dropEvents() {

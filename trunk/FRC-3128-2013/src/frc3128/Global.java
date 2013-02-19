@@ -51,12 +51,13 @@ public class Global {
         Global.gTilt.reset(); Global.gTurn.reset();
         DebugLog.setLogLevel(4);
         PneumaticsManager.setCompressorStateOff();
+        EventManager.startIPSCounter(); //Because I'm curious.
     }
 
     public static void initializeDisabled() {
-        
+        PneumaticsManager.setCompressorStateOn();
     }
-
+    
     public static void initializeAuto() {
         EventManager.dropEvents(); ListenerManager.dropListeners();
         Global.gTilt.reset(); Global.gTurn.reset();
@@ -66,7 +67,7 @@ public class Global {
 
     public static void initializeTeleop() {
         EventManager.dropEvents(); ListenerManager.dropListeners();
-        Global.gTilt.reset();
+        Global.gTilt.reset(); //MUST be taken out for Autonomous for full game
         PneumaticsManager.setCompressorStateOn();
         Global.camLight.set(Relay.Value.kOn);
         Global.xControl1 = new XControl(1);

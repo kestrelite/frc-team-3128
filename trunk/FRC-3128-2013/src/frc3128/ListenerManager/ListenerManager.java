@@ -5,9 +5,9 @@ import frc3128.EventManager.Event;
 import java.util.Vector;
 
 public class ListenerManager {
-    static Vector event = new Vector();
-    static Vector trigger = new Vector();
-    static String referenceName = "ListenerManager";
+    private static Vector event = new Vector();
+    private static Vector trigger = new Vector();
+    private static String referenceName = "ListenerManager";
 
     public static void addListener(Event e, String link) {
         DebugLog.log(4, "ListenerManager", "Added " + e.toString() + " to " + link);
