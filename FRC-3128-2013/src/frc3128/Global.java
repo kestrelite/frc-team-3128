@@ -54,25 +54,26 @@ public class Global {
     }
 
     public static void initializeDisabled() {
-        PneumaticsManager.setCompressorStateOn();
+        //PneumaticsManager.setCompressorStateOn();
     }
 
     public static void initializeAuto() {
         EventManager.dropEvents(); ListenerManager.dropListeners();
         Global.gTilt.reset(); Global.gTurn.reset();
-        PneumaticsManager.setCompressorStateOn();
         Global.camLight.set(Relay.Value.kOn);
+        
+        (new Connection()).registerIterableEvent();
+        //(new TurnToCenter()).registerIterableEvent();
     }
 
     public static void initializeTeleop() {
         EventManager.dropEvents(); ListenerManager.dropListeners();
-        Global.gTilt.reset(); //MUST be taken out for Autonomous for full game
-        PneumaticsManager.setCompressorStateOn();
+        Global.gTilt.reset(); DebugLog.log(2, referenceName, "GTilt reset starting manual! **Remove for autonomous**");
         Global.camLight.set(Relay.Value.kOn);
-        
-        Global.xControl1 = new XControl(1);
+
+        /*Global.xControl1 = new XControl(1);
         driveTank = new DriveTank();
-        (new Connection()).registerIterableEvent();
+        (new Connection()).registerIterableEvent();*/
     }
 
     public static void robotKill() {

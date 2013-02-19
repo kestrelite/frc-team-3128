@@ -6,7 +6,7 @@ import frc3128.DriveTank.DriveTank;
 import frc3128.EventManager.Event;
 
 public class TiltTarget extends Event {
-    double thShift = 9.0;
+    double thShift = 5.0;
     double targetTh = 0;
     public void execute() {
         targetTh = ((targetTh > 45) ? 23 : 180*(MathUtils.atan2(92, Connection.distToGoal))/(Math.PI)+thShift);
