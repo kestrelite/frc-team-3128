@@ -1,5 +1,7 @@
 package frc3128.DriveTank;
 
+import com.sun.squawk.util.MathUtils;
+import frc3128.Connection.Connection;
 import frc3128.EventManager.Event;
 import frc3128.Global;
 import frc3128.ListenerManager.ListenerManager;
@@ -23,6 +25,7 @@ class Drive extends Event {
 class TiltLock extends Event {
     private double angle = 0;
     private boolean isLocked = false;
+    private double max = -31.0;
     
     public void lockTo(double angle) {
         this.angle = angle;
@@ -38,8 +41,10 @@ class TiltLock extends Event {
     }
 
     public void execute() {
-        if(isLocked && Math.abs(angle - Global.gTilt.getAngle()) > 1.5) 
-                Global.mTilt.set((angle - Global.gTilt.getAngle())/80.0);
+        System.out.println("angle: "+angle+" cAng: "+Global.gTilt.getAngle());
+        if(this.angle < this.max) this.angle = this.max; if(this.angle > -1) this.angle = 0;
+        if(isLocked && Math.abs(angle - Global.gTilt.getAngle()) > 1) 
+                Global.mTilt.set(-1.0*(angle - Global.gTilt.getAngle())/40.0+0.1);
         else if(isLocked) Global.mTilt.set(.20);
     }
 }
@@ -61,7 +66,8 @@ class TiltDown extends Event {
 class TiltStop extends Event {
     public void execute() {
         Global.mTilt.set(0);
-        DriveTank.tLock.lockTo(Global.gTilt.getAngle());
+        //DriveTank.tLock.lockTo(Global.gTilt.getAngle());
+        DriveTank.tLock.lockReturn();
     }
 }
 
@@ -98,6 +104,16 @@ class SpinOff extends Event {
     }
 }
 
+
+class TargetTilt extends Event {
+    double thShift = 9.0;
+    double targetTh = 0;
+    public void execute() {
+        targetTh = ((targetTh > 45) ? 23 : 180*(MathUtils.atan2(92, Connection.distToGoal))/(Math.PI)+thShift);
+        DriveTank.tLock.lockTo(-targetTh);
+    }
+}
+
 public class DriveTank {
     public static TiltLock tLock = new TiltLock();
     
@@ -115,6 +131,6 @@ public class DriveTank {
         ListenerManager.addListener(new SpinOff(), "buttonXDown");
         (new PistonFlip()).registerSingleEvent();
         Global.gTilt.reset(); //MUST be taken out for Autonomous on full game
-        DriveTank.tLock.lockTo(10); tLock.registerIterableEvent();
+        (new TargetTilt()).registerIterableEvent(); tLock.registerIterableEvent();
     }
 }
