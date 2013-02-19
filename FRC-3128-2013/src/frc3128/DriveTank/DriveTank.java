@@ -6,6 +6,8 @@ import frc3128.EventManager.Event;
 import frc3128.Global;
 import frc3128.ListenerManager.ListenerManager;
 import frc3128.PneumaticsManager.PneumaticsManager;
+import frc3128.Tilt.TargetTilt;
+import frc3128.Tilt.TiltLock;
 
 class Drive extends Event {
     public void execute() {
@@ -19,33 +21,6 @@ class Drive extends Event {
         Global.mRB.set(-1.0 * (-(y + (x / 1.5))));
         Global.mLF.set(-1.0 * ((y - (x / 1.5))));
         Global.mRF.set(-1.0 * (-(y + (x / 1.5))));
-    }
-}
-
-class TiltLock extends Event {
-    private double angle = 0;
-    private boolean isLocked = false;
-    private double max = -31.0;
-    
-    public void lockTo(double angle) {
-        this.angle = angle;
-        this.isLocked = true;
-    }
-    
-    public void lockReturn() {
-        this.isLocked = true;
-    }    
-    
-    public void disableLock() {
-        this.isLocked = false;
-    }
-
-    public void execute() {
-        System.out.println("angle: "+angle+" cAng: "+Global.gTilt.getAngle());
-        if(this.angle < this.max) this.angle = this.max; if(this.angle > -1) this.angle = 0;
-        if(isLocked && Math.abs(angle - Global.gTilt.getAngle()) > 1) 
-                Global.mTilt.set(-1.0*(angle - Global.gTilt.getAngle())/40.0+0.1);
-        else if(isLocked) Global.mTilt.set(.20);
     }
 }
 
@@ -66,23 +41,9 @@ class TiltDown extends Event {
 class TiltStop extends Event {
     public void execute() {
         Global.mTilt.set(0);
-        //DriveTank.tLock.lockTo(Global.gTilt.getAngle());
         DriveTank.tLock.lockReturn();
     }
 }
-
-class ShootDisc extends Event {
-    public void execute() {
-        Global.mShoot.set(-0.95);
-    }
-}
-
-class IdleDisc extends Event {
-    public void execute() {
-        Global.mShoot.set(0);
-    }
-}
-
 class PistonFlip extends Event {
     public void execute() {
         PneumaticsManager.setPistonInvertState(Global.pst1);
@@ -90,27 +51,12 @@ class PistonFlip extends Event {
 }
 
 
-class SpinOn extends Event {
+class SpinToggle extends Event {
+    boolean spinRunning = false;
     public void execute() {
-        Global.mShoot.set(-1.0);
-        Global.mShoot2.set(-1.0);
-    }
-}
-
-class SpinOff extends Event {
-    public void execute() {
-        Global.mShoot.set(0);
-        Global.mShoot2.set(0);
-    }
-}
-
-
-class TargetTilt extends Event {
-    double thShift = 9.0;
-    double targetTh = 0;
-    public void execute() {
-        targetTh = ((targetTh > 45) ? 23 : 180*(MathUtils.atan2(92, Connection.distToGoal))/(Math.PI)+thShift);
-        DriveTank.tLock.lockTo(-targetTh);
+        Global.mShoot.set((spinRunning) ? 0 : -1.0);
+        Global.mShoot2.set((spinRunning) ? 0 : -1.0);
+        spinRunning = !spinRunning;
     }
 }
 
@@ -127,8 +73,7 @@ public class DriveTank {
         ListenerManager.addListener(new PistonFlip(), "buttonADown");
         ListenerManager.addListener(new PistonFlip(), "buttonAUp");
 
-        ListenerManager.addListener(new SpinOn(), "buttonBDown");
-        ListenerManager.addListener(new SpinOff(), "buttonXDown");
+        ListenerManager.addListener(new SpinToggle(), "buttonBDown");
         (new PistonFlip()).registerSingleEvent();
         Global.gTilt.reset(); //MUST be taken out for Autonomous on full game
         (new TargetTilt()).registerIterableEvent(); tLock.registerIterableEvent();
