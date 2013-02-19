@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc3128.AutoSequencer.AutonomousTest;
+import frc3128.EventManager.EventSequence.SequenceTest;
 import frc3128.Connection.Connection;
 import frc3128.Controller.XControl;
 import frc3128.DriveTank.DriveTank;
@@ -65,8 +65,7 @@ public class Global {
         PneumaticsManager.setCompressorStateOn();
         Global.camLight.set(Relay.Value.kOn);
         
-        AutonomousTest t = new AutonomousTest();
-        //(new AutonomousTest()).as.startAutonomous();
+        SequenceTest t = new SequenceTest();
     }
 
     public static void initializeTeleop() {
