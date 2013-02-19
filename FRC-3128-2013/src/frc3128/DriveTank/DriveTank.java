@@ -6,8 +6,8 @@ import frc3128.EventManager.Event;
 import frc3128.Global;
 import frc3128.ListenerManager.ListenerManager;
 import frc3128.PneumaticsManager.PneumaticsManager;
-import frc3128.Tilt.TargetTilt;
-import frc3128.Tilt.TiltLock;
+import frc3128.DriveTank.Tilt.TargetTilt;
+import frc3128.DriveTank.Tilt.TiltLock;
 
 class Drive extends Event {
     public void execute() {
@@ -46,7 +46,7 @@ class TiltStop extends Event {
 }
 class PistonFlip extends Event {
     public void execute() {
-        PneumaticsManager.setPistonInvertState(Global.pst1);
+        PneumaticsManager.setPistonInvertState(Global.pstFire);
     }
 }
 

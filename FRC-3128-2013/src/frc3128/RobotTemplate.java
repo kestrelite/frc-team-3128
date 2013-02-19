@@ -15,12 +15,20 @@ public class RobotTemplate extends IterativeRobot {
 
     boolean autonomousHasBeenInit = false;
     public void autonomousInit() {
-        if(!autonomousHasBeenInit) {Global.initializeAuto(); autonomousHasBeenInit = true;}
+        if(!autonomousHasBeenInit) {
+            Global.initializeAuto(); 
+            autonomousHasBeenInit = true; 
+            teleopHasBeenInit = false;
+        }
     }
     
     boolean teleopHasBeenInit = false;
     public void teleopInit() {
-        if(!teleopHasBeenInit) {Global.initializeTeleop(); teleopHasBeenInit = true;}
+        if(!teleopHasBeenInit) {
+            Global.initializeTeleop(); 
+            teleopHasBeenInit = true; 
+            autonomousHasBeenInit = false;
+        }
     }
     
     public void disabledPeriodic() {        
