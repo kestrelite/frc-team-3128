@@ -15,7 +15,6 @@ import frc3128.PneumaticsManager.PistonID;
 import frc3128.PneumaticsManager.PneumaticsManager;
 
 class DebugOutputs extends Event {
-
     public void execute() {
         DebugLog.log(4, referenceName, "X1:" + Global.xControl1.x1 + ", Y1:" + Global.xControl1.y1);
         DebugLog.log(4, referenceName, "Y2: " + Global.xControl1.y2);
@@ -25,13 +24,14 @@ class DebugOutputs extends Event {
 }
 
 public class Global {
-
     public final static String referenceName = "Global";
     public final static EventManager eventManager = new EventManager();
     public static XControl xControl1;
+    
     public final static PneumaticsManager pnManager = new PneumaticsManager(1, 1, 1, 2);
-    public final static PistonID pst1 = PneumaticsManager.addPiston(1, 1, 1, 2, true, false);
+    public final static PistonID pstFire = PneumaticsManager.addPiston(1, 1, 1, 2, true, false);
     public final static PistonID pst2 = PneumaticsManager.addPiston(1, 3, 1, 4, true, false);
+    
     public static DriveTank driveTank;
     public final static Jaguar mLB = new Jaguar(1, 3);
     public final static Jaguar mRB = new Jaguar(1, 1);
@@ -40,10 +40,10 @@ public class Global {
     public final static Jaguar mTilt = new Jaguar(1, 6);
     public final static Jaguar mShoot = new Jaguar(1, 7);
     public final static Jaguar mShoot2 = new Jaguar(1, 8);
+    
     public final static Gyro gTilt = new Gyro(1, 2);
     public final static Gyro gTurn = new Gyro(1, 1);
     public final static Relay camLight = new Relay(1, 1, Relay.Direction.kForward);
-
 
     public static void initializeRobot() {
         Global.gTilt.reset();
@@ -58,20 +58,18 @@ public class Global {
     }
 
     public static void initializeAuto() {
-        EventManager.dropEvents();
-        ListenerManager.dropListeners();
-        Global.gTilt.reset();
-        Global.gTurn.reset();
+        EventManager.dropEvents(); ListenerManager.dropListeners();
+        Global.gTilt.reset(); Global.gTurn.reset();
         PneumaticsManager.setCompressorStateOn();
         Global.camLight.set(Relay.Value.kOn);
     }
 
     public static void initializeTeleop() {
-        EventManager.dropEvents();
-        ListenerManager.dropListeners();
+        EventManager.dropEvents(); ListenerManager.dropListeners();
         Global.gTilt.reset(); //MUST be taken out for Autonomous for full game
         PneumaticsManager.setCompressorStateOn();
         Global.camLight.set(Relay.Value.kOn);
+        
         Global.xControl1 = new XControl(1);
         driveTank = new DriveTank();
         (new Connection()).registerIterableEvent();
