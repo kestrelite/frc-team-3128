@@ -39,8 +39,8 @@ class TiltLock extends Event {
 
     public void execute() {
         if(isLocked && Math.abs(angle - Global.gTilt.getAngle()) > 1.5) 
-                Global.mTilt.set(-1.0*(angle - Global.gTilt.getAngle())/80.0);
-        else if(isLocked) Global.mTilt.set(0);
+                Global.mTilt.set((angle - Global.gTilt.getAngle())/80.0);
+        else if(isLocked) Global.mTilt.set(.20);
     }
 }
 
@@ -84,11 +84,17 @@ class PistonFlip extends Event {
 }
 
 
-class SpinToggle extends Event {
-    private boolean spinOn = false;
+class SpinOn extends Event {
     public void execute() {
-        Global.mShoot.set(spinOn ? 0.0 : 1.0);
-        this.spinOn = !this.spinOn;
+        Global.mShoot.set(-1.0);
+        Global.mShoot2.set(-1.0);
+    }
+}
+
+class SpinOff extends Event {
+    public void execute() {
+        Global.mShoot.set(0);
+        Global.mShoot2.set(0);
     }
 }
 
@@ -105,8 +111,9 @@ public class DriveTank {
         ListenerManager.addListener(new PistonFlip(), "buttonADown");
         ListenerManager.addListener(new PistonFlip(), "buttonAUp");
 
-        ListenerManager.addListener(new SpinToggle(), "buttonBDown");
+        ListenerManager.addListener(new SpinOn(), "buttonBDown");
+        ListenerManager.addListener(new SpinOff(), "buttonXDown");
         (new PistonFlip()).registerSingleEvent();
-        Global.gTilt.reset(); DriveTank.tLock.lockTo(Global.gTilt.getAngle()); tLock.registerIterableEvent();
+        Global.gTilt.reset(); DriveTank.tLock.lockTo(10); tLock.registerIterableEvent();
     }
 }

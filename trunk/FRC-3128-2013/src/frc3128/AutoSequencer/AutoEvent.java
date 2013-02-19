@@ -4,9 +4,15 @@ import frc3128.EventManager.Event;
 
 public abstract class AutoEvent extends Event {
     private long startTime = -1;
+    private boolean eventIsRunning = false;
     
-    final protected void startIntrTimer() {
+    final protected void startAutoEvent() {
         if(startTime == -1) this.startTime = System.currentTimeMillis();
+        this.eventIsRunning = true;
+    }
+    
+    final protected boolean isRunning() {
+        return eventIsRunning;
     }
         
     final protected long getRunTimeMillis() {

@@ -1,6 +1,7 @@
 package frc3128;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Watchdog;
 import frc3128.EventManager.EventManager;
 
 public class RobotTemplate extends IterativeRobot {
@@ -23,14 +24,17 @@ public class RobotTemplate extends IterativeRobot {
     }
     
     public void disabledPeriodic() {        
+        Watchdog.getInstance().feed();
         EventManager.processEvents();
     }
 
     public void autonomousPeriodic() {
+        Watchdog.getInstance().feed();
         EventManager.processEvents();
     }
 
     public void teleopPeriodic() {
+        Watchdog.getInstance().feed();
         EventManager.processEvents();
     }
 }
