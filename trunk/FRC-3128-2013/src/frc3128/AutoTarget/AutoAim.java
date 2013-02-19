@@ -1,8 +1,8 @@
 package frc3128.AutoTarget;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import frc3128.DriveTank.Tilt.TargetTilt;
-import frc3128.DriveTank.TurnToCenter;
+import frc3128.Targeting.TiltTarget;
+import frc3128.Targeting.TurnToCenter;
 import frc3128.EventManager.Event;
 import frc3128.EventManager.EventSequence.EventSequencer;
 import frc3128.EventManager.EventSequence.SequenceEvent;
@@ -37,7 +37,7 @@ class AutoTilt extends SequenceEvent {
     }
 
     public void execute() {
-        (new TargetTilt()).registerIterableEvent();
+        (new TiltTarget()).registerIterableEvent();
     }
 }
 
