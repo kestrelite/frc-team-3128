@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc3128.AutoSequencer.AutonomousTest;
 import frc3128.Connection.Connection;
 import frc3128.Controller.XControl;
 import frc3128.DriveTank.DriveTank;
@@ -20,6 +21,7 @@ class DebugOutputs extends Event {
         DebugLog.log(4, referenceName, "X1:" + Global.xControl1.x1 + ", Y1:" + Global.xControl1.y1);
         DebugLog.log(4, referenceName, "Y2: " + Global.xControl1.y2);
         DebugLog.log(3, referenceName, "gTilt:"+Global.gTilt.getAngle() + ", gTurn:"+Global.gTurn.getAngle());
+        DebugLog.log(3, referenceName, "mSpeed: "+Global.mShoot.get()+" mSpeed2: "+Global.mShoot2.get());
     }
 }
 
@@ -40,6 +42,7 @@ public class Global {
     public final static Jaguar mRF   = new Jaguar(1, 4);
     public final static Jaguar mTilt  = new Jaguar(1, 6);
     public final static Jaguar mShoot = new Jaguar(1, 7);
+    public final static Jaguar mShoot2 = new Jaguar(1, 8);
 
     public final static Gyro gTilt = new Gyro(1, 2);
     public final static Gyro gTurn = new Gyro(1,1);
@@ -48,11 +51,12 @@ public class Global {
     
     public static void initializeRobot() {
         Global.gTilt.reset(); Global.gTurn.reset();
-        DebugLog.setLogLevel(3);
+        DebugLog.setLogLevel(4);
         PneumaticsManager.setCompressorStateOff();
     }
 
     public static void initializeDisabled() {
+        
     }
 
     public static void initializeAuto() {
@@ -60,6 +64,9 @@ public class Global {
         Global.gTilt.reset(); Global.gTurn.reset();
         PneumaticsManager.setCompressorStateOn();
         Global.camLight.set(Relay.Value.kOn);
+        
+        AutonomousTest t = new AutonomousTest();
+        //(new AutonomousTest()).as.startAutonomous();
     }
 
     public static void initializeTeleop() {

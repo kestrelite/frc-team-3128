@@ -11,7 +11,6 @@ class AutoEvent1 extends AutoEvent {
     }
 }
 
-
 class AutoEvent2 extends AutoEvent {
     public boolean exitConditionMet() {
         if(this.getRunTimeMillis() > 1000) return true;
@@ -34,11 +33,11 @@ class AutoEvent3 extends AutoEvent {
 }
 
 public class AutonomousTest {
+    public AutoSequencer as = new AutoSequencer();
     public AutonomousTest() {
-        AutoSequencer as = new AutoSequencer();
         as.addEvent((new AutoEvent1()));
         as.addEvent((new AutoEvent2()));
         as.addEvent((new AutoEvent3()));
-        as.registerIterableEvent();
+        as.startAutonomous();
     }
 }
