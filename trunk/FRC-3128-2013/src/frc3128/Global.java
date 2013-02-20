@@ -4,12 +4,16 @@ import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Watchdog;
-import frc3128.AutoTarget.AutoAim;
-import frc3128.Connection.Connection;
+import frc3128.AutoTarget.ATiltLock;
+import frc3128.AutoTarget.AutoFire;
+import frc3128.AutoTarget.AutoTurn;
+import frc3128.Connection.CameraCon;
 import frc3128.Controller.XControl;
 import frc3128.DriveTank.DriveTank;
 import frc3128.EventManager.Event;
 import frc3128.EventManager.EventManager;
+import frc3128.EventManager.EventSequence.EventSequencer;
+import frc3128.EventManager.EventSequence.SingleSequence;
 import frc3128.EventManager.ListenerManager;
 import frc3128.PneumaticsManager.PistonID;
 import frc3128.PneumaticsManager.PneumaticsManager;
@@ -44,7 +48,7 @@ public class Global {
     public final static Gyro gTurn = new Gyro(1, 1);
     public final static Relay camLight = new Relay(1, 1, Relay.Direction.kForward);
 
-    public final static Connection dashConnection = new Connection();
+    public final static CameraCon dashConnection = new CameraCon();
     
     public static void initializeRobot() {
         Global.gTilt.reset();
@@ -64,7 +68,24 @@ public class Global {
         Global.camLight.set(Relay.Value.kOn);
         
         dashConnection.registerIterableEvent();
-        AutoAim a = new AutoAim();
+        
+        EventSequencer aAim = new EventSequencer();
+        aAim.addEvent(new AutoTurn());
+        aAim.addEvent(new SingleSequence() {
+            public void execute() {
+                Global.mShoot1.set(-1.0);
+                Global.mShoot2.set(-1.0);
+            }
+        });
+        aAim.addEvent(new ATiltLock());
+        aAim.addEvent(new AutoFire());
+        aAim.addEvent(new SingleSequence() {
+            public void execute() {
+                Global.mShoot1.set(0);
+                Global.mShoot2.set(0);
+            }
+        });        
+        aAim.startSequence();
     }
 
     public static void initializeTeleop() {

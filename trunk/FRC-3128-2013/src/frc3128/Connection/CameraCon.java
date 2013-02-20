@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import frc3128.DebugLog;
 import frc3128.EventManager.Event;
 
-public class Connection extends Event {
+public class CameraCon extends Event {
     public static double distToGoal = 0, xOffset = 0;
     public static boolean stateConnected = false;
 
