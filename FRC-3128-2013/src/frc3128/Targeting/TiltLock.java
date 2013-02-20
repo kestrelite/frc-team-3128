@@ -17,7 +17,7 @@ public class TiltLock extends Event {
         this.isLocked = true;
     }
     
-    public void lockReturn() {
+    public void enableLock() {
         this.isLocked = true;
     }    
     
