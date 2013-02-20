@@ -13,6 +13,8 @@ public class ATiltLock extends SequenceEvent {
     private double max = -35.0;
     
     public void execute() {
+        if(this.getRunTimeMillis() > 3000) Global.robotStop();
+        
         if(!isLocked) {
             this.angle = -180*(MathUtils.atan2(92, CameraCon.distToGoal))/(Math.PI)*0.9;
             if(CameraCon.distToGoal != 0) isLocked = true;

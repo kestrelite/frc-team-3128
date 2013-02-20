@@ -8,6 +8,8 @@ public class AutoTurn extends SequenceEvent {
     double xOff = 0, thresh = 5.0;
     
     public void execute() {
+        if(this.getRunTimeMillis() > 3000) Global.robotStop();
+        
         xOff = NetworkTable.getTable("camera").getNumber("xoffset");
         System.out.println("xOff:"+xOff+", pow:"+Global.mLF.get());
         if (Math.abs(xOff) > thresh) {
