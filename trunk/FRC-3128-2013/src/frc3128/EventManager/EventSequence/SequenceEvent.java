@@ -6,7 +6,7 @@ public abstract class SequenceEvent extends Event {
     private long startTime = -1;
     private boolean eventIsRunning = false;
     
-    final protected void startAutoEvent() {
+    final protected void startSequenceEvent() {
         if(startTime == -1) this.startTime = System.currentTimeMillis();
         this.eventIsRunning = true;
     }
