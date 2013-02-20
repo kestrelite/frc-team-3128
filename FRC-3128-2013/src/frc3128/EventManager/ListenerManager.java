@@ -1,18 +1,12 @@
 package frc3128.EventManager;
 
 import frc3128.DebugLog;
-import frc3128.EventManager.Event;
 import java.util.Vector;
 
 public class ListenerManager {
     private static Vector event = new Vector();
     private static Vector trigger = new Vector();
     private static String referenceName = "ListenerManager";
-
-    public static void addListener(Event e, String link) {
-        DebugLog.log(4, "ListenerManager", "Added " + e.toString() + " to " + link);
-        addListener(e, link.hashCode());
-    }
 
     private static void verifyNoDuplicate(Event e, int link) {
         for(int i = 0; i < event.size(); i++)
@@ -21,6 +15,11 @@ public class ListenerManager {
                     DebugLog.log(1, referenceName, "Duplicate event/trigger pair was added to the ListenerManager!");
     }
 
+    public static void addListener(Event e, String link) {
+        DebugLog.log(4, "ListenerManager", "Added " + e.toString() + " to " + link);
+        addListener(e, link.hashCode());
+    }
+    
     public static void addListener(Event e, int link) {
         verifyNoDuplicate(e, link);
         ListenerManager.event.addElement(e);
@@ -29,6 +28,21 @@ public class ListenerManager {
 
     public static void callListener(String link) {
         callListener(link.hashCode());
+    }
+    
+    public static void callListener(int link) {
+        for(int i = 0; i < ListenerManager.trigger.size(); i++) {
+            if(((Integer) ListenerManager.trigger.elementAt(i)).intValue() == link) {
+                try {
+                    ((Event) ListenerManager.event.elementAt(i)).execute();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                    ListenerManager.event.removeElementAt(i);
+                    ListenerManager.trigger.removeElementAt(i);
+                    DebugLog.log(-2, ((Event) ListenerManager.event.elementAt(i)).toString(), "Error in Listener event: " + e.getMessage());
+                }
+            }
+        }
     }
 
     public static void dropEvent(Event e) {
@@ -53,22 +67,23 @@ public class ListenerManager {
         return eventDropped;
     }
     
-    public static void callListener(int link) {
+    public static void dropListener(int link) {
+        DebugLog.log(4, referenceName, "Dropping link " + link);
         for(int i = 0; i < ListenerManager.trigger.size(); i++) {
-            if(((Integer) ListenerManager.trigger.elementAt(i)).intValue() == link) {
-                try {
-                    ((Event) ListenerManager.event.elementAt(i)).execute();
-                } catch(Exception e) {
-                    e.printStackTrace();
-                    ListenerManager.event.removeElementAt(i);
-                    ListenerManager.trigger.removeElementAt(i);
-                    DebugLog.log(-2, ((Event) ListenerManager.event.elementAt(i)).toString(), "Error in Listener event: " + e.getMessage());
-                }
+            if(i > ListenerManager.trigger.size()) return;
+            if(((Integer)ListenerManager.trigger.elementAt(i)).intValue() == link) {
+                DebugLog.log(4, referenceName, "Listener dropped: " + ListenerManager.event.elementAt(i).getClass().getName() + " ("+link+").");
+                ListenerManager.event.removeElementAt(i);
+                ListenerManager.trigger.removeElementAt(i);
             }
         }
     }
-
-    public static void dropListeners() {
+    
+    public static void dropListener(String link) {
+        ListenerManager.dropListener(link.hashCode());
+    }
+    
+    public static void dropAllListeners() {
         ListenerManager.event.removeAllElements();
         ListenerManager.trigger.removeAllElements();
     }

@@ -63,7 +63,7 @@ public class Global {
     }
 
     public static void initializeAuto() {
-        EventManager.dropEvents(); ListenerManager.dropListeners();
+        EventManager.dropEvents(); ListenerManager.dropAllListeners();
         Global.gTilt.reset(); Global.gTurn.reset();
         Global.camLight.set(Relay.Value.kOn);
         
@@ -89,7 +89,7 @@ public class Global {
     }
 
     public static void initializeTeleop() {
-        EventManager.dropEvents(); ListenerManager.dropListeners();
+        EventManager.dropEvents(); ListenerManager.dropAllListeners();
         Global.gTilt.reset(); DebugLog.log(2, referenceName, "GTilt reset starting manual! **Remove for autonomous**");
         Global.camLight.set(Relay.Value.kOn);
 
@@ -100,13 +100,13 @@ public class Global {
 
     public static void robotKill() {
         EventManager.dropEvents();
-        ListenerManager.dropListeners();
+        ListenerManager.dropAllListeners();
         Watchdog.getInstance().kill();
     }
     
     public static void robotStop() {
         EventManager.dropEvents();
-        ListenerManager.dropListeners();
+        ListenerManager.dropAllListeners();
         Global.stopMotors();
     }
     
