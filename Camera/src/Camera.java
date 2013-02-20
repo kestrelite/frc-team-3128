@@ -109,6 +109,7 @@ public class Camera extends WPICameraExtension {
             if (square != null) {
                 double distance = (212.83 / Math.sqrt(squareArea)) * 144;
                 centerX *= 100;
+                centerX += 9;
                 table.putBoolean("found", true);
                 table.putNumber("area", squareArea);
                 table.putNumber("distance", distance);
