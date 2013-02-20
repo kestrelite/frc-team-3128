@@ -7,8 +7,6 @@ import frc3128.EventManager.Event;
 public class Connection extends Event {
     public static double distToGoal = 0, xOffset = 0;
     public static boolean stateConnected = false;
-    
-    public Connection() {}
 
     public void execute() {
         DebugLog.log(5, referenceName, "dTG:" + distToGoal + ", xOff:" + xOffset);

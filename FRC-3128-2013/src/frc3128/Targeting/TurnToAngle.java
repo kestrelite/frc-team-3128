@@ -1,5 +1,6 @@
 package frc3128.Targeting;
 
+import frc3128.DebugLog;
 import frc3128.DriveTank.StopDrive;
 import frc3128.EventManager.Event;
 import frc3128.Global;
@@ -14,7 +15,7 @@ public class TurnToAngle extends Event {
     }
 
     public void execute() {
-        if (1 == 1) throw new Error("Must set gyro polarization");
+        DebugLog.log(2, referenceName, "TurnToAngle is an UNTESTED class!");
         
         if (Math.abs(Global.gTurn.getAngle() - this.targetAngle) > thresh) {
             Global.mLB.set(((this.targetAngle - Global.gTurn.getAngle()) / 90) + .2);

@@ -6,7 +6,6 @@ import frc3128.Global;
 import frc3128.ListenerManager.ListenerManager;
 import frc3128.PneumaticsManager.PneumaticsManager;
 import frc3128.Targeting.TiltLock;
-import frc3128.Targeting.TiltTarget;
 
 class Drive extends Event {
     public void execute() {
