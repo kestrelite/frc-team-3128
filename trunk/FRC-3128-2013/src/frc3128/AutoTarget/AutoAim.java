@@ -4,22 +4,16 @@ import com.sun.squawk.util.MathUtils;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import frc3128.Connection.Connection;
 import frc3128.DebugLog;
-import frc3128.DriveTank.StopDrive;
-import frc3128.EventManager.Event;
 import frc3128.EventManager.EventSequence.EventSequencer;
 import frc3128.EventManager.EventSequence.SequenceEvent;
 import frc3128.EventManager.EventSequence.SingleSequence;
 import frc3128.Global;
 import frc3128.PneumaticsManager.PneumaticsManager;
 
-public class AutoAim extends Event {
-    EventSequencer aAim;
+public class AutoAim {
+    private static EventSequencer aAim;
     
-    public AutoAim() {
-        this.execute();
-    }
-    
-    public void execute() {
+    public static void initialize() {
         aAim = new EventSequencer();
         aAim.addEvent(new AutoTurn());
         aAim.addEvent(new SingleSequence() {
@@ -35,8 +29,7 @@ public class AutoAim extends Event {
                 Global.mShoot.set(0);
                 Global.mShoot2.set(0);
             }
-        });
-        
+        });        
         aAim.startSequence();
     }
 }

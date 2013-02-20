@@ -13,7 +13,6 @@ import frc3128.EventManager.EventManager;
 import frc3128.ListenerManager.ListenerManager;
 import frc3128.PneumaticsManager.PistonID;
 import frc3128.PneumaticsManager.PneumaticsManager;
-import frc3128.Targeting.TiltLock;
 
 class DebugOutputs extends Event {
     public void execute() {
@@ -51,7 +50,7 @@ public class Global {
     public static void initializeRobot() {
         Global.gTilt.reset();
         Global.gTurn.reset();
-        DebugLog.setLogLevel(4);
+        DebugLog.setLogLevel(3);
         PneumaticsManager.setCompressorStateOff();
         DebugLog.log(3, referenceName, "ROBOT INITIALIZATION COMPLETE");
     }
@@ -66,10 +65,6 @@ public class Global {
         Global.camLight.set(Relay.Value.kOn);
         
         dashConnection.registerIterableEvent();
-        //(new TurnToCenter()).registerIterableEvent();
-        //(new TiltTarget()).registerIterableEvent();
-        //(new TiltLock(-16)).registerIterableEvent();
-        //(new AutoAim()).registerSingleEvent();
         AutoAim a = new AutoAim();
     }
 

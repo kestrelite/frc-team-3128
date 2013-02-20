@@ -54,7 +54,7 @@ public class ListenerManager {
     }
     
     public static void callListener(int link) {
-        for(int i = 0; i < ListenerManager.trigger.size(); i++)
+        for(int i = 0; i < ListenerManager.trigger.size(); i++) {
             if(((Integer) ListenerManager.trigger.elementAt(i)).intValue() == link) {
                 try {
                     ((Event) ListenerManager.event.elementAt(i)).execute();
@@ -65,6 +65,7 @@ public class ListenerManager {
                     DebugLog.log(-2, ((Event) ListenerManager.event.elementAt(i)).toString(), "Error in Listener event: " + e.getMessage());
                 }
             }
+        }
     }
 
     public static void dropListeners() {
