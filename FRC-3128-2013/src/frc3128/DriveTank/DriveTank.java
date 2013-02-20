@@ -52,7 +52,7 @@ class PistonFlip extends Event {
 class SpinToggle extends Event {
     boolean spinRunning = false;
     public void execute() {
-        Global.mShoot.set((spinRunning) ? -0.11 : -1.0);
+        Global.mShoot1.set((spinRunning) ? -0.11 : -1.0);
         Global.mShoot2.set((spinRunning) ? -0.11 : -1.0);
         spinRunning = !spinRunning;
     }
