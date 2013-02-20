@@ -37,6 +37,6 @@ class DualSolenoid {
     protected void setPistonInverted() {
         solA.set(!solA.get());
         solB.set(!solB.get());
-        DebugLog.log(4, "DualSolenoid", "Solenoid set to " + solA.get() + ", " +solB.get());
+        DebugLog.log(4, "DualSolenoid", "DualSolenoid set to flip-state " + solA.get() + ", " +solB.get());
     }
 }

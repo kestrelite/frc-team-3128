@@ -3,16 +3,7 @@ package frc3128.PneumaticsManager;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc3128.DebugLog;
-import frc3128.EventManager.Event;
-import frc3128.EventManager.ListenerManager;
 import java.util.Vector;
-
-class LockAllPistons extends Event {
-    public void execute() {
-        for(int i = 0; i < PneumaticsManager.dualSolenoidList.size(); i++)
-            ((DualSolenoid) PneumaticsManager.dualSolenoidList.elementAt(i)).unlockPiston();
-    }
-}
 
 public class PneumaticsManager {
     private   static Compressor c;
@@ -23,14 +14,12 @@ public class PneumaticsManager {
     public PneumaticsManager(Compressor c) {
         PneumaticsManager.c = c;
         PneumaticsManager.compressorSet = true;
-        ListenerManager.addListener(new LockAllPistons(), "lockPistons");
         PneumaticsManager.c.stop();
     }
 
     public PneumaticsManager(int a, int b, int c, int d) {
         PneumaticsManager.c = new Compressor(a, b, c, d);
         PneumaticsManager.compressorSet = true;
-        ListenerManager.addListener(new LockAllPistons(), "lockPistons");
         PneumaticsManager.c.stop();
     }
     
