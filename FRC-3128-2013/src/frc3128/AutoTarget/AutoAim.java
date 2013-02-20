@@ -7,6 +7,7 @@ import frc3128.DriveTank.StopDrive;
 import frc3128.EventManager.Event;
 import frc3128.EventManager.EventSequence.EventSequencer;
 import frc3128.EventManager.EventSequence.SequenceEvent;
+import frc3128.EventManager.EventSequence.SingleSequence;
 import frc3128.Global;
 import frc3128.PneumaticsManager.PneumaticsManager;
 
@@ -14,9 +15,22 @@ public class AutoAim extends Event {
     EventSequencer aAim;
     public void execute() {
         aAim = new EventSequencer();
+        aAim.addEvent(new SingleSequence() {
+            public void execute() {
+                Global.mShoot.set(-1.0);
+                Global.mShoot2.set(-1.0);
+            }
+        });
         aAim.addEvent(new AutoTurn());
         //aAim.addEvent(new AutoLock());
         //aAim.addEvent(new AutoFire());
+        aAim.addEvent(new SingleSequence() {
+            public void execute() {
+                Global.mShoot.set(0);
+                Global.mShoot2.set(0);
+            }
+        });
+        
         aAim.startSequence();
     }
 }
