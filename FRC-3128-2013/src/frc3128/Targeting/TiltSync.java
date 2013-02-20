@@ -13,6 +13,7 @@ public class TiltSync {
 
         TiltSync.tiltIsLocked = true;
         TiltSync.tiltLockedBy = e;
+        DebugLog.log(4, "TiltSync", "TiltSync lock taken by " + e);
         return true;
     }
     
@@ -20,6 +21,8 @@ public class TiltSync {
         if(override || !tiltIsLocked) {
             TiltSync.tiltIsLocked = true;
             TiltSync.tiltLockedBy = e;
+            if(override) DebugLog.log(4, "TiltSync", "TiltSync lock OVERRIDDEN by " + e);
+            else DebugLog.log(4, "TiltSync", "TiltSync lock taken by " + e);
         }
     }
     
@@ -38,5 +41,6 @@ public class TiltSync {
     public static void releaseLock(Event e) {
         TiltSync.tiltLockedBy = null;
         TiltSync.tiltIsLocked = false;
+        DebugLog.log(4, "TiltSync", "TiltSync lock released from " + e + "!");
     }
 }
