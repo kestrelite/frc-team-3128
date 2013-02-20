@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc3128.DebugLog;
 import frc3128.EventManager.Event;
-import frc3128.ListenerManager.ListenerManager;
+import frc3128.EventManager.ListenerManager;
 import java.util.Vector;
 
 class LockAllPistons extends Event {
