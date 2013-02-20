@@ -1,4 +1,4 @@
-package frc3128.ListenerManager;
+package frc3128.EventManager;
 
 import frc3128.DebugLog;
 import frc3128.EventManager.Event;
