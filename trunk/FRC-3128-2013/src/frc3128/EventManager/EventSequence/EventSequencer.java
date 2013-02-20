@@ -34,6 +34,10 @@ public class EventSequencer extends Event {
         DebugLog.log(4, referenceName, "Event " + e.getClass().getName() + " added to array at index " + (this.e_autoSequence.size()-1));
     }
     
+    public void resetSequence() {
+        this.currentEventIndex = 0;
+    }
+    
     public void startSequence() {
         this.registerIterableEvent();
     }

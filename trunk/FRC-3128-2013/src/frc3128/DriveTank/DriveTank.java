@@ -9,7 +9,14 @@ import frc3128.Targeting.TiltLock;
 import frc3128.Targeting.TiltSync;
 
 class Drive extends Event {
+    private boolean updateDrive = true;
+    
+    public void pauseDrive() {this.updateDrive = false;}
+    public void startDrive() {this.updateDrive = true;}
+    
     public void execute() {
+        if(!this.updateDrive) return;
+        
         double x = Global.xControl1.x1;
         double y = Global.xControl1.y1;
 
@@ -27,13 +34,11 @@ class TiltTriggers extends Event {
     public void execute() {
         if(TiltSync.hasLock(this)) {
             if(Math.abs(Global.xControl1.triggers) > 100) {
-                Global.mTilt.set(1.0*0.4*(Global.xControl1.triggers/Math.abs(Global.xControl1.triggers)));
                 DriveTank.tLock.disableLock();
+                TiltSync.setTiltPow(this, 1.0*0.4*(Global.xControl1.triggers/Math.abs(Global.xControl1.triggers)));
             } else
                 DriveTank.tLock.lockTo(Global.gTilt.getAngle());
-        } else {
-            TiltSync.getLock(this);
-        }
+        } else TiltSync.getLock(this);
     }
 }
 
@@ -55,11 +60,12 @@ class SpinToggle extends Event {
 
 class LockOnToggle extends Event {
     private boolean lockEnabled = false;
+    private TargetLockSequence targetLock = new TargetLockSequence();
     
     public void execute() {
         if(!lockEnabled) {
             this.lockEnabled = true;
-            ListenerManager.dropEvent(TiltTriggers.class);
+            this.targetLock.registerIterableEvent();
         } else {
             
         }
@@ -80,7 +86,7 @@ public class DriveTank {
         
         DebugLog.log(2, "DriveTank", "setPistonState on of Global.pstFire in DriveTank init - verify On is correct!");
         PneumaticsManager.setPistonStateOn(Global.pstFire); 
-        Global.gTilt.reset(); DebugLog.log(2, "DriveTank", "GTilt reset starting manual! **Remove for autonomous**");
+        Global.gTilt.reset(); DebugLog.log(2, "DriveTank", "GTilt reset starting manual! **Remove when running autonomous**");
         //(new TiltTarget()).registerIterableEvent(); tLock.registerIterableEvent();
     }
 }
