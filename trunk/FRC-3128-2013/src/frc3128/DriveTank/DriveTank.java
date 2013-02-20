@@ -39,10 +39,11 @@ class TiltDown extends Event {
 
 class TiltStop extends Event {
     public void execute() {
-        Global.mTilt.set(0);
+        Global.mTilt.set(.15);
         DriveTank.tLock.lockReturn();
     }
 }
+
 class PistonFlip extends Event {
     public void execute() {
         PneumaticsManager.setPistonInvertState(Global.pstFire);
@@ -52,8 +53,8 @@ class PistonFlip extends Event {
 class SpinToggle extends Event {
     boolean spinRunning = false;
     public void execute() {
-        Global.mShoot.set((spinRunning) ? -0.15 : -1.0);
-        Global.mShoot2.set((spinRunning) ? -0.15 : -1.0);
+        Global.mShoot.set((spinRunning) ? -0.11 : -1.0);
+        Global.mShoot2.set((spinRunning) ? -0.11 : -1.0);
         spinRunning = !spinRunning;
     }
 }
@@ -74,6 +75,6 @@ public class DriveTank {
         ListenerManager.addListener(new SpinToggle(), "buttonBDown");
         (new PistonFlip()).registerSingleEvent();
         Global.gTilt.reset(); DebugLog.log(2, "DriveTank", "GTilt reset starting manual! **Remove for autonomous**");
-        (new TiltTarget()).registerIterableEvent(); tLock.registerIterableEvent();
+        //(new TiltTarget()).registerIterableEvent(); tLock.registerIterableEvent();
     }
 }
