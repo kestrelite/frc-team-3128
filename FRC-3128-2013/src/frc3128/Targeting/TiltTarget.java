@@ -1,7 +1,7 @@
 package frc3128.Targeting;
 
 import com.sun.squawk.util.MathUtils;
-import frc3128.Connection.Connection;
+import frc3128.Connection.CameraCon;
 import frc3128.DebugLog;
 import frc3128.EventManager.Event;
 
@@ -15,7 +15,7 @@ public class TiltTarget extends Event {
     public void execute() {
         if(firstIter) {tLock.registerIterableEvent(); firstIter = false;}
         if(distToGoal == 0) {
-            distToGoal = Connection.distToGoal;
+            distToGoal = CameraCon.distToGoal;
             return;
         }
         
