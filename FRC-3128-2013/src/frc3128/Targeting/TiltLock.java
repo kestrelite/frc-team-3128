@@ -30,7 +30,7 @@ public class TiltLock extends Event {
         if(this.angle < this.max) {DebugLog.log(1, referenceName, "Tilt targeted to invalid angle! " + this.angle); this.angle = this.max;} 
         if(this.angle > -1) {DebugLog.log(1, referenceName, "Tilt targeted to invalid angle! " + this.angle); this.angle = 0;}
         if(isLocked && Math.abs(angle - Global.gTilt.getAngle()) > 1.0) 
-                Global.mTilt.set(-1.0*(angle - Global.gTilt.getAngle())/37.0+0.1);
+            Global.mTilt.set(-1.0*(angle - Global.gTilt.getAngle())/55.0+0.15);
         else if(isLocked) Global.mTilt.set(.15);
     }
 }

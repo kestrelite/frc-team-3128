@@ -1,10 +1,10 @@
 package frc3128;
 
-import com.sun.squawk.util.MathUtils;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Watchdog;
+import frc3128.AutoTarget.AutoAim;
 import frc3128.Connection.Connection;
 import frc3128.Controller.XControl;
 import frc3128.DriveTank.DriveTank;
@@ -46,10 +46,12 @@ public class Global {
     public final static Gyro gTurn = new Gyro(1, 1);
     public final static Relay camLight = new Relay(1, 1, Relay.Direction.kForward);
 
+    public final static Connection dashConnection = new Connection();
+    
     public static void initializeRobot() {
         Global.gTilt.reset();
         Global.gTurn.reset();
-        DebugLog.setLogLevel(5);
+        DebugLog.setLogLevel(4);
         PneumaticsManager.setCompressorStateOff();
         DebugLog.log(3, referenceName, "ROBOT INITIALIZATION COMPLETE");
     }
@@ -63,7 +65,12 @@ public class Global {
         Global.gTilt.reset(); Global.gTurn.reset();
         Global.camLight.set(Relay.Value.kOn);
         
-        (new Connection()).registerIterableEvent();
+        dashConnection.registerIterableEvent();
+        //(new TurnToCenter()).registerIterableEvent();
+        //(new TiltTarget()).registerIterableEvent();
+        //(new TiltLock(-16)).registerIterableEvent();
+        //(new AutoAim()).registerSingleEvent();
+        AutoAim a = new AutoAim();
     }
 
     public static void initializeTeleop() {
@@ -73,7 +80,7 @@ public class Global {
 
         Global.xControl1 = new XControl(1);
         driveTank = new DriveTank();
-        (new Connection()).registerIterableEvent();
+        dashConnection.registerIterableEvent();
     }
 
     public static void robotKill() {

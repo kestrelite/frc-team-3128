@@ -2,14 +2,25 @@ package frc3128.Targeting;
 
 import com.sun.squawk.util.MathUtils;
 import frc3128.Connection.Connection;
-import frc3128.DriveTank.DriveTank;
+import frc3128.DebugLog;
 import frc3128.EventManager.Event;
 
 public class TiltTarget extends Event {
-    double thShift = 5.0;
+    double thShift = -12.0;
     double targetTh = 0;
+    private static TiltLock tLock = new TiltLock();
+    double distToGoal = 0;
+    boolean firstIter = true;
+    
     public void execute() {
-        targetTh = ((targetTh > 40) ? 5 : 180*(MathUtils.atan2(92, Connection.distToGoal))/(Math.PI)+thShift);
-        DriveTank.tLock.lockTo(-targetTh);
+        if(firstIter) {tLock.registerIterableEvent(); firstIter = false;}
+        if(distToGoal == 0) {
+            distToGoal = Connection.distToGoal;
+            return;
+        }
+        
+        DebugLog.log(5, referenceName, "tgt:" + targetTh + ", dst:"+distToGoal);
+        targetTh = ((targetTh > 40) ? 5 : 180*(MathUtils.atan2(92, distToGoal))/(Math.PI)+thShift);
+        TiltTarget.tLock.lockTo(-targetTh);
     }
 }
