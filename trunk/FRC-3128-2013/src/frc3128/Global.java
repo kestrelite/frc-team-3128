@@ -54,7 +54,7 @@ public class Global {
     }
 
     public static void initializeDisabled() {
-        //PneumaticsManager.setCompressorStateOn();
+        PneumaticsManager.setCompressorStateOn();
     }
 
     public static void initializeAuto() {
@@ -71,22 +71,14 @@ public class Global {
         Global.gTilt.reset(); DebugLog.log(2, referenceName, "GTilt reset starting manual! **Remove for autonomous**");
         Global.camLight.set(Relay.Value.kOn);
 
-        /*Global.xControl1 = new XControl(1);
+        Global.xControl1 = new XControl(1);
         driveTank = new DriveTank();
-        (new Connection()).registerIterableEvent();*/
+        (new Connection()).registerIterableEvent();
     }
 
     public static void robotKill() {
         EventManager.dropEvents();
         ListenerManager.dropListeners();
         Watchdog.getInstance().kill();
-    }
-
-    public static double getMag(double x1, double y1) {
-        return Math.sqrt(MathUtils.pow(x1, 2) + MathUtils.pow(y1, 2));
-    }
-
-    public static double getTh(double x1, double y1) {
-        return MathUtils.atan2(y1, x1);
     }
 }
