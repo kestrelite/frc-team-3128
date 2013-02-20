@@ -1,14 +1,12 @@
 package frc3128.DriveTank;
 
-import com.sun.squawk.util.MathUtils;
-import frc3128.Connection.Connection;
 import frc3128.DebugLog;
 import frc3128.EventManager.Event;
 import frc3128.Global;
 import frc3128.ListenerManager.ListenerManager;
 import frc3128.PneumaticsManager.PneumaticsManager;
-import frc3128.Targeting.TiltTarget;
 import frc3128.Targeting.TiltLock;
+import frc3128.Targeting.TiltTarget;
 
 class Drive extends Event {
     public void execute() {
@@ -50,7 +48,6 @@ class PistonFlip extends Event {
         PneumaticsManager.setPistonInvertState(Global.pstFire);
     }
 }
-
 
 class SpinToggle extends Event {
     boolean spinRunning = false;
