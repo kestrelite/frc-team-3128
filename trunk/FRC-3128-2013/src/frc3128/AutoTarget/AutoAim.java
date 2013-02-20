@@ -18,7 +18,7 @@ public class AutoAim {
         aAim.addEvent(new AutoTurn());
         aAim.addEvent(new SingleSequence() {
             public void execute() {
-                Global.mShoot.set(-1.0);
+                Global.mShoot1.set(-1.0);
                 Global.mShoot2.set(-1.0);
             }
         });
@@ -26,7 +26,7 @@ public class AutoAim {
         aAim.addEvent(new AutoFire());
         aAim.addEvent(new SingleSequence() {
             public void execute() {
-                Global.mShoot.set(0);
+                Global.mShoot1.set(0);
                 Global.mShoot2.set(0);
             }
         });        

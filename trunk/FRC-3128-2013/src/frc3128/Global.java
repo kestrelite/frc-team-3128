@@ -19,26 +19,25 @@ class DebugOutputs extends Event {
         DebugLog.log(4, referenceName, "X1:" + Global.xControl1.x1 + ", Y1:" + Global.xControl1.y1);
         DebugLog.log(4, referenceName, "Y2: " + Global.xControl1.y2);
         DebugLog.log(3, referenceName, "gTilt:" + Global.gTilt.getAngle() + ", gTurn:" + Global.gTurn.getAngle());
-        DebugLog.log(3, referenceName, "mSpeed: " + Global.mShoot.get() + " mSpeed2: " + Global.mShoot2.get());
+        DebugLog.log(3, referenceName, "mSpeed: " + Global.mShoot1.get() + " mSpeed2: " + Global.mShoot2.get());
     }
 }
 
 public class Global {
     public final static String referenceName = "Global";
     public final static EventManager eventManager = new EventManager();
-    public static XControl xControl1;
+    public       static XControl xControl1;
     
     public final static PneumaticsManager pnManager = new PneumaticsManager(1, 1, 1, 2);
     public final static PistonID pstFire = PneumaticsManager.addPiston(1, 1, 1, 2, true, false);
-    public final static PistonID pst2 = PneumaticsManager.addPiston(1, 3, 1, 4, true, false);
     
-    public static DriveTank driveTank;
-    public final static Jaguar mLB = new Jaguar(1, 3);
-    public final static Jaguar mRB = new Jaguar(1, 1);
-    public final static Jaguar mLF = new Jaguar(1, 2);
-    public final static Jaguar mRF = new Jaguar(1, 4);
-    public final static Jaguar mTilt = new Jaguar(1, 6);
-    public final static Jaguar mShoot = new Jaguar(1, 7);
+    public       static DriveTank driveTank;
+    public final static Jaguar mLB     = new Jaguar(1, 3);
+    public final static Jaguar mRB     = new Jaguar(1, 1);
+    public final static Jaguar mLF     = new Jaguar(1, 2);
+    public final static Jaguar mRF     = new Jaguar(1, 4);
+    public final static Jaguar mTilt   = new Jaguar(1, 6);
+    public final static Jaguar mShoot1 = new Jaguar(1, 7);
     public final static Jaguar mShoot2 = new Jaguar(1, 8);
     
     public final static Gyro gTilt = new Gyro(1, 2);
@@ -82,5 +81,26 @@ public class Global {
         EventManager.dropEvents();
         ListenerManager.dropListeners();
         Watchdog.getInstance().kill();
+    }
+    
+    public static void robotStop() {
+        EventManager.dropEvents();
+        ListenerManager.dropListeners();
+        Global.stopMotors();
+    }
+    
+    public static void robotPause() {
+        EventManager.toggleEventProcessing();
+        Global.stopMotors();
+    }
+    
+    public static void stopMotors() {
+        Global.mLF.set(0);
+        Global.mRF.set(0);
+        Global.mRB.set(0);
+        Global.mLB.set(0);
+        Global.mShoot1.set(0);
+        Global.mShoot2.set(0);
+        Global.mTilt.set(0);        
     }
 }
