@@ -18,7 +18,7 @@ public class EventSequencer extends Event {
         SequenceEvent ptr = ((SequenceEvent)e_autoSequence.elementAt(currentEventIndex));
         
         if(!ptr.isRunning()) {
-            ptr.startAutoEvent();
+            ptr.startSequenceEvent();
             DebugLog.log(4, referenceName, "Event " + ptr.getClass().getName() + " started ("+currentEventIndex+").");
         }
         ptr.execute();

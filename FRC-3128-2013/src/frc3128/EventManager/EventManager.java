@@ -10,29 +10,13 @@ class WatchdogEvent extends Event {
     }
 }
 
-class IPSCounter extends Event {
-    long firstSystemTime = -1;
-    long samples = 0;
-
-    public void execute() {
-        if(firstSystemTime == -1) {
-            firstSystemTime = System.currentTimeMillis();
-            return;
-        }
-        int timeDiff = (int) (System.currentTimeMillis() - firstSystemTime);
-        samples++;
-        if(samples % 200000 == 0)
-            DebugLog.log(4, referenceName, "Average IPS reading: " + (samples / ((float) (timeDiff / 1000.0))) + ", samples: " + samples + ", timeDiff " + timeDiff);
-    }
-}
-
 public class EventManager {
     private static Vector e_eventList = new Vector();
     private static Vector i_priorityList = new Vector();
     private static Vector b_singleEventList = new Vector();
     private static Vector b_deleteFlag = new Vector();
     private static String referenceName = "EventManager";
-    private static IPSCounter ipsCounter = new IPSCounter();
+    private static WatchdogEvent emDebugger = new WatchdogEvent();
     private static boolean eventProcessingPaused = false;
     private static final boolean duplicateEventCheck = false;
 
@@ -145,14 +129,14 @@ public class EventManager {
         b_deleteFlag.removeAllElements();
     }
 
-    public static void stopIPSCounter() {
-        EventManager.ipsCounter.cancelEvent();
+    public static void startWatchdog() {
+        EventManager.emDebugger.registerIterableEvent();
     }
-
-    public static void startIPSCounter() {
-        EventManager.ipsCounter.registerIterableEvent();
+    
+    public static void stopWatchdog() {
+        EventManager.emDebugger.cancelEvent();
     }
-
+    
     public static void toggleEventProcessing() {
         EventManager.eventProcessingPaused = !EventManager.eventProcessingPaused;
     }
