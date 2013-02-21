@@ -52,8 +52,7 @@ public class Global {
     public final static CameraCon dashConnection = new CameraCon();
     
     public static void initializeRobot() {
-        Global.gTilt.reset();
-        Global.gTurn.reset();
+        Global.gTilt.reset(); Global.gTurn.reset();
         DebugLog.setLogLevel(3);
         PneumaticsManager.setCompressorStateOff();
         DebugLog.log(3, referenceName, "ROBOT INITIALIZATION COMPLETE");

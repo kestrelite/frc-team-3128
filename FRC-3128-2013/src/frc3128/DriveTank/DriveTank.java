@@ -70,13 +70,16 @@ class LockOnToggle extends Event {
     public void execute() {
         if(!lockEnabled) {
             this.targetLock.startSequence();
-            Drive.pauseDrive(); DriveTank.tLock.disableLock();
             this.lockEnabled = true;
-        } else {
-            this.targetLock.stopSequence();             
-            Drive.startDrive(); DriveTank.tLock.lockTo(Global.gTilt.getAngle());
             
+            Drive.pauseDrive(); DriveTank.tLock.disableLock();
+        } else {
+            this.targetLock.stopSequence(); 
+            this.targetLock.resetSequence();
             this.lockEnabled = false;
+            
+            Drive.startDrive(); DriveTank.tLock.lockTo(Global.gTilt.getAngle());
+            Global.msTilt.releaseLock(targetLock);
         }
     }
 }
@@ -97,7 +100,6 @@ public class DriveTank {
         DebugLog.log(2, "DriveTank", "setPistonState on of Global.pstFire in DriveTank init - verify On is correct!");
         PneumaticsManager.setPistonStateOn(Global.pstFire); 
         Global.gTilt.reset(); DebugLog.log(2, "DriveTank", "GTilt reset starting manual! **Remove when running autonomous**");
-        //(new TiltTarget()).registerIterableEvent(); 
         tLock.registerIterableEvent();
     }
 }
