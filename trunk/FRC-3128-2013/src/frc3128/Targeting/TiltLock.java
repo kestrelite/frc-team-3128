@@ -13,8 +13,9 @@ public class TiltLock extends Event {
     public TiltLock(double angle) {this.angle = angle; this.isLocked = true;}
     
     public void lockTo(double angle) {
-        if(!TiltSync.getLock(this)) {
-            DebugLog.log(1, referenceName, "TiltLock could not get TiltSync Lock!");
+        if(!Global.msTilt.getLock(this)) {
+            DebugLog.log(1, referenceName, "TiltLock could not get TiltSync Lock, but lockTo was calleds!");
+            return;
         }
         this.angle = angle;
         this.isLocked = true;
@@ -30,17 +31,17 @@ public class TiltLock extends Event {
     
     public void execute() {
         if(!this.isLocked) return;
-        if(!TiltSync.hasLock(this)) {
+        if(!Global.msTilt.hasLock(this)) {
             DebugLog.log(2, referenceName, "TiltLock lost the TiltSync lock! Disabling...");
             this.isLocked = false; return;
         }
         
-        System.out.println("angle: "+angle+" cAng: "+Global.gTilt.getAngle() + " pow:" + Global.mTilt.get());
+        System.out.println("angle: "+angle+" cAng: "+Global.gTilt.getAngle() + " pow:" + Global.msTilt.get());
         if(this.angle < this.max) {DebugLog.log(1, referenceName, "Tilt targeted to invalid angle! " + this.angle); this.angle = this.max;} 
         if(this.angle > -1) {DebugLog.log(1, referenceName, "Tilt targeted to invalid angle! " + this.angle); this.angle = 0;}
         
         if(isLocked && Math.abs(angle - Global.gTilt.getAngle()) > 1.0) 
-            TiltSync.setTiltPow(this, -1.0*(angle - Global.gTilt.getAngle())/55.0+0.15);
-        else if(isLocked) TiltSync.setTiltPow(this, .15);
+            Global.msTilt.set(-1.0*(angle - Global.gTilt.getAngle())/55.0+0.15, this);
+        else if(isLocked) Global.msTilt.set(.15, this);
     }
 }
