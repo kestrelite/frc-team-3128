@@ -41,7 +41,6 @@ public class Global {
     public final static Jaguar mRB     = new Jaguar(1, 1);
     public final static Jaguar mLF     = new Jaguar(1, 2);
     public final static Jaguar mRF     = new Jaguar(1, 4);
-    //public final static Jaguar mTilt   = new Jaguar(1, 6);
     public final static MotorSync msTilt = new MotorSync(1, 6);
     public final static Jaguar mShoot1 = new Jaguar(1, 7);
     public final static Jaguar mShoot2 = new Jaguar(1, 8);
@@ -62,38 +61,36 @@ public class Global {
 
     public static void initializeDisabled() {
         PneumaticsManager.setCompressorStateOn();
+        Global.camLight.set(Relay.Value.kOn);
     }
 
     public static void initializeAuto() {
         EventManager.dropEvents(); ListenerManager.dropAllListeners();
         Global.gTilt.reset(); Global.gTurn.reset();
-        Global.camLight.set(Relay.Value.kOn);
         
         dashConnection.registerIterableEvent();
         
-        EventSequencer aAim = new EventSequencer();
-        aAim.addEvent(new AutoTurn());
-        aAim.addEvent(new SingleSequence() {
+        EventSequencer autoAim = new EventSequencer();
+        autoAim.addEvent(new AutoTurn());
+        autoAim.addEvent(new SingleSequence() {
             public void execute() {
                 Global.mShoot1.set(-1.0);
                 Global.mShoot2.set(-1.0);
             }
         });
-        aAim.addEvent(new ATiltLock());
-        aAim.addEvent(new AutoFire());
-        aAim.addEvent(new SingleSequence() {
+        autoAim.addEvent(new ATiltLock());
+        autoAim.addEvent(new AutoFire());
+        autoAim.addEvent(new SingleSequence() {
             public void execute() {
                 Global.mShoot1.set(0);
                 Global.mShoot2.set(0);
             }
         });        
-        aAim.startSequence();
+        autoAim.startSequence();
     }
 
     public static void initializeTeleop() {
         EventManager.dropEvents(); ListenerManager.dropAllListeners();
-        Global.gTilt.reset(); DebugLog.log(2, referenceName, "GTilt reset starting manual! **Remove for autonomous**");
-        Global.camLight.set(Relay.Value.kOn);
 
         Global.xControl1 = new XControl(1);
         driveTank = new DriveTank();
@@ -110,6 +107,7 @@ public class Global {
         EventManager.dropEvents();
         ListenerManager.dropAllListeners();
         Global.stopMotors();
+        PneumaticsManager.lockAllPistons();
     }
     
     public static void robotPause() {
