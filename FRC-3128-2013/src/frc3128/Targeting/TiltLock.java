@@ -10,7 +10,10 @@ public class TiltLock extends Event {
     private double max = -35.0;
     
     public TiltLock() {}
-    public TiltLock(double angle) {this.angle = angle; this.isLocked = true;}
+    public TiltLock(double angle) {
+        Global.msTilt.getLock(this); 
+        this.angle = angle; this.isLocked = true;
+    }
     
     public void lockTo(double angle) {
         if(!Global.msTilt.getLock(this)) {
@@ -22,10 +25,15 @@ public class TiltLock extends Event {
     }
     
     public void enableLock() {
+        if(!Global.msTilt.getLock(this)) {
+            DebugLog.log(1, referenceName, "TiltLock could not get the TiltSync Lock when enableLock was explicitly called!");
+            return;
+        }
         this.isLocked = true;
     }    
     
     public void disableLock() {
+        Global.msTilt.releaseLock(this);
         this.isLocked = false;
     }
     

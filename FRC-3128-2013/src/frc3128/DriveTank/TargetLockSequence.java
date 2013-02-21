@@ -14,16 +14,19 @@ public class TargetLockSequence extends EventSequencer {
         this.addEvent(new SingleSequence() {
             public void execute() {
                 Global.mShoot1.set(0.0);
-                Global.mShoot1.set(0.0);
+                Global.mShoot2.set(0.0);
             }
         });
+
         this.addEvent(new AutoTurn());
+        
         this.addEvent(new SingleSequence() {
             public void execute() {
                 Global.mShoot1.set(-1.0);
                 Global.mShoot2.set(-1.0);
             }
         });
+        
         this.addEvent(new MTiltLock());
     }
 }
@@ -55,8 +58,10 @@ class MTiltLock extends SequenceEvent {
     }
 
     public boolean exitConditionMet() {
-        if(taskDone) Global.msTilt.releaseLock(this);
-        this.isLocked = false;
+        if(taskDone) {
+            Global.msTilt.releaseLock(this);
+            this.isLocked = false;
+        }
         return taskDone;
     }
 }

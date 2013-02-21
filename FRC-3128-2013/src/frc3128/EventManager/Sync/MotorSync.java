@@ -13,10 +13,7 @@ public class MotorSync {
     }
     
     public boolean getLock(Object o) {
-        if(this.isLocked) {
-            DebugLog.log(2, this.toString(), "MotorLock was attempted by " + o + " but it was not available!");
-            return false;
-        }
+        if(this.isLocked) {return false;}
         
         this.isLocked = true;
         this.lockedBy = o;

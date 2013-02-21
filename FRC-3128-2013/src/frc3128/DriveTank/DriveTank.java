@@ -8,13 +8,19 @@ import frc3128.PneumaticsManager.PneumaticsManager;
 import frc3128.Targeting.TiltLock;
 
 class Drive extends Event {
-    private boolean updateDrive = true;
+    private static boolean updateDrive = true;
     
-    public void pauseDrive() {this.updateDrive = false;}
-    public void startDrive() {this.updateDrive = true;}
+    public static void pauseDrive() {
+        Drive.updateDrive = false;
+        Global.mLB.set(0);
+        Global.mRB.set(0);
+        Global.mLF.set(0);
+        Global.mRF.set(0);
+    }
+    public static void startDrive() {Drive.updateDrive = true;}
     
     public void execute() {
-        if(!this.updateDrive) return;
+        if(!Drive.updateDrive) return;
         
         double x = Global.xControl1.x1;
         double y = Global.xControl1.y1;
@@ -22,22 +28,23 @@ class Drive extends Event {
         if (Math.abs(y) < 0.15) y = 0;
         if (Math.abs(x) < 0.15) x = 0;
                 
-        Global.mLB.set(-1.0 * ((y - (x / 1.5))));
+        Global.mLB.set(-1.0 * ( (y - (x / 1.5))));
         Global.mRB.set(-1.0 * (-(y + (x / 1.5))));
-        Global.mLF.set(-1.0 * ((y - (x / 1.5))));
+        Global.mLF.set(-1.0 * ( (y - (x / 1.5))));
         Global.mRF.set(-1.0 * (-(y + (x / 1.5))));
     }
 }
 
 class TiltTriggers extends Event {
     public void execute() {
-        if(Global.msTilt.hasLock(this)) {
-            if(Math.abs(Global.xControl1.triggers) > 100) {
-                DriveTank.tLock.disableLock();
-                Global.msTilt.set(1.0*0.4*(Global.xControl1.triggers/Math.abs(Global.xControl1.triggers)), this);
-            } else
-                DriveTank.tLock.lockTo(Global.gTilt.getAngle());
-        } else Global.msTilt.getLock(this);
+        if(Math.abs(Global.xControl1.triggers) > 100) {
+            DriveTank.tLock.disableLock(); if(!Global.msTilt.getLock(this)) return;
+            DebugLog.log(2, referenceName, "Verify the polarity is correct in TiltTriggers event!");
+            Global.msTilt.set(1.0*0.4*(Global.xControl1.triggers/Math.abs(Global.xControl1.triggers)), this);
+        } else {
+            Global.msTilt.releaseLock(this);
+            DriveTank.tLock.lockTo(Global.gTilt.getAngle());                
+        }
     }
 }
 
@@ -62,11 +69,13 @@ class LockOnToggle extends Event {
     
     public void execute() {
         if(!lockEnabled) {
-            this.lockEnabled = true;
             this.targetLock.startSequence();
+            Drive.pauseDrive(); DriveTank.tLock.disableLock();
+            this.lockEnabled = true;
         } else {
-            this.targetLock.stopSequence();
-            Global.msTilt.releaseLock(targetLock);
+            this.targetLock.stopSequence();             
+            Drive.startDrive(); DriveTank.tLock.lockTo(Global.gTilt.getAngle());
+            
             this.lockEnabled = false;
         }
     }
@@ -77,12 +86,13 @@ public class DriveTank {
     
     public DriveTank() {
         ListenerManager.addListener(new Drive(), "updateJoy1");
+
         ListenerManager.addListener(new TiltTriggers(), "updateTriggers");
+        ListenerManager.addListener(new LockOnToggle(), "buttonLBDown");
+        
         ListenerManager.addListener(new PistonFlip(), "buttonRBDown");
         ListenerManager.addListener(new PistonFlip(), "buttonRBUp");
         ListenerManager.addListener(new SpinToggle(), "buttonADown");
-        
-        ListenerManager.addListener(new LockOnToggle(), "buttonLBDown");
         
         DebugLog.log(2, "DriveTank", "setPistonState on of Global.pstFire in DriveTank init - verify On is correct!");
         PneumaticsManager.setPistonStateOn(Global.pstFire); 
