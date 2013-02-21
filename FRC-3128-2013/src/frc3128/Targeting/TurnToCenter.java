@@ -2,7 +2,6 @@ package frc3128.Targeting;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import frc3128.DebugLog;
-import frc3128.DriveTank.StopDrive;
 import frc3128.EventManager.Event;
 import frc3128.Global;
 

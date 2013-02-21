@@ -10,7 +10,7 @@ public class ATiltLock extends SequenceEvent {
     private double angle = 0;
     private boolean isLocked = false;
     private boolean taskDone = false;
-    private double max = -35.0;
+    private double max = -34.0;
     
     public void execute() {
         if(!Global.msTilt.hasLock(this)) Global.msTilt.getLock(this);        
@@ -22,14 +22,15 @@ public class ATiltLock extends SequenceEvent {
             else return;
         }
         
-        System.out.println("angle: "+angle+" cAng: "+Global.gTilt.getAngle() + " pow:" + Global.msTilt.get());
-        
+        DebugLog.log(5, referenceName, "angle: "+angle+" cAng: "+Global.gTilt.getAngle() + " pow:" + Global.msTilt.get());
         if(this.angle < this.max) {DebugLog.log(1, referenceName, "Tilt targeted to invalid angle! " + this.angle); this.angle = this.max;} 
         if(this.angle > -1) {DebugLog.log(1, referenceName, "Tilt targeted to invalid angle! " + this.angle); this.angle = 0;}
         
         if(isLocked && Math.abs(angle - Global.gTilt.getAngle()) > 1.0) 
             Global.msTilt.set(-1.0*(angle - Global.gTilt.getAngle())/55.0+0.15, this);
-        else {if(isLocked) Global.msTilt.set(.15, this); taskDone = true;}
+        else {
+            if(isLocked) {Global.msTilt.set(.15, this); taskDone = true;}
+        }
     }
 
     public boolean exitConditionMet() {
