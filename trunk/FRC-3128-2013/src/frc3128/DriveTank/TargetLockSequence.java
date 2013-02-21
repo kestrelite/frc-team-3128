@@ -57,6 +57,7 @@ class MTiltLock extends SequenceEvent {
 
     public boolean exitConditionMet() {
         if(taskDone) TiltSync.releaseLock(this);
+        this.isLocked = false;
         return taskDone;
     }
 }

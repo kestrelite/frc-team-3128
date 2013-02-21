@@ -57,7 +57,6 @@ class SpinToggle extends Event {
     }
 }
 
-
 class LockOnToggle extends Event {
     private boolean lockEnabled = false;
     private TargetLockSequence targetLock = new TargetLockSequence();
@@ -65,9 +64,11 @@ class LockOnToggle extends Event {
     public void execute() {
         if(!lockEnabled) {
             this.lockEnabled = true;
-            this.targetLock.registerIterableEvent();
+            this.targetLock.startSequence();
         } else {
-            
+            this.targetLock.stopSequence();
+            TiltSync.releaseLock(targetLock);
+            this.lockEnabled = false;
         }
     }
 }
@@ -87,6 +88,7 @@ public class DriveTank {
         DebugLog.log(2, "DriveTank", "setPistonState on of Global.pstFire in DriveTank init - verify On is correct!");
         PneumaticsManager.setPistonStateOn(Global.pstFire); 
         Global.gTilt.reset(); DebugLog.log(2, "DriveTank", "GTilt reset starting manual! **Remove when running autonomous**");
-        //(new TiltTarget()).registerIterableEvent(); tLock.registerIterableEvent();
+        //(new TiltTarget()).registerIterableEvent(); 
+        tLock.registerIterableEvent();
     }
 }

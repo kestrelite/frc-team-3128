@@ -41,4 +41,8 @@ public class EventSequencer extends Event {
     public void startSequence() {
         this.registerIterableEvent();
     }
+    
+    public void stopSequence() {
+        this.cancelEvent();
+    }
 }
