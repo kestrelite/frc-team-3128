@@ -12,19 +12,20 @@ import frc3128.Global;
 public class TargetLockSequence extends EventSequencer {
     public TargetLockSequence() {
         this.addEvent(new SequenceEvent() {
-            public void execute() {
-                if(!Global.msTilt.hasLock(this)) {Global.msTilt.getLock(this); return;}
-                Global.msTilt.set(-0.4, this);
-            }
-            
             public boolean exitConditionMet() {
                 if(this.getRunTimeMillis() > 750) Global.msTilt.releaseLock(this);
                 return (this.getRunTimeMillis() > 750);
             }
+
+            public void execute() {
+                Global.msTilt.set(-0.4, this);
+            }
         });
         this.addEvent(new SingleSequence() {
             public void execute() {
+                Global.msTilt.getLock(this);
                 Global.msTilt.set(0, this);
+                Global.msTilt.releaseLock(this);
             }
         });
         
