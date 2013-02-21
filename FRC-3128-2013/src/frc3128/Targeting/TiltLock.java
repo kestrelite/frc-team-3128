@@ -17,7 +17,7 @@ public class TiltLock extends Event {
     
     public void lockTo(double angle) {
         if(!Global.msTilt.getLock(this)) {
-            DebugLog.log(1, referenceName, "TiltLock could not get TiltSync Lock, but lockTo was calleds!");
+            DebugLog.log(1, referenceName, "TiltLock could not get TiltSync Lock when lockTo was explicitly called!");
             return;
         }
         this.angle = angle;
