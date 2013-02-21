@@ -13,8 +13,7 @@ public class ATiltLock extends SequenceEvent {
     private double max = -35.0;
     
     public void execute() {
-        if(!Global.msTilt.hasLock(this)) Global.msTilt.getLock(this);
-        
+        if(!Global.msTilt.hasLock(this)) Global.msTilt.getLock(this);        
         if(this.getRunTimeMillis() > 3000) Global.robotStop();
         
         if(!isLocked) {
@@ -34,6 +33,10 @@ public class ATiltLock extends SequenceEvent {
     }
 
     public boolean exitConditionMet() {
+        if(taskDone) {
+            Global.msTilt.releaseLock(this);
+            this.isLocked = false;
+        }
         return taskDone;
     }
 }
