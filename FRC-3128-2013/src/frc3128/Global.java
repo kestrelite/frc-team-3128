@@ -15,6 +15,7 @@ import frc3128.EventManager.EventManager;
 import frc3128.EventManager.EventSequence.EventSequencer;
 import frc3128.EventManager.EventSequence.SingleSequence;
 import frc3128.EventManager.ListenerManager;
+import frc3128.EventManager.Sync.MotorSync;
 import frc3128.PneumaticsManager.PistonID;
 import frc3128.PneumaticsManager.PneumaticsManager;
 
@@ -40,7 +41,8 @@ public class Global {
     public final static Jaguar mRB     = new Jaguar(1, 1);
     public final static Jaguar mLF     = new Jaguar(1, 2);
     public final static Jaguar mRF     = new Jaguar(1, 4);
-    public final static Jaguar mTilt   = new Jaguar(1, 6);
+    //public final static Jaguar mTilt   = new Jaguar(1, 6);
+    public final static MotorSync msTilt = new MotorSync(1, 6);
     public final static Jaguar mShoot1 = new Jaguar(1, 7);
     public final static Jaguar mShoot2 = new Jaguar(1, 8);
     
@@ -122,6 +124,6 @@ public class Global {
         Global.mLB.set(0);
         Global.mShoot1.set(0);
         Global.mShoot2.set(0);
-        Global.mTilt.set(0);        
+        Global.msTilt.overridePower(0);
     }
 }

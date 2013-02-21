@@ -6,7 +6,6 @@ import frc3128.EventManager.ListenerManager;
 import frc3128.Global;
 import frc3128.PneumaticsManager.PneumaticsManager;
 import frc3128.Targeting.TiltLock;
-import frc3128.Targeting.TiltSync;
 
 class Drive extends Event {
     private boolean updateDrive = true;
@@ -32,13 +31,13 @@ class Drive extends Event {
 
 class TiltTriggers extends Event {
     public void execute() {
-        if(TiltSync.hasLock(this)) {
+        if(Global.msTilt.hasLock(this)) {
             if(Math.abs(Global.xControl1.triggers) > 100) {
                 DriveTank.tLock.disableLock();
-                TiltSync.setTiltPow(this, 1.0*0.4*(Global.xControl1.triggers/Math.abs(Global.xControl1.triggers)));
+                Global.msTilt.set(1.0*0.4*(Global.xControl1.triggers/Math.abs(Global.xControl1.triggers)), this);
             } else
                 DriveTank.tLock.lockTo(Global.gTilt.getAngle());
-        } else TiltSync.getLock(this);
+        } else Global.msTilt.getLock(this);
     }
 }
 
@@ -67,7 +66,7 @@ class LockOnToggle extends Event {
             this.targetLock.startSequence();
         } else {
             this.targetLock.stopSequence();
-            TiltSync.releaseLock(targetLock);
+            Global.msTilt.releaseLock(targetLock);
             this.lockEnabled = false;
         }
     }
