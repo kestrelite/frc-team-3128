@@ -44,8 +44,8 @@ public class TargetLockSequence extends EventSequencer {
                 Global.mShoot2.set(-1.0);
             }
         });
-        
-        this.addEvent(new MTiltLock());
+ 
+        //this.addEvent(new MTiltLock());
     }
 }
 

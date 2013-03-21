@@ -27,8 +27,8 @@ public class XControlMap {
         case 4:  return "Y";
         case 5:  return "LB";
         case 6:  return "RB";
-        case 7:  return "back";
-        case 8:  return "start";
+        case 7:  return "Back";
+        case 8:  return "Start";
         case 9:  return "L3";
         case 10: return "R3";
         default: DebugLog.log(1, "ButtonMap", "A button argument was passed to ButtonMap that does not exist!");

@@ -13,7 +13,7 @@ public class XControl extends Event {
     public XControl(int port) {
         xControl = new Joystick(port);
         this.registerIterableEvent();
-        DebugLog.log(4, referenceName, "Controller added self to event manager!");
+        DebugLog.log(4, referenceName, "XBox Controller added self to event manager!");
     }
     
     public void execute() {

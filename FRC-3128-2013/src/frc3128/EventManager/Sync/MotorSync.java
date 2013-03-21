@@ -34,12 +34,17 @@ public class MotorSync {
         this.lockedBy = o;
     }
     
+    public Object getLockingObject() {return this.lockedBy;}
+    
     public boolean hasLock(Object o) {
         return (this.lockedBy.equals(o));
     }
     
     public void releaseLock(Object o) {
-        if(this.lockedBy.equals(o)) {this.isLocked = false; this.lockedBy = new Object();}
+        if(this.lockedBy.equals(o)) {
+            DebugLog.log(4, this.toString(), "MotorLock was released by " + o + "."); 
+            this.isLocked = false; this.lockedBy = null;
+        }
         else DebugLog.log(1, this.toString(), "MotorLock was released by " + o + ", but it did not have the lock!");
     }
     
@@ -47,12 +52,12 @@ public class MotorSync {
         this.mtr.set(spd);
         this.lockedBy = new Object();
         this.isLocked = false;
-        DebugLog.log(2, this.toString(), "MotorLock was broken by an override statement! Locks released.");
+        DebugLog.log(5, this.toString(), "MotorLock was broken by an override statement! Locks released.");
     }
     
     public void set(double spd, Object o) {
         if(this.lockedBy.equals(o)) this.mtr.set(spd);
-        else DebugLog.log(3, this.toString(), "MotorLock had speed set by " + o + ", but it did not have the lock!");
+        else DebugLog.log(4, this.toString(), "MotorLock had speed set by " + o + ", but it did not have the lock!");
     }
     public double get() {return this.mtr.get();}
 }

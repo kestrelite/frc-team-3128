@@ -18,6 +18,7 @@ public class TiltLock extends Event {
     public void lockTo(double angle) {
         if(!Global.msTilt.getLock(this)) {
             DebugLog.log(1, referenceName, "TiltLock could not get TiltSync Lock when lockTo was explicitly called!");
+            this.isLocked = false;
             return;
         }
         this.angle = angle;
@@ -27,6 +28,7 @@ public class TiltLock extends Event {
     public void enableLock() {
         if(!Global.msTilt.getLock(this)) {
             DebugLog.log(1, referenceName, "TiltLock could not get the TiltSync Lock when enableLock was explicitly called!");
+            this.isLocked = false;
             return;
         }
         this.isLocked = true;
@@ -40,16 +42,16 @@ public class TiltLock extends Event {
     public void execute() {
         if(!this.isLocked) return;
         if(!Global.msTilt.hasLock(this)) {
-            DebugLog.log(2, referenceName, "TiltLock lost the TiltSync lock! Disabling...");
+            DebugLog.log(3, referenceName, "TiltLock lost the TiltSync lock! Disabling...");
             this.isLocked = false; return;
         }
         
         System.out.println("angle: "+angle+" cAng: "+Global.gTilt.getAngle() + " pow:" + Global.msTilt.get());
         if(this.angle < this.max) {DebugLog.log(1, referenceName, "Tilt targeted to invalid angle! " + this.angle); this.angle = this.max;} 
-        if(this.angle > -1) {DebugLog.log(1, referenceName, "Tilt targeted to invalid angle! " + this.angle); this.angle = 0;}
+        if(this.angle > -1) {DebugLog.log(1, referenceName, "Tilt targeted to invalid angle! " + this.angle); this.angle = -2;}
         
-        if(isLocked && Math.abs(angle - Global.gTilt.getAngle()) > 1.0) 
-            Global.msTilt.set(-1.0*(angle - Global.gTilt.getAngle())/55.0+0.15, this);
-        else if(isLocked) Global.msTilt.set(.15, this);
+        if(isLocked && Math.abs(angle - Global.gTilt.getAngle()) > 1.5) 
+            Global.msTilt.set(-1.0*(angle - Global.gTilt.getAngle())/70.0+0.15, this);
+        else if(isLocked) Global.msTilt.set(0.10, this);
     }
 }

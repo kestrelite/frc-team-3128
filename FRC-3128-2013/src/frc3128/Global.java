@@ -1,42 +1,56 @@
 package frc3128;
 
+import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Watchdog;
-import frc3128.AutoTarget.ATiltLock;
-import frc3128.AutoTarget.AutoFire;
-import frc3128.AutoTarget.AutoTurn;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc3128.Connection.CameraCon;
-import frc3128.Controller.XControl;
-import frc3128.DriveTank.DriveTank;
+import frc3128.Controller.AttackControl;
+import frc3128.DriveTank.DriveTankAttack;
 import frc3128.EventManager.Event;
 import frc3128.EventManager.EventManager;
-import frc3128.EventManager.EventSequence.EventSequencer;
-import frc3128.EventManager.EventSequence.SingleSequence;
 import frc3128.EventManager.ListenerManager;
 import frc3128.EventManager.Sync.MotorSync;
 import frc3128.PneumaticsManager.PistonID;
 import frc3128.PneumaticsManager.PneumaticsManager;
 
-class DebugOutputs extends Event {
+class DashboardOutputs extends Event {
+    private long startIterTime = -1;
+    private long lastIterTime = -1;
+    private long ctr;
+    
     public void execute() {
-        DebugLog.log(4, referenceName, "X1:" + Global.xControl1.x1 + ", Y1:" + Global.xControl1.y1);
-        DebugLog.log(4, referenceName, "Y2: " + Global.xControl1.y2);
-        DebugLog.log(3, referenceName, "gTilt:" + Global.gTilt.getAngle() + ", gTurn:" + Global.gTurn.getAngle());
-        DebugLog.log(3, referenceName, "mSpeed: " + Global.mShoot1.get() + " mSpeed2: " + Global.mShoot2.get());
+        if(startIterTime == -1) {startIterTime = System.currentTimeMillis();}
+        this.lastIterTime = System.currentTimeMillis();
+        ctr++;
+        
+        SmartDashboard.putNumber("gTilt: ", Global.gTilt.getAngle());
+        SmartDashboard.putNumber("gTurn: ", Global.gTurn.getAngle());
+        
+        SmartDashboard.putBoolean("Comp: ", PneumaticsManager.getCompressorState());
+        SmartDashboard.putNumber("mSpin: ", Global.mShoot1.get());
+        SmartDashboard.putNumber("mLB: ", Global.mLB.get());
+        SmartDashboard.putNumber("mRB: ", Global.mRB.get());
+        SmartDashboard.putNumber("mLF: ", Global.mLF.get());
+        SmartDashboard.putNumber("mRF: ", Global.mRF.get());
+        
+        SmartDashboard.putNumber("Avg refresh: ", ((double)(System.currentTimeMillis() - startIterTime)) / ((double)ctr));
+        SmartDashboard.putNumber("Imd refresh: ", (System.currentTimeMillis() - lastIterTime));
     }
 }
 
 public class Global {
     public final static String referenceName = "Global";
     public final static EventManager eventManager = new EventManager();
-    public       static XControl xControl1;
+    public       static AttackControl aControl1;
+    public       static AttackControl aControl2;
     
     public final static PneumaticsManager pnManager = new PneumaticsManager(1, 1, 1, 2);
     public final static PistonID pstFire = PneumaticsManager.addPiston(1, 1, 1, 2, true, false);
     
-    public       static DriveTank driveTank;
+    public       static DriveTankAttack driveTank;
     public final static Jaguar mLB     = new Jaguar(1, 3);
     public final static Jaguar mRB     = new Jaguar(1, 1);
     public final static Jaguar mLF     = new Jaguar(1, 2);
@@ -48,19 +62,20 @@ public class Global {
     public final static Gyro gTilt = new Gyro(1, 2);
     public final static Gyro gTurn = new Gyro(1, 1);
     public final static Relay camLight = new Relay(1, 1, Relay.Direction.kForward);
+    public final static AnalogChannel tiltAngle = new AnalogChannel(1);
 
     public final static CameraCon dashConnection = new CameraCon();
     
     public static void initializeRobot() {
         Global.gTilt.reset(); Global.gTurn.reset();
-        DebugLog.setLogLevel(3);
-        PneumaticsManager.setCompressorStateOff();
+        PneumaticsManager.setCompressorStateOn();
+        DebugLog.setLogLevel(DebugLog.LVL_INFO);
         DebugLog.log(3, referenceName, "ROBOT INITIALIZATION COMPLETE");
     }
 
     public static void initializeDisabled() {
-        PneumaticsManager.setCompressorStateOn();
         Global.camLight.set(Relay.Value.kOn);
+        PneumaticsManager.setCompressorStateOn();
     }
 
     public static void initializeAuto() {
@@ -68,32 +83,17 @@ public class Global {
         Global.gTilt.reset(); Global.gTurn.reset();
         
         dashConnection.registerIterableEvent();
-        
-        EventSequencer autoAim = new EventSequencer();
-        autoAim.addEvent(new AutoTurn());
-        autoAim.addEvent(new SingleSequence() {
-            public void execute() {
-                Global.mShoot1.set(-1.0);
-                Global.mShoot2.set(-1.0);
-            }
-        });
-        autoAim.addEvent(new ATiltLock());
-        autoAim.addEvent(new AutoFire());
-        autoAim.addEvent(new SingleSequence() {
-            public void execute() {
-                Global.mShoot1.set(0);
-                Global.mShoot2.set(0);
-            }
-        });        
-        autoAim.startSequence();
     }
 
     public static void initializeTeleop() {
         EventManager.dropEvents(); ListenerManager.dropAllListeners();
-
-        Global.xControl1 = new XControl(1);
-        driveTank = new DriveTank();
+        
+        Global.aControl1 = new AttackControl(1);
+        Global.aControl2 = new AttackControl(2);        
+        driveTank = new DriveTankAttack();
+        
         dashConnection.registerIterableEvent();
+        (new DashboardOutputs()).registerIterableEvent();
     }
 
     public static void robotKill() {
@@ -106,7 +106,6 @@ public class Global {
         EventManager.dropEvents();
         ListenerManager.dropAllListeners();
         Global.stopMotors();
-        PneumaticsManager.lockAllPistons();
     }
     
     public static void robotPause() {
