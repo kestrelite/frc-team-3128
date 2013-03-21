@@ -9,7 +9,7 @@ import frc3128.EventManager.EventSequence.SequenceEvent;
 import frc3128.EventManager.EventSequence.SingleSequence;
 import frc3128.Global;
 
-public class TargetLockSequence extends EventSequencer {
+/*public class TargetLockSequence extends EventSequencer {
     public TargetLockSequence() {
         this.addEvent(new SequenceEvent() {
             public boolean exitConditionMet() {
@@ -82,4 +82,4 @@ class MTiltLock extends SequenceEvent {
         }
         return taskDone;
     }
-}
+}*/
