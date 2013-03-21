@@ -6,7 +6,7 @@ import frc3128.DebugLog;
 import frc3128.EventManager.EventSequence.SequenceEvent;
 import frc3128.Global;
 
-public class ATiltLock extends SequenceEvent {
+/*public class ATiltLock extends SequenceEvent {
     private double angle = 0;
     private boolean isLocked = false;
     private boolean taskDone = false;
@@ -40,4 +40,4 @@ public class ATiltLock extends SequenceEvent {
         }
         return taskDone;
     }
-}
+}*/

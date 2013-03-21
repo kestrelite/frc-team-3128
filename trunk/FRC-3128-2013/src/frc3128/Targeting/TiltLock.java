@@ -4,7 +4,7 @@ import frc3128.DebugLog;
 import frc3128.EventManager.Event;
 import frc3128.Global;
 
-public class TiltLock extends Event {
+/*public class TiltLock extends Event {
     private double angle = 0;
     private boolean isLocked = false;
     private double max = -35.0;
@@ -54,4 +54,4 @@ public class TiltLock extends Event {
             Global.msTilt.set(-1.0*(angle - Global.gTilt.getAngle())/70.0+0.15, this);
         else if(isLocked) Global.msTilt.set(0.10, this);
     }
-}
+}*/

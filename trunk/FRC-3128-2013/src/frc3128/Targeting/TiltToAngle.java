@@ -5,7 +5,7 @@ import frc3128.EventManager.Event;
 import frc3128.EventManager.EventSequence.SequenceEvent;
 import frc3128.Global;
 
-public class TiltToAngle extends SequenceEvent {
+/*public class TiltToAngle extends SequenceEvent {
 
     private final double thresh = 1;
     private double targetAngle = -1;
@@ -31,4 +31,4 @@ public class TiltToAngle extends SequenceEvent {
         }
         return false;
     }
-}
+}*/

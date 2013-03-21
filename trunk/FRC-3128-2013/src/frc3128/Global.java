@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc3128.Connection.CameraCon;
 import frc3128.Controller.AttackControl;
 import frc3128.DriveTank.DriveTankAttack;
+import frc3128.DriveTank.MotorPID;
 import frc3128.EventManager.Event;
 import frc3128.EventManager.EventManager;
 import frc3128.EventManager.ListenerManager;
-import frc3128.EventManager.Sync.MotorSync;
 import frc3128.PneumaticsManager.PistonID;
 import frc3128.PneumaticsManager.PneumaticsManager;
 
@@ -46,6 +46,7 @@ public class Global {
     public final static EventManager eventManager = new EventManager();
     public       static AttackControl aControl1;
     public       static AttackControl aControl2;
+    public       static AttackControl aControl3;
     
     public final static PneumaticsManager pnManager = new PneumaticsManager(1, 1, 1, 2);
     public final static PistonID pstFire = PneumaticsManager.addPiston(1, 1, 1, 2, true, false);
@@ -55,14 +56,14 @@ public class Global {
     public final static Jaguar mRB     = new Jaguar(1, 1);
     public final static Jaguar mLF     = new Jaguar(1, 2);
     public final static Jaguar mRF     = new Jaguar(1, 4);
-    public final static MotorSync msTilt = new MotorSync(1, 6);
+    public final static MotorPID mPIDTilt = new MotorPID(1, 6, 1);
     public final static Jaguar mShoot1 = new Jaguar(1, 7);
     public final static Jaguar mShoot2 = new Jaguar(1, 8);
     
     public final static Gyro gTilt = new Gyro(1, 2);
     public final static Gyro gTurn = new Gyro(1, 1);
     public final static Relay camLight = new Relay(1, 1, Relay.Direction.kForward);
-    public final static AnalogChannel tiltAngle = new AnalogChannel(1);
+    //public final static AnalogChannel tiltAngle = new AnalogChannel(1);
 
     public final static CameraCon dashConnection = new CameraCon();
     
@@ -71,6 +72,8 @@ public class Global {
         PneumaticsManager.setCompressorStateOn();
         DebugLog.setLogLevel(DebugLog.LVL_INFO);
         DebugLog.log(3, referenceName, "ROBOT INITIALIZATION COMPLETE");
+        
+        Global.mPIDTilt.setPID(1, 0, 0);
     }
 
     public static void initializeDisabled() {
@@ -90,6 +93,7 @@ public class Global {
         
         Global.aControl1 = new AttackControl(1);
         Global.aControl2 = new AttackControl(2);        
+        Global.aControl3 = new AttackControl(3);        
         driveTank = new DriveTankAttack();
         
         dashConnection.registerIterableEvent();
@@ -120,6 +124,16 @@ public class Global {
         Global.mLB.set(0);
         Global.mShoot1.set(0);
         Global.mShoot2.set(0);
-        Global.msTilt.overridePower(0);
+        Global.mPIDTilt.stop();
+    }
+    
+    public static double getAngleFrom(AnalogChannel c) {
+        double voltage = 0, value = 0;
+        for(char i = 0; i<10; i++) {
+            voltage += c.getVoltage();
+            value += c.getValue();
+        }
+        voltage /= 10; value /= 10;
+        return value;
     }
 }
