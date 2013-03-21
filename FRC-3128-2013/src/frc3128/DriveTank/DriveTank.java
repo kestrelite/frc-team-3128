@@ -1,15 +1,14 @@
 package frc3128.DriveTank;
 
-import frc3128.DebugLog;
 import frc3128.EventManager.Event;
 import frc3128.EventManager.ListenerManager;
 import frc3128.Global;
 import frc3128.PneumaticsManager.PneumaticsManager;
 import frc3128.Targeting.TiltLock;
 
-class Drive extends Event {
+/*class Drive extends Event {
     private static boolean updateDrive = true;
-    
+
     public static void pauseDrive() {
         Drive.updateDrive = false;
         Global.mLB.set(0);
@@ -17,89 +16,135 @@ class Drive extends Event {
         Global.mLF.set(0);
         Global.mRF.set(0);
     }
-    public static void startDrive() {Drive.updateDrive = true;}
-    
+
+    public static void startDrive() {
+        Drive.updateDrive = true;
+    }
+
     public void execute() {
-        if(!Drive.updateDrive) return;
-        
+        if (!Drive.updateDrive) return;
+
         double x = Global.xControl1.x1;
         double y = Global.xControl1.y1;
 
         if (Math.abs(y) < 0.15) y = 0;
         if (Math.abs(x) < 0.15) x = 0;
-                
-        Global.mLB.set(-1.0 * ( (y - (x / 1.5))));
-        Global.mRB.set(-1.0 * (-(y + (x / 1.5))));
-        Global.mLF.set(-1.0 * ( (y - (x / 1.5))));
-        Global.mRF.set(-1.0 * (-(y + (x / 1.5))));
+
+        Global.mLB.set(-1.0 * ((y - (x / 2.5))));
+        Global.mRB.set(-1.0 * (-(y + (x / 2.5))));
+        Global.mLF.set(-1.0 * ((y - (x / 2.5))));
+        Global.mRF.set(-1.0 * (-(y + (x / 2.5))));
     }
 }
 
-class TiltTriggers extends Event {
+class TiltY2 extends Event {
     public void execute() {
-        if(Math.abs(Global.xControl1.triggers) > 100) {
-            DriveTank.tLock.disableLock(); if(!Global.msTilt.getLock(this)) return;
-            DebugLog.log(2, referenceName, "Verify the polarity is correct in TiltTriggers event!");
-            Global.msTilt.set(1.0*0.4*(Global.xControl1.triggers/Math.abs(Global.xControl1.triggers)), this);
-        } else {
-            Global.msTilt.releaseLock(this);
-            DriveTank.tLock.lockTo(Global.gTilt.getAngle());                
-        }
+        if (Math.abs(Global.xControl1.y2) > .15)
+            Global.msTilt.overridePower((Global.xControl1.y2 < 0 ? 0.05 : 0.27));
+        else
+            Global.msTilt.overridePower(.15);
+    }
+}
+
+class JoltTilt extends Event {
+    public void execute() {
+        Global.msTilt.overridePower(-0.1);
+        (new Event(true) {
+            public void execute() {
+                Global.msTilt.overridePower(0.15);
+            }
+        }).registerTimedEvent(500);
     }
 }
 
 class PistonFlip extends Event {
     public void execute() {
-        PneumaticsManager.setPistonInvertState(Global.pstFire);
+        if (Global.mShoot1.get() == -1.0) {
+            PneumaticsManager.setPistonInvertState(Global.pstFire);
+        }
     }
 }
 
 class SpinToggle extends Event {
+
     boolean spinRunning = false;
+
     public void execute() {
-        Global.mShoot1.set((spinRunning) ? -0.11 : -1.0);
-        Global.mShoot2.set((spinRunning) ? -0.11 : -1.0);
+        Global.mShoot1.set((spinRunning) ? 0.0 : -1.0);
+        Global.mShoot2.set((spinRunning) ? 0.0 : -1.0);
         spinRunning = !spinRunning;
     }
 }
 
+class SpinOn extends Event {
+    public void execute() {
+        Global.mShoot1.set(-1.0);
+        Global.mShoot2.set(-1.0);
+    }
+}
+
+class SpinOff extends Event {
+    public void execute() {
+        Global.mShoot1.set(0);
+        Global.mShoot2.set(0);
+    }
+}
+
+class CompressorOff extends Event {
+    public void execute() {
+        PneumaticsManager.setCompressorStateOff();
+    }
+}
+
+class CompressorOn extends Event {
+    public void execute() {
+        PneumaticsManager.setCompressorStateOn();
+    }
+}
+
+
 class LockOnToggle extends Event {
     private boolean lockEnabled = false;
     private TargetLockSequence targetLock = new TargetLockSequence();
-    
+
     public void execute() {
-        if(!lockEnabled) {
+        if (!lockEnabled) {
             this.targetLock.startSequence();
             this.lockEnabled = true;
-            
-            Drive.pauseDrive(); DriveTank.tLock.disableLock();
+
+            DriveAttack.pauseDrive();
+            DriveTank.tLock.disableLock();
         } else {
-            this.targetLock.stopSequence(); 
+            this.targetLock.stopSequence();
             this.targetLock.resetSequence();
             this.lockEnabled = false;
-            
-            Drive.startDrive(); DriveTank.tLock.lockTo(Global.gTilt.getAngle());
+
+            DriveAttack.startDrive();
+            DriveTank.tLock.lockTo(Global.gTilt.getAngle());
             Global.msTilt.releaseLock(targetLock);
         }
     }
 }
 
 public class DriveTank {
-    public static TiltLock tLock = new TiltLock();
-    
-    public DriveTank() {
-        ListenerManager.addListener(new Drive(), "updateJoy1");
 
-        ListenerManager.addListener(new TiltTriggers(), "updateTriggers");
-        ListenerManager.addListener(new LockOnToggle(), "buttonLBDown");
-        
+    public static TiltLock tLock = new TiltLock();
+
+    public DriveTank() {
+        ListenerManager.addListener(new DriveAttack(), "updateJoy1");
+        ListenerManager.addListener(new TiltY2(), "updateJoy2");
+
+        ListenerManager.addListener(new JoltTilt(), "buttonLBDown");
         ListenerManager.addListener(new PistonFlip(), "buttonRBDown");
         ListenerManager.addListener(new PistonFlip(), "buttonRBUp");
-        ListenerManager.addListener(new SpinToggle(), "buttonADown");
-        
-        DebugLog.log(2, "DriveTank", "setPistonState on of Global.pstFire in DriveTank init - verify On is correct!");
-        PneumaticsManager.setPistonStateOn(Global.pstFire); 
-        Global.gTilt.reset(); DebugLog.log(2, "DriveTank", "GTilt reset starting manual! **Remove when running autonomous**");
+        //ListenerManager.addListener(new SpinToggle(), "buttonADown");
+        ListenerManager.addListener(new SpinOn(), "buttonADown");
+        ListenerManager.addListener(new SpinOff(), "buttonBDown");
+        ListenerManager.addListener(new CompressorOff(), "buttonBackDown");
+        ListenerManager.addListener(new CompressorOn(), "buttonStartDown");
+       
+
+        PneumaticsManager.setPistonStateOn(Global.pstFire);
         tLock.registerIterableEvent();
     }
-}
+}*/
