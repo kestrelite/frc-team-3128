@@ -1,20 +1,25 @@
 package frc3128;
 
 public class DebugLog {
+    public static final int LVL_STREAM = 5;
+    public static final int LVL_DEBUG = 4;
+    public static final int LVL_INFO = 3;
+    public static final int LVL_WARN = 2;
+    public static final int LVL_SEVERE = 1;
+    public static final int LVL_ERROR = 0;
+    
     private static int logDetail = 2;
     private static int maxTagLength = 0;
     private static final int initTagLength = 32;
 
-    public DebugLog() {
-        DebugLog.log(4, this.toString(), "Debug log started.");
-    }
-
+    public DebugLog() {DebugLog.log(4, this.toString(), "Debug log started.");}
     public DebugLog(int p) {
         logDetail = p;
         DebugLog.log(4, this.toString(), "Debug log started.");
     }
 
     public static void setLogLevel(int detail) {
+        DebugLog.log(3, "DebugLog", "Log detail set to " + detail);
         DebugLog.logDetail = detail;
     }
 

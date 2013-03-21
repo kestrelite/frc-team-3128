@@ -58,17 +58,18 @@ public class ListenerManager {
     
     public static boolean dropEvent(Class c) {
         boolean eventDropped = false;
-        for(int i = 0; i < ListenerManager.event.size(); i++) {
+        for(int i = 0; i < ListenerManager.event.size(); i++)
             if(((Event)ListenerManager.event.elementAt(i)).getClass().equals(c)) {
                 ListenerManager.dropEvent((Event)ListenerManager.event.elementAt(i));
                 eventDropped = true;
             }
-        }
+        
+        DebugLog.log(3, referenceName, "Dropping event " + c.getName());
         return eventDropped;
     }
     
     public static void dropListener(int link) {
-        DebugLog.log(4, referenceName, "Dropping link " + link);
+        DebugLog.log(3, referenceName, "Dropping link " + link);
         for(int i = 0; i < ListenerManager.trigger.size(); i++) {
             if(i > ListenerManager.trigger.size()) return;
             if(((Integer)ListenerManager.trigger.elementAt(i)).intValue() == link) {
@@ -84,6 +85,7 @@ public class ListenerManager {
     }
     
     public static void dropAllListeners() {
+        DebugLog.log(3, "ListenerManager", "Dropped ALL " + ListenerManager.event.size() + " listeners.");
         ListenerManager.event.removeAllElements();
         ListenerManager.trigger.removeAllElements();
     }

@@ -73,6 +73,10 @@ public class PneumaticsManager {
             DebugLog.log(1, referenceName, "Compressor is being stopped without first being instantiated!");
     }
 
+    public static boolean getCompressorState() {
+        return (PneumaticsManager.c.enabled() ? true : false);
+    }
+    
     public static void lockAllPistons() {
         for(int i = 0; i < dualSolenoidList.size(); i++)
             ((DualSolenoid) dualSolenoidList.elementAt(i)).lockPiston();

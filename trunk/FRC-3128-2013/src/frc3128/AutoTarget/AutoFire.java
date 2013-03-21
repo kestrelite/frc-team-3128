@@ -6,13 +6,15 @@ import frc3128.PneumaticsManager.PneumaticsManager;
 
 public class AutoFire extends SequenceEvent {
     public boolean exitConditionMet() {
-        return (this.getRunTimeMillis() > 2750);
+        return (this.getRunTimeMillis() > 11000);
     }
 
-    private long lastTime = -1;
+    private long execTime = -1;
     public void execute() {
-        if(lastTime < 1250  && this.getRunTimeMillis() >=  1250) PneumaticsManager.setPistonInvertState(Global.pstFire);
-        if(lastTime < 2250 && this.getRunTimeMillis() >= 2250) PneumaticsManager.setPistonInvertState(Global.pstFire);
-        lastTime = this.getRunTimeMillis();
+        if(execTime == -1) execTime = this.getRunTimeMillis() + 3000;
+        if(this.getRunTimeMillis() > execTime) {
+            PneumaticsManager.setPistonInvertState(Global.pstFire);
+            execTime = this.getRunTimeMillis() + 3000;
+        }
     }
 }

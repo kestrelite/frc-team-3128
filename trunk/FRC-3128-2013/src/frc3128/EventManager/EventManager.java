@@ -122,7 +122,7 @@ public class EventManager {
     }
 
     public static void dropEvents() {
-        DebugLog.log(4, referenceName, "Dropped " + e_eventList.size() + " events.");
+        DebugLog.log(3, referenceName, "Dropped ALL " + e_eventList.size() + " events.");
         e_eventList.removeAllElements();
         i_priorityList.removeAllElements();
         b_singleEventList.removeAllElements();
