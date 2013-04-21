@@ -89,4 +89,6 @@ public class ListenerManager {
         ListenerManager.event.removeAllElements();
         ListenerManager.trigger.removeAllElements();
     }
+
+	private ListenerManager() {}
 }

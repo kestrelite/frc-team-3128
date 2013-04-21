@@ -12,7 +12,6 @@ class WatchdogEvent extends Event {
 
 public class EventManager {
     private static Vector e_eventList = new Vector();
-    private static Vector i_priorityList = new Vector();
     private static Vector b_singleEventList = new Vector();
     private static Vector b_deleteFlag = new Vector();
     private static String referenceName = "EventManager";
@@ -28,23 +27,9 @@ public class EventManager {
     }
     
     private static void insertIntoEvents(Event e, int p, boolean single) {
-        int insertIndex = -1;
-        for(int i = 0; i < i_priorityList.size(); i++) {
-            if(((Integer) i_priorityList.elementAt(i)).intValue() <= p)
-                insertIndex = i;
-            break;
-        }
-        if(insertIndex == -1) {
-            e_eventList.addElement(e);
-            i_priorityList.addElement(new Integer(p));
-            b_singleEventList.addElement((single ? Boolean.TRUE : Boolean.FALSE));
-            b_deleteFlag.addElement(Boolean.FALSE);
-        } else {
-            e_eventList.insertElementAt(e, insertIndex);
-            i_priorityList.insertElementAt(new Integer(p), insertIndex);
-            b_singleEventList.insertElementAt((single ? Boolean.TRUE : Boolean.FALSE), insertIndex);
-            b_deleteFlag.insertElementAt(Boolean.FALSE, insertIndex);
-        }
+		e_eventList.addElement(e);
+		b_singleEventList.addElement((single ? Boolean.TRUE : Boolean.FALSE));
+		b_deleteFlag.addElement(Boolean.FALSE);
     }
 
     private static void checkForDuplicates(Event e) {
@@ -99,7 +84,6 @@ public class EventManager {
         for(int i = 0; i < b_deleteFlag.size(); i++)
             if(((Boolean) b_deleteFlag.elementAt(i)).booleanValue() || !((Event)e_eventList.elementAt(i)).shouldRun()) {
                 e_eventList.removeElementAt(i);
-                i_priorityList.removeElementAt(i);
                 b_singleEventList.removeElementAt(i);
                 b_deleteFlag.removeElementAt(i);
                 i--;
@@ -124,7 +108,6 @@ public class EventManager {
     public static void dropEvents() {
         DebugLog.log(3, referenceName, "Dropped ALL " + e_eventList.size() + " events.");
         e_eventList.removeAllElements();
-        i_priorityList.removeAllElements();
         b_singleEventList.removeAllElements();
         b_deleteFlag.removeAllElements();
     }
