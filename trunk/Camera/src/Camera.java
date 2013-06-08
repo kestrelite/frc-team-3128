@@ -4,13 +4,19 @@ import edu.wpi.first.smartdashboard.properties.DoubleProperty;
 import edu.wpi.first.smartdashboard.properties.IntegerProperty;
 import edu.wpi.first.wpijavacv.*;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import java.awt.Polygon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class Camera extends WPICameraExtension {
 
-    public static final String NAME = "Camera Target Tracker";
+    public static final String NAME = "Camera Target Tracker:: AlumNar";
     public final IntegerProperty threshold = new IntegerProperty(this, "Threshold", 180);
     public final DoubleProperty contourPolygonApproximationPct = new DoubleProperty(this, "Polygon Approximation %", 45);
+    public final IntegerProperty cX = new IntegerProperty(this, "cX", 100);
+    public final IntegerProperty cY = new IntegerProperty(this, "cY", 450);
     NetworkTable table;
     WPIColor targetColor = new WPIColor(0, 255, 0);
     WPIColor contourColor = new WPIColor(17, 133, 133);
@@ -22,6 +28,7 @@ public class Camera extends WPICameraExtension {
             this.table = NetworkTable.getTable("camera");
             onFirstRun = false;
         }
+        rawImage.drawPoint(new WPIPoint(cX.getValue(), cY.getValue()), WPIColor.RED, 9);
         WPIBinaryImage blue = rawImage.getBlueChannel().getThreshold(threshold.getValue());
         WPIBinaryImage green = rawImage.getGreenChannel().getThreshold(threshold.getValue());
         WPIBinaryImage red = rawImage.getRedChannel().getThreshold(threshold.getValue());
@@ -46,7 +53,7 @@ public class Camera extends WPICameraExtension {
             if (p.isConvex() && p.getNumVertices() == 4) {
                 possiblePolygons.add(p);
             } else {
-                rawImage.drawPolygon(p, WPIColor.MAGENTA, 1);
+                rawImage.drawPolygon(p, WPIColor.RED, 1);
             }
         }
         WPIPolygon square = null;
@@ -104,7 +111,7 @@ public class Camera extends WPICameraExtension {
             int sCenterY = (square.getY() + (square.getHeight() / 2));
             rawImage.drawPoint(new WPIPoint(sCenterX, sCenterY), targetColor, 5);
         }
-
+        rawImage.drawPoint(new WPIPoint(cX.getValue(), cY.getValue()), WPIColor.RED, 9);
         synchronized (table) {
             if (square != null) {
                 double distance = (212.83 / Math.sqrt(squareArea)) * 144;
