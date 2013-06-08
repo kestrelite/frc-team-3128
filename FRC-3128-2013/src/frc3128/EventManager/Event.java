@@ -78,13 +78,13 @@ public abstract class Event {
         EventManager.addContinuousEvent(this);
     }
     
-    final public void registerTimedEvent(int time) {
+    final public void registerTimedEvent(int delay) {
         try {
-            timerEvent.setTargetTime(time);
+            timerEvent.setTargetTime(delay);
         } catch(Exception e) {
             DebugLog.log(2, referenceName, "Timer event called before instantiation!");
             prepareTimer();
-            timerEvent.setTargetTime(time);
+            timerEvent.setTargetTime(delay);
         }
     }
 

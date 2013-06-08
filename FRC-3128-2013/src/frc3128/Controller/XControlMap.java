@@ -3,9 +3,9 @@ package frc3128.Controller;
 import frc3128.DebugLog;
 
 public class XControlMap {
-    public static final int A = 1;
-    public static final int B = 2;
-    public static final int X = 3;
+    public static final int A = 1; 
+    public static final int B = 2; 
+    public static final int X = 3; 
     public static final int Y = 4;
     public static final int LB = 5;
     public static final int RB = 6;
