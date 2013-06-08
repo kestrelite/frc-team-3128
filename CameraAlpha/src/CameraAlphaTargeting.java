@@ -1,3 +1,4 @@
+
 import edu.wpi.first.smartdashboard.properties.DoubleProperty;
 import edu.wpi.first.smartdashboard.properties.IntegerProperty;
 import edu.wpi.first.wpijavacv.WPIBinaryImage;
@@ -28,8 +29,8 @@ public class CameraAlphaTargeting extends WPICameraExtension {
     public static final int IMAGE_WIDTH = 640;
     public static final int IMAGE_HEIGHT = 480;
     public static final int AIM_THRESHOLD = 25;
-    public static final double TARGET_WIDTH = 2;
-    public static final double TARGET_HEIGHT = 1.5;
+    public static final double TARGET_WIDTH = 54;
+    public static final double TARGET_HEIGHT = 21;
     private static final int HORIZON_LINE_Y = IMAGE_HEIGHT - 30;
     private NetworkTable table = NetworkTable.getTable("camera");
     private NetworkTable shooterRotate = NetworkTable.getTable("ShooterRotateCommand");
@@ -145,15 +146,15 @@ public class CameraAlphaTargeting extends WPICameraExtension {
                     double x = getDistanceHorizontal(selectedTarget.getPolygon());
                     double y = getDistanceVertical(selectedTarget.getPolygon());
 
-                    /*double theta = 52.36 - 0.5991 * x + 36.73 * y
-                     + 0.005431 * Math.pow(x, 2) - 0.5144 * x * y
-                     - 13.63 * Math.pow(y, 2) + 0.001624 * Math.pow(x, 2) * y
-                     + 0.2275 * x * Math.pow(y, 2) + 2.35 * Math.pow(y, 3)
-                     - 0.0008125 * Math.pow(x * y, 2)
-                     - 0.03133 * x * Math.pow(y, 3) - 0.1885 * Math.pow(y, 4)
-                     + 0.0000695 * Math.pow(x * y, 2) * y
-                     + 0.001408 * x * Math.pow(y, 4)
-                     + 0.005756 * Math.pow(y, 5);*/
+                    double theta = 52.36 - 0.5991 * x + 36.73 * y
+                            + 0.005431 * Math.pow(x, 2) - 0.5144 * x * y
+                            - 13.63 * Math.pow(y, 2) + 0.001624 * Math.pow(x, 2) * y
+                            + 0.2275 * x * Math.pow(y, 2) + 2.35 * Math.pow(y, 3)
+                            - 0.0008125 * Math.pow(x * y, 2)
+                            - 0.03133 * x * Math.pow(y, 3) - 0.1885 * Math.pow(y, 4)
+                            + 0.0000695 * Math.pow(x * y, 2) * y
+                            + 0.001408 * x * Math.pow(y, 4)
+                            + 0.005756 * Math.pow(y, 5);
 
                     double velocity = 13.77 + 0.6473 * x + 12.26 * y
                             + 0.001124 * Math.pow(x, 2) - 0.1462 * x * y
