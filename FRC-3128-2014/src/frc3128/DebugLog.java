@@ -23,7 +23,7 @@ public class DebugLog {
         DebugLog.logDetail = detail;
     }
 
-    public static void log(int lvl, String tag, String text) {
+    public static void log(int lvl, Object o, String text) {
         String level = "[UNKN]  ";
         if(lvl <= 0) level = "[ERROR" + Math.abs(lvl) + "] ";
         if(lvl == 1) level = "[SEVERE]";
@@ -32,14 +32,14 @@ public class DebugLog {
         if(lvl == 4) level = "[DEBUG] ";
         if(lvl == 5) level = "[STREAM]";
         
-        if(tag.length() > DebugLog.maxTagLength && lvl <= DebugLog.logDetail)
-            DebugLog.maxTagLength = tag.length();
+        if(o.toString().length() > DebugLog.maxTagLength && lvl <= DebugLog.logDetail)
+            DebugLog.maxTagLength = o.toString().length();
         
         if(lvl <= DebugLog.logDetail) {
             System.out.print("[" + System.currentTimeMillis() + "] " + 
                     level + " [" + 
-                    (tag.substring(0, 4).equals("edu.")?tag.substring(initTagLength):tag) + "] ");
-            for(int i = 0; i < maxTagLength - tag.length(); i++)
+                    (o.toString().substring(0, 4).equals("edu.")?o.toString().substring(initTagLength):o.toString()) + "] ");
+            for(int i = 0; i < maxTagLength - o.toString().length(); i++)
                 System.out.print(" ");
             System.out.println(text);
         }

@@ -25,7 +25,6 @@ public class RobotTemplate extends IterativeRobot {
     boolean teleopHasBeenInit = false;
     public void teleopInit() {
         if(!teleopHasBeenInit) {
-            System.out.println("TINIT");
             Global.initializeTeleop(); 
             teleopHasBeenInit = true; 
             autonomousHasBeenInit = false;

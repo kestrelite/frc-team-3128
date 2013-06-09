@@ -5,10 +5,9 @@ import frc3128.DebugLog;
 final class TimerEvent extends Event {
     private Event linkedEvent;
     private long targetTimeMillis = -1;
-    private String linkedReferenceName;
 
     public final void setTargetTime(long millis) {
-        DebugLog.log(4, referenceName, "Event " + linkedEvent.toString() + " set for " + millis + " msec from now.");
+        DebugLog.log(4, this, "Event " + linkedEvent.toString() + " set for " + millis + " msec from now.");
         targetTimeMillis = System.currentTimeMillis() + millis;
         EventManager.addContinuousEvent(this);
     }
@@ -20,34 +19,27 @@ final class TimerEvent extends Event {
 
     public final void execute() {
         if(targetTimeMillis == -1) {
-            DebugLog.log(1, referenceName, "Timer set without valid time!");
+            DebugLog.log(1, this, "Timer set without valid time!");
             this.destroyTimer();
         }
 
         if(System.currentTimeMillis() > targetTimeMillis) {
-            DebugLog.log(4, referenceName, "Running timed event " + linkedReferenceName);
+            DebugLog.log(4, this, "Running timed event " + this.linkedEvent.toString());
             linkedEvent.execute();
             this.destroyTimer();
         }
     }
 
-    public final void linkEvent(Event e) {
-        this.linkedEvent = e;
-        this.linkedReferenceName = this.linkedEvent.toString();
-    }
+    public final void linkEvent(Event e) {this.linkedEvent = e;}
 }
 
 public abstract class Event {
     private boolean eventIsCancelled;
     private TimerEvent timerEvent;
-    protected String referenceName;
 
-    public Event() {
-        referenceName = this.toString();
-    }
+    public Event() {}
     
     public Event(boolean isTimerEvent) {
-        referenceName = this.toString();
         if(isTimerEvent) {
             this.timerEvent = new TimerEvent();
             timerEvent.linkEvent(this);
@@ -59,7 +51,7 @@ public abstract class Event {
     final public void cancelEvent() {
         eventIsCancelled = true;
         EventManager.removeEvent(this);
-        DebugLog.log(4, referenceName, "Event " + referenceName + " has been cancelled!");
+        DebugLog.log(4, this, "Event " + this.toString() + " has been cancelled!");
     }
 
     final public void cancelTimedEvent() {
@@ -82,7 +74,7 @@ public abstract class Event {
         try {
             timerEvent.setTargetTime(delay);
         } catch(Exception e) {
-            DebugLog.log(2, referenceName, "Timer event called before instantiation!");
+            DebugLog.log(2, this, "Timer event called before instantiation! Timer startup delay possible.");
             prepareTimer();
             timerEvent.setTargetTime(delay);
         }

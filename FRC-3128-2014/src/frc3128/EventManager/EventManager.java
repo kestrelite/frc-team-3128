@@ -5,9 +5,7 @@ import frc3128.DebugLog;
 import java.util.Vector;
 
 class WatchdogEvent extends Event {
-    public void execute() {
-        Watchdog.getInstance().feed();
-    }
+    public void execute() {Watchdog.getInstance().feed();}
 }
 
 public class EventManager {
@@ -75,11 +73,12 @@ public class EventManager {
             Event event = (Event) e_eventList.elementAt(i);
             if(event.shouldRun()) {
                 try{
-                    DebugLog.log(5, referenceName, "Running event " + event.referenceName); 
+                    DebugLog.log(5, referenceName, "Running event " + event.toString()); 
                     event.execute();
                 } catch(Exception e) {
                     e.printStackTrace();
-                    DebugLog.log(-3, event.referenceName, "Error in event: " + e.getMessage());
+                    DebugLog.log(-3, event.toString(), "Uncaught exception in event: " + e.getMessage());
+					e.printStackTrace();
                     b_deleteFlag.setElementAt(Boolean.TRUE, i);
                 }
             }

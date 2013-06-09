@@ -13,7 +13,7 @@ public class XControl extends Event {
     public XControl(int port) {
         xControl = new Joystick(port);
         this.registerIterableEvent();
-        DebugLog.log(4, referenceName, "XBox Controller added self to event manager!");
+        DebugLog.log(4, this, "XBox Controller added self to event manager!");
     }
     
     public void execute() {
@@ -40,7 +40,7 @@ public class XControl extends Event {
         for(int i = 1; i < 11; i++) {
             if(buttonsPressed[i] != xControl.getRawButton(i)) {
                 ListenerManager.callListener("button" + XControlMap.getBtnString(i) + (xControl.getRawButton(i) ? "Down" : "Up"));
-                DebugLog.log(4, referenceName, "Button " + XControlMap.getBtnString(i) + (xControl.getRawButton(i)==true?" pressed.":" released."));
+                DebugLog.log(4, this, "Button " + XControlMap.getBtnString(i) + (xControl.getRawButton(i)==true?" pressed.":" released."));
             }
             buttonsPressed[i] = xControl.getRawButton(i);
         }
