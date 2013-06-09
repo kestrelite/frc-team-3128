@@ -15,7 +15,7 @@ public class AttackControl extends Event {
         aControl = new Joystick(port);
         controlID = port;
         this.registerIterableEvent();
-        DebugLog.log(4, referenceName, "AttackControl added self to event manager!");
+        DebugLog.log(4, this, "AttackControl added self to event manager!");
     }
     
     public void execute() {
@@ -36,7 +36,7 @@ public class AttackControl extends Event {
         for(int i = 1; i < 11; i++) {
             if(buttonsPressed[i] != aControl.getRawButton(i)) {
                 ListenerManager.callListener("button" + this.controlID + (i) + (aControl.getRawButton(i) ? "Down" : "Up"));
-                DebugLog.log(4, referenceName, "Button " + this.controlID + (i) + (aControl.getRawButton(i)==true?" pressed.":" released."));
+                DebugLog.log(4, this, "Button " + this.controlID + (i) + (aControl.getRawButton(i)==true?" pressed.":" released."));
             }
             buttonsPressed[i] = aControl.getRawButton(i);
         }
