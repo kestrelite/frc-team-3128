@@ -26,10 +26,7 @@ public class ListenerManager {
         ListenerManager.trigger.addElement(new Integer(link));
     }
 
-    public static void callListener(String link) {
-        callListener(link.hashCode());
-    }
-    
+    public static void callListener(String link) {callListener(link.hashCode());}
     public static void callListener(int link) {
         for(int i = 0; i < ListenerManager.trigger.size(); i++) {
             if(((Integer) ListenerManager.trigger.elementAt(i)).intValue() == link) {
@@ -55,8 +52,8 @@ public class ListenerManager {
             DebugLog.log(4, referenceName, "Listener link number " + n + " sliced from event " + e.toString());
         }
     }
-    
-    public static boolean dropEvent(Class c) {
+	
+    public static boolean dropEventType(Class c) {
         boolean eventDropped = false;
         for(int i = 0; i < ListenerManager.event.size(); i++)
             if(((Event)ListenerManager.event.elementAt(i)).getClass().equals(c)) {
@@ -67,7 +64,8 @@ public class ListenerManager {
         DebugLog.log(3, referenceName, "Dropping event " + c.getName());
         return eventDropped;
     }
-    
+
+	public static void dropListener(String link) {ListenerManager.dropListener(link.hashCode());}
     public static void dropListener(int link) {
         DebugLog.log(3, referenceName, "Dropping link " + link);
         for(int i = 0; i < ListenerManager.trigger.size(); i++) {
@@ -80,13 +78,11 @@ public class ListenerManager {
         }
     }
     
-    public static void dropListener(String link) {
-        ListenerManager.dropListener(link.hashCode());
-    }
-    
     public static void dropAllListeners() {
         DebugLog.log(3, "ListenerManager", "Dropped ALL " + ListenerManager.event.size() + " listeners.");
         ListenerManager.event.removeAllElements();
         ListenerManager.trigger.removeAllElements();
     }
+	
+	private ListenerManager() {}
 }
