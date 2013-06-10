@@ -2,7 +2,7 @@ package frc3128.Connection;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
-public class SDWFff {
+public class SDWrite {
 	private static boolean isConnected = false;
 	
 	public int getInt(String table, String key) {return (int) NetworkTable.getTable(table).getNumber(key);}
