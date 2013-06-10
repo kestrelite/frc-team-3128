@@ -38,7 +38,6 @@ public abstract class Event {
     private TimerEvent timerEvent;
 
     public Event() {}
-    
     public Event(boolean isTimerEvent) {
         if(isTimerEvent) {
             this.timerEvent = new TimerEvent();
@@ -54,22 +53,11 @@ public abstract class Event {
         DebugLog.log(4, this, "Event " + this.toString() + " has been cancelled!");
     }
 
-    final public void cancelTimedEvent() {
-        timerEvent.cancelEvent();
-    }
+    final public void cancelTimedEvent() {timerEvent.cancelEvent();}
+    final protected boolean shouldRun() {return !eventIsCancelled;}
 
-    final protected boolean shouldRun() {
-        return !eventIsCancelled;
-    }
-
-    final public void registerSingleEvent() {
-        EventManager.addSingleEvent(this);
-    }
-
-    final public void registerIterableEvent() {
-        EventManager.addContinuousEvent(this);
-    }
-    
+	final public void registerSingleEvent() {EventManager.addSingleEvent(this);}
+    final public void registerIterableEvent() {EventManager.addContinuousEvent(this);}
     final public void registerTimedEvent(int delay) {
         try {
             timerEvent.setTargetTime(delay);

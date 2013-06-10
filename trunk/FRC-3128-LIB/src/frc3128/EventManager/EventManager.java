@@ -120,7 +120,7 @@ public class EventManager {
             DebugLog.log(5, referenceName, "removeEvent was called, and " + removedEventCount + " events were marked for deletion.");
     }
 
-    public static void dropEvents() {
+    public static void dropAllEvents() {
         DebugLog.log(3, referenceName, "Dropped ALL " + e_eventList.size() + " events.");
         e_eventList.removeAllElements();
         i_priorityList.removeAllElements();
