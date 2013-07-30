@@ -5,83 +5,134 @@ import java.util.Vector;
 
 public class ListenerManager {
     private static Vector event = new Vector();
-    private static Vector trigger = new Vector();
+    private static Vector key = new Vector();
     private static String referenceName = "ListenerManager";
 
     private static void verifyNoDuplicate(Event e, int link) {
         for(int i = 0; i < event.size(); i++)
             if((Event) event.elementAt(i) == e)
-                if(((Integer) ListenerManager.trigger.elementAt(i)).intValue() == link)
-                    DebugLog.log(1, referenceName, "Duplicate event/trigger pair was added to the ListenerManager!");
+                if(((Integer) ListenerManager.key.elementAt(i)).intValue() == link)
+                    DebugLog.log(1, referenceName, "Duplicate event/key pair was added to the ListenerManager!");
     }
 
-    public static void addListener(Event e, String link) {
-        DebugLog.log(4, "ListenerManager", "Added " + e.toString() + " to " + link);
-        addListener(e, link.hashCode());
+	/**
+	 * Adds an Event and key to the Listener system. This has the effect of 
+	 * triggering the Event whenever the key is invoked.
+	 * 
+	 * @param event The Event to be added to the ListenerManager
+	 * @param key   The String key with which the Event should be associated
+	 */
+    public static void addListener(Event event, String key) {
+        DebugLog.log(4, "ListenerManager", "Added " + event.toString() + " to " + key);
+        addListener(event, key.hashCode());
     }
     
-    public static void addListener(Event e, int link) {
-        verifyNoDuplicate(e, link);
-        ListenerManager.event.addElement(e);
-        ListenerManager.trigger.addElement(new Integer(link));
+	/**
+	 * Adds an Event and key to the Listener system. This has the effect of 
+	 * triggering the Event once whenever the key is invoked.
+	 * 
+	 * @param event The Event to be added to the ListenerManager
+	 * @param key   The integer key with which the event should be associated
+	 */
+    public static void addListener(Event event, int key) {
+        verifyNoDuplicate(event, key);
+        ListenerManager.event.addElement(event);
+        ListenerManager.key.addElement(new Integer(key));
     }
 
-    public static void callListener(String link) {callListener(link.hashCode());}
-    public static void callListener(int link) {
-        for(int i = 0; i < ListenerManager.trigger.size(); i++) {
-            if(((Integer) ListenerManager.trigger.elementAt(i)).intValue() == link) {
+	/**
+	 * Calls all events associated with the given key. The events will be run 
+	 * once. They will be kept in the ListenerManager's index.
+	 * 
+	 * @param key The String key whose associated events should be run
+	 */
+    public static void callListener(String key) {callListener(key.hashCode());}
+    
+	/**
+	 * Calls all Events associated with the given key. The Events will be run 
+	 * once. They will be kept in the ListenerManager's index.
+	 * 
+	 * @param key The integer key whose associated Events should be run
+	 */
+	public static void callListener(int link) {
+        for(int i = 0; i < ListenerManager.key.size(); i++) {
+            if(((Integer) ListenerManager.key.elementAt(i)).intValue() == link) {
                 try {
                     ((Event) ListenerManager.event.elementAt(i)).execute();
                 } catch(Exception e) {
                     e.printStackTrace();
                     ListenerManager.event.removeElementAt(i);
-                    ListenerManager.trigger.removeElementAt(i);
+                    ListenerManager.key.removeElementAt(i);
                     DebugLog.log(-2, ((Event) ListenerManager.event.elementAt(i)).toString(), "Error in Listener event: " + e.getMessage());
                 }
             }
         }
     }
 
-    public static void dropEvent(Event e) {
+	/**
+	 * Removes all Event/key pairs from the Listener table whose event 
+	 * matches the one provided. This event will no longer be called until 
+	 * it is re-added.
+	 * 
+	 * @param event The event to be dropped 
+	 */
+    public static void dropEvent(Event event) {
         int n = 0;
         while(n != -1) {
-            n = ListenerManager.event.lastIndexOf(e);
+            n = ListenerManager.event.lastIndexOf(event);
             if(n == -1) break;
             ListenerManager.event.removeElementAt(n);
-            ListenerManager.trigger.removeElementAt(n);
-            DebugLog.log(4, referenceName, "Listener link number " + n + " sliced from event " + e.toString());
+            ListenerManager.key.removeElementAt(n);
+            DebugLog.log(4, referenceName, "Listener link number " + n + " sliced from event " + event.toString());
         }
     }
 	
-    public static boolean dropEventType(Class c) {
-        boolean eventDropped = false;
+	/**
+	 * Removes all Event/key pairs from the listener table whose class type is
+	 * of the one provided. This is considerably slower than dropping an Event,
+	 * so should be used sparingly.
+	 * 
+	 * @param c The class to be dropped.
+	 */
+    public static void dropEventType(Class c) {
         for(int i = 0; i < ListenerManager.event.size(); i++)
             if(((Event)ListenerManager.event.elementAt(i)).getClass().equals(c)) {
                 ListenerManager.dropEvent((Event)ListenerManager.event.elementAt(i));
-                eventDropped = true;
             }
-        
-        DebugLog.log(3, referenceName, "Dropping event " + c.getName());
-        return eventDropped;
+        DebugLog.log(3, referenceName, "Dropping event class " + c.getName());
     }
 
-	public static void dropListener(String link) {ListenerManager.dropListener(link.hashCode());}
-    public static void dropListener(int link) {
-        DebugLog.log(3, referenceName, "Dropping link " + link);
-        for(int i = 0; i < ListenerManager.trigger.size(); i++) {
-            if(i > ListenerManager.trigger.size()) return;
-            if(((Integer)ListenerManager.trigger.elementAt(i)).intValue() == link) {
-                DebugLog.log(4, referenceName, "Listener dropped: " + ListenerManager.event.elementAt(i).getClass().getName() + " ("+link+").");
+	/**
+	 * Drops all Event/key pairs with the given key.
+	 * 
+	 * @param key The String key to be dropped from the table.
+	 */
+	public static void dropListener(String key) {ListenerManager.dropListener(key.hashCode());}
+	
+	/**
+	 * Drops all Event/key pairs with the given key.
+	 * 
+	 * @param key The integer key to be dropped from the table.
+	 */
+    public static void dropListener(int key) {
+        DebugLog.log(3, referenceName, "Dropping link " + key);
+        for(int i = 0; i < ListenerManager.key.size(); i++) {
+            if(i > ListenerManager.key.size()) return;
+            if(((Integer)ListenerManager.key.elementAt(i)).intValue() == key) {
+                DebugLog.log(4, referenceName, "Listener dropped: " + ListenerManager.event.elementAt(i).getClass().getName() + " ("+key+").");
                 ListenerManager.event.removeElementAt(i);
-                ListenerManager.trigger.removeElementAt(i);
+                ListenerManager.key.removeElementAt(i);
             }
         }
     }
-    
+
+	/**
+	 * Clears the entire Listener table.
+	 */
     public static void dropAllListeners() {
         DebugLog.log(3, "ListenerManager", "Dropped ALL " + ListenerManager.event.size() + " listeners.");
         ListenerManager.event.removeAllElements();
-        ListenerManager.trigger.removeAllElements();
+        ListenerManager.key.removeAllElements();
     }
 	
 	private ListenerManager() {}
