@@ -17,7 +17,7 @@ public class ListenerManager {
 
 	/**
 	 * Adds an Event and key to the Listener system. This has the effect of 
-	 * triggering the Event whenever the key is invoked.
+	 * triggering the Event once whenever the key is invoked.
 	 * 
 	 * @param event The Event to be added to the ListenerManager
 	 * @param key   The String key with which the Event should be associated
@@ -32,7 +32,7 @@ public class ListenerManager {
 	 * triggering the Event once whenever the key is invoked.
 	 * 
 	 * @param event The Event to be added to the ListenerManager
-	 * @param key   The integer key with which the event should be associated
+	 * @param key   The integer key with which the Event should be associated
 	 */
     public static void addListener(Event event, int key) {
         verifyNoDuplicate(event, key);
@@ -41,10 +41,10 @@ public class ListenerManager {
     }
 
 	/**
-	 * Calls all events associated with the given key. The events will be run 
+	 * Calls all Events associated with the given key. The Events will be run 
 	 * once. They will be kept in the ListenerManager's index.
 	 * 
-	 * @param key The String key whose associated events should be run
+	 * @param key The String key whose associated Events should be run
 	 */
     public static void callListener(String key) {callListener(key.hashCode());}
     
@@ -70,11 +70,11 @@ public class ListenerManager {
     }
 
 	/**
-	 * Removes all Event/key pairs from the Listener table whose event 
-	 * matches the one provided. This event will no longer be called until 
+	 * Removes all Event/key pairs from the Listener table whose Event 
+	 * matches the one provided. This Event will no longer be called until 
 	 * it is re-added.
 	 * 
-	 * @param event The event to be dropped 
+	 * @param event The Event to be dropped 
 	 */
     public static void dropEvent(Event event) {
         int n = 0;
