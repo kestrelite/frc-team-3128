@@ -2,6 +2,10 @@ package frc3128.Connection;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+/**
+ * 
+ * @author Yousuf Soliman
+ */
 public class SDWrite {
 	/**
 	 * Gets an integer value from the SmartDashboard, if it is open and connected.

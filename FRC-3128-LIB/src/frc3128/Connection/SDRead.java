@@ -2,6 +2,10 @@ package frc3128.Connection;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * 
+ * @author Yousuf Soliman
+ */
 public class SDRead {
 	/**
 	 * Writes String data to the SmartDashboard, if it is open and connected.
