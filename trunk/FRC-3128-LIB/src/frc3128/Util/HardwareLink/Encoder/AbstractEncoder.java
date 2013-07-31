@@ -1,0 +1,10 @@
+package frc3128.Util.HardwareLink.Encoder;
+
+/**
+ *
+ * @author Noah Sutton-Smolin
+ */
+public abstract class AbstractEncoder {
+	public abstract double getAngle();
+	public abstract double getRawValue();
+}
