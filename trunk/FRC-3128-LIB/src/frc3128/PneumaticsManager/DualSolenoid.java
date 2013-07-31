@@ -3,6 +3,10 @@ package frc3128.PneumaticsManager;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc3128.DebugLog;
 
+/**
+ * 
+ * @author Noah Sutton-Smolin
+ */
 class DualSolenoid {
     private Solenoid solA;
     private Solenoid solB;
