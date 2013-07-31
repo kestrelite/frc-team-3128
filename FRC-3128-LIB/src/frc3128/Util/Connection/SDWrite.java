@@ -12,7 +12,7 @@ public class SDWrite {
 	 * 
 	 * @param table The name of the table to retrieve from
 	 * @param key   The key for the data in the table 
-	 * @return      An integer value from the table if it exists
+	 * @return an integer value from the table if it exists
 	 *              <p>Null if it does not
 	 */
 	public static int getInt(String table, String key) {return (int) NetworkTable.getTable(table).getNumber(key);}
@@ -22,7 +22,7 @@ public class SDWrite {
 	 * 
 	 * @param table The name of the table to retrieve from
 	 * @param key   The key for the data in the table 
-	 * @return      A double value from the table if it exists
+	 * @return a double value from the table if it exists
 	 *              <p>Null if it does not
 	 */	
 	public static double getDouble(String table, String key) {return NetworkTable.getTable(table).getNumber(key);}
@@ -32,7 +32,7 @@ public class SDWrite {
 	 * 
 	 * @param table The name of the table to retrieve from
 	 * @param key   The key for the data in the table 
-	 * @return      A double value from the table if it exists
+	 * @return a double value from the table if it exists
 	 *              <p>Null if it does not
 	 */		
 	public static String getString(String table, String key) {return NetworkTable.getTable(table).getString(key);}

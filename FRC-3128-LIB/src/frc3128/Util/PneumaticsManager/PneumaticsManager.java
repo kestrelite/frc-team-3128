@@ -29,7 +29,7 @@ public class PneumaticsManager {
 	 * @param solB      The second solenoid
 	 * @param solAState The first solenoid's initial state
 	 * @param solBState The second solenoid's initial state
-	 * @return A PistonID for referencing the given piston
+	 * @return a PistonID for referencing the given piston
 	 */
     public static PistonID addPiston(Solenoid solA, Solenoid solB, boolean solAState, boolean solBState) {
         dualSolenoidList.addElement(new DualSolenoid(solA, solB, solAState, solBState));

@@ -17,13 +17,13 @@ public class PistonID {
 
 	/**
 	 * 
-	 * @return The indexing ID of the piston
+	 * @return the indexing ID of the piston
 	 */
     protected int getID() {return this.value;}
 	
 	/**
 	 * 
-	 * @return Whether or not the current piston is inverted
+	 * @return whether or not the current piston is inverted
 	 */
     protected boolean getInversion() {return this.inverted;}
 }
