@@ -8,18 +8,16 @@ import edu.wpi.first.wpilibj.Relay.Direction;
  * @author Noah Sutton-Smolin
  */
 public class RelayLink {
-	private Relay rel;
+	private final Relay rel;
 	
 	/**
 	 * Instantiates a new relay.
 	 * 
-	 * @param portA the first port to be used
-	 * @param portB the second port to be used
+	 * @param portA the first port of the relay
+	 * @param portB the second port of the relay
 	 * @param dir the initial direction of the relay
 	 */
-	public RelayLink(int portA, int portB, Direction dir) {
-		rel = new Relay(portA, portB, dir);
-	}
+	public RelayLink(int portA, int portB, Direction dir) {rel = new Relay(portA, portB, dir);}
 	
 	/**
 	 * Sets the relay on.
