@@ -1,27 +1,21 @@
 package frc3128.EventManager;
 
 import frc3128.DebugLog;
+import frc3128.Util.Constants;
 import java.util.Vector;
 
 /**
  * 
  * @author Noah Sutton-Smolin
  */
+
+//Several untested modifications; rollback to revision 122 if it fails, though I don't know why it would
 public class EventManager {
     private static Vector e_eventList = new Vector();
-    //private static Vector i_priorityList = new Vector();
     private static Vector b_singleEventList = new Vector();
     private static Vector b_deleteFlag = new Vector();
     private static boolean eventProcessingPaused = false;
-    private static final boolean duplicateEventCheck = false;
-
-    public EventManager() {
-        DebugLog.log(DebugLog.LVL_DEBUG, "EventManager", "Event manager started.");
-        if(!duplicateEventCheck)
-            DebugLog.log(DebugLog.LVL_DEBUG, "EventManager", "Event Manager is NOT checking for duplicate events");
-    }
-
-	//Untested; rollback to revision 122 if it fails, though I don't know why it would
+	
     private static void insertIntoEvents(Event e, int p, boolean single) {
         e_eventList.addElement(e);
         b_singleEventList.addElement((single ? Boolean.TRUE : Boolean.FALSE));
@@ -29,7 +23,7 @@ public class EventManager {
     }
 
     private static void checkForDuplicates(Event e) {
-        if(!EventManager.duplicateEventCheck) return;
+        if(!Constants.EVENT_DUPLICATE_CHECKS) return;
         for(int i = 0; i < e_eventList.size(); i++)
             if(e.equals((Event) e_eventList.elementAt(i)))
                 DebugLog.log(DebugLog.LVL_WARN, "EventManager", "Event ( ^ ) being registered is a duplicate of another event!");
@@ -119,4 +113,6 @@ public class EventManager {
 	 * Temporarily enables or disables event processing.
 	 */
     public static void toggleEventProcessing() {EventManager.eventProcessingPaused = !EventManager.eventProcessingPaused;}
+
+	private EventManager() {}
 }

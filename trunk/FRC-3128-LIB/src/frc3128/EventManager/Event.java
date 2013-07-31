@@ -28,7 +28,7 @@ final class TimerEvent extends Event {
 
         if(System.currentTimeMillis() > targetTimeMillis) {
             DebugLog.log(DebugLog.LVL_DEBUG, this, "Running timed event " + this.linkedEvent.toString());
-            linkedEvent.execute();
+            linkedEvent.registerSingleEvent();
             this.destroyTimer();
         }
     }
