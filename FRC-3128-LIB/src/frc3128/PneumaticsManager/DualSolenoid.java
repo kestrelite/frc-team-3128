@@ -17,26 +17,30 @@ class DualSolenoid {
     protected void lockPiston() {
         solA.set(true);
         solB.set(true);
+		DebugLog.log(DebugLog.LVL_STREAM, "DualSolenoid", "DualSolenoid set to lock-state");
     }
 
     protected void unlockPiston() {
         solA.set(false);
         solB.set(false);
+		DebugLog.log(DebugLog.LVL_STREAM, "DualSolenoid", "DualSolenoid set to unlock-state");
     }
 
     protected void setPistonOn() {
         solA.set(true);
         solB.set(false);
+		DebugLog.log(DebugLog.LVL_STREAM, "DualSolenoid", "DualSolenoid set to on-state");
     }
 
     protected void setPistonOff() {
         solA.set(true);
         solB.set(false);
+		DebugLog.log(DebugLog.LVL_STREAM, "DualSolenoid", "DualSolenoid set to off-state");
     }
     
     protected void setPistonInverted() {
         solA.set(!solA.get());
         solB.set(!solB.get());
-        DebugLog.log(4, "DualSolenoid", "DualSolenoid set to flip-state " + solA.get() + ", " +solB.get());
+        DebugLog.log(DebugLog.LVL_STREAM, "DualSolenoid", "DualSolenoid set to flip-state " + solA.get() + ", " +solB.get());
     }
 }

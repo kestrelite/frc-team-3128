@@ -63,14 +63,14 @@ public class PneumaticsManager {
         if(PneumaticsManager.compressorSet)
             PneumaticsManager.c.start();
         if(!PneumaticsManager.compressorSet)
-            DebugLog.log(1, referenceName, "Compressor is being started without first being instantiated!");
+            DebugLog.log(DebugLog.LVL_SEVERE, referenceName, "Compressor is being started without first being instantiated!");
     }
 
     public static void setCompressorStateOff() {
         if(PneumaticsManager.compressorSet)
             PneumaticsManager.c.stop();
         if(!PneumaticsManager.compressorSet)
-            DebugLog.log(1, referenceName, "Compressor is being stopped without first being instantiated!");
+            DebugLog.log(DebugLog.LVL_SEVERE, referenceName, "Compressor is being stopped without first being instantiated!");
     }
 
     public static boolean getCompressorState() {

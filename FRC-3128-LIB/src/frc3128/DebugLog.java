@@ -24,7 +24,7 @@ public class DebugLog {
 	 * @param level The level to be logged. 
 	 */
     public static void setLogLevel(int level) {
-        DebugLog.log(3, "DebugLog", "Log detail set to " + level);
+        DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "Log detail set to " + level);
         DebugLog.logDetail = level;
     }
 
