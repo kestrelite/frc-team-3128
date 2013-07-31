@@ -23,10 +23,10 @@ public class EventManager {
     private static final boolean duplicateEventCheck = false;
 
     public EventManager() {
-        DebugLog.log(4, EventManager.referenceName, "Event manager started.");
+        DebugLog.log(DebugLog.LVL_DEBUG, EventManager.referenceName, "Event manager started.");
         (new WatchdogEvent()).registerIterableEvent();
         if(!duplicateEventCheck)
-            DebugLog.log(4, EventManager.referenceName, "Event Manager is NOT checking for duplicate events");
+            DebugLog.log(DebugLog.LVL_DEBUG, EventManager.referenceName, "Event Manager is NOT checking for duplicate events");
     }
 
 	//Untested; rollback to revision 122 if it fails, though I don't know why it would
@@ -40,7 +40,7 @@ public class EventManager {
         if(!EventManager.duplicateEventCheck) return;
         for(int i = 0; i < e_eventList.size(); i++)
             if(e.equals((Event) e_eventList.elementAt(i)))
-                DebugLog.log(2, referenceName, "Event ( ^ ) being registered is a duplicate of another event!");
+                DebugLog.log(DebugLog.LVL_WARN, referenceName, "Event ( ^ ) being registered is a duplicate of another event!");
     }
 
     protected static void addSingleEvent(Event e) {
@@ -67,21 +67,21 @@ public class EventManager {
             Event event = (Event) e_eventList.elementAt(i);
             if(event.shouldRun()) {
                 try{
-                    DebugLog.log(5, referenceName, "Running event " + event.toString()); 
+                    DebugLog.log(DebugLog.LVL_STREAM, referenceName, "Running event " + event.toString()); 
                     event.execute();
                 } catch(Exception e) {
                     e.printStackTrace();
-                    DebugLog.log(-3, event.toString(), "Uncaught exception in event: " + e.getMessage());
+                    DebugLog.log(DebugLog.LVL_ERROR, event.toString(), "Uncaught exception in event: " + e.getMessage());
 					e.printStackTrace();
                     b_deleteFlag.setElementAt(Boolean.TRUE, i);
                 }
             }
             if(!event.shouldRun()) {
-                DebugLog.log(5, referenceName, "Cancelled event " + event.toString() + " being marked for deletion.");
+                DebugLog.log(DebugLog.LVL_STREAM, referenceName, "Cancelled event " + event.toString() + " being marked for deletion.");
                 b_deleteFlag.setElementAt(Boolean.TRUE, i);
             }
             if(((Boolean) b_singleEventList.elementAt(i)).booleanValue()) {
-                DebugLog.log(5, referenceName, "Marking single event " + event.toString() + " for deletion.");
+                DebugLog.log(DebugLog.LVL_STREAM, referenceName, "Marking single event " + event.toString() + " for deletion.");
                 b_deleteFlag.setElementAt(Boolean.TRUE, i);
             }
         }
@@ -103,21 +103,21 @@ public class EventManager {
         int removedEventCount = 0;
         for(int i = 0; i < e_eventList.size(); i++)
             if(e.equals((Event) e_eventList.elementAt(i))) {
-                DebugLog.log(5, referenceName, "By request, marking event " + ((Event) e_eventList.elementAt(i)).toString() + " for deletion.");
+                DebugLog.log(DebugLog.LVL_STREAM, referenceName, "By request, marking event " + ((Event) e_eventList.elementAt(i)).toString() + " for deletion.");
                 b_deleteFlag.setElementAt(Boolean.TRUE, i);
                 removedEventCount++;
             }
         if(removedEventCount == 0)
-            DebugLog.log(2, referenceName, "removeEvent was called but no event was marked for deletion!");
+            DebugLog.log(DebugLog.LVL_WARN, referenceName, "removeEvent was called but no event was marked for deletion!");
         if(removedEventCount > 1)
-            DebugLog.log(5, referenceName, "removeEvent was called, and " + removedEventCount + " events were marked for deletion.");
+            DebugLog.log(DebugLog.LVL_STREAM, referenceName, "removeEvent was called, and " + removedEventCount + " events were marked for deletion.");
     }
 	
 	/**
 	 * Removes all events from the queue; clears any running tasks.
 	 */
     public static void dropAllEvents() {
-        DebugLog.log(3, referenceName, "Dropped ALL " + e_eventList.size() + " events.");
+        DebugLog.log(DebugLog.LVL_INFO, referenceName, "Dropped ALL " + e_eventList.size() + " events.");
         e_eventList.removeAllElements();
         b_singleEventList.removeAllElements();
         b_deleteFlag.removeAllElements();

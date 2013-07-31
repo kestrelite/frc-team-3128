@@ -11,7 +11,7 @@ public class EventSequencer extends Event {
     public void execute() {
         if(currentEventIndex == e_autoSequence.size()) {
             this.cancelEvent(); 
-            DebugLog.log(3, this, "Event Sequence complete.");
+            DebugLog.log(DebugLog.LVL_INFO, this, "Event Sequence complete.");
             return;
         }
         
@@ -19,19 +19,19 @@ public class EventSequencer extends Event {
         
         if(!ptr.isRunning()) {
             ptr.startSequenceEvent();
-            DebugLog.log(4, this, "Event " + ptr.getClass().getName() + " started ("+currentEventIndex+").");
+            DebugLog.log(DebugLog.LVL_DEBUG, this, "Event " + ptr.getClass().getName() + " started ("+currentEventIndex+").");
         }
         ptr.execute();
         if(ptr.exitConditionMet()) {
             currentEventIndex++; 
-            DebugLog.log(4, this, "Event " + ptr.getClass().getName() + " ended (" + (currentEventIndex - 1) + ").");
+            DebugLog.log(DebugLog.LVL_DEBUG, this, "Event " + ptr.getClass().getName() + " ended (" + (currentEventIndex - 1) + ").");
             return;
         }
     }
     
     public void addEvent(SequenceEvent e) {
         this.e_autoSequence.addElement(e);
-        DebugLog.log(4, this, "Event " + e.getClass().getName() + " added to array at index " + (this.e_autoSequence.size()-1));
+        DebugLog.log(DebugLog.LVL_DEBUG, this, "Event " + e.getClass().getName() + " added to array at index " + (this.e_autoSequence.size()-1));
     }
     
     public void resetSequence() {this.currentEventIndex = 0;}
