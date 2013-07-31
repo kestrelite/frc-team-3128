@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
 import frc3128.EventManager.EventManager;
 import frc3128.EventManager.ListenerManager;
+import frc3128.Util.Constants;
 
 /* 
  * THIS FILE SHOULD NOT BE MODIFIED
@@ -22,11 +23,9 @@ import frc3128.EventManager.ListenerManager;
  * @author Noah Sutton-Smolin
  */
 public class RobotTemplate extends IterativeRobot {
-	//You are, however, permitted to modify the following global constant:
-	private static final int DEFAULTLOGLEVEL = 3;
 	
     public void robotInit() {
-		DebugLog.setLogLevel(DEFAULTLOGLEVEL);
+		DebugLog.setLogLevel(Constants.DEFAULT_LOGLEVEL);
         Global.initializeRobot();
     }
 
