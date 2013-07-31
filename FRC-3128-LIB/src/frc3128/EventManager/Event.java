@@ -43,7 +43,7 @@ public abstract class Event {
     public Event() {}
     
 	/**
-	 * @param isTimerEvent States whether or not the event is a timed one. If 
+	 * @param isTimerEvent states whether or not the event is a timed one. If 
 	 * it is, then the linked TimerEvent is created at instantiation.
 	 */
 	public Event(boolean isTimerEvent) {
@@ -101,7 +101,7 @@ public abstract class Event {
 	 * when this method is first called. It is recommended that you call 
 	 * Event.prepareTimer() before executing this method.
 	 * 
-	 * @param msec The time in milliseconds after which the event will execute.
+	 * @param msec the time in milliseconds after which the event will execute.
 	 */
     final public void registerTimedEvent(int msec) {
         try {

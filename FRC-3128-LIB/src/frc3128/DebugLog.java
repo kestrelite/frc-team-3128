@@ -21,7 +21,7 @@ public class DebugLog {
 	 * Severity is the following:
 	 * <p>0: Error; 1: Severe; 2: Warning; 3: Info; 4: Debug; 5: Stream
 	 * 
-	 * @param level The level to be logged. 
+	 * @param level the level to be logged. 
 	 */
     public static void setLogLevel(int level) {
         DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "Log detail set to " + level);
@@ -34,9 +34,9 @@ public class DebugLog {
 	 * log level is higher than the provided maximum detail. It uses an object
 	 * (typically a string) to create a tag for the message.
 	 * 
-	 * @param level The severity level of the message to be logged.
-	 * @param obj   The object (typically String) used to identify the message source.
-	 * @param text  The message to be logged.
+	 * @param level the severity level of the message to be logged.
+	 * @param obj   the object (typically String) used to identify the message source.
+	 * @param text  the message to be logged.
 	 */
     public static void log(int level, Object obj, String text) {
         String strLv = "[UNKN]  ";
