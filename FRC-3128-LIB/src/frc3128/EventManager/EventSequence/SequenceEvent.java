@@ -2,6 +2,10 @@ package frc3128.EventManager.EventSequence;
 
 import frc3128.EventManager.Event;
 
+/**
+ * 
+ * @author Noah Sutton-Smolin
+ */
 public abstract class SequenceEvent extends Event {
     private long startTime = -1;
     private boolean eventIsRunning = false;

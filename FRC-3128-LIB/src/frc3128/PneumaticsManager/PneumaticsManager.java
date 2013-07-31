@@ -2,9 +2,12 @@ package frc3128.PneumaticsManager;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
-import frc3128.DebugLog;
 import java.util.Vector;
 
+/**
+ * 
+ * @author Noah Sutton-Smolin
+ */
 public class PneumaticsManager {
     private   static Compressor c;
     protected static Vector dualSolenoidList = new Vector();

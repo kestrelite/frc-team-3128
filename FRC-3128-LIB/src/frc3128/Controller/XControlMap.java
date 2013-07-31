@@ -2,6 +2,10 @@ package frc3128.Controller;
 
 import frc3128.DebugLog;
 
+/**
+ * 
+ * @author Noah Sutton-Smolin
+ */
 public class XControlMap {
     public static final int A = 1; 
     public static final int B = 2; 

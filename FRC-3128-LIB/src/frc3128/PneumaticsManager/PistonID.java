@@ -1,5 +1,9 @@
 package frc3128.PneumaticsManager;
 
+/**
+ * 
+ * @author Noah Sutton-Smolin
+ */
 public class PistonID {
     private int     value = -1;
     private boolean inverted = false;

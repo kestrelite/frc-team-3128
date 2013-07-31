@@ -3,6 +3,10 @@ package frc3128.EventManager;
 import frc3128.DebugLog;
 import java.util.Vector;
 
+/**
+ * 
+ * @author Noah Sutton-Smolin
+ */
 public class ListenerManager {
     private static Vector event = new Vector();
     private static Vector key = new Vector();
