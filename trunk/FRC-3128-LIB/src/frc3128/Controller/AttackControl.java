@@ -5,19 +5,32 @@ import frc3128.DebugLog;
 import frc3128.EventManager.Event;
 import frc3128.EventManager.ListenerManager;
 
+/**
+ * 
+ * @author Noah Sutton-Smolin
+ */
 public class AttackControl extends Event {
-    public Joystick aControl;
+    public double x, y, throttle;
+	public Joystick aControl;
     private final int controlID;
     private boolean[] buttonsPressed = {false, false, false, false, false, false, false, false, false, false, false};
-    public double x, y, throttle;
-    
+	
+	/**
+	 * Instantiates a new AttackPad controller and starts an Event for updates.
+	 * 
+	 * @param port The port of the controller
+	 */
     public AttackControl(int port) {
         aControl = new Joystick(port);
         controlID = port;
         this.registerIterableEvent();
         DebugLog.log(4, this, "AttackControl added self to event manager!");
     }
-    
+	
+	/**
+	 * This function will be called automatically by the EventManager.<p><b>Do
+	 * not invoke it.</b>
+	 */
     public void execute() {
         boolean updateJoy = false, updateThrottle = false;
         
