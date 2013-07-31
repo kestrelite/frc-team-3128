@@ -28,7 +28,7 @@ public class XControlMap {
 	 * Listener triggers, but also useful for debug outputs.
 	 * 
 	 * @param btn The integer key pressed
-	 * @return The associated String
+	 * @return the associated String
 	 */
     public static String getBtnString(int btn) {
         switch(btn) {

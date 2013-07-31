@@ -18,7 +18,7 @@ public class AnalogEncoder extends AbstractEncoder {
 	 * have been estimated to high accuracy from extensive tests. Unless need be
 	 * , do not modify these values.
 	 * 
-	 * @return The approximate angle from 0 to 360 degrees of the encoder
+	 * @return the approximate angle from 0 to 360 degrees of the encoder
 	 */
 	public double getAngle() {
         double voltage = 0, value = 0;
@@ -30,5 +30,9 @@ public class AnalogEncoder extends AbstractEncoder {
         return voltage/5.0*360;
     }
 
+	/**
+	 * 
+	 * @return the raw voltage of the encoder
+	 */
 	public double getRawValue() {return enc.getVoltage();}
 }

@@ -23,20 +23,20 @@ public abstract class SequenceEvent extends Event {
 	/**
 	 * Returns whether or not the current SequenceEvent is running.
 	 * 
-	 * @return Whether the current SequenceEvent is running
+	 * @return whether the current SequenceEvent is running
 	 */
     final protected boolean isRunning() {return eventIsRunning;}
     
 	/**
 	 * Finds how long the SequenceEvent ran.
 	 * 
-	 * @return The duration, in msec, for how long the SequenceEvent ran
+	 * @return the duration, in msec, for how long the SequenceEvent ran
 	 */
 	final protected long getRunTimeMillis() {return (startTime == -1 ? -1 : System.currentTimeMillis() - this.startTime);}
 
 	/**
 	 * 
-	 * @return Whether the current SequenceEvent's exit condition has been met
+	 * @return whether the current SequenceEvent's exit condition has been met
 	 */
 	public abstract boolean exitConditionMet();
 }
