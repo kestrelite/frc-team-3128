@@ -1,5 +1,9 @@
 package frc3128;
 
+/**
+ * 
+ * @author Noah Sutton-Smolin
+ */
 public class DebugLog {
     public static final int LVL_STREAM = 5;
     public static final int LVL_DEBUG = 4;
@@ -12,36 +16,49 @@ public class DebugLog {
     private static int maxTagLength = 0;
     private static final int initTagLength = 32;
 
-    public DebugLog() {DebugLog.log(4, this.toString(), "Debug log started.");}
-    public DebugLog(int p) {
-        logDetail = p;
-        DebugLog.log(4, this.toString(), "Debug log started.");
+	/**
+	 * This sets the log detail level. This is used to filter based on severity.
+	 * Severity is the following:
+	 * <p>0: Error; 1: Severe; 2: Warning; 3: Info; 4: Debug; 5: Stream
+	 * 
+	 * @param level The level to be logged. 
+	 */
+    public static void setLogLevel(int level) {
+        DebugLog.log(3, "DebugLog", "Log detail set to " + level);
+        DebugLog.logDetail = level;
     }
 
-    public static void setLogLevel(int detail) {
-        DebugLog.log(3, "DebugLog", "Log detail set to " + detail);
-        DebugLog.logDetail = detail;
-    }
-
-    public static void log(int lvl, Object o, String text) {
-        String level = "[UNKN]  ";
-        if(lvl <= 0) level = "[ERROR" + Math.abs(lvl) + "] ";
-        if(lvl == 1) level = "[SEVERE]";
-        if(lvl == 2) level = "[**WARN]";
-        if(lvl == 3) level = "[INFO]  ";
-        if(lvl == 4) level = "[DEBUG] ";
-        if(lvl == 5) level = "[STREAM]";
+	/**
+	 * Logs a message to the NetBeans console. The log keeps all statements in 
+	 * alignment with the longest message. It will hide any information whose
+	 * log level is higher than the provided maximum detail. It uses an object
+	 * (typically a string) to create a tag for the message.
+	 * 
+	 * @param level The severity level of the message to be logged.
+	 * @param obj   The object (typically String) used to identify the message source.
+	 * @param text  The message to be logged.
+	 */
+    public static void log(int level, Object obj, String text) {
+        String strLv = "[UNKN]  ";
+        if(level <= 0) strLv = "[ERROR" + Math.abs(level) + "] ";
+        if(level == 1) strLv = "[SEVERE]";
+        if(level == 2) strLv = "[**WARN]";
+        if(level == 3) strLv = "[INFO]  ";
+        if(level == 4) strLv = "[DEBUG] ";
+        if(level == 5) strLv = "[STREAM]";
         
-        if(o.toString().length() > DebugLog.maxTagLength && lvl <= DebugLog.logDetail)
-            DebugLog.maxTagLength = o.toString().length();
+        if(obj.toString().length() > DebugLog.maxTagLength && level <= DebugLog.logDetail)
+            DebugLog.maxTagLength = obj.toString().length();
         
-        if(lvl <= DebugLog.logDetail) {
+        if(level <= DebugLog.logDetail) {
             System.out.print("[" + System.currentTimeMillis() + "] " + 
-                    level + " [" + 
-                    (o.toString().substring(0, 4).equals("edu.")?o.toString().substring(initTagLength):o.toString()) + "] ");
-            for(int i = 0; i < maxTagLength - o.toString().length(); i++)
+                    strLv + " [" + 
+                    (obj.toString().substring(0, 4).equals("edu.")?obj.toString().substring(initTagLength):obj.toString()) + "] ");
+            for(int i = 0; i < maxTagLength - obj.toString().length(); i++)
                 System.out.print(" ");
             System.out.println(text);
         }
     }
+
+	private DebugLog() {}
 }
