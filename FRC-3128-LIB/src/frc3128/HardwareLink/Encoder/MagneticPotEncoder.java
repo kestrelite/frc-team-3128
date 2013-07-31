@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj.AnalogChannel;
  *
  * @author Noah Sutton-Smolin
  */
-public class AnalogEncoder extends AbstractEncoder {
+public class MagneticPotEncoder extends AbstractEncoder {
 	private AnalogChannel enc;
 	
-	public AnalogEncoder(int a, int b) {
+	public MagneticPotEncoder(int a, int b) {
 		enc = new AnalogChannel(a, b);
 	}
 	

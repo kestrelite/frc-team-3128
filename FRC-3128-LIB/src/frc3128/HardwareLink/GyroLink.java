@@ -12,10 +12,9 @@ public class GyroLink {
 	/**
 	 * Creates a new GyroLink.
 	 * 
-	 * @param portA the first port of the gyro
-	 * @param portB the second port of the gyro
+	 * @param gyr The gyro to be linked
 	 */
-	public GyroLink(int portA, int portB) {gyr = new Gyro(portA, portB);}
+	public GyroLink(Gyro gyr) {this.gyr = gyr;}
 	
 	public double getAngle() {return gyr.getAngle();}
 }
