@@ -1,22 +1,19 @@
-package frc3128.HardwareLink;
+package frc3128.HardwareLink.Motor;
 
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Jaguar;
-/**
- *
- * @author Kian
- */
-public class MotorLink {
+
+public class MotorLinkOld {
     
     
     public Jaguar mot;
     public AnalogChannel enc;
     
-    public MotorLink(Jaguar a){
+    public MotorLinkOld(Jaguar a){
         mot = a;  
     }
     
-    public MotorLink(Jaguar a, AnalogChannel b){
+    public MotorLinkOld(Jaguar a, AnalogChannel b){
         mot = a;
         enc = b;   
     }
