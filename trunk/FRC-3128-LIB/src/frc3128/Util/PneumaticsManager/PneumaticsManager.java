@@ -25,10 +25,10 @@ public class PneumaticsManager {
 	/**
 	 * Adds a piston to the DualSolenoid list
 	 * 
-	 * @param solA      The first solenoid
-	 * @param solB      The second solenoid
-	 * @param solAState The first solenoid's initial state
-	 * @param solBState The second solenoid's initial state
+	 * @param solA      the first solenoid
+	 * @param solB      the second solenoid
+	 * @param solAState the first solenoid's initial state
+	 * @param solBState the second solenoid's initial state
 	 * @return a PistonID for referencing the given piston
 	 */
     public static PistonID addPiston(Solenoid solA, Solenoid solB, boolean solAState, boolean solBState) {
@@ -39,7 +39,7 @@ public class PneumaticsManager {
 	/**
 	 * Sets a piston to the locked state (ignores inversion).
 	 * 
-	 * @param id The PistonID to be set
+	 * @param id the PistonID to be set
 	 */
     public static void setPistonStateLocked(PistonID id) {
         ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).lockPiston();
@@ -48,7 +48,7 @@ public class PneumaticsManager {
 	/**
 	 * Sets a piston to the unlocked state (ignores inversion).
 	 * 
-	 * @param id The PistonID to be set
+	 * @param id the PistonID to be set
 	 */
     public static void setPistonStateUnlocked(PistonID id) {
         ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).unlockPiston();
@@ -57,7 +57,7 @@ public class PneumaticsManager {
 	/**
 	 * Sets a piston to the "on" state ("off" if inverted).
 	 * 
-	 * @param id The PistonID to be set
+	 * @param id the PistonID to be set
 	 */
     public static void setPistonStateOn(PistonID id) {
         if(!id.getInversion()) 
@@ -69,7 +69,7 @@ public class PneumaticsManager {
 	/**
 	 * Sets a piston to the "off" state ("on" if inverted).
 	 * 
-	 * @param id The PistonID to be set
+	 * @param id the PistonID to be set
 	 */
     public static void setPistonStateOff(PistonID id) {
         if(!id.getInversion())
@@ -81,7 +81,7 @@ public class PneumaticsManager {
 	/**
 	 * Sets a piston to its inverted state (ignores inversion).
 	 * 
-	 * @param id The PistonID to be inverted
+	 * @param id the PistonID to be inverted
 	 */
     public static void setPistonInvertState(PistonID id) {
         ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).setPistonInverted();

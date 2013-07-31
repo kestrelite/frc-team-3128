@@ -10,8 +10,8 @@ public class SDWrite {
 	/**
 	 * Gets an integer value from the SmartDashboard, if it is open and connected.
 	 * 
-	 * @param table The name of the table to retrieve from
-	 * @param key   The key for the data in the table 
+	 * @param table the name of the table to retrieve from
+	 * @param key   the key for the data in the table 
 	 * @return an integer value from the table if it exists
 	 *              <p>Null if it does not
 	 */
@@ -20,8 +20,8 @@ public class SDWrite {
 	/**
 	 * Gets a double value from the SmartDashboard, if it is open and connected.
 	 * 
-	 * @param table The name of the table to retrieve from
-	 * @param key   The key for the data in the table 
+	 * @param table the name of the table to retrieve from
+	 * @param key   the key for the data in the table 
 	 * @return a double value from the table if it exists
 	 *              <p>Null if it does not
 	 */	
@@ -30,8 +30,8 @@ public class SDWrite {
 	/**
 	 * Gets a double value from the SmartDashboard, if it is open and connected.
 	 * 
-	 * @param table The name of the table to retrieve from
-	 * @param key   The key for the data in the table 
+	 * @param table the name of the table to retrieve from
+	 * @param key   the key for the data in the table 
 	 * @return a double value from the table if it exists
 	 *              <p>Null if it does not
 	 */		

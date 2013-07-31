@@ -27,7 +27,7 @@ public class XControlMap {
 	 * Gets the String associated with a button keypress. Used primarily for 
 	 * Listener triggers, but also useful for debug outputs.
 	 * 
-	 * @param btn The integer key pressed
+	 * @param btn the integer key pressed
 	 * @return the associated String
 	 */
     public static String getBtnString(int btn) {

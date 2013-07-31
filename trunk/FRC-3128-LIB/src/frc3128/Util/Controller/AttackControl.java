@@ -18,7 +18,7 @@ public class AttackControl extends Event {
 	/**
 	 * Instantiates a new AttackPad controller and starts an Event for updates.
 	 * 
-	 * @param port The port of the controller
+	 * @param port the port of the controller
 	 */
     public AttackControl(int port) {
         aControl = new Joystick(port);

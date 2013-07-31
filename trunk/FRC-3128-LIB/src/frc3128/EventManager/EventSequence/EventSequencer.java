@@ -41,7 +41,7 @@ public class EventSequencer extends Event {
 	 * Adds an event to the current EventSequencer. This event will be added in
 	 * linear order; it will be called in the sequence it was inserted.
 	 * 
-	 * @param seqEvent The event to be queued
+	 * @param seqEvent the event to be queued
 	 */
     public void addEvent(SequenceEvent seqEvent) {
         this.e_autoSequence.addElement(seqEvent);

@@ -23,8 +23,8 @@ public class ListenerManager {
 	 * Adds an Event and key to the Listener system. This has the effect of 
 	 * triggering the Event once whenever the key is invoked.
 	 * 
-	 * @param event The Event to be added to the ListenerManager
-	 * @param key   The String key with which the Event should be associated
+	 * @param event the Event to be added to the ListenerManager
+	 * @param key   the String key with which the Event should be associated
 	 */
     public static void addListener(Event event, String key) {
         DebugLog.log(DebugLog.LVL_DEBUG, "ListenerManager", "Added " + event.toString() + " to " + key);
@@ -35,8 +35,8 @@ public class ListenerManager {
 	 * Adds an Event and key to the Listener system. This has the effect of 
 	 * triggering the Event once whenever the key is invoked.
 	 * 
-	 * @param event The Event to be added to the ListenerManager
-	 * @param key   The integer key with which the Event should be associated
+	 * @param event the Event to be added to the ListenerManager
+	 * @param key   the integer key with which the Event should be associated
 	 */
     public static void addListener(Event event, int key) {
         verifyNoDuplicate(event, key);
@@ -48,7 +48,7 @@ public class ListenerManager {
 	 * Calls all Events associated with the given key. The Events will be run 
 	 * once. They will be kept in the ListenerManager's index.
 	 * 
-	 * @param key The String key whose associated Events should be run
+	 * @param key the String key whose associated Events should be run
 	 */
     public static void callListener(String key) {callListener(key.hashCode());}
     
@@ -56,7 +56,7 @@ public class ListenerManager {
 	 * Calls all Events associated with the given key. The Events will be run 
 	 * once. They will be kept in the ListenerManager's index.
 	 * 
-	 * @param key The integer key whose associated Events should be run
+	 * @param key the integer key whose associated Events should be run
 	 */
 	public static void callListener(int link) {
         for(int i = 0; i < ListenerManager.key.size(); i++) {
@@ -109,14 +109,14 @@ public class ListenerManager {
 	/**
 	 * Drops all Event/key pairs with the given key.
 	 * 
-	 * @param key The String key to be dropped from the table.
+	 * @param key the String key to be dropped from the table.
 	 */
 	public static void dropListener(String key) {ListenerManager.dropListener(key.hashCode());}
 	
 	/**
 	 * Drops all Event/key pairs with the given key.
 	 * 
-	 * @param key The integer key to be dropped from the table.
+	 * @param key the integer key to be dropped from the table.
 	 */
     public static void dropListener(int key) {
         DebugLog.log(3, referenceName, "Dropping link " + key);

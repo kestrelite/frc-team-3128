@@ -17,7 +17,7 @@ public class XControl extends Event {
 	/**
 	 * Instantiates a new XBox controller and starts an Event for updates.
 	 * 
-	 * @param port The port of the controller
+	 * @param port the port of the controller
 	 */
     public XControl(int port) {
         xControl = new Joystick(port);

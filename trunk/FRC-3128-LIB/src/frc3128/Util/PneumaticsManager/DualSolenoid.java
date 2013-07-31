@@ -14,10 +14,10 @@ class DualSolenoid {
 	/**
 	 * Links two solenoids together, typically a Festo valve.
 	 * 
-	 * @param solA      The first solenoid valve
-	 * @param solB      The second solenoid valve
-	 * @param solAState The initial solenoid state for the first valve
-	 * @param solBState The initial solenoid state for the second valve
+	 * @param solA      the first solenoid valve
+	 * @param solB      the second solenoid valve
+	 * @param solAState the initial solenoid state for the first valve
+	 * @param solBState the initial solenoid state for the second valve
 	 */
     protected DualSolenoid(Solenoid solA, Solenoid solB, boolean solAState, boolean solBState) {
         this.solA = solA;
