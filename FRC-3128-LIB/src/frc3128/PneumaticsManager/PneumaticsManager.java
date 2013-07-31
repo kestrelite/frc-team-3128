@@ -7,76 +7,104 @@ import java.util.Vector;
 
 public class PneumaticsManager {
     private   static Compressor c;
-    private   static boolean compressorSet = false;
     protected static Vector dualSolenoidList = new Vector();
-    private   static final String referenceName = "PneumaticsManager";
 
-    public PneumaticsManager(Compressor c) {
-        PneumaticsManager.c = c;
-        PneumaticsManager.compressorSet = true;
+	/**
+	 * Sets up and initialized the PneumaticsManager.
+	 * 
+	 * @param comp The compressor to be initialized 
+	 */
+    public PneumaticsManager(Compressor comp) {
+        PneumaticsManager.c = comp;
         PneumaticsManager.c.stop();
     }
-
-    public PneumaticsManager(int a, int b, int c, int d) {
-        PneumaticsManager.c = new Compressor(a, b, c, d);
-        PneumaticsManager.compressorSet = true;
-        PneumaticsManager.c.stop();
-    }
-    
+	
+	/**
+	 * Adds a piston to the DualSolenoid list
+	 * 
+	 * @param solA      The first solenoid
+	 * @param solB      The second solenoid
+	 * @param solAState The first solenoid's initial state
+	 * @param solBState The second solenoid's initial state
+	 * @return A PistonID for referencing the given piston
+	 */
     public static PistonID addPiston(Solenoid solA, Solenoid solB, boolean solAState, boolean solBState) {
         dualSolenoidList.addElement(new DualSolenoid(solA, solB, solAState, solBState));
         return new PistonID(dualSolenoidList.size() - 1);
     }
 
-    public static PistonID addPiston(int a, int b, int c, int d, boolean solAState, boolean solBState) {
-        dualSolenoidList.addElement(new DualSolenoid(new Solenoid(a, b), new Solenoid(c, d), solAState, solBState));
-        return new PistonID(dualSolenoidList.size() - 1);
-    }
-
+	/**
+	 * Sets a piston to the locked state (ignores inversion).
+	 * 
+	 * @param id The PistonID to be set
+	 */
     public static void setPistonStateLocked(PistonID id) {
-        if(!id.getInversion())
-            ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).lockPiston();
-        else
-            ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).unlockPiston();
+        ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).lockPiston();
     }
 
+	/**
+	 * Sets a piston to the unlocked state (ignores inversion).
+	 * 
+	 * @param id The PistonID to be set
+	 */
     public static void setPistonStateUnlocked(PistonID id) {
-        if(!id.getInversion())
-            ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).unlockPiston();
-        else
-            ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).lockPiston();
+        ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).unlockPiston();
     }
 
+	/**
+	 * Sets a piston to the "on" state ("off" if inverted).
+	 * 
+	 * @param id The PistonID to be set
+	 */
     public static void setPistonStateOn(PistonID id) {
-        ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).setPistonOn();
+        if(!id.getInversion()) 
+			((DualSolenoid) dualSolenoidList.elementAt(id.getID())).setPistonOn();
+		else
+			((DualSolenoid) dualSolenoidList.elementAt(id.getID())).setPistonOff();
     }
 
+	/**
+	 * Sets a piston to the "off" state ("on" if inverted).
+	 * 
+	 * @param id The PistonID to be set
+	 */
     public static void setPistonStateOff(PistonID id) {
-        ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).setPistonOff();
+        if(!id.getInversion())
+			((DualSolenoid) dualSolenoidList.elementAt(id.getID())).setPistonOff();
+		else
+			((DualSolenoid) dualSolenoidList.elementAt(id.getID())).setPistonOn();
     }
 
+	/**
+	 * Sets a piston to its inverted state (ignores inversion).
+	 * 
+	 * @param id The PistonID to be inverted
+	 */
     public static void setPistonInvertState(PistonID id) {
         ((DualSolenoid) dualSolenoidList.elementAt(id.getID())).setPistonInverted();
     }
-    
-    public static void setCompressorStateOn() {
-        if(PneumaticsManager.compressorSet)
-            PneumaticsManager.c.start();
-        if(!PneumaticsManager.compressorSet)
-            DebugLog.log(DebugLog.LVL_SEVERE, referenceName, "Compressor is being started without first being instantiated!");
-    }
+	
+	/**
+	 * Starts the compressor.
+	 */
+	public static void setCompressorStateOn() {PneumaticsManager.c.start();}
 
-    public static void setCompressorStateOff() {
-        if(PneumaticsManager.compressorSet)
-            PneumaticsManager.c.stop();
-        if(!PneumaticsManager.compressorSet)
-            DebugLog.log(DebugLog.LVL_SEVERE, referenceName, "Compressor is being stopped without first being instantiated!");
-    }
+	/**
+	 * Stops the compressor.
+	 */
+    public static void setCompressorStateOff() {PneumaticsManager.c.stop();}
 
+	/**
+	 * 
+	 * @return whether the compressor is on or off
+	 */
     public static boolean getCompressorState() {
         return (PneumaticsManager.c.enabled() ? true : false);
     }
     
+	/**
+	 * Locks all pistons.
+	 */
     public static void lockAllPistons() {
         for(int i = 0; i < dualSolenoidList.size(); i++)
             ((DualSolenoid) dualSolenoidList.elementAt(i)).lockPiston();
