@@ -57,7 +57,7 @@ public abstract class Event {
 	/**
 	 * This function is where the event is actually run. 
 	 */
-    abstract public void execute();
+    public abstract void execute();
 	
 	/**
 	 * Cancels the event if it is running. If the event is not running, this 

@@ -11,10 +11,11 @@ public abstract class MotorSpeedControl extends Event {
 	private long lastRuntime = -1;
 	private MotorLink controlledMotor = null;
 	
-	public MotorSpeedControl(MotorLink spdControlTarget) {}
+	public MotorSpeedControl() {}
+	protected void setControlledMotor(MotorLink m) {controlledMotor = m;}
 	
-	public abstract void setTarget(double d);
-	public abstract void speedTimestep();
+	public abstract void setControlTarget(double d);
+	public abstract void speedTimestep(double dt);
 	
 	/**
 	 * 
@@ -36,6 +37,6 @@ public abstract class MotorSpeedControl extends Event {
 	
 	public final void execute() {
 		lastRuntime = System.currentTimeMillis();
-		this.speedTimestep();
-	}	
+		this.speedTimestep(this.getLastRuntimeDist()/1000.0);
+	}
 }
