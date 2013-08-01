@@ -1,6 +1,6 @@
 package frc3128.EventManager;
 
-import frc3128.DebugLog;
+import frc3128.Util.DebugLog;
 import frc3128.Util.Constants;
 import java.util.Vector;
 

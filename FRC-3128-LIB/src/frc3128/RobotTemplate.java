@@ -1,5 +1,6 @@
 package frc3128;
 
+import frc3128.Util.DebugLog;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
 import frc3128.EventManager.EventManager;

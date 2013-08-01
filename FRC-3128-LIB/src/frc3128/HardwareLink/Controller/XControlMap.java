@@ -1,6 +1,6 @@
 package frc3128.HardwareLink.Controller;
 
-import frc3128.DebugLog;
+import frc3128.Util.DebugLog;
 
 /**
  * 

@@ -1,7 +1,7 @@
 package frc3128.HardwareLink.Pneumatics;
 
 import edu.wpi.first.wpilibj.Solenoid;
-import frc3128.DebugLog;
+import frc3128.Util.DebugLog;
 
 /**
  * 
