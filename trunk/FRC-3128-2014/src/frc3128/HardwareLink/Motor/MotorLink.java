@@ -30,6 +30,7 @@ public class MotorLink {
 		
 		this.motor.set(reversedCheck(spd));
 	}
+	protected void setSpeedControlled(double spd) {this.motor.set(spd);}
 	
 	public void setEncoder(AbstractEncoder encoder) {
 		if(encoder != null) DebugLog.log(DebugLog.LVL_INFO, this, "The encoder was changed in the motor!");
