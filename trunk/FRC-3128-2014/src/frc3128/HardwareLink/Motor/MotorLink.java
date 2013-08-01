@@ -9,6 +9,7 @@ import frc3128.Util.RobotMath;
  * 
  * @author Noah Sutton-Smolin
  */
+//TODO: Class javadoc
 public class MotorLink {
 	private final Jaguar            motor;
 	private       AbstractEncoder   encoder;

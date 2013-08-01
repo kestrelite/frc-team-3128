@@ -13,11 +13,9 @@ public class RelayLink {
 	/**
 	 * Instantiates a new relay.
 	 * 
-	 * @param portA the first port of the relay
-	 * @param portB the second port of the relay
-	 * @param dir the initial direction of the relay
+	 * @param rel the relay to be linked
 	 */
-	public RelayLink(int portA, int portB, Direction dir) {rel = new Relay(portA, portB, dir);}
+	public RelayLink(Relay rel) {this.rel = rel;}
 	
 	/**
 	 * Sets the relay on.

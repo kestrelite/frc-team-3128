@@ -25,15 +25,12 @@ import frc3128.Util.DebugLog;
  * @author Noah Sutton-Smolin
  */
 public class RobotTemplate extends IterativeRobot {
-	
     public void robotInit() {
 		DebugLog.setLogLevel(Constants.DEFAULT_LOGLEVEL);
         Global.initializeRobot();
     }
 
-    public void disabledInit() {
-        Global.initializeDisabled();
-    }
+    public void disabledInit() {Global.initializeDisabled();}
 
     boolean autonomousHasBeenInit = false;
     public void autonomousInit() {

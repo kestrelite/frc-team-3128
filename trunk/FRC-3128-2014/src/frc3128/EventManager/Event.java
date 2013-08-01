@@ -43,10 +43,6 @@ public abstract class Event {
 	
     public Event() {}
     
-	/**
-	 * @param isTimerEvent states whether or not the event is a timed one. If 
-	 * it is, then the linked TimerEvent is created at instantiation.
-	 */
 	public Event(boolean isTimerEvent) {
         if(isTimerEvent) {
             this.timerEvent = new TimerEvent();
