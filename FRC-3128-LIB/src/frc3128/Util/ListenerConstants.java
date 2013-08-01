@@ -26,5 +26,10 @@ public class ListenerConstants {
 	public static final String BTN_L3_UP = "buttonL3Up";
 	public static final String BTN_R3_UP = "buttonR3Up";
 
+	public static final String UPDATE_JOY1 = "updateJoy1";
+	public static final String UPDATE_JOY2 = "updateJoy2";
+	public static final String UPDATE_TRIGGERS = "updateTriggers";
+	public static final String UPDATE_DRIVE = "updateDrive";
+	
 	private ListenerConstants() {}
 }
