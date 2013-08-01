@@ -4,7 +4,7 @@ package frc3128.Util;
  *
  * @author Noah Sutton-Smolin
  */
-public class MotorMath {
+public class RobotMath {
 	/**
 	 * Limits the angle to between 0 and 360 degrees for all math. All angles
 	 * should be normalized before use.
@@ -19,5 +19,5 @@ public class MotorMath {
 		return out;
 	}
 	
-	private MotorMath() {}
+	private RobotMath() {}
 }
