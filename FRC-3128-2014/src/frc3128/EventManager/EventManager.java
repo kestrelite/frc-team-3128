@@ -16,7 +16,7 @@ public class EventManager {
     private static Vector b_deleteFlag = new Vector();
     private static boolean eventProcessingPaused = false;
 	
-    private static void insertIntoEvents(Event e, int p, boolean single) {
+    private static void insertIntoEvents(Event e, boolean single) {
         e_eventList.addElement(e);
         b_singleEventList.addElement((single ? Boolean.TRUE : Boolean.FALSE));
         b_deleteFlag.addElement(Boolean.FALSE);
@@ -32,13 +32,13 @@ public class EventManager {
     protected static void addSingleEvent(Event e) {
         DebugLog.log(4, "EventManager", "Adding SINGLE event " + e.toString());
         checkForDuplicates(e);
-        insertIntoEvents(e, 5, true);
+        insertIntoEvents(e, true);
     }
 
     protected static void addContinuousEvent(Event e) {
         DebugLog.log(3, "EventManager", "Adding CONTINUOUS event " + e.toString());
         checkForDuplicates(e);
-        insertIntoEvents(e, 5, false);
+        insertIntoEvents(e, false);
     }
 
 	/**

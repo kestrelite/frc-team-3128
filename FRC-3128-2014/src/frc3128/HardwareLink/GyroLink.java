@@ -10,11 +10,15 @@ public class GyroLink {
 	private final Gyro gyr;
 	
 	/**
-	 * Creates a new GyroLink.
+	 * Creates a new linked gyroscope.
 	 * 
-	 * @param gyr The gyro to be linked
+	 * @param gyr the gyroscope to be created
 	 */
 	public GyroLink(Gyro gyr) {this.gyr = gyr;}
-	
+
+	/**
+	 * 
+	 * @return the current gyroscope angle
+	 */
 	public double getAngle() {return gyr.getAngle();}
 }
