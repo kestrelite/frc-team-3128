@@ -1,7 +1,7 @@
 package frc3128.EventManager.EventSequence;
 
-import frc3128.Util.DebugLog;
 import frc3128.EventManager.Event;
+import frc3128.Util.DebugLog;
 import java.util.Vector;
 
 /**

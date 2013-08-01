@@ -1,8 +1,8 @@
 package frc3128.HardwareLink.Motor;
 
 import edu.wpi.first.wpilibj.Jaguar;
-import frc3128.Util.DebugLog;
 import frc3128.HardwareLink.Encoder.AbstractEncoder;
+import frc3128.Util.DebugLog;
 import frc3128.Util.RobotMath;
 
 /**
