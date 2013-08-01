@@ -1,13 +1,17 @@
-package frc3128.Util.SpeedControl;
+package frc3128.HardwareLink.Motor;
 
 import frc3128.EventManager.Event;
 
-public abstract class AbstractSpeedControl extends Event {
+/**
+ *
+ * @author Noah Sutton-Smolin
+ */
+public abstract class MotorSpeedControl extends Event {
 	//TODO: Create the abstract methods & a PID implementation
 	private long lastRuntime = -1;
-	public SpeedControlled spdControlTarget = null;
+	private MotorLink controlledMotor = null;
 	
-	public AbstractSpeedControl(SpeedControlled spdControlTarget) {this.spdControlTarget = spdControlTarget;}
+	public MotorSpeedControl(MotorLink spdControlTarget) {}
 	
 	public abstract void setTarget(double d);
 	public abstract void speedTimestep();
@@ -28,10 +32,10 @@ public abstract class AbstractSpeedControl extends Event {
 	 * 
 	 * @return the object which is the target of speed control
 	 */
-	public final SpeedControlled getSpeedControlledTarget() {return spdControlTarget;}
+	public MotorLink getLinkedMotor() {return controlledMotor;}
 	
 	public final void execute() {
 		lastRuntime = System.currentTimeMillis();
 		this.speedTimestep();
-	}
+	}	
 }
