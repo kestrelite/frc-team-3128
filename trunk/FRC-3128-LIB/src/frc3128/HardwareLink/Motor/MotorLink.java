@@ -34,15 +34,27 @@ public class MotorLink {
 		if(encoder != null) DebugLog.log(DebugLog.LVL_INFO, this, "The encoder was changed in the motor!");
 		this.encoder = encoder;
 	}
-	public double getEncoderAngle() {return RobotMath.normalizeAngle(encoder.getAngle());}
+
+	public double getEncoderAngle() {
+		if(encoder == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The encoder heading was read, but no encoder was set!"); return -1;}
+		return RobotMath.normalizeAngle(encoder.getAngle());
+	}
 	
 	public void setSpeedControl(MotorSpeedControl spdControl) {
 		if(spdControlEnabled) DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was set while another was active!");
-		spdControlEnabled = !spdControlEnabled; this.spdControl = spdControl;
+		if(spdControl != null && spdControlEnabled) this.stopSpeedControl(); this.spdControl = spdControl;
 	}
-	public void stopSpeedControl() {this.spdControlEnabled = false; spdControl.cancelEvent();}
-	public void startSpeedControl() {this.spdControlEnabled = true; spdControl.registerIterableEvent();}
-	public void setSpeedControlTarget(double d) {this.spdControl.setTarget(d);}
+	
+	public void stopSpeedControl() {
+		if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was stopped when it did not exist!"); return;}
+		this.spdControlEnabled = false; spdControl.cancelEvent();
+	}
+	
+	public void startSpeedControl() {
+		if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was started when it did not exist!"); return;}
+		this.spdControlEnabled = true; spdControl.registerIterableEvent();
+	}
+	public void setSpeedControlTarget(double d) {this.spdControl.setControlTarget(d);}
 	
 	public void reverseMotor() {this.motorReversed = !this.motorReversed;}
 	public boolean getMotorReversed() {return this.motorReversed;}
