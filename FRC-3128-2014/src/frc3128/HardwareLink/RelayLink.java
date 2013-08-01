@@ -1,7 +1,6 @@
 package frc3128.HardwareLink;
 
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Relay.Direction;
 
 /**
  *
