@@ -39,7 +39,8 @@ final class TimerEvent extends Event {
 public abstract class Event {
     private boolean eventIsCancelled;
     private TimerEvent timerEvent = null;
-
+	private long lastRuntime = -1;
+	
     public Event() {}
     
 	/**
@@ -78,7 +79,7 @@ public abstract class Event {
 	 */
     final public void cancelTimedEvent() {timerEvent.cancelEvent();}
     final protected boolean shouldRun() {return !eventIsCancelled;}
-
+	
 	/**
 	 * Adds the event to the EventManager's queue as a single-run event. This 
 	 * event will be run once, and then removed from the queue.
