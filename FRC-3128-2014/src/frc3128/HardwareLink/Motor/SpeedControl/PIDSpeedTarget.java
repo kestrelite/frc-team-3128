@@ -10,8 +10,7 @@ public class PIDSpeedTarget extends MotorSpeedControl {
 	//TODO: PIDSpeedTarget
 	public void setControlTarget(double d) {}
 
-	public void speedTimestep(double dt) {}
+	public double speedTimestep(double dt) {return 0;}
 
 	public void clearControlRun() {}
-	
 }

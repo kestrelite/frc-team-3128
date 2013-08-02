@@ -54,6 +54,7 @@ public class MotorLink {
 			DebugLog.log(DebugLog.LVL_WARN, this, "The speed of the motor was set while a controller was active! Disabling speed controller...");
 			this.stopSpeedControl();
 		}
+		if(spd < -1 || spd > 1) spd = (spd < 0 ? -1 : 1);
 		
 		this.motor.set(reversedCheck(spd)*this.powerScalar);
 	}

@@ -13,9 +13,9 @@ public abstract class MotorSpeedControl extends Event {
 	public MotorSpeedControl() {}
 	protected void setControlledMotor(MotorLink m) {controlledMotor = m;}
 	
-	public abstract void setControlTarget(double d);
-	public abstract void speedTimestep(double dt);
-	public abstract void clearControlRun();
+	public abstract void   setControlTarget(double val);
+	public abstract double speedTimestep(double dt);
+	public abstract void   clearControlRun();
 	
 	/**
 	 * 
@@ -29,19 +29,6 @@ public abstract class MotorSpeedControl extends Event {
 	 */
 	public final long getLastRuntimeDist() {return System.currentTimeMillis() - lastRuntime;}
 
-	/*
-	 * 
-	 * @return the object which is the target of speed control
-	 */
-	//public MotorLink getLinkedMotor() {return controlledMotor;}
-	
-	/**
-	 * Sets the motor's speed using the protected setSpeedControlled method.
-	 * 
-	 * @param spd the speed of the motor
-	 */
-	public void setLinkedMotorSpeed(double spd) {this.controlledMotor.setSpeedControlled(spd);}
-	
 	/**
 	 * 
 	 * @return the encoder value of the controlled motor
@@ -51,6 +38,6 @@ public abstract class MotorSpeedControl extends Event {
 	
 	public final void execute() {
 		lastRuntime = System.currentTimeMillis();
-		this.speedTimestep(this.getLastRuntimeDist()/1000.0);
+		this.controlledMotor.setSpeedControlled(this.speedTimestep(this.getLastRuntimeDist()/1000.0));
 	}
 }
