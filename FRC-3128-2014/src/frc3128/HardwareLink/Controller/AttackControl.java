@@ -10,8 +10,8 @@ import frc3128.Util.DebugLog;
  * @author Noah Sutton-Smolin
  */
 public class AttackControl extends Event {
-    public double x, y, throttle;
-	public Joystick aControl;
+    public  double    x, y, throttle;
+	public  Joystick  aControl;
     private final int controlID;
     private boolean[] buttonsPressed = {false, false, false, false, false, false, false, false, false, false, false};
 	

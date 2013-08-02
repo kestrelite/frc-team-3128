@@ -39,7 +39,6 @@ final class TimerEvent extends Event {
 public abstract class Event {
     private boolean eventIsCancelled;
     private TimerEvent timerEvent = null;
-	private long lastRuntime = -1;
 	
     public Event() {}
     
@@ -101,13 +100,11 @@ public abstract class Event {
 	 * @param msec the time in milliseconds after which the event will execute.
 	 */
     final public void registerTimedEvent(int msec) {
-        try {
-            timerEvent.setTargetTime(msec);
-        } catch(Exception e) {
+		if(timerEvent == null) {
             DebugLog.log(DebugLog.LVL_WARN, this, "Timer event called before instantiation! Timer startup delay possible.");
             prepareTimer();
-            timerEvent.setTargetTime(msec);
-        }
+		}
+		timerEvent.setTargetTime(msec);
     }
 
 	/**

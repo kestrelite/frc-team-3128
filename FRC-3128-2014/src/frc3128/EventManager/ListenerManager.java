@@ -8,15 +8,14 @@ import java.util.Vector;
  * @author Noah Sutton-Smolin
  */
 public class ListenerManager {
-    private static Vector event = new Vector();
-    private static Vector key = new Vector();
-    private static String referenceName = "ListenerManager";
+    private static Vector eventList = new Vector();
+    private static Vector keyList = new Vector();
 
     private static void verifyNoDuplicate(Event e, int link) {
-        for(int i = 0; i < event.size(); i++)
-            if((Event) event.elementAt(i) == e)
-                if(((Integer) ListenerManager.key.elementAt(i)).intValue() == link)
-                    DebugLog.log(DebugLog.LVL_SEVERE, referenceName, "Duplicate event/key pair was added to the ListenerManager!");
+        for(int i = 0; i < eventList.size(); i++)
+            if((Event) eventList.elementAt(i) == e)
+                if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == link)
+                    DebugLog.log(DebugLog.LVL_SEVERE, "ListenerManager", "Duplicate event/key pair was added to the ListenerManager!");
     }
 
 	/**
@@ -40,8 +39,8 @@ public class ListenerManager {
 	 */
     public static void addListener(Event event, int key) {
         verifyNoDuplicate(event, key);
-        ListenerManager.event.addElement(event);
-        ListenerManager.key.addElement(new Integer(key));
+        ListenerManager.eventList.addElement(event);
+        ListenerManager.keyList.addElement(new Integer(key));
     }
 
 	/**
@@ -59,15 +58,15 @@ public class ListenerManager {
 	 * @param key the integer key whose associated Events should be run
 	 */
 	public static void callListener(int link) {
-        for(int i = 0; i < ListenerManager.key.size(); i++) {
-            if(((Integer) ListenerManager.key.elementAt(i)).intValue() == link) {
+        for(int i = 0; i < ListenerManager.keyList.size(); i++) {
+            if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == link) {
                 try {
-                    ((Event) ListenerManager.event.elementAt(i)).registerSingleEvent();
+                    ((Event) ListenerManager.eventList.elementAt(i)).registerSingleEvent();
                 } catch(Exception e) {
                     e.printStackTrace();
-                    ListenerManager.event.removeElementAt(i);
-                    ListenerManager.key.removeElementAt(i);
-                    DebugLog.log(DebugLog.LVL_ERROR, ((Event) ListenerManager.event.elementAt(i)).toString(), "Error in Listener event: " + e.getMessage());
+                    ListenerManager.eventList.removeElementAt(i);
+                    ListenerManager.keyList.removeElementAt(i);
+                    DebugLog.log(DebugLog.LVL_ERROR, ((Event) ListenerManager.eventList.elementAt(i)).toString(), "Error in Listener event: " + e.getMessage());
                 }
             }
         }
@@ -83,11 +82,11 @@ public class ListenerManager {
     public static void dropEvent(Event event) {
         int n = 0;
         while(n != -1) {
-            n = ListenerManager.event.lastIndexOf(event);
+            n = ListenerManager.eventList.lastIndexOf(event);
             if(n == -1) break;
-            ListenerManager.event.removeElementAt(n);
-            ListenerManager.key.removeElementAt(n);
-            DebugLog.log(DebugLog.LVL_DEBUG, referenceName, "Listener link number " + n + " sliced from event " + event.toString());
+            ListenerManager.eventList.removeElementAt(n);
+            ListenerManager.keyList.removeElementAt(n);
+            DebugLog.log(DebugLog.LVL_DEBUG, "ListenerManager", "Listener link number " + n + " sliced from event " + event.toString());
         }
     }
 	
@@ -99,11 +98,11 @@ public class ListenerManager {
 	 * @param c The class to be dropped.
 	 */
     public static void dropEventType(Class c) {
-        for(int i = 0; i < ListenerManager.event.size(); i++)
-            if(((Event)ListenerManager.event.elementAt(i)).getClass().equals(c)) {
-                ListenerManager.dropEvent((Event)ListenerManager.event.elementAt(i));
+        for(int i = 0; i < ListenerManager.eventList.size(); i++)
+            if(((Event)ListenerManager.eventList.elementAt(i)).getClass().equals(c)) {
+                ListenerManager.dropEvent((Event)ListenerManager.eventList.elementAt(i));
             }
-        DebugLog.log(DebugLog.LVL_INFO, referenceName, "Dropping event class " + c.getName());
+        DebugLog.log(DebugLog.LVL_INFO, "ListenerManager", "Dropping event class " + c.getName());
     }
 
 	/**
@@ -119,13 +118,13 @@ public class ListenerManager {
 	 * @param key the integer key to be dropped from the table.
 	 */
     public static void dropListener(int key) {
-        DebugLog.log(3, referenceName, "Dropping link " + key);
-        for(int i = 0; i < ListenerManager.key.size(); i++) {
-            if(i > ListenerManager.key.size()) return;
-            if(((Integer)ListenerManager.key.elementAt(i)).intValue() == key) {
-                DebugLog.log(DebugLog.LVL_DEBUG, referenceName, "Listener dropped: " + ListenerManager.event.elementAt(i).getClass().getName() + " ("+key+").");
-                ListenerManager.event.removeElementAt(i);
-                ListenerManager.key.removeElementAt(i);
+        DebugLog.log(DebugLog.LVL_INFO, "ListenerManager", "Dropping link " + key);
+        for(int i = 0; i < ListenerManager.keyList.size(); i++) {
+            if(i > ListenerManager.keyList.size()) return;
+            if(((Integer)ListenerManager.keyList.elementAt(i)).intValue() == key) {
+                DebugLog.log(DebugLog.LVL_DEBUG, "ListenerManager", "Listener dropped: " + ListenerManager.eventList.elementAt(i).getClass().getName() + " ("+key+").");
+                ListenerManager.eventList.removeElementAt(i);
+                ListenerManager.keyList.removeElementAt(i);
             }
         }
     }
@@ -134,9 +133,9 @@ public class ListenerManager {
 	 * Clears the entire Listener table.
 	 */
     public static void dropAllListeners() {
-        DebugLog.log(DebugLog.LVL_INFO, "ListenerManager", "Dropped ALL " + ListenerManager.event.size() + " listeners.");
-        ListenerManager.event.removeAllElements();
-        ListenerManager.key.removeAllElements();
+        DebugLog.log(DebugLog.LVL_INFO, "ListenerManager", "Dropped ALL " + ListenerManager.eventList.size() + " listeners.");
+        ListenerManager.eventList.removeAllElements();
+        ListenerManager.keyList.removeAllElements();
     }
 	
 	private ListenerManager() {}
