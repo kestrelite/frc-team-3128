@@ -8,7 +8,7 @@ import frc3128.HardwareLink.Motor.MotorDir;
  */
 public class RobotMath {
 	/**
-	 * Limits the angle to between 0 and 360 degrees for all math. All angles
+	 * Limits the angle to between 0 and 359 degrees for all math. All angles
 	 * should be normalized before use.
 	 * 
 	 * @param angle the angle to be normalized
@@ -20,6 +20,13 @@ public class RobotMath {
 		while(out > 360) out -= 360;
 		return out;
 	}
+	
+	/**
+	 * 
+	 * @param pow motor power
+	 * @return whether or not the power is valid
+	 */
+	public static boolean isValidPower(double pow) {return (pow >= -1 && pow <= 0);}
 	
 	/**
 	 * Determines the appropriate direction for a motor to turn.

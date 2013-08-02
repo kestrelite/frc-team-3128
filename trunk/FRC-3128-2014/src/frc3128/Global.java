@@ -29,10 +29,10 @@ public class Global {
 			private double tgtAngle = 0;
 			public void setControlTarget(double d) {tgtAngle = d;}
 
-			public void speedTimestep(double dt) {
+			public double speedTimestep(double dt) {
 				int dir = RobotMath.getMotorDirToTarget(this.getLinkedEncoderAngle(), tgtAngle);
 			    double pow = (Math.abs(RobotMath.normalizeAngle(Math.abs(this.getLinkedEncoderAngle()- tgtAngle)) - 180)/180.0)*(0.9/1.0);
-				this.setLinkedMotorSpeed((pow + 0.1)*dir);
+				return ((pow + 0.1)*dir);
 			}
 
 			public void clearControlRun() {}
