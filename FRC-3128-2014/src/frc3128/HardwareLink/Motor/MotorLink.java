@@ -9,7 +9,6 @@ import frc3128.Util.RobotMath;
  * 
  * @author Noah Sutton-Smolin
  */
-//TODO: Class javadoc
 public class MotorLink {
 	private final Jaguar            motor;
 	private       AbstractEncoder   encoder;
@@ -17,11 +16,38 @@ public class MotorLink {
 	private       boolean           spdControlEnabled = false;
 	private       boolean           motorReversed = false;
 	
+	/**
+	 * 
+	 * @param motor the linked motor
+	 */
 	public MotorLink(Jaguar motor) {this.motor = motor;}
+	
+	/**
+	 * 
+	 * @param motor the linked motor
+	 * @param enc the linked encoder
+	 */
 	public MotorLink(Jaguar motor, AbstractEncoder enc) {this(motor); this.encoder = enc;}
+	
+	/**
+	 * 
+	 * @param motor the linked motor
+	 * @param enc the linked encoder
+	 * @param spdControl the linked speed controller
+	 */
 	public MotorLink(Jaguar motor, AbstractEncoder enc, MotorSpeedControl spdControl) {this(motor, enc); this.spdControl = spdControl;}
 	
+	/**
+	 * 
+	 * @return the current speed of the motor
+	 */
 	public double getSpeed() {return motor.get();}
+	
+	/**
+	 * Sets the speed of the motor. 
+	 * 
+	 * @param spd the speed to be set
+	 */
 	public void setSpeed(double spd) {
 		if(spdControlEnabled) {
 			DebugLog.log(DebugLog.LVL_WARN, this, "The speed of the motor was set while a controller was active! Disabling speed controller...");
@@ -32,16 +58,30 @@ public class MotorLink {
 	}
 	protected void setSpeedControlled(double spd) {this.motor.set(spd);}
 	
+	/**
+	 * Sets and enables an encoder to be linked with a motor.
+	 * 
+	 * @param encoder the Encoder to be linked
+	 */
 	public void setEncoder(AbstractEncoder encoder) {
 		if(encoder != null) DebugLog.log(DebugLog.LVL_INFO, this, "The encoder was changed in the motor!");
 		this.encoder = encoder;
 	}
 
+	/**
+	 * 
+	 * @return the current encoder angle
+	 */
 	public double getEncoderAngle() {
 		if(encoder == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The encoder heading was read, but no encoder was set!"); return -1;}
 		return RobotMath.normalizeAngle(encoder.getAngle());
 	}
 	
+	/**
+	 * Clears, then sets a speed controller for the motor.
+	 * 
+	 * @param spdControl the speed controller to be enabled on the motor
+	 */
 	public void setSpeedControl(MotorSpeedControl spdControl) {
 		spdControl.clearControlRun();
 		if(spdControlEnabled) {
@@ -51,20 +91,42 @@ public class MotorLink {
 		this.spdControl = spdControl;
 	}
 	
+	/**
+	 * Stops the running speed control.
+	 */
 	public void stopSpeedControl() {
 		this.motor.set(0); this.spdControl.clearControlRun();
+		if(!this.spdControlEnabled) DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller was disabled when it was not active!");
 		if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was stopped when it did not exist!"); return;}
 		this.spdControlEnabled = false; spdControl.cancelEvent();
 	}
 	
+	/**
+	 * Enables the speed controller on the current motor.
+	 */
 	public void startSpeedControl() {
 		this.spdControl.clearControlRun();
 		if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was started when it did not exist!"); return;}
 		this.spdControlEnabled = true; spdControl.registerIterableEvent();
 	}
-	public void setSpeedControlTarget(double d) {this.spdControl.setControlTarget(d);}
 	
+	/**
+	 * Sets the speed controller's target - will be used however the speed
+	 * controller has defined it to be.
+	 * 
+	 * @param val the value to be sent to the speed controller 
+	 */
+	public void setSpeedControlTarget(double val) {this.spdControl.setControlTarget(val);}
+	
+	/**
+	 * Inverts the motor; clockwise becomes counterclockwise and vice versa.
+	 */
 	public void reverseMotor() {this.motorReversed = !this.motorReversed;}
+	
+	/**
+	 * 
+	 * @return whether or not the motor is reversed
+	 */
 	public boolean getMotorReversed() {return this.motorReversed;}
 	private double reversedCheck(double spd) {return spd * (motorReversed ? -1.0 : 1.0);}
 }
