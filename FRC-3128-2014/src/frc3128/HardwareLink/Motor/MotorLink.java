@@ -2,6 +2,7 @@ package frc3128.HardwareLink.Motor;
 
 import edu.wpi.first.wpilibj.Jaguar;
 import frc3128.HardwareLink.Encoder.AbstractEncoder;
+import frc3128.Util.Constants;
 import frc3128.Util.DebugLog;
 import frc3128.Util.RobotMath;
 
@@ -111,6 +112,19 @@ public class MotorLink {
 		if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was started when it did not exist!"); return;}
 		this.spdControlEnabled = true; spdControl.registerIterableEvent();
 	}
+
+	/**
+	 * Enables the speed controller on the current motor with the given starting
+	 * value.
+	 * 
+	 * @param targetVal the value to be passed to the speed controller
+	 */
+	public void startSpeedControl(double targetVal) {
+		this.spdControl.setControlTarget(targetVal);
+		this.spdControl.clearControlRun();
+		if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was started when it did not exist!"); return;}
+		this.spdControlEnabled = true; spdControl.registerIterableEvent();
+	}
 	
 	/**
 	 * Sets the speed controller's target - will be used however the speed
@@ -118,7 +132,13 @@ public class MotorLink {
 	 * 
 	 * @param val the value to be sent to the speed controller 
 	 */
-	public void setSpeedControlTarget(double val) {this.spdControl.setControlTarget(val);}
+	public void setSpeedControlTarget(double val) {
+		if(!this.spdControlEnabled) {
+			DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller's target was set when it was not active" + (Constants.START_CONTROL_ON_TARGETSET ? "- enabling..." : "."));
+			if(Constants.START_CONTROL_ON_TARGETSET) {this.startSpeedControl(val); return;}
+		}
+		this.spdControl.setControlTarget(val);
+	}
 	
 	/**
 	 * Inverts the motor; clockwise becomes counterclockwise and vice versa.
