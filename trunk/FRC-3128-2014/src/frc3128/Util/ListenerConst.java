@@ -4,7 +4,7 @@ package frc3128.Util;
  *
  * @author Noah Sutton-Smolin
  */
-public class ListenerConstants {
+public class ListenerConst {
 	public static final String BTN_A_DOWN = "buttonADown";
 	public static final String BTN_B_DOWN = "buttonBDown";
 	public static final String BTN_X_DOWN = "buttonXDown";
@@ -31,5 +31,20 @@ public class ListenerConstants {
 	public static final String UPDATE_TRIGGERS = "updateTriggers";
 	public static final String UPDATE_DRIVE = "updateDrive";
 	
-	private ListenerConstants() {}
+	public static final String UPDATE_ATK_JOY = "updateAtkJoy";
+	public static final String UPDATE_ATK_THROTTLE = "updateAtkThrottle";
+	
+	/**
+	 * Builds a string for the AttackPad controller listeners.
+	 * 
+	 * @param controllerPort the port number of the controller
+	 * @param buttonNum      the button number pressed
+	 * @param pressed        true if down, false if up
+	 * @return a listener for ListenerManager which AttackControl will trigger
+	 */
+	public static String getAtkCtrlListenerKey(int controllerPort, int buttonNum, boolean pressed) {
+		return "button" + controllerPort + "-" + buttonNum + (pressed?"Down":"Up");
+	}
+	
+	private ListenerConst() {}
 }
