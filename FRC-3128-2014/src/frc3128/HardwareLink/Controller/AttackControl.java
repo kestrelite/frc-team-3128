@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc3128.EventManager.Event;
 import frc3128.EventManager.ListenerManager;
 import frc3128.Util.DebugLog;
+import frc3128.Util.ListenerConst;
 
 /**
  * 
@@ -42,14 +43,14 @@ public class AttackControl extends Event {
         y = aControl.getAxis(Joystick.AxisType.kY);
         throttle = aControl.getAxis(Joystick.AxisType.kThrottle);
         
-        if(updateJoy) ListenerManager.callListener("updateAtkJoy");
-        if(updateThrottle) ListenerManager.callListener("updateAtkThrottle");
-        if(updateJoy || updateThrottle) ListenerManager.callListener("updateDrive");
+        if(updateJoy) ListenerManager.callListener(ListenerConst.UPDATE_ATK_JOY);
+        if(updateThrottle) ListenerManager.callListener(ListenerConst.UPDATE_ATK_THROTTLE);
+        if(updateJoy || updateThrottle) ListenerManager.callListener(ListenerConst.UPDATE_DRIVE);
         
         for(int i = 1; i < 11; i++) {
             if(buttonsPressed[i] != aControl.getRawButton(i)) {
-                ListenerManager.callListener("button" + this.controlID + (i) + (aControl.getRawButton(i) ? "Down" : "Up"));
-                DebugLog.log(DebugLog.LVL_DEBUG, this, "Button " + this.controlID + (i) + (aControl.getRawButton(i)==true?" pressed.":" released."));
+				ListenerManager.callListener(ListenerConst.getAtkCtrlListenerKey(this.controlID, i, aControl.getRawButton(i)));
+                DebugLog.log(DebugLog.LVL_DEBUG, this, "Button " + (this.controlID + "-" + i) + (aControl.getRawButton(i)==true?" pressed.":" released."));
             }
             buttonsPressed[i] = aControl.getRawButton(i);
         }
