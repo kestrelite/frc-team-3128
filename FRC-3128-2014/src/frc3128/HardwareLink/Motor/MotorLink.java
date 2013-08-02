@@ -43,16 +43,22 @@ public class MotorLink {
 	}
 	
 	public void setSpeedControl(MotorSpeedControl spdControl) {
-		if(spdControlEnabled) DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was set while another was active!");
-		if(spdControl != null && spdControlEnabled) this.stopSpeedControl(); this.spdControl = spdControl;
+		spdControl.clearControlRun();
+		if(spdControlEnabled) {
+			DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was set while another was active!");
+			this.motor.set(0); this.stopSpeedControl();
+		}
+		this.spdControl = spdControl;
 	}
 	
 	public void stopSpeedControl() {
+		this.motor.set(0); this.spdControl.clearControlRun();
 		if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was stopped when it did not exist!"); return;}
 		this.spdControlEnabled = false; spdControl.cancelEvent();
 	}
 	
 	public void startSpeedControl() {
+		this.spdControl.clearControlRun();
 		if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was started when it did not exist!"); return;}
 		this.spdControlEnabled = true; spdControl.registerIterableEvent();
 	}

@@ -34,6 +34,8 @@ public class Global {
 			    double pow = (Math.abs(RobotMath.normalizeAngle(Math.abs(this.getLinkedEncoderAngle()- tgtAngle)) - 180)/180.0)*(0.9/1.0);
 				this.setLinkedMotorSpeed((pow + 0.1)*dir);
 			}
+
+			public void clearControlRun() {}
 		});
 	}
 }

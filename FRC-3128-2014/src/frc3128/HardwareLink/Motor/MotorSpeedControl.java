@@ -16,6 +16,7 @@ public abstract class MotorSpeedControl extends Event {
 	
 	public abstract void setControlTarget(double d);
 	public abstract void speedTimestep(double dt);
+	public abstract void clearControlRun();
 	
 	/**
 	 * 
