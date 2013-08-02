@@ -7,7 +7,6 @@ import frc3128.EventManager.Event;
  * @author Noah Sutton-Smolin
  */
 public abstract class MotorSpeedControl extends Event {
-	//TODO: Create a PID implementation
 	private long lastRuntime = -1;
 	private MotorLink controlledMotor = null;
 	
