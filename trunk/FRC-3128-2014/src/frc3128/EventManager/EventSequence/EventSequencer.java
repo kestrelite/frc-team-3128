@@ -9,21 +9,21 @@ import java.util.Vector;
  * @author Noah Sutton-Smolin
  */
 public class EventSequencer extends Event {
-    private Vector e_autoSequence = new Vector();
-    private int currentEventIndex = 0;
+    private Vector autoSequenceList  = new Vector();
+    private int    currentEventIndex = 0;
     
 	/**
 	 * This function will be called automatically by the EventManager.<p><b>Do
 	 * not invoke it.</b>
 	 */
     public void execute() {
-        if(currentEventIndex == e_autoSequence.size()) {
+        if(currentEventIndex == autoSequenceList.size()) {
             this.stopSequence(); 
             DebugLog.log(DebugLog.LVL_INFO, this, "Event Sequence complete.");
             return;
         }
         
-        SequenceEvent ptr = ((SequenceEvent)e_autoSequence.elementAt(currentEventIndex));
+        SequenceEvent ptr = ((SequenceEvent)autoSequenceList.elementAt(currentEventIndex));
         
         if(!ptr.isRunning()) {
             ptr.startSequenceEvent();
@@ -33,7 +33,6 @@ public class EventSequencer extends Event {
         if(ptr.exitConditionMet()) {
             currentEventIndex++; 
             DebugLog.log(DebugLog.LVL_DEBUG, this, "Event " + ptr.getClass().getName() + " ended (" + (currentEventIndex - 1) + ").");
-            return;
         }
     }
 	
@@ -44,8 +43,8 @@ public class EventSequencer extends Event {
 	 * @param seqEvent the event to be queued
 	 */
     public void addEvent(SequenceEvent seqEvent) {
-        this.e_autoSequence.addElement(seqEvent);
-        DebugLog.log(DebugLog.LVL_DEBUG, this, "Event " + seqEvent.getClass().getName() + " added to array at index " + (this.e_autoSequence.size()-1));
+        this.autoSequenceList.addElement(seqEvent);
+        DebugLog.log(DebugLog.LVL_DEBUG, this, "Event " + seqEvent.getClass().getName() + " added to array at index " + (this.autoSequenceList.size()-1));
     }
     
 	/**
