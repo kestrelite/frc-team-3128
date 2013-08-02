@@ -15,6 +15,7 @@ public class MotorLink {
 	private       MotorSpeedControl spdControl;
 	private       boolean           spdControlEnabled = false;
 	private       boolean           motorReversed = false;
+	private       double            powerScalar = 1;
 	
 	/**
 	 * 
@@ -54,7 +55,7 @@ public class MotorLink {
 			this.stopSpeedControl();
 		}
 		
-		this.motor.set(reversedCheck(spd));
+		this.motor.set(reversedCheck(spd)*this.powerScalar);
 	}
 	protected void setSpeedControlled(double spd) {this.motor.set(spd);}
 	
@@ -122,6 +123,23 @@ public class MotorLink {
 	 * Inverts the motor; clockwise becomes counterclockwise and vice versa.
 	 */
 	public void reverseMotor() {this.motorReversed = !this.motorReversed;}
+
+	/**
+	 * Sets the power scalar for the motor
+	 * 
+	 * @param pwrScale the power scalar from 0 to 1 to be used for speeds
+	 */
+	public void setPowerScalar(double pwrScale) {
+		if(pwrScale < 0 || pwrScale > 1) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The power scalar was set to an illegal value: " + pwrScale + "; scalar not updated!"); return;}
+		this.powerScalar = pwrScale;
+	}
+	
+	/**
+	 * 
+	 * @return the current power scalar
+	 */
+	public double getPowerScalar() {return this.powerScalar;}
+
 	
 	/**
 	 * 

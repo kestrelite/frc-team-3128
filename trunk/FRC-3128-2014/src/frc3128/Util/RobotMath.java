@@ -12,7 +12,7 @@ public class RobotMath {
 	 * should be normalized before use.
 	 * 
 	 * @param angle the angle to be normalized
-	 * @return the normalized angle on [0,360]
+	 * @return the normalized angle on [0,359]
 	 */
 	public static double normalizeAngle(double angle) {
 		double out = angle;
