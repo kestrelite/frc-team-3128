@@ -88,13 +88,18 @@ public class MotorLink {
 	 */
 	public void setSpeedControl(MotorSpeedControl spdControl) {
 		if(this.encoder == null) {DebugLog.log(DebugLog.LVL_ERROR, this, "Cannot set the speed controller without an encoder!"); throw new Error();}
-		spdControl.clearControlRun();
 		if(spdControlEnabled) {
 			DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was set while another was active!");
 			this.motor.set(0); this.stopSpeedControl();
 		}
-		this.spdControl = spdControl;
+		this.spdControl = spdControl; this.spdControl.clearControlRun(); 
+		this.spdControlEnabled = true; spdControl.registerIterableEvent();
 	}
+	
+	/**
+	 * Deletes the existing speed controller.
+	 */
+	public void deleteSpeedControl() {this.stopSpeedControl(); this.spdControl = null;}
 	
 	/**
 	 * Stops the running speed control.
@@ -106,14 +111,6 @@ public class MotorLink {
 		this.spdControlEnabled = false; spdControl.cancelEvent();
 	}
 	
-	/**
-	 * Enables the speed controller on the current motor.
-	 */
-	public void startSpeedControl() {
-		if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was started when it did not exist!"); return;}
-		this.spdControl.clearControlRun(); this.spdControlEnabled = true; spdControl.registerIterableEvent();
-	}
-
 	/**
 	 * Enables the speed controller on the current motor with the given starting
 	 * value.

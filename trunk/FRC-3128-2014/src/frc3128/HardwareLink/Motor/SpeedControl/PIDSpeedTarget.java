@@ -13,4 +13,6 @@ public class PIDSpeedTarget extends MotorSpeedControl {
 	public double speedTimestep(double dt) {return 0;}
 
 	public void clearControlRun() {}
+	
+	public boolean isComplete() {return false;}
 }
