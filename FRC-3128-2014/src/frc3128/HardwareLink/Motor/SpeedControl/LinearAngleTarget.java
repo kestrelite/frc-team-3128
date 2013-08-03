@@ -9,9 +9,9 @@ import frc3128.Util.RobotMath;
  */
 public class LinearAngleTarget extends MotorSpeedControl {
 	private double minSpeed;
-	private double targetAngle;
+	private double targetAngle, tolerance;
 	
-	public LinearAngleTarget(double minSpeed) {
+	public LinearAngleTarget(double minSpeed, double tolerance) {
 		if(!RobotMath.isValidPower(minSpeed)) throw new IllegalArgumentException("The minimum power is incorrect!"); 
 		this.minSpeed = Math.abs(minSpeed);
 	}
@@ -26,4 +26,6 @@ public class LinearAngleTarget extends MotorSpeedControl {
 	}
 
 	public void clearControlRun() {this.targetAngle = 0;}
+	
+	public boolean isComplete() {return Math.abs(this.getLinkedEncoderAngle() - targetAngle) < tolerance;}
 }

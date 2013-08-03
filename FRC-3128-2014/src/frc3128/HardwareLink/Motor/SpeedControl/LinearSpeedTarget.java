@@ -49,4 +49,6 @@ public class LinearSpeedTarget extends MotorSpeedControl {
 	public void setRefreshTime(double refreshTime) {this.refreshTime = refreshTime/1000.0;}
 	
 	public void clearControlRun() {this.tgtSpeed = 0; this.lastEncoderAngle = this.getLinkedEncoderAngle();}
+
+	public boolean isComplete() {return false;}
 }
