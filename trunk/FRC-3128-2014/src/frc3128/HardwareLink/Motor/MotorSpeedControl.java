@@ -34,7 +34,12 @@ public abstract class MotorSpeedControl extends Event {
 	 * @return the encoder value of the controlled motor
 	 */
 	public double getLinkedEncoderAngle() {return this.controlledMotor.getEncoderAngle();}
-	
+
+	/**
+	 * 
+	 * @return the linked motor's speed
+	 */
+	public double getLinkedMotorSpeed() {return this.controlledMotor.getSpeed();}
 	
 	public final void execute() {
 		lastRuntime = System.currentTimeMillis();

@@ -21,4 +21,10 @@ public class GyroLink {
 	 * @return the current gyroscope angle
 	 */
 	public double getAngle() {return gyr.getAngle();}
+	
+	/**
+	 * Resets the stored angle
+	 */
+	public void resetAngle() {gyr.reset();}
+
 }
