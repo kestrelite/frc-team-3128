@@ -53,7 +53,7 @@ public class XControl extends Event {
         for(int i = 1; i < 11; i++) {
             if(buttonsPressed[i] != xControl.getRawButton(i)) {
                 ListenerManager.callListener("button" + XControlMap.getBtnString(i) + (xControl.getRawButton(i) ? "Down" : "Up"));
-                DebugLog.log(DebugLog.LVL_DEBUG, this, "Button " + XControlMap.getBtnString(i) + (xControl.getRawButton(i)==true?" pressed.":" released."));
+                DebugLog.log(DebugLog.LVL_STREAM, this, "Button " + XControlMap.getBtnString(i) + (xControl.getRawButton(i)==true?" pressed.":" released."));
             }
             buttonsPressed[i] = xControl.getRawButton(i);
         }

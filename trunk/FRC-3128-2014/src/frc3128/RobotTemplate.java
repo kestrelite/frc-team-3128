@@ -26,7 +26,7 @@ import frc3128.Util.DebugLog;
  */
 public class RobotTemplate extends IterativeRobot {
     public void robotInit() {
-		DebugLog.setLogLevel(Constants.DEFAULT_LOGLEVEL);
+		DebugLog.setLogLevel(Constants.DEBUGLOG_DEFAULT_LOGLEVEL);
         Global.initializeRobot();
     }
 

@@ -10,7 +10,7 @@ final class TimerEvent extends Event {
     private Event linkedEvent;
     private long targetTimeMillis = -1;
     public final void setTargetTime(long millis) {
-        DebugLog.log(DebugLog.LVL_DEBUG, this, "Event " + linkedEvent.toString() + " set for " + millis + " msec from now.");
+        DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + linkedEvent.toString() + " set for " + millis + " msec from now.");
         targetTimeMillis = System.currentTimeMillis() + millis;
         EventManager.addContinuousEvent(this);
     }
@@ -27,7 +27,7 @@ final class TimerEvent extends Event {
         }
 
         if(System.currentTimeMillis() > targetTimeMillis) {
-            DebugLog.log(DebugLog.LVL_DEBUG, this, "Running timed event " + this.linkedEvent.toString());
+            DebugLog.log(DebugLog.LVL_STREAM, this, "Running timed event " + this.linkedEvent.toString());
             linkedEvent.registerSingleEvent();
             this.destroyTimer();
         }
