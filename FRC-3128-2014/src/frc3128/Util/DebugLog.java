@@ -12,10 +12,17 @@ public class DebugLog {
     public static final int LVL_SEVERE = 1;
     public static final int LVL_ERROR = 0;
     
-    private static int logDetail = Constants.DEFAULT_LOGLEVEL;
+    private static int logDetail = Constants.DEBUGLOG_DEFAULT_LOGLEVEL;
     private static int maxTagLength = 0;
     private static final int initTagLength = 32;
 
+	private static int skippedItems = 0;
+	private static int  totalItems = 0;
+	private static int[] totalItemsType = new int[5];
+	private static double wastedTimeAll = 0;
+	private static double wastedTimeText = 0;
+	private static double startTime = -1;
+	
 	/**
 	 * This sets the log detail level. This is used to filter based on severity.
 	 * Severity is the following:
@@ -39,6 +46,8 @@ public class DebugLog {
 	 * @param text  the message to be logged.
 	 */
     public static void log(int level, Object obj, String text) {
+		long logStartTime = System.currentTimeMillis(); //Diagnostic
+		
         String strLv = "[UNKN]  ";
         if(level <= 0) strLv = "[ERROR" + Math.abs(level) + "] ";
         if(level == 1) strLv = "[SEVERE]";
@@ -51,13 +60,35 @@ public class DebugLog {
             DebugLog.maxTagLength = obj.toString().length();
         
         if(level <= DebugLog.logDetail) {
+			double textStartTime = System.currentTimeMillis(); //Diagnostic
+			
             System.out.print("[" + System.currentTimeMillis() + "] " + 
                     strLv + " [" + 
                     (obj.toString().substring(0, 4).equals("edu.")?obj.toString().substring(initTagLength):obj.toString()) + "] ");
             for(int i = 0; i < maxTagLength - obj.toString().length(); i++)
                 System.out.print(" ");
             System.out.println(text);
-        }
+			
+			DebugLog.wastedTimeText += (System.currentTimeMillis() - textStartTime); //Diagnostic
+        } else DebugLog.skippedItems++; //From this line forward, begin diagnostics
+		DebugLog.totalItems++; DebugLog.totalItemsType[level]++;
+		
+		if(DebugLog.totalItems%Constants.DEBUGLOG_INFO_DISPLAYFREQ == 0) {
+			int currLogLevel = DebugLog.logDetail; DebugLog.logDetail = 3;
+			DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has skipped " + skippedItems + ", has displayed " + totalItems + " over " + ((System.currentTimeMillis() - DebugLog.startTime)/1000.0) + " msec.");
+			DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "Breaking down by type (0...5): " + "\n\t\tError: " + DebugLog.totalItemsType[0]
+					+ "\n\t\tSevere: " + DebugLog.totalItemsType[1]
+					+ "\n\t\tWarning: " + DebugLog.totalItemsType[2]
+					+ "\n\t\tInfo: " + DebugLog.totalItemsType[3]
+					+ "\n\t\tDebug: " + DebugLog.totalItemsType[4]
+					+ "\n\t\tStream: " + DebugLog.totalItemsType[5]);
+			DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog averages " + (totalItems / ((System.currentTimeMillis()-DebugLog.startTime)/1000.0)) + " messages per second.");
+			DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has wasted an approximate total of " + (DebugLog.wastedTimeAll/1000.0) + " seconds, " + DebugLog.wastedTimeText + " of which was spent rendering text.");
+			DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "If this is considerably too high, then please consider removing stream messages.");
+			DebugLog.logDetail = currLogLevel;
+		}
+		DebugLog.wastedTimeAll += (System.currentTimeMillis() - logStartTime);
+		//End diagnostic code
     }
 
 	private DebugLog() {}

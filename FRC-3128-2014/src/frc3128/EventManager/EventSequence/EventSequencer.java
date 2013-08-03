@@ -27,12 +27,12 @@ public class EventSequencer extends Event {
         
         if(!ptr.isRunning()) {
             ptr.startSequenceEvent();
-            DebugLog.log(DebugLog.LVL_DEBUG, this, "Event " + ptr.getClass().getName() + " started ("+currentEventIndex+").");
+            DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + ptr.getClass().getName() + " started ("+currentEventIndex+").");
         }
         ptr.execute();
         if(ptr.exitConditionMet()) {
             currentEventIndex++; 
-            DebugLog.log(DebugLog.LVL_DEBUG, this, "Event " + ptr.getClass().getName() + " ended (" + (currentEventIndex - 1) + ").");
+            DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + ptr.getClass().getName() + " ended (" + (currentEventIndex - 1) + ").");
         }
     }
 	

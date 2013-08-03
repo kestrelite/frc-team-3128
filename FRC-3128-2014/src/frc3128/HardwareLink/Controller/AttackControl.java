@@ -50,7 +50,7 @@ public class AttackControl extends Event {
         for(int i = 1; i < 11; i++) {
             if(buttonsPressed[i] != aControl.getRawButton(i)) {
 				ListenerManager.callListener(ListenerConst.getAtkCtrlListenerKey(this.controlID, i, aControl.getRawButton(i)));
-                DebugLog.log(DebugLog.LVL_DEBUG, this, "Button " + (this.controlID + "-" + i) + (aControl.getRawButton(i)==true?" pressed.":" released."));
+                DebugLog.log(DebugLog.LVL_STREAM, this, "Button " + (this.controlID + "-" + i) + (aControl.getRawButton(i)==true?" pressed.":" released."));
             }
             buttonsPressed[i] = aControl.getRawButton(i);
         }

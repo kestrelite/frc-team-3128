@@ -81,11 +81,13 @@ public class MotorLink {
 	}
 	
 	/**
-	 * Clears, then sets a speed controller for the motor.
+	 * Clears, then sets a speed controller for the motor. The motor must have
+	 * an active encoder.
 	 * 
 	 * @param spdControl the speed controller to be enabled on the motor
 	 */
 	public void setSpeedControl(MotorSpeedControl spdControl) {
+		if(this.encoder == null) {DebugLog.log(DebugLog.LVL_ERROR, this, "Cannot set the speed controller without an encoder!"); throw new Error();}
 		spdControl.clearControlRun();
 		if(spdControlEnabled) {
 			DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was set while another was active!");
@@ -98,9 +100,9 @@ public class MotorLink {
 	 * Stops the running speed control.
 	 */
 	public void stopSpeedControl() {
-		this.motor.set(0); this.spdControl.clearControlRun();
-		if(!this.spdControlEnabled) DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller was disabled when it was not active!");
 		if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was stopped when it did not exist!"); return;}
+		if(!this.spdControlEnabled) DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller was disabled when it was not active!");
+		this.motor.set(0); this.spdControl.clearControlRun();
 		this.spdControlEnabled = false; spdControl.cancelEvent();
 	}
 	
@@ -108,9 +110,8 @@ public class MotorLink {
 	 * Enables the speed controller on the current motor.
 	 */
 	public void startSpeedControl() {
-		this.spdControl.clearControlRun();
 		if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was started when it did not exist!"); return;}
-		this.spdControlEnabled = true; spdControl.registerIterableEvent();
+		this.spdControl.clearControlRun(); this.spdControlEnabled = true; spdControl.registerIterableEvent();
 	}
 
 	/**
@@ -134,8 +135,8 @@ public class MotorLink {
 	 */
 	public void setSpeedControlTarget(double val) {
 		if(!this.spdControlEnabled) {
-			DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller's target was set when it was not active" + (Constants.START_CONTROL_ON_TARGETSET ? "- enabling..." : "."));
-			if(Constants.START_CONTROL_ON_TARGETSET) {this.startSpeedControl(val); return;}
+			DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller's target was set when it was not active" + (Constants.START_MCONTROL_ON_TARGETSET ? "- enabling..." : "."));
+			if(Constants.START_MCONTROL_ON_TARGETSET) {this.startSpeedControl(val); return;}
 		}
 		this.spdControl.setControlTarget(val);
 	}
