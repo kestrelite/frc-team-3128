@@ -29,6 +29,14 @@ public class RobotMath {
 	public static boolean isValidPower(double pow) {return (pow >= -1 && pow <= 0);}
 	
 	/**
+	 * Makes the provided power into a valid power level.
+	 * 
+	 * @param pow power level to convert
+	 * @return a properly-limited power level
+	 */
+	public static double makeValidPower(double pow) {return (pow < -1 ? -1 : (pow > 1 ? 1 : pow));}
+	
+	/**
 	 * Determines the appropriate direction for a motor to turn.
 	 * 
 	 * @param currentAngle the current angle of the motor
