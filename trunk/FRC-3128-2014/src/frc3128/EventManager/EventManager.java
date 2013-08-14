@@ -82,6 +82,7 @@ public class EventManager {
                 deleteFlag.removeElementAt(i);
                 i--; count++;
             }
+        if(count != 0) DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Cleaned up events, total: " + count);
     }
 
     protected static void removeEvent(Event event) {
