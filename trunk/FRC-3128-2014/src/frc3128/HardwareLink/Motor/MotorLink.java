@@ -52,8 +52,8 @@ public class MotorLink {
 	 */
 	public void setSpeed(double spd) {
 		if(spdControlEnabled) {
-			DebugLog.log(DebugLog.LVL_WARN, this, "The speed of the motor was set while a controller was active! Disabling speed controller...");
-			this.stopSpeedControl();
+			DebugLog.log(DebugLog.LVL_WARN, this, "The speed of the motor was set while a controller was active! Deleting speed controller...");
+			this.deleteSpeedControl();
 		}
 		if(spd < -1 || spd > 1) spd = (spd < 0 ? -1 : 1);
 		
@@ -86,11 +86,11 @@ public class MotorLink {
 	 * 
 	 * @param spdControl the speed controller to be enabled on the motor
 	 */
-	public void setSpeedControl(MotorSpeedControl spdControl) {
+	public void loadSpeedControl(MotorSpeedControl spdControl) {
 		if(this.encoder == null) {DebugLog.log(DebugLog.LVL_ERROR, this, "Cannot set the speed controller without an encoder!"); throw new Error();}
 		if(spdControlEnabled) {
 			DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was set while another was active!");
-			this.motor.set(0); this.stopSpeedControl();
+			this.motor.set(0); this.deleteSpeedControl();
 		}
 		this.spdControl = spdControl; this.spdControl.clearControlRun(); 
 		this.spdControlEnabled = true; spdControl.registerIterableEvent();
@@ -99,12 +99,7 @@ public class MotorLink {
 	/**
 	 * Deletes the existing speed controller.
 	 */
-	public void deleteSpeedControl() {this.stopSpeedControl(); this.spdControl = null;}
-	
-	/**
-	 * Stops the running speed control.
-	 */
-	public void stopSpeedControl() {
+	public void deleteSpeedControl() {
 		if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was stopped when it did not exist!"); return;}
 		if(!this.spdControlEnabled) DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller was disabled when it was not active!");
 		this.motor.set(0); this.spdControl.clearControlRun();
