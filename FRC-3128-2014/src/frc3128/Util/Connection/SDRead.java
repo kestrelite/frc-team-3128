@@ -1,6 +1,6 @@
 package frc3128.Util.Connection;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * 
@@ -8,36 +8,34 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class SDRead {
 	/**
-	 * Writes String data to the SmartDashboard, if it is open and connected.
+	 * Gets an integer value from the SmartDashboard, if it is open and connected.
 	 * 
-	 * @param name the key for which the data will be written.
-	 * @param data the String data to be written.
+	 * @param table the name of the table to retrieve from
+	 * @param key   the key for the data in the table 
+	 * @return an integer value from the table if it exists
+	 *              <p>Null if it does not
 	 */
-	public static void writeToDashboard(String name, String data) {SmartDashboard.putString(name, data);}
-	
+	public static int getInt(String table, String key) {return (int) NetworkTable.getTable(table).getNumber(key);}
+
 	/**
-	 * Writes double data to the SmartDashboard, if it is open and connected.
+	 * Gets a double value from the SmartDashboard, if it is open and connected.
 	 * 
-	 * @param name the key for which the data will be written.
-	 * @param data the double data to be written.
-	 */
-	public static void writeToDashboard(String name, double d) {SmartDashboard.putNumber(name, d);}
-	
+	 * @param table the name of the table to retrieve from
+	 * @param key   the key for the data in the table 
+	 * @return a double value from the table if it exists
+	 *              <p>Null if it does not
+	 */	
+	public static double getDouble(String table, String key) {return NetworkTable.getTable(table).getNumber(key);}
+
 	/**
-	 * Writes integer data to the SmartDashboard, if it is open and connected.
+	 * Gets a double value from the SmartDashboard, if it is open and connected.
 	 * 
-	 * @param name the key for which the data will be written.
-	 * @param data the integer data to be written.
-	 */
-	public static void writeToDashboard(String name, int d) {SmartDashboard.putNumber(name, d);}
-	
-	/**
-	 * Writes boolean data to the SmartDashboard, if it is open and connected.
-	 * 
-	 * @param name the key for which the data will be written.
-	 * @param data the boolean data to be written.
-	 */
-	public static void writeToDashboard(String name, boolean b) {SmartDashboard.putBoolean(name, b);}
-	
+	 * @param table the name of the table to retrieve from
+	 * @param key   the key for the data in the table 
+	 * @return a double value from the table if it exists
+	 *              <p>Null if it does not
+	 */		
+	public static String getString(String table, String key) {return NetworkTable.getTable(table).getString(key);}
+
 	private SDRead() {}
 }
