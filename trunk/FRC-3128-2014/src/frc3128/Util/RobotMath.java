@@ -15,9 +15,7 @@ public class RobotMath {
 	 * @return the normalized angle on [0,359]
 	 */
 	public static double normalizeAngle(double angle) {
-		double out = angle % 360;
-                if(out < 0) out+= 360;
-		return out;
+		return ((angle % 360) + 360) % 360;
 	}
 	
 	/**
