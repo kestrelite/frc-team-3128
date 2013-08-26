@@ -7,6 +7,7 @@ import frc3128.HardwareLink.GyroLink;
  *
  * @author Noah Sutton-Smolin
  */
+//TODO Test GyroEncoder
 public class GyroEncoder extends AbstractEncoder {
 	private GyroLink gyr;
 	

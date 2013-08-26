@@ -15,6 +15,7 @@ import javax.microedition.io.SocketConnection;
  */
 //TODO Clean up connection logic and follow synchronization methods
 //TODO Remove "synchronzied" from all methods and exhcange with synced blocks
+//TODO Test Raspberry Pi communication
 public final class RaspberryPi {
     private static final String RPiURL = "socket://10.31.28.12:4242";
     private static final int BUFFERSIZE = 64;

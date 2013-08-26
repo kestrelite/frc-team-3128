@@ -6,8 +6,8 @@ import frc3128.HardwareLink.Motor.MotorSpeedControl;
  *
  * @author Noah Sutton-Smolin
  */
+//TODO: Write and test PIDAngleTarget
 public class PIDAngleTarget extends MotorSpeedControl {
-	//TODO: PIDAngleTarget
 	private final double kP, kI, kD;
 	private final double secs;
 	private	      double targetAngle, threshold;

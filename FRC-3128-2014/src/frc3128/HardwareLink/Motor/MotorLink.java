@@ -10,6 +10,7 @@ import frc3128.Util.RobotMath;
  * 
  * @author Noah Sutton-Smolin
  */
+//TODO Test MotorLink
 public class MotorLink {
 	private final Jaguar            motor;
 	private       AbstractEncoder   encoder;
