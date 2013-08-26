@@ -2,7 +2,7 @@ package frc3128.Util.Connection;
 
 import com.sun.squawk.util.StringTokenizer;
 import edu.wpi.first.wpilibj.Timer;
-import frc3128.DebugLog;
+import frc3128.Util.DebugLog;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,7 +13,6 @@ import javax.microedition.io.SocketConnection;
  *
  * @author Yousuf Soliman
  */
-//TODO Give specific debug outputs as opposed to system outputs or none at all
 //TODO Clean up connection logic and follow synchronization methods
 //TODO Remove "synchronzied" from all methods and exhcange with synced blocks
 public final class RaspberryPi {
@@ -110,7 +109,7 @@ public final class RaspberryPi {
         Thread thread = new RaspberryPiThread(this);
         try {connect();} catch (IOException ex) {
             ex.printStackTrace();
-            System.out.println(ex.getMessage());
+			DebugLog.log(DebugLog.LVL_SEVERE, this, ex.getMessage());
         }
         thread.start();
     }
@@ -160,16 +159,16 @@ public final class RaspberryPi {
 				for (int i = 0; (i < input.length) && (input != null); i++)
 					receivedData[i] = input[i]; //transfer input to full size storage
 			} else {
-				System.out.println("PI OVERFLOW");
+				DebugLog.log(DebugLog.LVL_WARN, this, "Data buffer overflow!");
 				inStream.skip(inStream.available()); //reset if more is stored than buffer
 				return null;
 			}
 
             rawData = ""; //String to transfer received data to
-            System.out.println("Raw Data: " + receivedData.length);
+			DebugLog.log(DebugLog.LVL_DEBUG, this, "Raw data size: " + receivedData.length);
             for (int i = 0; i < receivedData.length; i++)
-                rawData += (char) receivedData[i]; //Cast bytes to chars and concatenate them to the String
-            System.out.println(rawData);
+                rawData += (char) receivedData[i]; //Cast bytes to chars and concatenate them to the String\
+			DebugLog.log(DebugLog.LVL_DEBUG, this, "Raw data: " + rawData);
             return rawData;
         } else {connect(); return null;}
     }
