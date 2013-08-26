@@ -55,7 +55,7 @@ public class ListenerManager {
 	 * Calls all Events associated with the given key. The Events will be run 
 	 * once. They will be kept in the ListenerManager's index.
 	 * 
-	 * @param key the integer key whose associated Events should be run
+	 * @param link the integer key whose associated Events should be run
 	 */
 	public static void callListener(int link) {
         for(int i = 0; i < ListenerManager.keyList.size(); i++) {
