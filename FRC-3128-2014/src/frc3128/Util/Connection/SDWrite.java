@@ -21,7 +21,7 @@ public class SDWrite {
 	 * @param name the key for which the data will be written.
 	 * @param data the double data to be written.
 	 */
-	public static void writeToDashboard(String name, double d) {SmartDashboard.putNumber(name, d);}
+	public static void writeToDashboard(String name, double data) {SmartDashboard.putNumber(name, data);}
 	
 	/**
 	 * Writes integer data to the SmartDashboard, if it is open and connected.
@@ -29,7 +29,7 @@ public class SDWrite {
 	 * @param name the key for which the data will be written.
 	 * @param data the integer data to be written.
 	 */
-	public static void writeToDashboard(String name, int d) {SmartDashboard.putNumber(name, d);}
+	public static void writeToDashboard(String name, int data) {SmartDashboard.putNumber(name, data);}
 	
 	/**
 	 * Writes boolean data to the SmartDashboard, if it is open and connected.
@@ -37,7 +37,7 @@ public class SDWrite {
 	 * @param name the key for which the data will be written.
 	 * @param data the boolean data to be written.
 	 */
-	public static void writeToDashboard(String name, boolean b) {SmartDashboard.putBoolean(name, b);}
+	public static void writeToDashboard(String name, boolean data) {SmartDashboard.putBoolean(name, data);}
 	
 	private SDWrite() {}
 }
