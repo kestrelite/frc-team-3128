@@ -7,6 +7,7 @@ import frc3128.Util.RobotMath;
  *
  * @author Noah Sutton-Smolin
  */
+//TODO Test LinearAngleTarget
 public class LinearAngleTarget extends MotorSpeedControl {
 	private double minSpeed;
 	private double targetAngle, tolerance;
