@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package frc3128.Util;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/**<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * @author Noah Sutton-Smolin<a name="line.5"></a>
+<span class="sourceLineNo">006</span> */<a name="line.6"></a>
+<span class="sourceLineNo">007</span>public class DebugLog {<a name="line.7"></a>
+<span class="sourceLineNo">008</span>    public static final int LVL_STREAM = 5;<a name="line.8"></a>
+<span class="sourceLineNo">009</span>    public static final int LVL_DEBUG = 4;<a name="line.9"></a>
+<span class="sourceLineNo">010</span>    public static final int LVL_INFO = 3;<a name="line.10"></a>
+<span class="sourceLineNo">011</span>    public static final int LVL_WARN = 2;<a name="line.11"></a>
+<span class="sourceLineNo">012</span>    public static final int LVL_SEVERE = 1;<a name="line.12"></a>
+<span class="sourceLineNo">013</span>    public static final int LVL_ERROR = 0;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>    private static int logDetail = Constants.DEBUGLOG_DEFAULT_LOGLEVEL;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>    private static int maxTagLength = 0;<a name="line.15"></a>
+<span class="sourceLineNo">016</span>    private static final int initTagLength = 32;<a name="line.16"></a>
+<span class="sourceLineNo">017</span>    private static int skippedItems = 0;<a name="line.17"></a>
+<span class="sourceLineNo">018</span>    private static int totalItems = 0;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>    private static int[] totalItemsType = new int[5];<a name="line.19"></a>
+<span class="sourceLineNo">020</span>    private static double wastedTimeAll = 0;<a name="line.20"></a>
+<span class="sourceLineNo">021</span>    private static double wastedTimeText = 0;<a name="line.21"></a>
+<span class="sourceLineNo">022</span>    private static double startTime = -1;<a name="line.22"></a>
+<span class="sourceLineNo">023</span><a name="line.23"></a>
+<span class="sourceLineNo">024</span>    /**<a name="line.24"></a>
+<span class="sourceLineNo">025</span>     * This sets the log detail level. This is used to filter based on severity.<a name="line.25"></a>
+<span class="sourceLineNo">026</span>     * Severity is the following: &lt;p&gt;0: Error; 1: Severe; 2: Warning; 3: Info;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>     * 4: Debug; 5: Stream<a name="line.27"></a>
+<span class="sourceLineNo">028</span>     *<a name="line.28"></a>
+<span class="sourceLineNo">029</span>     * @param level the level to be logged.<a name="line.29"></a>
+<span class="sourceLineNo">030</span>     */<a name="line.30"></a>
+<span class="sourceLineNo">031</span>    public static void setLogLevel(int level) {<a name="line.31"></a>
+<span class="sourceLineNo">032</span>        DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "Log detail set to " + level);<a name="line.32"></a>
+<span class="sourceLineNo">033</span>        DebugLog.logDetail = level;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>    }<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
+<span class="sourceLineNo">036</span>    /**<a name="line.36"></a>
+<span class="sourceLineNo">037</span>     * Logs a message to the NetBeans console. The log keeps all statements in<a name="line.37"></a>
+<span class="sourceLineNo">038</span>     * alignment with the longest message. It will hide any information whose<a name="line.38"></a>
+<span class="sourceLineNo">039</span>     * log level is higher than the provided maximum detail. It uses an object<a name="line.39"></a>
+<span class="sourceLineNo">040</span>     * (typically a string) to create a tag for the message.<a name="line.40"></a>
+<span class="sourceLineNo">041</span>     *<a name="line.41"></a>
+<span class="sourceLineNo">042</span>     * @param level the severity level of the message to be logged.<a name="line.42"></a>
+<span class="sourceLineNo">043</span>     * @param obj the object (typically String) used to identify the message<a name="line.43"></a>
+<span class="sourceLineNo">044</span>     * source.<a name="line.44"></a>
+<span class="sourceLineNo">045</span>     * @param text the message to be logged.<a name="line.45"></a>
+<span class="sourceLineNo">046</span>     */<a name="line.46"></a>
+<span class="sourceLineNo">047</span>    public static void log(int level, Object obj, String text) {<a name="line.47"></a>
+<span class="sourceLineNo">048</span>        long logStartTime = System.currentTimeMillis(); //Diagnostic<a name="line.48"></a>
+<span class="sourceLineNo">049</span><a name="line.49"></a>
+<span class="sourceLineNo">050</span>        String strLv = "[UNKN]  ";<a name="line.50"></a>
+<span class="sourceLineNo">051</span>        if (level &lt;= 0) strLv = "[ERROR" + Math.abs(level) + "] ";<a name="line.51"></a>
+<span class="sourceLineNo">052</span>        if (level == 1) strLv = "[SEVERE]";<a name="line.52"></a>
+<span class="sourceLineNo">053</span>        if (level == 2) strLv = "[**WARN]";<a name="line.53"></a>
+<span class="sourceLineNo">054</span>        if (level == 3) strLv = "[INFO]  ";<a name="line.54"></a>
+<span class="sourceLineNo">055</span>        if (level == 4) strLv = "[DEBUG] ";<a name="line.55"></a>
+<span class="sourceLineNo">056</span>        if (level == 5) strLv = "[STREAM]";<a name="line.56"></a>
+<span class="sourceLineNo">057</span><a name="line.57"></a>
+<span class="sourceLineNo">058</span>        if (obj.toString().length() &gt; DebugLog.maxTagLength &amp;&amp; level &lt;= DebugLog.logDetail)<a name="line.58"></a>
+<span class="sourceLineNo">059</span>            DebugLog.maxTagLength = obj.toString().length();<a name="line.59"></a>
+<span class="sourceLineNo">060</span><a name="line.60"></a>
+<span class="sourceLineNo">061</span>        if (level &lt;= DebugLog.logDetail) {<a name="line.61"></a>
+<span class="sourceLineNo">062</span>            double textStartTime = System.currentTimeMillis(); //Diagnostic<a name="line.62"></a>
+<span class="sourceLineNo">063</span><a name="line.63"></a>
+<span class="sourceLineNo">064</span>            System.out.print("[" + System.currentTimeMillis() + "] "<a name="line.64"></a>
+<span class="sourceLineNo">065</span>                    + strLv + " ["<a name="line.65"></a>
+<span class="sourceLineNo">066</span>                    + (obj.toString().substring(0, 4).equals("edu.") ? obj.toString().substring(initTagLength) : obj.toString()) + "] ");<a name="line.66"></a>
+<span class="sourceLineNo">067</span>            for (int i = 0; i &lt; maxTagLength - obj.toString().length(); i++)<a name="line.67"></a>
+<span class="sourceLineNo">068</span>                System.out.print(" ");<a name="line.68"></a>
+<span class="sourceLineNo">069</span>            System.out.println(text);<a name="line.69"></a>
+<span class="sourceLineNo">070</span><a name="line.70"></a>
+<span class="sourceLineNo">071</span>            DebugLog.wastedTimeText += (System.currentTimeMillis() - textStartTime); //Diagnostic<a name="line.71"></a>
+<span class="sourceLineNo">072</span>        } else DebugLog.skippedItems++; //From this line forward, begin diagnostics<a name="line.72"></a>
+<span class="sourceLineNo">073</span>        DebugLog.totalItems++;<a name="line.73"></a>
+<span class="sourceLineNo">074</span>        DebugLog.totalItemsType[level - 1]++;<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>        if (DebugLog.totalItems % Constants.DEBUGLOG_INFO_DISPLAYFREQ == 0) {<a name="line.76"></a>
+<span class="sourceLineNo">077</span>            int currLogLevel = DebugLog.logDetail;<a name="line.77"></a>
+<span class="sourceLineNo">078</span>            DebugLog.logDetail = 3;<a name="line.78"></a>
+<span class="sourceLineNo">079</span>            DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has skipped " + skippedItems + ", has displayed " + totalItems + " over " + ((System.currentTimeMillis() - DebugLog.startTime) / 1000.0) + " msec.");<a name="line.79"></a>
+<span class="sourceLineNo">080</span>            DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "Breaking down by type (0...5): " + "\n\t\tError: " + DebugLog.totalItemsType[0]<a name="line.80"></a>
+<span class="sourceLineNo">081</span>                    + "\n\t\tSevere: " + DebugLog.totalItemsType[1]<a name="line.81"></a>
+<span class="sourceLineNo">082</span>                    + "\n\t\tWarning: " + DebugLog.totalItemsType[2]<a name="line.82"></a>
+<span class="sourceLineNo">083</span>                    + "\n\t\tInfo: " + DebugLog.totalItemsType[3]<a name="line.83"></a>
+<span class="sourceLineNo">084</span>                    + "\n\t\tDebug: " + DebugLog.totalItemsType[4]);<a name="line.84"></a>
+<span class="sourceLineNo">085</span>            DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog averages " + (totalItems / ((System.currentTimeMillis() - DebugLog.startTime) / 1000.0)) + " messages per second.");<a name="line.85"></a>
+<span class="sourceLineNo">086</span>            DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has wasted an approximate total of " + (DebugLog.wastedTimeAll / 1000.0) + " seconds, " + (DebugLog.wastedTimeText / 1000.0) + " of which was spent rendering text.");<a name="line.86"></a>
+<span class="sourceLineNo">087</span>            DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "If this is considerably too high, then please consider removing stream messages.");<a name="line.87"></a>
+<span class="sourceLineNo">088</span>            DebugLog.logDetail = currLogLevel;<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        }<a name="line.89"></a>
+<span class="sourceLineNo">090</span>        DebugLog.wastedTimeAll += (System.currentTimeMillis() - logStartTime);<a name="line.90"></a>
+<span class="sourceLineNo">091</span>        //End diagnostic code<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    }<a name="line.92"></a>
+<span class="sourceLineNo">093</span><a name="line.93"></a>
+<span class="sourceLineNo">094</span>    private DebugLog() {}<a name="line.94"></a>
+<span class="sourceLineNo">095</span>}<a name="line.95"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
