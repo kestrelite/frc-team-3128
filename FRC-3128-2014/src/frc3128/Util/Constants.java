@@ -5,6 +5,7 @@ package frc3128.Util;
  * @author Noah Sutton-Smolin
  */
 public class Constants {
+	public static final boolean DEBUGLOG_ENABLED = true; //Enables and disables the debug log
     public static final int DEBUGLOG_DEFAULT_LOGLEVEL = 3; //Controls the standard logging level for the DebugLog
     public static final int DEBUGLOG_INFO_DISPLAYFREQ = 100; //Controls how often the DebugLog displays diagnostic information
     public static final boolean EVENT_DUPLICATE_CHECKS = true; //Whether or not the EventManager runs duplicate checks
