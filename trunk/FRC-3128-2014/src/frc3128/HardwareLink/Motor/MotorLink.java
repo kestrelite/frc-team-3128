@@ -155,7 +155,6 @@ public class MotorLink {
 	 */
 	public double getPowerScalar() {return this.powerScalar;}
 
-	
 	/**
 	 * 
 	 * @return whether or not the motor is reversed
