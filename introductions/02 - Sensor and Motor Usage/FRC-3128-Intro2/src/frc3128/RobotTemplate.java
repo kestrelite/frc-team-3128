@@ -2,8 +2,6 @@ package frc3128;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
-import frc3128.EventManager.EventManager;
-import frc3128.EventManager.ListenerManager;
 import frc3128.Util.Constants;
 import frc3128.Util.DebugLog;
 
@@ -39,7 +37,6 @@ public class RobotTemplate extends IterativeRobot {
     boolean autonomousHasBeenInit = false;
     public void autonomousInit() {
         if(!autonomousHasBeenInit) {
-			EventManager.dropAllEvents(); ListenerManager.dropAllListeners();
             Global.initializeAuto(); 
             autonomousHasBeenInit = true; 
             teleopHasBeenInit = false;
@@ -60,20 +57,17 @@ public class RobotTemplate extends IterativeRobot {
     
     public void disabledPeriodic() {        
         Watchdog.getInstance().feed();
-        if(Constants.PROCESS_WHILE_DISABLED) EventManager.processEvents();
     }
 
     // YOU'D BETTER NOT CHANGE ANYTHING
     
     public void autonomousPeriodic() {
         Watchdog.getInstance().feed();
-        EventManager.processEvents();
     }
 
     // THIS IS YOUR SOUL.
     
     public void teleopPeriodic() {
         Watchdog.getInstance().feed();
-        EventManager.processEvents();
     }
 }
