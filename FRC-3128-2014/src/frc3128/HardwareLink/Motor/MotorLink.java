@@ -11,7 +11,7 @@ import frc3128.Util.RobotMath;
  * @author Noah Sutton-Smolin
  */
 //TODO Test MotorLink
-public class MotorLink {
+public final class MotorLink {
 	private final Jaguar            motor;
 	private       AbstractEncoder   encoder;
 	private       MotorSpeedControl spdControl;
@@ -39,6 +39,30 @@ public class MotorLink {
 	 * @param spdControl the linked speed controller
 	 */
 	public MotorLink(Jaguar motor, AbstractEncoder enc, MotorSpeedControl spdControl) {this(motor, enc); this.spdControl = spdControl;}
+
+	/**
+	 * 
+	 * @param motor the linked motor
+	 * @param powerScalar the starting power scalar of the motor
+	 */
+	public MotorLink(Jaguar motor, double powerScalar) {this(motor); this.setPowerScalar(powerScalar);}
+
+	/**
+	 * 
+	 * @param motor the linked motor
+	 * @param enc the linked encoder
+	 * @param powerScalar the starting power scalar of the motor
+	 */
+	public MotorLink(Jaguar motor, AbstractEncoder enc, double powerScalar) {this(motor, enc); this.setPowerScalar(powerScalar);}
+	
+	/**
+	 * 
+	 * @param motor the linked motor
+	 * @param enc the linked encoder
+	 * @param spdControl the linked speed controller
+	 * @param powerScalar the starting power scalar of the motor
+	 */
+	public MotorLink(Jaguar motor, AbstractEncoder enc, MotorSpeedControl spdControl, double powerScalar) {this(motor, enc, spdControl); this.setPowerScalar(powerScalar);}
 	
 	/**
 	 * 
