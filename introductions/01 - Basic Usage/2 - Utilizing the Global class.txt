@@ -1,0 +1,32 @@
+GOAL: Understand the function of the Global class with respect to shared resources and robot intialization.
+-----
+
+DETAILS: The Global class is used to hold all global resources and create initalization functions. These functions are wrapped to from RobotTemplate, which you are free to inspect.
+
+The static modifier must be used before all Global variables; if you do not know what the static modifier does, you are free to do research into it. However, in short, the static modifier makes it so that only one instance of a variable can exist in a class. This means any class resource can be accessed using [CLASSNAME].[RESOURCENAME] instead of [INSTANCENAME].[RESOURCENAME].
+
+With respect to our given setup, if we had a jaguar (motor) in Global such that
+
+	public static final Jaguar jag1 = new Jaguar(1,2);
+
+it can be accessed from anywhere in the code by using Global.jag1; however, if we declared it like so:
+
+	public        final Jaguar jag1 = new Jaguar(1,2);
+
+it could _not_ be accessed using Global.jag1, which makes it an ineffective declaration for our purposes.
+
+The Watchdog is not something you should ever personally need to deal with, as it is handled by the system, but it is important to understand. The Watchdog makes sure that the robot's code hasn't stopped or frozen. The act of "feeding" the watchdog ensures that the FRC system does not automatically kill our robot. The watchdog is called using:
+
+	Watchdog.getInstance().feed();
+
+This gets the current instance of the Watchdog from the Watchdog class (through the static getInstance() function), and feeds it.
+-----
+
+TASK: Create a Jaguar in the global class. Change its power in each of the initializeRobot functions. Be sure to call the Watchdog somewhere once.
+-----
+
+SUCCESS:
+  1) The power was successfully set in each initialization function
+  2) The Watchdog was called once
+  3) No file was modified except for Global
+-----
