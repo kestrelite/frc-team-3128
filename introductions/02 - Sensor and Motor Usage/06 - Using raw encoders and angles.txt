@@ -1,0 +1,15 @@
+GOAL: Create an encoder and read out its angle
+-----
+
+DETAILS:
+-----
+
+TASK: Encoders are devices which keep track of the angle of a given motor. The MotorLink class can be linked with an AbstractEncoder.
+
+Create a MagneticPotEncoder and print out its raw angle on teleop init.
+-----
+
+SUCCESS:
+  1) Only the MagneticPotEncoder is kept as a static resource
+  2) The raw angle is printed out using DebugLog at the appropriate level
+-----

@@ -9,6 +9,8 @@ The benefit to DebugLog is that it enforces three things:
   3) Log message sources, which show where a message actually came from. This is critically important when diagnosing software issues.
 
 The RobotTemplate class is actually what's run by the FRC software, and it interfaces with the Global class. You should never modify the RobotTemplate class.
+
+Bear in mind, there is a critical difference between the DEBUG and STREAM levels: Debug is to be used for individual debugging messages. Stream is to be used for messages which would otherwise flood the console, but are useful for low-level debugs (like controller positions, or event triggering, etc.)
 -----
 
 TASK: Write one output of each severity level to the console when teleop starts, in order, using the DebugLog class.

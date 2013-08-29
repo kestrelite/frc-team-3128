@@ -1,0 +1,17 @@
+GOAL: Properly use raw encoders and their angles
+-----
+
+DETAILS: AbstractEncoder is an abstract class which has two required functions: getAngle() and getRawValue(). There are two existing implementations: GyroEncoder and MagneticPotEncoder. 
+
+There is a function in frc3128.Util.RobotMath called normalizeAngle(); this function must be invoked on all angle values continuously, as it keeps the angle values to within normal range. We keep track of angles from 0 to 360 degrees.
+-----
+
+TASK: Create a new MotorLink using a MagneticPotEncoder. Read out the angle, and print the normalized value to the print stream.
+-----
+
+SUCCESS:
+  1) Create a MotorLink and associated AbstractEncoder and Jaguar
+  2) The AbstractEncoder and Jaguar are fully consumed by the MotorLink
+  3) The angle from the MotorLink is normalized and printed out
+  4) The print out uses DebugLog
+-----
