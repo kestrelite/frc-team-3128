@@ -32,10 +32,8 @@ III) EventManager
 	18) Registering events with the ListenerManager
 	19) Running the ListenerManager callbacks
 	20) Setting up and running controllers
-	21) Using the constants in ListenerConst for controller callbacks
-	22) Using the controller classes
-	23) Creating a drive event
+	21) Creating a drive event
   V) Event Sequencing
-	24) Creating single sequence events and executing them
-	25) "                                  " other exit conditions
-	26) Triggering listeners with the sequence manager
+	22) Creating single sequence events and executing them
+	23) "                                  " other exit conditions
+	24) Triggering listeners with the sequence manager
