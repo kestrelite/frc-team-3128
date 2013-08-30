@@ -11,10 +11,10 @@ public class ListenerManager {
     private static Vector eventList = new Vector();
     private static Vector keyList = new Vector();
 
-    private static void verifyNoDuplicate(Event e, int link) {
+    private static void verifyNoDuplicate(Event e, int key) {
         for(int i = 0; i < eventList.size(); i++)
             if((Event) eventList.elementAt(i) == e)
-                if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == link)
+                if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == key)
                     DebugLog.log(DebugLog.LVL_SEVERE, "ListenerManager", "Duplicate event/key pair was added to the ListenerManager!");
     }
 
@@ -55,11 +55,11 @@ public class ListenerManager {
 	 * Calls all Events associated with the given key. The Events will be run 
 	 * once. They will be kept in the ListenerManager's index.
 	 * 
-	 * @param link the integer key whose associated Events should be run
+	 * @param key the integer key whose associated Events should be run
 	 */
-	public static void callListener(int link) {
+	public static void callListener(int key) {
         for(int i = 0; i < ListenerManager.keyList.size(); i++) {
-            if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == link) {
+            if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == key) {
                 try {
                     ((Event) ListenerManager.eventList.elementAt(i)).registerSingleEvent();
                 } catch(Exception e) {
@@ -86,7 +86,7 @@ public class ListenerManager {
             if(n == -1) break;
             ListenerManager.eventList.removeElementAt(n);
             ListenerManager.keyList.removeElementAt(n);
-            DebugLog.log(DebugLog.LVL_DEBUG, "ListenerManager", "Listener link number " + n + " sliced from event " + event.toString());
+            DebugLog.log(DebugLog.LVL_DEBUG, "ListenerManager", "Listener key number " + n + " sliced from event " + event.toString());
         }
     }
 	
@@ -118,7 +118,7 @@ public class ListenerManager {
 	 * @param key the integer key to be dropped from the table.
 	 */
     public static void dropListener(int key) {
-        DebugLog.log(DebugLog.LVL_INFO, "ListenerManager", "Dropping link " + key);
+        DebugLog.log(DebugLog.LVL_INFO, "ListenerManager", "Dropping key " + key);
         for(int i = 0; i < ListenerManager.keyList.size(); i++) {
             if(i > ListenerManager.keyList.size()) return;
             if(((Integer)ListenerManager.keyList.elementAt(i)).intValue() == key) {

@@ -1,4 +1,4 @@
-package frc3128.Util;
+package frc3128.EventManager;
 
 /**
  *
