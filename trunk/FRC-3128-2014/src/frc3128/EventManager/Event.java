@@ -55,15 +55,10 @@ public abstract class Event {
     private TimerEvent timerEvent = null;
     private long cancelAtTime = -1;
     
-    public Event() {
-    }
-
-    public Event(boolean isTimerEvent) {
-        if (isTimerEvent) {
-            this.timerEvent = new TimerEvent();
-            timerEvent.linkEvent(this);
-        }
-    }
+	/**
+	 * Empty constructor
+	 */	
+    public Event() {}
 
     /**
      * This function is where the event is actually run.
