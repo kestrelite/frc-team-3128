@@ -19,7 +19,7 @@
 <span class="sourceLineNo">011</span> * @author Noah Sutton-Smolin<a name="line.11"></a>
 <span class="sourceLineNo">012</span> */<a name="line.12"></a>
 <span class="sourceLineNo">013</span>//TODO Test MotorLink<a name="line.13"></a>
-<span class="sourceLineNo">014</span>public class MotorLink {<a name="line.14"></a>
+<span class="sourceLineNo">014</span>public final class MotorLink {<a name="line.14"></a>
 <span class="sourceLineNo">015</span>        private final Jaguar            motor;<a name="line.15"></a>
 <span class="sourceLineNo">016</span>        private       AbstractEncoder   encoder;<a name="line.16"></a>
 <span class="sourceLineNo">017</span>        private       MotorSpeedControl spdControl;<a name="line.17"></a>
@@ -47,130 +47,153 @@
 <span class="sourceLineNo">039</span>         * @param spdControl the linked speed controller<a name="line.39"></a>
 <span class="sourceLineNo">040</span>         */<a name="line.40"></a>
 <span class="sourceLineNo">041</span>        public MotorLink(Jaguar motor, AbstractEncoder enc, MotorSpeedControl spdControl) {this(motor, enc); this.spdControl = spdControl;}<a name="line.41"></a>
-<span class="sourceLineNo">042</span>        <a name="line.42"></a>
+<span class="sourceLineNo">042</span><a name="line.42"></a>
 <span class="sourceLineNo">043</span>        /**<a name="line.43"></a>
 <span class="sourceLineNo">044</span>         * <a name="line.44"></a>
-<span class="sourceLineNo">045</span>         * @return the current speed of the motor<a name="line.45"></a>
-<span class="sourceLineNo">046</span>         */<a name="line.46"></a>
-<span class="sourceLineNo">047</span>        public double getSpeed() {return motor.get();}<a name="line.47"></a>
-<span class="sourceLineNo">048</span>        <a name="line.48"></a>
-<span class="sourceLineNo">049</span>        /**<a name="line.49"></a>
-<span class="sourceLineNo">050</span>         * Sets the speed of the motor. <a name="line.50"></a>
+<span class="sourceLineNo">045</span>         * @param motor the linked motor<a name="line.45"></a>
+<span class="sourceLineNo">046</span>         * @param powerScalar the starting power scalar of the motor<a name="line.46"></a>
+<span class="sourceLineNo">047</span>         */<a name="line.47"></a>
+<span class="sourceLineNo">048</span>        public MotorLink(Jaguar motor, double powerScalar) {this(motor); this.setPowerScalar(powerScalar);}<a name="line.48"></a>
+<span class="sourceLineNo">049</span><a name="line.49"></a>
+<span class="sourceLineNo">050</span>        /**<a name="line.50"></a>
 <span class="sourceLineNo">051</span>         * <a name="line.51"></a>
-<span class="sourceLineNo">052</span>         * @param spd the speed to be set<a name="line.52"></a>
-<span class="sourceLineNo">053</span>         */<a name="line.53"></a>
-<span class="sourceLineNo">054</span>        public void setSpeed(double spd) {<a name="line.54"></a>
-<span class="sourceLineNo">055</span>                if(spdControlEnabled) {<a name="line.55"></a>
-<span class="sourceLineNo">056</span>                        DebugLog.log(DebugLog.LVL_WARN, this, "The speed of the motor was set while a controller was active! Deleting speed controller...");<a name="line.56"></a>
-<span class="sourceLineNo">057</span>                        this.deleteSpeedControl();<a name="line.57"></a>
-<span class="sourceLineNo">058</span>                }<a name="line.58"></a>
-<span class="sourceLineNo">059</span>                if(spd &lt; -1 || spd &gt; 1) spd = (spd &lt; 0 ? -1 : 1);<a name="line.59"></a>
-<span class="sourceLineNo">060</span>                <a name="line.60"></a>
-<span class="sourceLineNo">061</span>                this.motor.set(reversedCheck(spd)*this.powerScalar);<a name="line.61"></a>
-<span class="sourceLineNo">062</span>        }<a name="line.62"></a>
-<span class="sourceLineNo">063</span>        protected void setSpeedControlled(double spd) {this.motor.set(spd);}<a name="line.63"></a>
-<span class="sourceLineNo">064</span>        <a name="line.64"></a>
-<span class="sourceLineNo">065</span>        /**<a name="line.65"></a>
-<span class="sourceLineNo">066</span>         * Sets and enables an encoder to be linked with a motor.<a name="line.66"></a>
-<span class="sourceLineNo">067</span>         * <a name="line.67"></a>
-<span class="sourceLineNo">068</span>         * @param encoder the Encoder to be linked<a name="line.68"></a>
-<span class="sourceLineNo">069</span>         */<a name="line.69"></a>
-<span class="sourceLineNo">070</span>        public void setEncoder(AbstractEncoder encoder) {<a name="line.70"></a>
-<span class="sourceLineNo">071</span>                if(encoder != null) DebugLog.log(DebugLog.LVL_INFO, this, "The encoder was changed in the motor!");<a name="line.71"></a>
-<span class="sourceLineNo">072</span>                this.encoder = encoder;<a name="line.72"></a>
-<span class="sourceLineNo">073</span>        }<a name="line.73"></a>
-<span class="sourceLineNo">074</span><a name="line.74"></a>
-<span class="sourceLineNo">075</span>        /**<a name="line.75"></a>
-<span class="sourceLineNo">076</span>         * <a name="line.76"></a>
-<span class="sourceLineNo">077</span>         * @return the current encoder angle<a name="line.77"></a>
-<span class="sourceLineNo">078</span>         */<a name="line.78"></a>
-<span class="sourceLineNo">079</span>        public double getEncoderAngle() {<a name="line.79"></a>
-<span class="sourceLineNo">080</span>                if(encoder == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The encoder heading was read, but no encoder was set!"); return -1;}<a name="line.80"></a>
-<span class="sourceLineNo">081</span>                return RobotMath.normalizeAngle(encoder.getAngle());<a name="line.81"></a>
-<span class="sourceLineNo">082</span>        }<a name="line.82"></a>
-<span class="sourceLineNo">083</span>        <a name="line.83"></a>
-<span class="sourceLineNo">084</span>        /**<a name="line.84"></a>
-<span class="sourceLineNo">085</span>         * Clears, then sets a speed controller for the motor. The motor must have<a name="line.85"></a>
-<span class="sourceLineNo">086</span>         * an active encoder.<a name="line.86"></a>
-<span class="sourceLineNo">087</span>         * <a name="line.87"></a>
-<span class="sourceLineNo">088</span>         * @param spdControl the speed controller to be enabled on the motor<a name="line.88"></a>
-<span class="sourceLineNo">089</span>         */<a name="line.89"></a>
-<span class="sourceLineNo">090</span>        public void loadSpeedControl(MotorSpeedControl spdControl) {<a name="line.90"></a>
-<span class="sourceLineNo">091</span>                if(this.encoder == null) {DebugLog.log(DebugLog.LVL_ERROR, this, "Cannot set the speed controller without an encoder!"); throw new Error();}<a name="line.91"></a>
-<span class="sourceLineNo">092</span>                if(spdControlEnabled) {<a name="line.92"></a>
-<span class="sourceLineNo">093</span>                        DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was set while another was active!");<a name="line.93"></a>
-<span class="sourceLineNo">094</span>                        this.motor.set(0); this.deleteSpeedControl();<a name="line.94"></a>
-<span class="sourceLineNo">095</span>                }<a name="line.95"></a>
-<span class="sourceLineNo">096</span>                this.spdControl = spdControl; this.spdControl.clearControlRun(); <a name="line.96"></a>
-<span class="sourceLineNo">097</span>                this.spdControlEnabled = true; spdControl.registerIterableEvent();<a name="line.97"></a>
-<span class="sourceLineNo">098</span>        }<a name="line.98"></a>
-<span class="sourceLineNo">099</span>        <a name="line.99"></a>
-<span class="sourceLineNo">100</span>        /**<a name="line.100"></a>
-<span class="sourceLineNo">101</span>         * Deletes the existing speed controller.<a name="line.101"></a>
+<span class="sourceLineNo">052</span>         * @param motor the linked motor<a name="line.52"></a>
+<span class="sourceLineNo">053</span>         * @param enc the linked encoder<a name="line.53"></a>
+<span class="sourceLineNo">054</span>         * @param powerScalar the starting power scalar of the motor<a name="line.54"></a>
+<span class="sourceLineNo">055</span>         */<a name="line.55"></a>
+<span class="sourceLineNo">056</span>        public MotorLink(Jaguar motor, AbstractEncoder enc, double powerScalar) {this(motor, enc); this.setPowerScalar(powerScalar);}<a name="line.56"></a>
+<span class="sourceLineNo">057</span>        <a name="line.57"></a>
+<span class="sourceLineNo">058</span>        /**<a name="line.58"></a>
+<span class="sourceLineNo">059</span>         * <a name="line.59"></a>
+<span class="sourceLineNo">060</span>         * @param motor the linked motor<a name="line.60"></a>
+<span class="sourceLineNo">061</span>         * @param enc the linked encoder<a name="line.61"></a>
+<span class="sourceLineNo">062</span>         * @param spdControl the linked speed controller<a name="line.62"></a>
+<span class="sourceLineNo">063</span>         * @param powerScalar the starting power scalar of the motor<a name="line.63"></a>
+<span class="sourceLineNo">064</span>         */<a name="line.64"></a>
+<span class="sourceLineNo">065</span>        public MotorLink(Jaguar motor, AbstractEncoder enc, MotorSpeedControl spdControl, double powerScalar) {this(motor, enc, spdControl); this.setPowerScalar(powerScalar);}<a name="line.65"></a>
+<span class="sourceLineNo">066</span>        <a name="line.66"></a>
+<span class="sourceLineNo">067</span>        /**<a name="line.67"></a>
+<span class="sourceLineNo">068</span>         * <a name="line.68"></a>
+<span class="sourceLineNo">069</span>         * @return the current speed of the motor<a name="line.69"></a>
+<span class="sourceLineNo">070</span>         */<a name="line.70"></a>
+<span class="sourceLineNo">071</span>        public double getSpeed() {return motor.get();}<a name="line.71"></a>
+<span class="sourceLineNo">072</span>        <a name="line.72"></a>
+<span class="sourceLineNo">073</span>        /**<a name="line.73"></a>
+<span class="sourceLineNo">074</span>         * Sets the speed of the motor. <a name="line.74"></a>
+<span class="sourceLineNo">075</span>         * <a name="line.75"></a>
+<span class="sourceLineNo">076</span>         * @param spd the speed to be set<a name="line.76"></a>
+<span class="sourceLineNo">077</span>         */<a name="line.77"></a>
+<span class="sourceLineNo">078</span>        public void setSpeed(double spd) {<a name="line.78"></a>
+<span class="sourceLineNo">079</span>                if(spdControlEnabled) {<a name="line.79"></a>
+<span class="sourceLineNo">080</span>                        DebugLog.log(DebugLog.LVL_WARN, this, "The speed of the motor was set while a controller was active! Deleting speed controller...");<a name="line.80"></a>
+<span class="sourceLineNo">081</span>                        this.deleteSpeedControl();<a name="line.81"></a>
+<span class="sourceLineNo">082</span>                }<a name="line.82"></a>
+<span class="sourceLineNo">083</span>                if(spd &lt; -1 || spd &gt; 1) spd = (spd &lt; 0 ? -1 : 1);<a name="line.83"></a>
+<span class="sourceLineNo">084</span>                <a name="line.84"></a>
+<span class="sourceLineNo">085</span>                this.motor.set(reversedCheck(spd)*this.powerScalar);<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        }<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        protected void setSpeedControlled(double spd) {this.motor.set(spd);}<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        <a name="line.88"></a>
+<span class="sourceLineNo">089</span>        /**<a name="line.89"></a>
+<span class="sourceLineNo">090</span>         * Sets and enables an encoder to be linked with a motor.<a name="line.90"></a>
+<span class="sourceLineNo">091</span>         * <a name="line.91"></a>
+<span class="sourceLineNo">092</span>         * @param encoder the Encoder to be linked<a name="line.92"></a>
+<span class="sourceLineNo">093</span>         */<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        public void setEncoder(AbstractEncoder encoder) {<a name="line.94"></a>
+<span class="sourceLineNo">095</span>                if(encoder != null) DebugLog.log(DebugLog.LVL_INFO, this, "The encoder was changed in the motor!");<a name="line.95"></a>
+<span class="sourceLineNo">096</span>                this.encoder = encoder;<a name="line.96"></a>
+<span class="sourceLineNo">097</span>        }<a name="line.97"></a>
+<span class="sourceLineNo">098</span><a name="line.98"></a>
+<span class="sourceLineNo">099</span>        /**<a name="line.99"></a>
+<span class="sourceLineNo">100</span>         * <a name="line.100"></a>
+<span class="sourceLineNo">101</span>         * @return the current encoder angle<a name="line.101"></a>
 <span class="sourceLineNo">102</span>         */<a name="line.102"></a>
-<span class="sourceLineNo">103</span>        public void deleteSpeedControl() {<a name="line.103"></a>
-<span class="sourceLineNo">104</span>                if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was stopped when it did not exist!"); return;}<a name="line.104"></a>
-<span class="sourceLineNo">105</span>                if(!this.spdControlEnabled) DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller was disabled when it was not active!");<a name="line.105"></a>
-<span class="sourceLineNo">106</span>                this.motor.set(0); this.spdControl.clearControlRun();<a name="line.106"></a>
-<span class="sourceLineNo">107</span>                this.spdControlEnabled = false; spdControl.cancelEvent();<a name="line.107"></a>
-<span class="sourceLineNo">108</span>        }<a name="line.108"></a>
-<span class="sourceLineNo">109</span>        <a name="line.109"></a>
-<span class="sourceLineNo">110</span>        /**<a name="line.110"></a>
-<span class="sourceLineNo">111</span>         * Enables the speed controller on the current motor with the given starting<a name="line.111"></a>
-<span class="sourceLineNo">112</span>         * value.<a name="line.112"></a>
-<span class="sourceLineNo">113</span>         * <a name="line.113"></a>
-<span class="sourceLineNo">114</span>         * @param targetVal the value to be passed to the speed controller<a name="line.114"></a>
-<span class="sourceLineNo">115</span>         */<a name="line.115"></a>
-<span class="sourceLineNo">116</span>        public void startSpeedControl(double targetVal) {<a name="line.116"></a>
-<span class="sourceLineNo">117</span>                this.spdControl.setControlTarget(targetVal);<a name="line.117"></a>
-<span class="sourceLineNo">118</span>                this.spdControl.clearControlRun();<a name="line.118"></a>
-<span class="sourceLineNo">119</span>                if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was started when it did not exist!"); return;}<a name="line.119"></a>
-<span class="sourceLineNo">120</span>                this.spdControlEnabled = true; spdControl.registerIterableEvent();<a name="line.120"></a>
-<span class="sourceLineNo">121</span>        }<a name="line.121"></a>
-<span class="sourceLineNo">122</span>        <a name="line.122"></a>
-<span class="sourceLineNo">123</span>        /**<a name="line.123"></a>
-<span class="sourceLineNo">124</span>         * Sets the speed controller's target - will be used however the speed<a name="line.124"></a>
-<span class="sourceLineNo">125</span>         * controller has defined it to be.<a name="line.125"></a>
-<span class="sourceLineNo">126</span>         * <a name="line.126"></a>
-<span class="sourceLineNo">127</span>         * @param val the value to be sent to the speed controller <a name="line.127"></a>
-<span class="sourceLineNo">128</span>         */<a name="line.128"></a>
-<span class="sourceLineNo">129</span>        public void setSpeedControlTarget(double val) {<a name="line.129"></a>
-<span class="sourceLineNo">130</span>                if(!this.spdControlEnabled) {<a name="line.130"></a>
-<span class="sourceLineNo">131</span>                        DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller's target was set when it was not active" + (Constants.START_MCONTROL_ON_TARGETSET ? "- enabling..." : "."));<a name="line.131"></a>
-<span class="sourceLineNo">132</span>                        if(Constants.START_MCONTROL_ON_TARGETSET) {this.startSpeedControl(val); return;}<a name="line.132"></a>
-<span class="sourceLineNo">133</span>                }<a name="line.133"></a>
-<span class="sourceLineNo">134</span>                this.spdControl.setControlTarget(val);<a name="line.134"></a>
-<span class="sourceLineNo">135</span>        }<a name="line.135"></a>
-<span class="sourceLineNo">136</span>        <a name="line.136"></a>
-<span class="sourceLineNo">137</span>        /**<a name="line.137"></a>
-<span class="sourceLineNo">138</span>         * Inverts the motor; clockwise becomes counterclockwise and vice versa.<a name="line.138"></a>
+<span class="sourceLineNo">103</span>        public double getEncoderAngle() {<a name="line.103"></a>
+<span class="sourceLineNo">104</span>                if(encoder == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The encoder heading was read, but no encoder was set!"); return -1;}<a name="line.104"></a>
+<span class="sourceLineNo">105</span>                return RobotMath.normalizeAngle(encoder.getAngle());<a name="line.105"></a>
+<span class="sourceLineNo">106</span>        }<a name="line.106"></a>
+<span class="sourceLineNo">107</span>        <a name="line.107"></a>
+<span class="sourceLineNo">108</span>        /**<a name="line.108"></a>
+<span class="sourceLineNo">109</span>         * Clears, then sets a speed controller for the motor. The motor must have<a name="line.109"></a>
+<span class="sourceLineNo">110</span>         * an active encoder.<a name="line.110"></a>
+<span class="sourceLineNo">111</span>         * <a name="line.111"></a>
+<span class="sourceLineNo">112</span>         * @param spdControl the speed controller to be enabled on the motor<a name="line.112"></a>
+<span class="sourceLineNo">113</span>         */<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        public void loadSpeedControl(MotorSpeedControl spdControl) {<a name="line.114"></a>
+<span class="sourceLineNo">115</span>                if(this.encoder == null) {DebugLog.log(DebugLog.LVL_ERROR, this, "Cannot set the speed controller without an encoder!"); throw new Error();}<a name="line.115"></a>
+<span class="sourceLineNo">116</span>                if(spdControlEnabled) {<a name="line.116"></a>
+<span class="sourceLineNo">117</span>                        DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was set while another was active!");<a name="line.117"></a>
+<span class="sourceLineNo">118</span>                        this.motor.set(0); this.deleteSpeedControl();<a name="line.118"></a>
+<span class="sourceLineNo">119</span>                }<a name="line.119"></a>
+<span class="sourceLineNo">120</span>                this.spdControl = spdControl; this.spdControl.clearControlRun(); <a name="line.120"></a>
+<span class="sourceLineNo">121</span>                this.spdControlEnabled = true; spdControl.registerIterableEvent();<a name="line.121"></a>
+<span class="sourceLineNo">122</span>        }<a name="line.122"></a>
+<span class="sourceLineNo">123</span>        <a name="line.123"></a>
+<span class="sourceLineNo">124</span>        /**<a name="line.124"></a>
+<span class="sourceLineNo">125</span>         * Deletes the existing speed controller.<a name="line.125"></a>
+<span class="sourceLineNo">126</span>         */<a name="line.126"></a>
+<span class="sourceLineNo">127</span>        public void deleteSpeedControl() {<a name="line.127"></a>
+<span class="sourceLineNo">128</span>                if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was stopped when it did not exist!"); return;}<a name="line.128"></a>
+<span class="sourceLineNo">129</span>                if(!this.spdControlEnabled) DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller was disabled when it was not active!");<a name="line.129"></a>
+<span class="sourceLineNo">130</span>                this.motor.set(0); this.spdControl.clearControlRun();<a name="line.130"></a>
+<span class="sourceLineNo">131</span>                this.spdControlEnabled = false; spdControl.cancelEvent();<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        }<a name="line.132"></a>
+<span class="sourceLineNo">133</span>        <a name="line.133"></a>
+<span class="sourceLineNo">134</span>        /**<a name="line.134"></a>
+<span class="sourceLineNo">135</span>         * Enables the speed controller on the current motor with the given starting<a name="line.135"></a>
+<span class="sourceLineNo">136</span>         * value.<a name="line.136"></a>
+<span class="sourceLineNo">137</span>         * <a name="line.137"></a>
+<span class="sourceLineNo">138</span>         * @param targetVal the value to be passed to the speed controller<a name="line.138"></a>
 <span class="sourceLineNo">139</span>         */<a name="line.139"></a>
-<span class="sourceLineNo">140</span>        public void reverseMotor() {this.motorReversed = !this.motorReversed;}<a name="line.140"></a>
-<span class="sourceLineNo">141</span><a name="line.141"></a>
-<span class="sourceLineNo">142</span>        /**<a name="line.142"></a>
-<span class="sourceLineNo">143</span>         * Sets the power scalar for the motor<a name="line.143"></a>
-<span class="sourceLineNo">144</span>         * <a name="line.144"></a>
-<span class="sourceLineNo">145</span>         * @param pwrScale the power scalar from 0 to 1 to be used for speeds<a name="line.145"></a>
-<span class="sourceLineNo">146</span>         */<a name="line.146"></a>
-<span class="sourceLineNo">147</span>        public void setPowerScalar(double pwrScale) {<a name="line.147"></a>
-<span class="sourceLineNo">148</span>                if(pwrScale &lt; 0 || pwrScale &gt; 1) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The power scalar was set to an illegal value: " + pwrScale + "; scalar not updated!"); return;}<a name="line.148"></a>
-<span class="sourceLineNo">149</span>                this.powerScalar = pwrScale;<a name="line.149"></a>
-<span class="sourceLineNo">150</span>        }<a name="line.150"></a>
-<span class="sourceLineNo">151</span>        <a name="line.151"></a>
-<span class="sourceLineNo">152</span>        /**<a name="line.152"></a>
-<span class="sourceLineNo">153</span>         * <a name="line.153"></a>
-<span class="sourceLineNo">154</span>         * @return the current power scalar<a name="line.154"></a>
-<span class="sourceLineNo">155</span>         */<a name="line.155"></a>
-<span class="sourceLineNo">156</span>        public double getPowerScalar() {return this.powerScalar;}<a name="line.156"></a>
-<span class="sourceLineNo">157</span><a name="line.157"></a>
-<span class="sourceLineNo">158</span>        <a name="line.158"></a>
-<span class="sourceLineNo">159</span>        /**<a name="line.159"></a>
-<span class="sourceLineNo">160</span>         * <a name="line.160"></a>
-<span class="sourceLineNo">161</span>         * @return whether or not the motor is reversed<a name="line.161"></a>
-<span class="sourceLineNo">162</span>         */<a name="line.162"></a>
-<span class="sourceLineNo">163</span>        public boolean getMotorReversed() {return this.motorReversed;}<a name="line.163"></a>
-<span class="sourceLineNo">164</span>        private double reversedCheck(double spd) {return spd * (motorReversed ? -1.0 : 1.0);}<a name="line.164"></a>
-<span class="sourceLineNo">165</span>}<a name="line.165"></a>
+<span class="sourceLineNo">140</span>        public void startSpeedControl(double targetVal) {<a name="line.140"></a>
+<span class="sourceLineNo">141</span>                this.spdControl.setControlTarget(targetVal);<a name="line.141"></a>
+<span class="sourceLineNo">142</span>                this.spdControl.clearControlRun();<a name="line.142"></a>
+<span class="sourceLineNo">143</span>                if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was started when it did not exist!"); return;}<a name="line.143"></a>
+<span class="sourceLineNo">144</span>                this.spdControlEnabled = true; spdControl.registerIterableEvent();<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        }<a name="line.145"></a>
+<span class="sourceLineNo">146</span>        <a name="line.146"></a>
+<span class="sourceLineNo">147</span>        /**<a name="line.147"></a>
+<span class="sourceLineNo">148</span>         * Sets the speed controller's target - will be used however the speed<a name="line.148"></a>
+<span class="sourceLineNo">149</span>         * controller has defined it to be.<a name="line.149"></a>
+<span class="sourceLineNo">150</span>         * <a name="line.150"></a>
+<span class="sourceLineNo">151</span>         * @param val the value to be sent to the speed controller <a name="line.151"></a>
+<span class="sourceLineNo">152</span>         */<a name="line.152"></a>
+<span class="sourceLineNo">153</span>        public void setSpeedControlTarget(double val) {<a name="line.153"></a>
+<span class="sourceLineNo">154</span>                if(!this.spdControlEnabled) {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>                        DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller's target was set when it was not active" + (Constants.START_MCONTROL_ON_TARGETSET ? "- enabling..." : "."));<a name="line.155"></a>
+<span class="sourceLineNo">156</span>                        if(Constants.START_MCONTROL_ON_TARGETSET) {this.startSpeedControl(val); return;}<a name="line.156"></a>
+<span class="sourceLineNo">157</span>                }<a name="line.157"></a>
+<span class="sourceLineNo">158</span>                this.spdControl.setControlTarget(val);<a name="line.158"></a>
+<span class="sourceLineNo">159</span>        }<a name="line.159"></a>
+<span class="sourceLineNo">160</span>        <a name="line.160"></a>
+<span class="sourceLineNo">161</span>        /**<a name="line.161"></a>
+<span class="sourceLineNo">162</span>         * Inverts the motor; clockwise becomes counterclockwise and vice versa.<a name="line.162"></a>
+<span class="sourceLineNo">163</span>         */<a name="line.163"></a>
+<span class="sourceLineNo">164</span>        public void reverseMotor() {this.motorReversed = !this.motorReversed;}<a name="line.164"></a>
+<span class="sourceLineNo">165</span><a name="line.165"></a>
+<span class="sourceLineNo">166</span>        /**<a name="line.166"></a>
+<span class="sourceLineNo">167</span>         * Sets the power scalar for the motor<a name="line.167"></a>
+<span class="sourceLineNo">168</span>         * <a name="line.168"></a>
+<span class="sourceLineNo">169</span>         * @param pwrScale the power scalar from 0 to 1 to be used for speeds<a name="line.169"></a>
+<span class="sourceLineNo">170</span>         */<a name="line.170"></a>
+<span class="sourceLineNo">171</span>        public void setPowerScalar(double pwrScale) {<a name="line.171"></a>
+<span class="sourceLineNo">172</span>                if(pwrScale &lt; 0 || pwrScale &gt; 1) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The power scalar was set to an illegal value: " + pwrScale + "; scalar not updated!"); return;}<a name="line.172"></a>
+<span class="sourceLineNo">173</span>                this.powerScalar = pwrScale;<a name="line.173"></a>
+<span class="sourceLineNo">174</span>        }<a name="line.174"></a>
+<span class="sourceLineNo">175</span>        <a name="line.175"></a>
+<span class="sourceLineNo">176</span>        /**<a name="line.176"></a>
+<span class="sourceLineNo">177</span>         * <a name="line.177"></a>
+<span class="sourceLineNo">178</span>         * @return the current power scalar<a name="line.178"></a>
+<span class="sourceLineNo">179</span>         */<a name="line.179"></a>
+<span class="sourceLineNo">180</span>        public double getPowerScalar() {return this.powerScalar;}<a name="line.180"></a>
+<span class="sourceLineNo">181</span><a name="line.181"></a>
+<span class="sourceLineNo">182</span>        /**<a name="line.182"></a>
+<span class="sourceLineNo">183</span>         * <a name="line.183"></a>
+<span class="sourceLineNo">184</span>         * @return whether or not the motor is reversed<a name="line.184"></a>
+<span class="sourceLineNo">185</span>         */<a name="line.185"></a>
+<span class="sourceLineNo">186</span>        public boolean getMotorReversed() {return this.motorReversed;}<a name="line.186"></a>
+<span class="sourceLineNo">187</span>        private double reversedCheck(double spd) {return spd * (motorReversed ? -1.0 : 1.0);}<a name="line.187"></a>
+<span class="sourceLineNo">188</span>}<a name="line.188"></a>
 
 
 

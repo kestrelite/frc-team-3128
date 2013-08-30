@@ -19,10 +19,10 @@
 <span class="sourceLineNo">011</span>    private static Vector eventList = new Vector();<a name="line.11"></a>
 <span class="sourceLineNo">012</span>    private static Vector keyList = new Vector();<a name="line.12"></a>
 <span class="sourceLineNo">013</span><a name="line.13"></a>
-<span class="sourceLineNo">014</span>    private static void verifyNoDuplicate(Event e, int link) {<a name="line.14"></a>
+<span class="sourceLineNo">014</span>    private static void verifyNoDuplicate(Event e, int key) {<a name="line.14"></a>
 <span class="sourceLineNo">015</span>        for(int i = 0; i &lt; eventList.size(); i++)<a name="line.15"></a>
 <span class="sourceLineNo">016</span>            if((Event) eventList.elementAt(i) == e)<a name="line.16"></a>
-<span class="sourceLineNo">017</span>                if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == link)<a name="line.17"></a>
+<span class="sourceLineNo">017</span>                if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == key)<a name="line.17"></a>
 <span class="sourceLineNo">018</span>                    DebugLog.log(DebugLog.LVL_SEVERE, "ListenerManager", "Duplicate event/key pair was added to the ListenerManager!");<a name="line.18"></a>
 <span class="sourceLineNo">019</span>    }<a name="line.19"></a>
 <span class="sourceLineNo">020</span><a name="line.20"></a>
@@ -63,11 +63,11 @@
 <span class="sourceLineNo">055</span>         * Calls all Events associated with the given key. The Events will be run <a name="line.55"></a>
 <span class="sourceLineNo">056</span>         * once. They will be kept in the ListenerManager's index.<a name="line.56"></a>
 <span class="sourceLineNo">057</span>         * <a name="line.57"></a>
-<span class="sourceLineNo">058</span>         * @param link the integer key whose associated Events should be run<a name="line.58"></a>
+<span class="sourceLineNo">058</span>         * @param key the integer key whose associated Events should be run<a name="line.58"></a>
 <span class="sourceLineNo">059</span>         */<a name="line.59"></a>
-<span class="sourceLineNo">060</span>        public static void callListener(int link) {<a name="line.60"></a>
+<span class="sourceLineNo">060</span>        public static void callListener(int key) {<a name="line.60"></a>
 <span class="sourceLineNo">061</span>        for(int i = 0; i &lt; ListenerManager.keyList.size(); i++) {<a name="line.61"></a>
-<span class="sourceLineNo">062</span>            if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == link) {<a name="line.62"></a>
+<span class="sourceLineNo">062</span>            if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == key) {<a name="line.62"></a>
 <span class="sourceLineNo">063</span>                try {<a name="line.63"></a>
 <span class="sourceLineNo">064</span>                    ((Event) ListenerManager.eventList.elementAt(i)).registerSingleEvent();<a name="line.64"></a>
 <span class="sourceLineNo">065</span>                } catch(Exception e) {<a name="line.65"></a>
@@ -94,7 +94,7 @@
 <span class="sourceLineNo">086</span>            if(n == -1) break;<a name="line.86"></a>
 <span class="sourceLineNo">087</span>            ListenerManager.eventList.removeElementAt(n);<a name="line.87"></a>
 <span class="sourceLineNo">088</span>            ListenerManager.keyList.removeElementAt(n);<a name="line.88"></a>
-<span class="sourceLineNo">089</span>            DebugLog.log(DebugLog.LVL_DEBUG, "ListenerManager", "Listener link number " + n + " sliced from event " + event.toString());<a name="line.89"></a>
+<span class="sourceLineNo">089</span>            DebugLog.log(DebugLog.LVL_DEBUG, "ListenerManager", "Listener key number " + n + " sliced from event " + event.toString());<a name="line.89"></a>
 <span class="sourceLineNo">090</span>        }<a name="line.90"></a>
 <span class="sourceLineNo">091</span>    }<a name="line.91"></a>
 <span class="sourceLineNo">092</span>        <a name="line.92"></a>
@@ -126,7 +126,7 @@
 <span class="sourceLineNo">118</span>         * @param key the integer key to be dropped from the table.<a name="line.118"></a>
 <span class="sourceLineNo">119</span>         */<a name="line.119"></a>
 <span class="sourceLineNo">120</span>    public static void dropListener(int key) {<a name="line.120"></a>
-<span class="sourceLineNo">121</span>        DebugLog.log(DebugLog.LVL_INFO, "ListenerManager", "Dropping link " + key);<a name="line.121"></a>
+<span class="sourceLineNo">121</span>        DebugLog.log(DebugLog.LVL_INFO, "ListenerManager", "Dropping key " + key);<a name="line.121"></a>
 <span class="sourceLineNo">122</span>        for(int i = 0; i &lt; ListenerManager.keyList.size(); i++) {<a name="line.122"></a>
 <span class="sourceLineNo">123</span>            if(i &gt; ListenerManager.keyList.size()) return;<a name="line.123"></a>
 <span class="sourceLineNo">124</span>            if(((Integer)ListenerManager.keyList.elementAt(i)).intValue() == key) {<a name="line.124"></a>
