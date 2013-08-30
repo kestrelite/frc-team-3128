@@ -24,18 +24,18 @@ III) EventManager
 	11) Iterable events and their execution
 	12) Iterable events and cancellation triggers
 	13) Events and call stack order
-	14) Single timed events and their iterable counterparts
-	15) Using events to control robot components
-	16) Using events to control robot components II
-	17) Self-registering and self-re-registering events
-	18) Using motors in conjunction with speed controllers
+	14) Using events to control robot components
+	15) Using events to control robot components II
+	16) Self-registering and self-re-registering events
+	17) Using motors in conjunction with speed controllers
  IV) ListenerManager
-	19) Registering events with the ListenerManager
-	20) Running the ListenerManager callbacks
-	21) Setting up and running controllers
-	22) Using the constants in ListenerConst for controller callbacks
+	18) Registering events with the ListenerManager
+	19) Running the ListenerManager callbacks
+	20) Setting up and running controllers
+	21) Using the constants in ListenerConst for controller callbacks
+	22) Using the controller classes
+	23) Creating a drive event
   V) Event Sequencing
-	23) Creating single sequence events and executing them
-	24) Creating sequence events and writing timed exit conditions
+	24) Creating single sequence events and executing them
 	25) "                                  " other exit conditions
 	26) Triggering listeners with the sequence manager
