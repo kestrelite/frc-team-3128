@@ -1,0 +1,12 @@
+GOAL: Understand how events are used to control the robot
+-----
+
+DETAILS: 
+-----
+
+TASK: Create a MotorLink global static resource with a motor on (1,2). After 500msec, set its power to 50%. After 1000msec, set its power to -50%. After 1500 msec, set its power to 0%. 
+-----
+
+SUCCESS:
+  1) Completion of the above
+-----
