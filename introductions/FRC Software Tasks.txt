@@ -36,4 +36,3 @@ III) EventManager
   V) Event Sequencing
 	22) Creating single sequence events and executing them
 	23) "                                  " other exit conditions
-	24) Triggering listeners with the sequence manager
