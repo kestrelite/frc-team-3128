@@ -25,7 +25,7 @@ public class EventManager {
     private static void checkForDuplicates(Event event) {
         if(!Constants.EVENT_DUPLICATE_CHECKS) return;
         for(int i = 0; i < eventList.size(); i++)
-            if(event.equals((Event) eventList.elementAt(i)))
+            if(event.equals((Event) eventList.elementAt(i)) && !(deleteFlag.elementAt(i) == Boolean.TRUE))
                 DebugLog.log(DebugLog.LVL_WARN, "EventManager", "Event ( ^ ) being registered is a duplicate of another event!");
     }
 
@@ -51,6 +51,10 @@ public class EventManager {
 
         for(int i = 0; i < eventList.size(); i++) {
             Event event = (Event) eventList.elementAt(i);
+            if(((Boolean) singleEventListFlag.elementAt(i)).booleanValue()) {
+                DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Marking single event " + event.toString() + " for deletion.");
+                deleteFlag.setElementAt(Boolean.TRUE, i);
+            }
             if(event.shouldRun()) {
                 try{
                     DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Running event " + event.toString()); 
@@ -64,10 +68,6 @@ public class EventManager {
             }
             if(!event.shouldRun()) {
                 DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Cancelled event " + event.toString() + " being marked for deletion.");
-                deleteFlag.setElementAt(Boolean.TRUE, i);
-            }
-            if(((Boolean) singleEventListFlag.elementAt(i)).booleanValue()) {
-                DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Marking single event " + event.toString() + " for deletion.");
                 deleteFlag.setElementAt(Boolean.TRUE, i);
             }
         }
