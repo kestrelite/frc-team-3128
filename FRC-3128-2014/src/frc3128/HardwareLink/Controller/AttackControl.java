@@ -2,9 +2,9 @@ package frc3128.HardwareLink.Controller;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc3128.EventManager.Event;
+import frc3128.EventManager.ListenerConst;
 import frc3128.EventManager.ListenerManager;
 import frc3128.Util.DebugLog;
-import frc3128.EventManager.ListenerConst;
 
 /**
  * 
