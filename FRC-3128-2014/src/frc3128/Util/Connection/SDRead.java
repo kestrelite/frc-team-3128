@@ -1,13 +1,13 @@
-package frc3128.Util.Connection;
+//package frc3128.Util.Connection;
 
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
+//import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * 
  * @author Yousuf Soliman
  */
 //TODO Test SmartDashboard reading
-public class SDRead {
+//public class SDRead {
 	/**
 	 * Gets an integer value from the SmartDashboard, if it is open and connected.
 	 * 
@@ -16,7 +16,7 @@ public class SDRead {
 	 * @return an integer value from the table if it exists
 	 *              <p>Null if it does not
 	 */
-	public static int getInt(String table, String key) {return (int) NetworkTable.getTable(table).getNumber(key);}
+//	public static int getInt(String table, String key) {return (int) NetworkTable.getTable(table).getDouble(key);}
 
 	/**
 	 * Gets a double value from the SmartDashboard, if it is open and connected.
@@ -26,7 +26,7 @@ public class SDRead {
 	 * @return a double value from the table if it exists
 	 *              <p>Null if it does not
 	 */	
-	public static double getDouble(String table, String key) {return NetworkTable.getTable(table).getNumber(key);}
+//	public static double getDouble(String table, String key) {return NetworkTable.getTable(table).getNumber(key);}
 
 	/**
 	 * Gets a double value from the SmartDashboard, if it is open and connected.
@@ -36,7 +36,7 @@ public class SDRead {
 	 * @return a double value from the table if it exists
 	 *              <p>Null if it does not
 	 */		
-	public static String getString(String table, String key) {return NetworkTable.getTable(table).getString(key);}
+//	public static String getString(String table, String key) {return NetworkTable.getTable(table).getString(key);}
 
-	private SDRead() {}
-}
+//	private SDRead() {}
+//}
