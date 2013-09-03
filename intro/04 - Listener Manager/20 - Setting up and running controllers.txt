@@ -1,0 +1,18 @@
+GOAL: Understand how controllers interface with the program
+-----
+
+DETAILS: Controllers are all contained in frc3128.HardwareLink.Controller. They are always Events, and register themselves iterably when the constructors are run. 
+
+As an example, we'll look at XControl, which interfaces with an XBox 360 controller. Every iteration, XControl checks to see if the controller's state has changed, and if so, what has. This is critically important for two reasons: first, it saves time. The program will only run what needs to be run when it needs to be run. Second, it's cleaner; the controller runs in the background, and buttons can be easily interlaced with the running program.
+
+Controllers require a port number; this goes back to the driver station. 
+
+Controllers should be global resources.
+-----
+
+TASK: Create an XBox controller on port 1. Make it such that, when button X is pressed, the program will print out "hello" for 1.5 seconds, then stop. Make it such that, when button Y is pressed, the program will print out "world" for 1.5 seconds, then stop.
+-----
+
+SUCCESS:
+  1) Success at the above.
+-----

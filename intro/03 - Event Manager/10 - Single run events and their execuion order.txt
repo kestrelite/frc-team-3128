@@ -1,0 +1,15 @@
+GOAL: Understand the queue nature of the EventManager
+-----
+
+DETAILS: The EventManager uses a FIFO (First In, First Out) queue. Events will be run in the order they are inserted in the queue.
+-----
+
+TASK: Create a program which will print out "Hello," then "World," then set a motor on (1,2) to 50% power.
+-----
+
+SUCCESS:
+  1) No extraneous resources are kept
+  2) DebugLog is used for printing
+  3) The motor is created using MotorLink and is created as a global static resource
+  4) The program will execute successfully
+-----

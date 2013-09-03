@@ -1,0 +1,11 @@
+GOAL: Use alternate exit conditions
+-----
+
+DETAILS:
+-----
+
+TASK: Create a SequenceEvent and have print out until it exits in 1.5 seconds.
+-----
+
+SUCCESS:
+-----

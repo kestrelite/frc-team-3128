@@ -1,0 +1,13 @@
+GOAL: Understand and use iterable events
+-----
+
+DETAILS: Iterable events are the same as single run events, but they are not deleted on the EventManager's cleanup step.
+-----
+
+TASK: Create a program which will print out "Hello" continuously. After 1.5 seconds, a separate event should print out "World". 
+-----
+
+SUCCESS:
+  1) No resources are kept which are not needed
+  2) It operates as described above
+-----

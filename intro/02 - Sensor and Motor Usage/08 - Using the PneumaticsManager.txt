@@ -1,0 +1,13 @@
+GOAL: Learn the uses of PneumaticsManager
+-----
+
+DETAILS: PneumaticsManager is a class designed to control the pneumatic air compression systems on the robot. The pneumatics system uses compressors and two-sided solenoids called Festos to control air flow.
+
+The PneumaticsManager must be declared with a compressor. When a new piston is created, it returns a PistonID, which is a reference value used by the PneumaticsManager to handle piston movements.
+-----
+
+TASK: Initialize the PneumaticsManager. Turn the compressor off, then on. Create a piston, and record the PistonID as a static global resource. Turn the piston forward, then flip its state, then reverse its polarity.
+-----
+
+SUCCESS: All tasks completed without error.
+-----

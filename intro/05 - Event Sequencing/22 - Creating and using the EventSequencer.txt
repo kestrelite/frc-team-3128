@@ -1,0 +1,33 @@
+GOAL: Understand how EventSequencers are used, how they make your life easier, and how they're used for autonomous.
+-----
+
+DETAILS: EventSequencer is a class which runs events in a given sequence. This is incredibly useful for things like turning a piston on, then off after half a second.
+
+The EventSequencer is most useful during autonomous, however. Since SequenceEvents define their own exit conditions, they are indefinitely versatile for use in autonomous; simply define an event, define when you consider the event complete, then move on to the next one. The entire autonomous program can be written this way. 
+
+The tools for sequencing events are in the frc3128.EventManager.EventSequencer package. A SequenceEvent is still an Event. A SingleSequence is still a SequenceEvent.
+
+The EventSequencer is an iterable event which is run by the EventManager. SequenceEvents are always written to be single events, but have another abstract function: exitConditionMet(). When exitConditionMet() returns true, the event is stopped, and the EventSequencer moves on to the next event in the queue.
+
+Each SequenceEvent has several internal functions, one of which is getRunTimeMillis(). This function is used to determine how long the event has been running, and is useful for exitConditionMet functions which depend on a certain amount of time.
+
+A SingleSequence event is a special case of the SequenceEvent and is, for all intents and purposes, syntactic sugar. It provides an easy way to create an event which will run once and only once. Even though the EventSequencer requires a SequenceEvent, remember that a SingleSequence is _also_ a SequenceEvent; that's the way inheritance works.
+
+A SingleSequence's exitConditionMet function reads:
+	/**
+	 * Exits immediately; will always return true.
+	 * 
+	 * @return true
+	 */
+	public final boolean exitConditionMet() {return true;}
+
+The EventSequencer works off FIFO, so whatever you register with it first will run first.
+
+The EventSequencer will start when EventSequencer's startSequence() is invoked. To run it more than once, one must resetSequence(). One can always stopSequence(). An EventSequencer is also an Event.
+-----
+
+TASK: Create an EventSequencer and add a Hello SingleSequence to it, as well as a World SingleSequence. 
+-----
+
+SUCCESS: ...
+-----

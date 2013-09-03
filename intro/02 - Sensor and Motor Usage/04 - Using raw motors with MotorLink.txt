@@ -1,0 +1,19 @@
+GOAL: Learn how to use the MotorLink class to more efficiently interface with the Jaguars
+-----
+
+DETAILS: The MotorLink class was written with a primary purpose of simplifying the logic beind encoders (which measure the angle of wheels) and speed controllers (which control the rate that motors move). As such, _all motors should be written using MotorLink_. 
+
+It is important to understand how to declare a Jaguar, though, for this task.
+
+The motor you will be creating will take one argument: a Jaguar. You can declare the Jaguar in-line. Explore the MotorLink class and its functions. Bear in mind that it has been stripped down from its full form, as Events have not been introduced yet, and the MotorSpeedControl requires events.
+-----
+
+TASK: Declare a MotorLink as a static resource in Global. Set its powers scalar to a valid value. Set the motor power.
+-----
+
+SUCCESS: 
+  1) The MotorLink is declared as a static resource
+  2) The Jaguar is _not_ declared as a static resource, and is instead consumed by MotorLink
+  3) The power scalar and powers are set properly
+  4) The code is error-free
+-----

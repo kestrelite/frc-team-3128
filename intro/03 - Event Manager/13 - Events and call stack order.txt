@@ -1,0 +1,13 @@
+GOAL: Experiment with events and callback orders
+-----
+
+DETAILS:
+-----
+
+TASK: Create a program which will start by setting a motor on (1,2) to 50% power, then print out "Hello" continuously. Another event should stop the "Hello" event, then print out "World" and set the motor to 0% power.
+-----
+
+SUCCESS:
+  1) Task as described
+  2) No extraneous resources are kept
+-----

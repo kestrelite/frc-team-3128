@@ -1,0 +1,23 @@
+GOAL: Learn the use of DebugLog to write outputs to the console
+-----
+
+DETAILS: One should never use "System.out.print*" to print console outputs. The reasons are varied, but primarily, the outputs become cluttered, unreadable, and generally unusable. 
+
+The benefit to DebugLog is that it enforces three things:
+  1) Log message severity, which can be filtered (which is useful for obvious reasons)
+  2) Log message timestamps, which do not normally come with system outs
+  3) Log message sources, which show where a message actually came from. This is critically important when diagnosing software issues.
+
+The RobotTemplate class is actually what's run by the FRC software, and it interfaces with the Global class. You should never modify the RobotTemplate class.
+
+Bear in mind, there is a critical difference between the DEBUG and STREAM levels: Debug is to be used for individual debugging messages. Stream is to be used for messages which would otherwise flood the console, but are useful for low-level debugs (like controller positions, or event triggering, etc.)
+-----
+
+TASK: Write one output of each severity level to the console when teleop starts, in order, using the DebugLog class.
+-----
+
+SUCCESS:
+  1) Each output is written to the console successfully
+  2) No file has been modified except for the Global class
+  3) Only the initializeTeleop function in the Global class has been modified
+  4) No System.out.* files are used

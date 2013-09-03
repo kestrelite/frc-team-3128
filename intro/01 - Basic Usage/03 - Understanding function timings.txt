@@ -1,0 +1,21 @@
+GOAL: Understand when the initialization functions are called in game
+-----
+
+DETAILS: The RobotTemplate class controls the timings in the Global class. You need to understand when and under which circumstances the functions in the Global class would be invoked.
+
+ - initializeRobot     : invoked once when the robot's code starts up
+ - initializeDisabled  : invoked once when the robot enters the disabled state before and after the game
+ - initializeAutonomous: invoked once when the robot's autonomous phase is about to begin
+ - initializeTeleop    : invoked once when the robot's teleoperated phase is about to begin
+
+Every robot task in-game will be handled by the EventManager. The initialization functions are only used to set up the EventManager's sequencing so that everything else follows suit and makes sense.
+
+ - robotKill is a predefined function which you can invoke when you wish to shut off the robot entirely
+ - robotStop is a function you can define which turns off the robot without disconnecting or disabling it
+-----
+
+TASK: None
+-----
+
+SUCCESS: You read this file, didn't you? Go read it again.
+-----

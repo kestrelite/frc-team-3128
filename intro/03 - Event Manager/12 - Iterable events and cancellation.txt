@@ -1,0 +1,14 @@
+GOAL: Understand and use iterable events
+-----
+
+DETAILS: Iterable events must be cancelled manually, otherwise they will not be cancelled.
+-----
+
+TASK: Create a program which will print out "Hello" continuously. After 1.5 seconds, a separate event should print out "World", at which point, the "Hello" event should stop printing. 
+-----
+
+SUCCESS:
+  1) No resources are kept which are not needed
+  2) It operates as described above
+  3) After two seconds, the robot should still be able to support additional code
+-----
