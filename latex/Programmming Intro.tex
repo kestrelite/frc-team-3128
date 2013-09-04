@@ -1,14 +1,36 @@
 \documentclass[a4paper]{article}
 \usepackage[english]{babel}
-\usepackage[utf8x]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{color}
 \usepackage{listings}
-\usepackage[colorinlistoftodos]{todonotes}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
-\title{FRC Programming Introduction}
+\title{FRC Programming Introduction v2.0}
 \author{Noah Sutton-Smolin\\Yousuf Soliman\\Kian Sheik}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{black}{rgb}{0,0,0}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+%  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{black},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=2
+}
+
 \begin{document}
 \maketitle
 
@@ -18,15 +40,17 @@ This introduction to FRC programming assumes pre-existing Java programming knowl
 
 If you do not have a fundamental understanding of Java, that is fine, however, to write code for FRC, you will need to learn the basic syntax. You may want to take a look at these links, as well as look into Java on your own:
 
-\begin{verbatim}http://docs.oracle.com/javase/tutorial/java/
+\begin{lstlisting}
+http://docs.oracle.com/javase/tutorial/java/
 http://www.tutorialspoint.com/java/
-http://chortle.ccsu.edu/CS151/cs151java.html\end{verbatim}
+http://chortle.ccsu.edu/CS151/cs151java.html
+\end{lstlisting}
 
 Programming for FRC will require a configured Netbeans and Subversion environment. This document is designed to walk you through the setup process. While a Windows computer is not \textit{required} for FRC development, it is highly recommended. Once you have completed the FRC introduction sets, you may be given commit access to the FRC repository.
 
 \section{Setting up the NetBeans environment}
 
-\textbf{Once you have completed these steps, it is highly recommended that you download the ``svn/doc'' folder and look through it.}
+\textbf{Once you have completed these steps, it is highly recommended that you download the \lstinline{svn/doc} folder and look through it.}
 
 The entire API we have written has Javadoc, which means that hovering over a function will show the description, parameters, and return values.
 
@@ -35,7 +59,7 @@ The entire API we have written has Javadoc, which means that hovering over a fun
 \item{Download and install Netbeans 7.3.1 \textit{specifically} (you will need the latest Java Development Kit (JDK))}
 \item{Go to $Tools \rightarrow Plugins \rightarrow Settings \rightarrow Add$}
 \item{Enter ``FRC Java'' under New Provider}
-\item{Enter the following link under URL: \begin{verbatim}http://first.wpi.edu/FRC/java/netbeans/update/Release/updates.xml\end{verbatim}}
+\item{Enter the following link under URL: \lstinline{http://first.wpi.edu/FRC/java/netbeans/update/Release/updates.xml}}
 \item{Go to the Available Plugins tab and click Check for Updates}
 \item{Find all plugins that start with ``FRC'' and select them. Install those.}
 \item{Close the Plugins dialog}
@@ -48,7 +72,7 @@ Once you have checked out the introductory tasks, you can open them by going to 
 \subsection{Checking out projects with Subversion in NetBeans}
 \begin{enumerate}
 \item{Go to $Team\rightarrow Subversion\rightarrow Checkout$ (there may be an option to check out without going through the Subversion menu).}
-\item{Enter the repository URL:\begin{verbatim}https://frc-team-3128.googlecode.com/svn/\end{verbatim} and leave the username and password blank.}
+\item{Enter the repository URL:\lstinline{https://frc-team-3128.googlecode.com/svn/} and leave the username and password blank.}
 \item{Select and open all projects.}
 \end{enumerate}
 
@@ -58,7 +82,9 @@ The NetBeans Subversion menu is available by right clicking in the Projects pane
 
 The tutorials are part of the intro projects; if you checked them out to the standard directory, yours will be locaed in $C:\textbackslash Users\textbackslash\{username\}\textbackslash My Documents\textbackslash NetBeansProjects\textbackslash intro\textbackslash$ (Windows 7). From there, each of the lesson sets are in their own folder. Each lesson is in its own text file.
 
-There are five subsections in the intro folder. Each subsection contains its own tasks. The files with the introductory tasks are located within the folders; for instance, task 01 is at:\begin{verbatim}intro/01 - Basic Usage/01 - DebugLog usage.txt\end{verbatim}
+All of the information about the introductory tasks is located in \lstinline{latex/Programming Tasks.pdf}, though the (slightly outdated) text files are in each subdirectory as well.
+
+There are five subsections in the intro folder. Each subsection contains its own tasks. The files with the introductory tasks are located within the folders; for instance, task 01 is at: \lstinline{intro/01 - Basic Usage/01 - DebugLog usage.txt}
 
 Once you've worked through one of these, call one of the programmers over and we will look through and comment on your code. Once you've completed a task, you are free to move on to the next one. 
 
