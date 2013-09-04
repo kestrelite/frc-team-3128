@@ -16,7 +16,7 @@
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
 \lstset{frame=tb,
-  language=C++,
+  language=Java,
   aboveskip=3mm,
   belowskip=3mm,
   showstringspaces=false,
@@ -177,6 +177,141 @@ The \lstinline{EventManager} is called automatically in \lstinline{RobotTemplate
 \subsubsection{Task} Create a single run event which will print out some text.
 \subsubsection{Success} \begin{enumerate}\item{The text is printed out using \lstinline{DebugLog} and an \lstinline{Event}.}\item{No resources are kept longer than they are needed.}\end{enumerate}
 
+\subsection{Task 10 - Single run events and their execution order}
+\subsubsection{Goal} Understand the queue nature of the \lstinline{EventManager}.
+\subsubsection{Details} The \lstinline{EventManager} uses a FIFO (First In, First Out) queue. \lstinline{Events} will be run in the order they are inserted in the queue.
+\subsubsection{Task} Create a program which will print out "Hello," then "World," then set a motor on (1,2) to 50\% power.
+\subsubsection{Success} \begin{enumerate}\item{No extraneous resources are kept.}\item{\lstinline{DebugLog} is used for printing.}\item{The motor is created using \lstinline{MotorLink} and is created as a global static resource.}\item{The program will execute successfully.}\end{enumerate}
+
+\subsection{Task 11 - Iterable Events}
+\subsubsection{Goal} Understand and use iterable events.
+\subsubsection{Details} Iterable events are the same as single run events, but they are not deleted on the \lstinline{EventManager}'s cleanup step. This means they will run continuously unless cancelled expliitly.
+\subsubsection{Task} Create a program which will print out "Hello" continuously. After 1.5 seconds, a separate event should print out "World". 
+\subsubsection{Success} \begin{enumerate}\item{No resources are kept which are not needed.}\item{It operates as described above.}\end{enumerate}
+
+\subsection{Task 12 - Iterable events and cancellation}
+\subsubsection{Goal} Understand and use iterable events.
+\subsubsection{Details} Iterable events must be cancelled manually, otherwise they will not be cancelled.
+\subsubsection{Task} Create a program which will print out "Hello" continuously. After 1.5 seconds, a separate event should print out "World", at which point, the "Hello" event should stop printing. 
+\subsubsection{Success} \begin{enumerate}\item{No resources are kept which are not needed.}\item{It operates as described above.}\item{After two seconds, the robot should still be able to support additional code.}\end{enumerate}
+
+\subsection{Task 13 - Events and call stack order}
+\subsubsection{Goal} Experiment with events and callback orders.
+\subsubsection{Details} None.
+\subsubsection{Task} Create a program which will start by setting a motor on (1,2) to 50\% power, then print out "Hello" continuously. Another event should stop the "Hello" event, then print out "World" and set the motor to 0\% power.
+\subsubsection{Success} \begin{enumerate}\item{Task as described.}\item{No extraneous resources are kept.}\end{enumerate}
+
+\subsection{Task 14 - More using events to control robots (Optional)}
+\subsubsection{Goal} Understand how events are used to control the robot.
+\subsubsection{Details} None.
+\subsubsection{Task} Create a \lstinline{MotorLink} global static resource with a motor on \lstinline{(1,2)}. After 500msec, set its power to 50\%. After 1000msec, set its power to -50\%. After 1500 msec, set its power to 0\%. 
+\subsubsection{Success} Completion of the above.
+
+\subsection{Task 15 - More using events to control robots (Optional)}
+\subsubsection{Goal} Understand how events are used to control the robot.
+\subsubsection{Details} None.
+\subsubsection{Task} Create a piston (use irrelevant port numbers) and change its state twice over the course of two seconds.
+\subsubsection{Success} Completion of the above.
+
+\subsection{Task 16 - Self-reregistering events}
+\subsubsection{Goal} Understand how single events can be sequenced with themselves to run an event a given number of times.
+\subsubsection{Details} None.
+\subsubsection{Task} Write an event which will execute four times, printing each time.
+\subsubsection{Success} Completion of the above.
+
+\subsection{Task 17 - [Empty]} Skip this section for the time being.
+
+
+\section{Listener Manager}\setcounter{subsection}{17}
+
+\subsection{Task 18 - Registering events with \lstinline{ListenerManager}}
+\subsubsection{Goal} Understand how \lstinline{ListenerManager} and how listener callbacks work.
+\subsubsection{Details} \lstinline{ListenerManager} associates strings and integers with events. When an event is registered with the \lstinline{ListenerManager}, it must be given an associated string or integer, known as the "key." 
+
+When the key is invoked, the \lstinline{ListenerManager} will go through the list and find all events with matching keys, then execute them in order. For example, let's say I have an event:
+
+\begin{verbatim}
+	Event e = new Event() {
+		public void execute() {
+			Global.motFL.setSpeed(0.5);
+		}
+	}
+\end{verbatim}
+
+The event obviously will set the power of \lstinline{motFL} to 50\%. Now, what if I want to do this when I press the X button? (For the purposes of this example, we're assuming the controller's event is already running)
+
+\lstinline{ListenerManager.addListener(e, ''buttonXDown");} or:\newline\indent\lstinline{ListenerManager.addListener(e, ListenerConst.BTN\_X\_DOWN); //better for clarity}
+
+The \lstinline{ListenerCosnt} class contains most of the available Listener constants. This is critically important for the Listeners, as this greatly increases the clarity and consistency of what you're doing. For instance (and this has happened), one can make a typo in \lstinline{buttonXDown}, but one cannot easily make a typo in \lstinline{ListenerConst.BTN\_X\_DOWN}.
+
+To call a Listener, one simply needs to call \lstinline{ListenerManager.callListener()}; both a \lstinline{String} and an \lstinline{int} are acceptable arguments.
+\subsubsection{Task} Create an event, and register it to trigger when the string "test" is called.
+\subsubsection{Success} Self-explanatory.
+
+\subsection{Task 19 - Running \lstinline{ListenerManager} callbacks}
+\subsubsection{Goal} Call back events appropriately
+\subsubsection{Details} None.
+\subsubsection{Task} Create an event for \lstinline{"Hello "}, and event for \lstinline{"World"}, and register both of them under \lstinline{ListenerManager} for the key \lstinline{"helloworld"}. Call the \lstinline{"helloworld"} key after 1.5 seconds.
+\subsubsection{Success} Program prints out ``Hello World''
+
+\subsection{Task 20 - Setting up and running controllers}
+\subsubsection{Goal} Understand how controllers interface with the program.
+\subsubsection{Details} Controllers are all contained in \lstinline{frc3128.HardwareLink.Controller}. They are always \lstinline{Events}, and register themselves iterably when the constructors are run. 
+
+As an example, we'll look at \lstinline{XControl}, which interfaces with an XBox 360 controller. Every iteration, \lstinline{XControl} checks to see if the controller's state has changed, and if so, what has. This is critically important for two reasons: first, it saves time. The program will only run what needs to be run when it needs to be run. Second, it's cleaner; the controller runs in the background, and buttons can be easily interlaced with the running program.
+
+Controllers require a port number; this goes back to the driver station. 
+
+Controllers should always be global resources.
+\subsubsection{Task} Create an XBox controller (\lstinline{XControl}) on port 1. Make it such that, when button X is pressed, the program will print out "hello" for 1.5 seconds, then stop. Make it such that, when button Y is pressed, the program will print out "world" for 1.5 seconds, then stop.
+\subsubsection{Success} Success at the above.
+
+\subsection{Task 21 - Creating an event for driving}
+\subsubsection{Goal} Create an event for driving.
+\subsubsection{Details} Drive events are not iterable events; instead, they are registered with \lstinline{ListenerManager} and are called when controller updates occur. 
+\subsubsection{Task} Create a Drive event which runs on \lstinline{UPDATE\_DRIVE} and will set the power of a \lstinline{motLeft} motor to the value of the Y axis on joystick 1. The drive event should also set the power of a \lstinline{motRight} motor to the value of the Y axis on joystick 2.
+\subsubsection{Success} Success at the above.
+
+
+\section{Event Sequencing}
+
+\subsection{Task 23 - Creating and using the \lstinline{EventSequencer}}
+\subsubsection{Goal} Understand how \lstinline{EventSequencers} are used, how they make your life easier, and how they're used for autonomous.
+\subsubsection{Details} \lstinline{EventSequencer} is a class which runs events in a given sequence. This is incredibly useful for things like turning a piston on, then off after half a second.
+
+The \lstinline{EventSequencer} is most useful during autonomous, however. Since \lstinline{SequenceEvents} define their own exit conditions, they are indefinitely versatile for use in autonomous; simply define an event, define when you consider the event complete, then move on to the next one. The entire autonomous program can be written this way. 
+
+The tools for sequencing events are in the \lstinline{frc3128.EventManager.EventSequencer} package. A \lstinline{SequenceEvent} is still an \lstinline{Event}. A \lstinline{SingleSequence} is still a \lstinline{SequenceEvent}.
+
+The \lstinline{EventSequencer} is an iterable event which is run by the \lstinline{EventManager}. \lstinline{SequenceEvents} are always written to be single events, but have another abstract function: \lstinline{exitConditionMet()}. When \lstinline{exitConditionMet()} returns \lstinline{true}, the event is stopped, and the \lstinline{EventSequencer} moves on to the next event in the queue.
+
+Each \lstinline{SequenceEvent} has several internal functions, one of which is \lstinline{getRunTimeMillis()}. This function is used to determine how long the event has been running, and is useful for \lstinline{exitConditionMet} functions which depend on a certain amount of time.
+
+A \lstinline{SingleSequence} event is a special case of the \lstinline{SequenceEvent} and is, for all intents and purposes, syntactic sugar. It provides an easy way to create an event which will run once and only once. Even though the \lstinline{EventSequencer} requires a \lstinline{SequenceEvent}, remember that a \lstinline{SingleSequence} is \textit{also} a \lstinline{SequenceEvent}; that's the way inheritance works.
+
+A \lstinline{SingleSequence}'s \lstinline{exitConditionMet()} function reads:
+
+\begin{verbatim}
+	/**
+	 * Exits immediately; will always return true.
+	 * 
+	 * @return true
+	 */
+	public final boolean exitConditionMet() {return true;}
+\end{verbatim}
+
+The \lstinline{EventSequencer} works off FIFO, so whatever you register with it first will run first.
+
+The \lstinline{EventSequencer} will start when \lstinline{EventSequencer}'s \lstinline{startSequence()} method is invoked. To run it more than once, one must \lstinline{resetSequence()}. One can always \lstinline{stopSequence()}. An \lstinline{EventSequencer} is also an \lstinline{Event}.
+\subsubsection{Task} Create an \lstinline{EventSequencer} and add a Hello \lstinline{SingleSequence} to it, as well as a World \lstinline{SingleSequence}. Trigger the \lstinline{EventSequencer}.
+\subsubsection{Success} Success at the above.
+
+\subsection{Task 23}
+\subsubsection{Goal} Use alternate exit conditions.
+\subsubsection{Details} None.
+\subsubsection{Task} Create a \lstinline{SequenceEvent} and have it print out until it exits in 1.5 seconds. Trigger two other events after this.
+
+\section*{You win!}
 \end{document}
 
 %\subsection{Task 00}
