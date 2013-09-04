@@ -6,6 +6,7 @@
 \usepackage{listings}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
 \title{FRC Programming Introduction}
 \author{Noah Sutton-Smolin\\Yousuf Soliman\\Kian Sheik}
 \begin{document}
@@ -20,29 +21,7 @@ If you do not have a fundamental understanding of Java, that is fine, however, t
 \begin{verbatim}http://docs.oracle.com/javase/tutorial/java/
 http://docs.oracle.com/javase/tutorial/\end{verbatim}
 
-Programming for FRC will require a configured Netbeans and Subversion environment. This document is designed to walk you through the setup process. While a Windows computer is not \textit{required} for FRC development, it is highly recommended. If you cannot use Windows, then you will not be able to use TortoiseSVN, and may skip section 2 as it will not apply. Instead, for Subversion access, refer to section 3.2.
-
-Once you have completed the FRC introduction sets, you may be given commit access to the FRC repository.
-
-\section{Setting up the Subversion environment}
-
-\textit{Note: You do not need to complete this section if you intend to use Subversion within NetBeans. If you wish to do so, skip to section 3.}\newline
-
-You may use whichever Subversion client you wish. However, we highly recomment you use TortoiseSVN (Windows only), which can be downloaded from here: \begin{verbatim}http://tortoisesvn.net/downloads.html\end{verbatim}
-
-TortoiseSVN opens in a context menu; right click anywhere, and you will see an option to ``SVN Checkout." Checking out is the process of downloading the archive from the repository, and committing is the process of uploading your changes back into the repository. From this window, you can check out any directory or subdirectory in the FRC subversion repository. The FRC page is located on Google Code here:\begin{verbatim}https://code.google.com/p/frc-team-3128/\end{verbatim}
-
-From this page, you can view all of the content and change logs. For checking out and committing, the root of the SVN archive is located at: \begin{verbatim}https://frc-team-3128.googlecode.com/svn/\end{verbatim}
-
-The following subdirectories are important to remember:
-
-\noindent\begin{tabular}{|c|c|}
-\hline /svn/intro & This section contains all of the FRC programming introduction files\\
-\hline /svn/doc & This section contains all of the FRC documentation. It can be checked out and browsed\\ & by opening help-doc.html or index.html\\
-\hline /svn/trunk & This section contains the live robot code for FRC. This section is \textit{only} code which \\ & is sent to the actual robot.\\\hline
-\end{tabular}
-
-Once you are done setting up TortoiseSVN, you are free to explore the code archive online, or check out the archive and explore it there. You can open the project within NetBeans by going to the File menu and selecting Open Project...
+Programming for FRC will require a configured Netbeans and Subversion environment. This document is designed to walk you through the setup process. While a Windows computer is not \textit{required} for FRC development, it is highly recommended. Once you have completed the FRC introduction sets, you may be given commit access to the FRC repository.
 
 \section{Setting up the NetBeans environment}
 
@@ -55,7 +34,7 @@ The entire API we have written has Javadoc, which means that hovering over a fun
 \item{Download and install Netbeans 7.2.1 \textit{specifically} (you will need the latest Java Development Kit (JDK))}
 \item{Go to $Tools \rightarrow Plugins \rightarrow Settings \rightarrow Add$}
 \item{Enter ``FRC Java'' under New Provider}
-\item{Enter the following link under URL: \begin{verbatim}http://first.wpi.edu/FRC/java/netbeans/update/updates.xml\end{verbatim}}
+\item{Enter the following link under URL: \begin{verbatim}http://first.wpi.edu/FRC/java/netbeans/update/Release/updates.xml\end{verbatim}}
 \item{Go to the Available Plugins tab and click Check for Updates}
 \item{Find all plugins that start with ``FRC'' and select them. Install those.}
 \item{Close the Plugins dialog}
@@ -65,24 +44,24 @@ The entire API we have written has Javadoc, which means that hovering over a fun
 
 Once you have checked out the introductory tasks, you can open them by going to $File\rightarrow Open\ Project\ldots$ and finding the Java project.
 
-\subsection{Optional: Checking out projects with Subversion in NetBeans}
+\subsection{Checking out projects with Subversion in NetBeans}
 \begin{enumerate}
-\item{Go to $Team\rightarrow Subversion\rightarrow Checkout$ (there may be an option to check out without going through the Subversion menu)}
-\item{Enter the repository URL (be specific with this, else this will be confusing and take a ridiculous amount of time to finish); leave the username and password blank}
-\item{Select the project from one of the checked out ones}
+\item{Go to $Team\rightarrow Subversion\rightarrow Checkout$ (there may be an option to check out without going through the Subversion menu).}
+\item{Enter the repository URL:\begin{verbatim}https://frc-team-3128.googlecode.com/svn/\end{verbatim} and leave the username and password blank.}
+\item{Select and open all projects.}
 \end{enumerate}
 
-The NetBeans subversion menu is available by right clicking in the Projects pane; it is available at every scope. \textbf{Please do not commit private.xml.}
+The NetBeans Subversion menu is available by right clicking in the Projects pane; it is available at every scope. \textbf{Please do not commit private.xml.}
 
 \section{Running the introductory tasks}
 
-The introductory tasks are all located at: \begin{verbatim}/svn/intro\end{verbatim}
+The tutorials are part of the intro projects; if you checked them out to the standard directory, yours will be locaed in $C:\textbackslash Users\textbackslash\{username\}\textbackslash My Documents\textbackslash NetBeansProjects\textbackslash intro\textbackslash$ (Windows 7). From there, each of the lesson sets are in their own folder. Each lesson is in its own text file.
 
-There are five subsections in the intro folder. Each subsection contains its own tasks. The files with the introductory tasks are located within the folders; for instance, task 01 is at:\begin{verbatim}svn/intro/01 - Basic Usage/01 - DebugLog usage.txt\end{verbatim}
+There are five subsections in the intro folder. Each subsection contains its own tasks. The files with the introductory tasks are located within the folders; for instance, task 01 is at:\begin{verbatim}intro/01 - Basic Usage/01 - DebugLog usage.txt\end{verbatim}
 
 Once you've worked through one of these, call one of the programmers over and we will look through and comment on your code. Once you've completed a task, you are free to move on to the next one. 
 
-Welcome to FRC Robotics Programming! \textbf{Remember: Ask questions, get answers!}
+Welcome to FRC Robotics Programming! \textbf{Remember: Ask questions, get answers!} If you aren't asking questions, you're doing something wrong.
 
 \end{document}
 
