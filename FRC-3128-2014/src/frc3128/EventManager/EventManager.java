@@ -15,7 +15,7 @@ public class EventManager {
     private static Vector  singleEventListFlag     = new Vector();
     private static Vector  deleteFlag              = new Vector();
     private static boolean eventProcessingDisabled = false;
-	
+    
     private static void insertIntoEvents(Event event, boolean single) {
         eventList.addElement(event);
         singleEventListFlag.addElement((single ? Boolean.TRUE : Boolean.FALSE));
@@ -41,10 +41,10 @@ public class EventManager {
         insertIntoEvents(event, false);
     }
 
-	/**
-	 * Processes the Vector of events and executes them in their order of
-	 * insertion.
-	 */
+    /**
+     * Processes the Vector of events and executes them in their order of
+     * insertion.
+     */
     public static void processEvents() {
         if(EventManager.eventProcessingDisabled) return;
         cleanupEvents();
@@ -62,7 +62,7 @@ public class EventManager {
                 } catch(Exception e) {
                     e.printStackTrace();
                     DebugLog.log(DebugLog.LVL_ERROR, event.toString(), "Uncaught exception in event: " + e.getMessage());
-					e.printStackTrace();
+                    e.printStackTrace();
                     deleteFlag.setElementAt(Boolean.TRUE, i);
                 }
             }
@@ -98,10 +98,10 @@ public class EventManager {
         if(removedEventCount > 1)
             DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "removeEvent was called, and " + removedEventCount + " events were marked for deletion.");
     }
-	
-	/**
-	 * Removes all events from the queue; clears any running tasks.
-	 */
+
+    /**
+     * Removes all events from the queue; clears any running tasks.
+     */
     public static void dropAllEvents() {
         DebugLog.log(DebugLog.LVL_INFO, "EventManager", "Dropped ALL " + eventList.size() + " events.");
         eventList.removeAllElements();
@@ -109,20 +109,20 @@ public class EventManager {
         deleteFlag.removeAllElements();
     }
 
-	/**
-	 * Temporarily enables or disables event processing.
-	 */
-    public static void toggleEventProcessing() {EventManager.eventProcessingDisabled = !EventManager.eventProcessingDisabled;}
-	
-	/**
-	 * Disables event processing.
-	 */
-	public static void disableEventProcessing() {EventManager.eventProcessingDisabled = true;}
-	
-	/**
-	 * Enables event processing.
-	 */
-	public static void enableEventProcessing() {EventManager.eventProcessingDisabled = false;}
-	
-	private EventManager() {}
+    /**
+     * Temporarily enables or disables event processing.
+     */
+       public static void toggleEventProcessing() {EventManager.eventProcessingDisabled = !EventManager.eventProcessingDisabled;}
+    
+    /**
+     * Disables event processing.
+     */
+    public static void disableEventProcessing() {EventManager.eventProcessingDisabled = true;}
+    
+    /**
+     * Enables event processing.
+     */
+    public static void enableEventProcessing() {EventManager.eventProcessingDisabled = false;}
+    
+    private EventManager() {}
 }

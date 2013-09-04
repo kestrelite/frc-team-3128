@@ -55,9 +55,9 @@ public abstract class Event {
     private TimerEvent timerEvent = null;
     private long cancelAtTime = -1;
     
-	/**
-	 * Empty constructor
-	 */	
+    /**
+     * Empty constructor
+     */
     public Event() {}
 
     /**
@@ -75,11 +75,11 @@ public abstract class Event {
         DebugLog.log(DebugLog.LVL_DEBUG, this, "Event " + this.toString() + " has been cancelled!");
     }
 
-	/**
-	 * Cancels the event after the timer has expired
-	 * 
-	 * @param msec the time after which the event will cancel
-	 */
+    /**
+     * Cancels the event after the timer has expired
+     * 
+     * @param msec the time after which the event will cancel
+     */
     final public void cancelEventAfter(int msec) {
         DebugLog.log(DebugLog.LVL_DEBUG, this, "Canceling self by trigger after " + msec + " msec.");
         new CancelEvent(this).registerTimedEvent(msec);

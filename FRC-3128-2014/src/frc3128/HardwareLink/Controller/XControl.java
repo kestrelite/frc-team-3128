@@ -14,21 +14,21 @@ public class XControl extends Event {
     public double x1, y1, x2, y2, triggers;
     private boolean[] buttonsPressed = {false, false, false, false, false, false, false, false, false, false, false};
     
-	/**
-	 * Instantiates a new XBox controller and starts an Event for updates.
-	 * 
-	 * @param port the port of the controller
-	 */
+    /**
+     * Instantiates a new XBox controller and starts an Event for updates.
+     * 
+     * @param port the port of the controller
+     */
     public XControl(int port) {
         xControl = new Joystick(port);
         this.registerIterableEvent();
         DebugLog.log(DebugLog.LVL_DEBUG, this, "XBox Controller added self to event manager!");
     }
 
-	/**
-	 * This function will be called automatically by the EventManager.<p><b>Do
-	 * not invoke it.</b>
-	 */
+    /**
+     * This function will be called automatically by the EventManager.<p><b>Do
+     * not invoke it.</b>
+     */
     public void execute() {
         boolean updateJoy1 = false;
         boolean updateJoy2 = false;

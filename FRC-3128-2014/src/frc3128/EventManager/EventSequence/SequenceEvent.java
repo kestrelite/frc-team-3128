@@ -12,31 +12,31 @@ public abstract class SequenceEvent extends Event {
     
     public SequenceEvent() {super();}
     
-	/**
-	 * Starts the sequence event running. 
-	 */
+    /**
+     * Starts the sequence event running. 
+     */
     final protected void startSequenceEvent() {
         if(startTime == -1) this.startTime = System.currentTimeMillis();
         this.eventIsRunning = true;
     }
-	
-	/**
-	 * Returns whether or not the current SequenceEvent is running.
-	 * 
-	 * @return whether the current SequenceEvent is running
-	 */
+    
+    /**
+     * Returns whether or not the current SequenceEvent is running.
+     * 
+     * @return whether the current SequenceEvent is running
+     */
     final protected boolean isRunning() {return eventIsRunning;}
     
-	/**
-	 * Finds how long the SequenceEvent ran.
-	 * 
-	 * @return the duration, in msec, for how long the SequenceEvent ran
-	 */
-	final protected long getRunTimeMillis() {return (startTime == -1 ? -1 : System.currentTimeMillis() - this.startTime);}
+    /**
+     * Finds how long the SequenceEvent ran.
+     * 
+     * @return the duration, in msec, for how long the SequenceEvent ran
+     */
+    final protected long getRunTimeMillis() {return (startTime == -1 ? -1 : System.currentTimeMillis() - this.startTime);}
 
-	/**
-	 * 
-	 * @return whether the current SequenceEvent's exit condition has been met
-	 */
-	public abstract boolean exitConditionMet();
+    /**
+     * 
+     * @return whether the current SequenceEvent's exit condition has been met
+     */
+    public abstract boolean exitConditionMet();
 }

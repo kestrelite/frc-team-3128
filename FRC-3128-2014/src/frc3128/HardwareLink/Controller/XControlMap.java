@@ -23,13 +23,13 @@ public class XControlMap {
     public static final int X2_AXIS = 4;
     public static final int Y2_AXIS = 5;
 
-	/**
-	 * Gets the String associated with a button keypress. Used primarily for 
-	 * Listener triggers, but also useful for debug outputs.
-	 * 
-	 * @param btn the integer key pressed
-	 * @return the associated String
-	 */
+    /**
+     * Gets the String associated with a button keypress. Used primarily for 
+     * Listener triggers, but also useful for debug outputs.
+     * 
+     * @param btn the integer key pressed
+     * @return the associated String
+     */
     public static String getBtnString(int btn) {
         switch(btn) {
         case 1:  return "A";
@@ -46,6 +46,6 @@ public class XControlMap {
             return "";
         }
     }
-	
-	private XControlMap() {}
+    
+    private XControlMap() {}
 }

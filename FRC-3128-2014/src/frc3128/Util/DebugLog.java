@@ -45,8 +45,8 @@ public class DebugLog {
      * @param text the message to be logged.
      */
     public static void log(int level, Object obj, String text) {
-		if(!Constants.DEBUGLOG_ENABLED) return;
-		
+        if(!Constants.DEBUGLOG_ENABLED) return;
+        
         long logStartTime = System.currentTimeMillis(); //Diagnostic
 
         String strLv = "[UNKN]  ";
