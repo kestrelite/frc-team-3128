@@ -8,7 +8,7 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
-\title{FRC Programming Tasks List v0.2.0D}
+\title{FRC Programming Tasks List v0.2.1D}
 \author{Noah Sutton-Smolin\\Yousuf Soliman\\Kian Sheik}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -55,11 +55,11 @@ The severity levels in order are:
 The \lstinline{RobotTemplate} class is actually what's run by the FRC API, and it interfaces with the \lstinline{Global} class. You should never modify the \lstinline{RobotTemplate} class.
 
 \subsubsection{Task} Write one output of each severity level to the console when teleop starts, in order, using the \lstinline{DebugLog} class.
-\subsubsection{Success} \begin{enumerate}\item{Each output is written to the console successfully.}\item{No file has been modified except for the \lstinline{Global} class.}\item{Only the \lstinline{initializeTeleop()} function in the \lstinline{Global} class has been modified.}\item{No \lstinline{System.out.*} files are used.}\end{enumerate}
+\subsubsection{Success} \begin{enumerate}\item{Each output is written to the console successfully.}\item{No file has been modified except for the \lstinline{Global} class.}\item{Only the \lstinline{initializeTeleop()} method in the \lstinline{Global} class has been modified.}\item{No \lstinline{System.out.*} files are used.}\end{enumerate}
 
 \pagebreak\subsection{Utilizing the \lstinline{Global} class}
 \subsubsection{Goal} Understand the function of the \lstinline{Global} class with respect to shared resources and robot intialization.
-\subsubsection{Details} The \lstinline{Global} class is used to hold all global resources and contain initalization functions. These functions are wrapped to from \lstinline{RobotTemplate}, which you are free to inspect, \textbf{but not modify}.
+\subsubsection{Details} The \lstinline{Global} class is used to hold all global resources and contain initalization methods. These methods are wrapped to from \lstinline{RobotTemplate}, which you are free to inspect, \textbf{but not modify}.
 
 The \lstinline{static} modifier must be used before all \lstinline{Global} variables; if you do not know what the static modifier does, you are free to do research into it. However, in short, the static modifier makes it so that only one instance of a variable can exist in a class. This means any class resource can be accessed using \lstinline{[CLASSNAME].[RESOURCENAME]} instead of \lstinline{[INSTANCENAME].[RESOURCENAME]}.
 
@@ -67,15 +67,15 @@ With respect to our given setup, if we had a \lstinline{Jaguar} (motor) in \lsti
 
 The \lstinline{Watchdog} class is not something you should ever personally need to deal with, as it is handled by the system, but it is important to understand. The \lstinline{Watchdog} makes sure that the robot's code hasn't stopped or frozen. The act of ``feeding'' the watchdog ensures that the FRC system does not automatically kill our robot. The \lstinline{Watchdog} is called using: \lstinline{Watchdog.getInstance().feed();}
 
-This gets the current instance of the Watchdog from the \lstinline{Watchdog} class (through the static \lstinline{getInstance()} function), and feeds it.
-\subsubsection{Task} Create a \lstinline{Jaguar} in the \lstinline{Global} class. Change its power in each of the \lstinline{initialize*} functions. Be sure to feed the \lstinline{Watchdog} somewhere once.
+This gets the current instance of the Watchdog from the \lstinline{Watchdog} class (through the static \lstinline{getInstance()} method), and feeds it.
+\subsubsection{Task} Create a \lstinline{Jaguar} in the \lstinline{Global} class. Change its power in each of the \lstinline{initialize*} methods. Be sure to feed the \lstinline{Watchdog} somewhere once.
 \subsubsection{Success} \begin{enumerate}\item{The power was successfully set in each initialization function.}\item{\lstinline{Watchdog} was fed once.}\item{No file was modified except for \lstinline{Global}.}\end{enumerate}
 
-\pagebreak\subsection{Understanding function timings}
-\subsubsection{Goal} Understand when the initialization functions are called in game.
-\subsubsection{Details} The \lstinline{RobotTemplate} class controls the timings in the \lstinline{Global} class. You need to understand when and under which circumstances the functions in the \lstinline{Global} class would be invoked. \begin{itemize}\item{\lstinline{initializeRobot()} is invoked once when the robot's code starts up.}\item{\lstinline{initializeDisabled()} is invoked once when the robot enters the disabled state before and after the game.}\item{\lstinline{initializeAutonomous()} is invoked once when the robot's autonomous phase is about to begin.}\item{\lstinline{initializeTeleop()} is invoked once when the robot's teleoperated phase is about to begin.}\end{itemize}
+\pagebreak\subsection{Understanding method timings}
+\subsubsection{Goal} Understand when the initialization methods are called in-game.
+\subsubsection{Details} The \lstinline{RobotTemplate} class controls the timings in the \lstinline{Global} class. You need to understand when and under which circumstances the methods in the \lstinline{Global} class would be invoked. \begin{itemize}\item{\lstinline{initializeRobot()} is invoked once when the robot's code starts up.}\item{\lstinline{initializeDisabled()} is invoked once when the robot enters the disabled state before and after the game.}\item{\lstinline{initializeAutonomous()} is invoked once when the robot's autonomous phase is about to begin.}\item{\lstinline{initializeTeleop()} is invoked once when the robot's teleoperated phase is about to begin.}\end{itemize}
 
-Every robot task in-game will be handled by the \lstinline{EventManager}. The initialization functions are only used to set up \lstinline{EventManager}'s sequencing so that everything else follows suit and makes sense. \begin{itemize}\item{\lstinline{robotKill()} is a predefined function which you can invoke when you wish to shut off the robot entirely. After invoking this method, the robot will need to be power cycled.}\item{\lstinline{robotStop()} allows you to turn off the robot without disconnecting or disabling it.}\end{itemize}
+Every robot task in-game will be handled by the \lstinline{EventManager}. The initialization methods are only used to set up \lstinline{EventManager}'s sequencing so that everything else follows suit and makes sense. \begin{itemize}\item{\lstinline{robotKill()} is a predefined function which you can invoke when you wish to shut off the robot entirely. After invoking this method, the robot will need to be power cycled.}\item{\lstinline{robotStop()} allows you to turn off the robot without disconnecting or disabling it.}\end{itemize}
 \setcounter{subsubsection}{3}\subsubsection{Success} You read this section, didn't you? Go read it again.
 
 
@@ -87,7 +87,7 @@ Every robot task in-game will be handled by the \lstinline{EventManager}. The in
 
 It is important to understand how to declare a \lstinline{Jaguar}, though, for this task. A \lstinline{Jaguar} is a hardware link that's part of the FRC API which connects to a motor controller on the physical robot. One can control a motor through the \lstinline{Jaguar} class.
 
-The motor you will be creating will take one argument: a \lstinline{Jaguar}. You can declare the \lstinline{Jaguar} in-line. Explore the \lstinline{MotorLink} class and its functions. Bear in mind that it has been stripped down from its full form, as \lstinline{Events} have not been introduced yet, and the \lstinline{MotorSpeedControl} (a class which controls the speed of a motor) requires events.
+The motor you will be creating will take one argument: a \lstinline{Jaguar}. You can declare the \lstinline{Jaguar} in-line. Explore the \lstinline{MotorLink} class and its methods. Bear in mind that it has been stripped down from its full form, as \lstinline{Events} have not been introduced yet, and the \lstinline{MotorSpeedControl} (a class which controls the speed of a motor) requires events.
 
 Motors can be given powers from $[-1.0,1.0]$; anything out of range is invalid.
 \subsubsection{Task} Declare a \lstinline{MotorLink} as a static resource in \lstinline{Global}. Set its power scalar to a valid value. Set the motor power.
@@ -95,56 +95,52 @@ Motors can be given powers from $[-1.0,1.0]$; anything out of range is invalid.
 
 \pagebreak\subsection{Using and declaring sensors}
 \subsubsection{Goal} Declare sensors and use their values.
-\subsubsection{Details} Sensors are primarily accessible through the \lstinline{frc3128.HardwareLink} package. For instance, a gyroscope will use the \lstinline{GyroLink} class (locaed in \lstinline{frc3128.HardwareLink.GyroLink}) for communications. 
+\subsubsection{Details} Sensors are primarily accessible through the \lstinline{frc3128.HardwareLink} package. For instance, a gyroscope will use the \lstinline{GyroLink} class (located in \lstinline{frc3128.HardwareLink.GyroLink}) for communications. 
 
-\lstinline{GyroLink} consumes a \lstinline{Gyroscope} in its constructor.
-\subsubsection{Task} Declare a new \lstinline{GyroLink} as a static \lstinline{Global} resource. Print its value on teleop init.
+\lstinline{GyroLink} consumes a \lstinline{Gyroscope} (FRC API class) in its constructor.
+\subsubsection{Task} Declare a new \lstinline{GyroLink} as a static \lstinline{Global} resource. Print its value in \lstinline{Global.initializeTeleop()}.
 \subsubsection{Success}\begin{itemize}\item{The \lstinline{GyroLink} is declared properly.}\item{The \lstinline{Gyroscope} is consumed by the \lstinline{GyroLink} constructor.}\item{The value of the gyro is printed out when the robot initializes.}\end{itemize}
 
-\subsection{Task 06 - Using raw encoders and angles}
+\pagebreak\subsection{Using raw encoders and angles}
 \subsubsection{Goal} Create an encoder and read out its angle.
-\subsubsection{Details} None.
-\subsubsection{Task} Encoders are devices which keep track of the angle of a given motor. The \lstinline{MotorLink} class can be linked with an \lstinline{AbstractEncoder}.
+\setcounter{subsubsection}{2}\subsubsection{Task} Encoders are devices which keep track of the angle of a given motor. The \lstinline{MotorLink} class can be linked with an \lstinline{AbstractEncoder}; this is explained in more detail in task 7.
 
-Create a \lstinline{MagneticPotEncoder} and print out its raw angle on teleop init.
+Create a \lstinline{MagneticPotEncoder} and print out its raw angle on \lstinline{Global.initializeTeleop()}.
 \subsubsection{Success} \begin{itemize}\item{Only the \lstinline{MagneticPotEncoder} is kept as a static resource.}\item{The raw angle is printed out using \lstinline{DebugLog} at the appropriate level.}\end{itemize}
 
-\subsection{Task 07 - Using motors in conjunction with encoders}
+\pagebreak\subsection{Using motors in conjunction with encoders}
 \subsubsection{Goal} Properly use raw encoders and their angles.
-\subsubsection{Details} \lstinline{AbstractEncoder} is an abstract class which has two required functions: \lstinline{getAngle()} and \lstinline{getRawValue()}. There are two predefined implementations: \lstinline{GyroEncoder} and \lstinline{MagneticPotEncoder}. 
+\subsubsection{Details} \lstinline{AbstractEncoder} is an abstract class which has two required methods: \lstinline{getAngle()} and \lstinline{getRawValue()}. There are two predefined implementations: \lstinline{GyroEncoder} and \lstinline{MagneticPotEncoder}. 
 
-There is a static function in \lstinline{frc3128.Util.RobotMath} called \lstinline{normalizeAngle()}; this function must be invoked on all angle values continuously, as it keeps the angle values to within normal range. We keep track of angles from 0 to 360 degrees. 
-\subsubsection{Task} Create a new \lstinline{MotorLink} using a \lstinline{MagneticPotEncoder}. Read out the angle, and print the normalized value to the print stream.
+There is a static method in \lstinline{frc3128.Util.RobotMath} called \lstinline{normalizeAngle()}; this method must be invoked on all angle values continuously, as it keeps the angle values to within normal range. We keep track of angles from 0 to 360 degrees. 
+\subsubsection{Task} Create a new \lstinline{MotorLink} using a \lstinline{MagneticPotEncoder}. Print out the angle, and print the normalized value to the print stream using \lstinline{DebugLog}.
 \subsubsection{Success}\begin{itemize}\item{Create a \lstinline{MotorLink} and associated \lstinline{AbstractEncoder} and \lstinline{Jaguar}.}\item{The \lstinline{AbstractEncoder} and \lstinline{Jaguar} are fully consumed by the \lstinline{MotorLink}.}\item{The angle from the \lstinline{MotorLink} is normalized and printed out.}\item{The print out uses \lstinline{DebugLog}.}\end{itemize}
 
-\subsection{Task 08 - Using the \lstinline{PneumaticsManager}}
+\pagebreak\subsection{Using \lstinline{PneumaticsManager}}
 \subsubsection{Goal} Learn the uses of \lstinline{PneumaticsManager}.
-\subsubsection{Details} \lstinline{PneumaticsManager} is a class designed to control the pneumatic air compression systems on the robot. The pneumatics system uses compressors and two-sided solenoids called Festos to control air flow.
+\subsubsection{Details} \lstinline{PneumaticsManager} is a class designed to control the pneumatic air compression systems on the robot. The pneumatics system uses one compressor and unlimited two-sided solenoids called Festos to control air flow. 
 
-The \lstinline{PneumaticsManager} must be declared with a compressor. When a new piston is created, it returns a \lstinline{PistonID}, which is a reference value used by the \lstinline{PneumaticsManager} to handle piston movements.
-\subsubsection{Task} Initialize the \lstinline{PneumaticsManager}. Turn the compressor off, then on. Create a piston, and record the \lstinline{PistonID} as a static global resource. Turn the piston forward, then flip its state, then reverse its polarity.
-\subsubsection{Success} All tasks completed without error.
+The \lstinline{PneumaticsManager} must be passed a compressor. When a new piston is created, it returns a \lstinline{PistonID}, which is a reference value used by the \lstinline{PneumaticsManager} to handle piston movements.
+\subsubsection{Task} Initialize the \lstinline{PneumaticsManager}; the \lstinline{Compressor} should be consumed. Turn the compressor off, then on. Create a piston, and record the \lstinline{PistonID} as a static global resource. Turn the piston forward, then flip its state, then reverse its polarity.
 
 
-\section{Event Manager}\setcounter{subsection}{8}
+\pagebreak\section{Event Manager}\setcounter{subsection}{8}
 
-\subsection{Task 09 - Single run events}
+\subsection{Single run events}
 \subsubsection{Goal} Learn how and when certain events are executed, and how to trigger single-run events.
-\subsubsection{Details} The \lstinline{EventManager} is a rather simple block of code which drives the entire robot. It takes \lstinline{Events}, or small blocks of code, and runs them in the sequence they were queued.
+\subsubsection{Details} The \lstinline{EventManager} is a rather simple block of code which drives the entire robot. It takes \lstinline{Events}, or small blocks of code, and runs them in the sequence they were queued. The \lstinline{EventManager} is called automatically in \lstinline{RobotTemplate}. Do not modfiy \lstinline{RobotTemplate}. Do not manually invoke the \lstinline{EventManager} de-queueing method.
 
-An \lstinline{Event} is an abstract class. If you don't know what abstract classes are, it is strongly suggested that you look up the documentation for them. An Event must be declared as a class. That means, to create an event, you must do the following:
+An \lstinline{Event} is an abstract class. If you don't know what abstract classes are, it is strongly suggested that you look up the documentation for them. All \lstinline{Event}s must extend the \lstinline{Event} class with: \lstinline{extends Event}. That means, to create an event, you must do the following:
 
 \begin{lstlisting}
 	class EventImpl extends Event {
 		public void execute() {
 			//your code
 		}
-	}
+	};
 \end{lstlisting}
 
-If you do not have the \lstinline{execute()} function, you will not be adhering to the \lstinline{Event} abstract class, and NetBeans will barf errors in your face.
-
-You can also declare an \lstinline{Event} inline, but it \textit{must} have an implementation.
+If you do not have the \lstinline{execute()} method, you will not be adhering to the \lstinline{Event} abstract class, and NetBeans will barf errors in your face. You can also declare an \lstinline{Event} inline, but it \textit{must} have an implementation.
 
 \begin{lstlisting}
 	Event e = new Event() {
@@ -164,26 +160,25 @@ You can also declare an \lstinline{Event} inline, and directly queue it:
 	}).registerIterableEvent();
 \end{lstlisting}
 
-The \lstinline{Event} has several critical functions:
-\begin{itemize}\item{\lstinline{registerSingleEvent()} will insert the \lstinline{Event} into the \lstinline{EventManager}'s queue, and run it once before removing it.}\item{\lstinline{registerIterableEvent()} will insert the \lstinline{Event} into the \lstinline{EventManager}'s queue, and it won't be removed until it is cancelled directly (or the entire \lstinline{Event} stack is dropped).}\item{\lstinline{registerTimedEvent(int msec)} will create a new instance of a \lstinline{TimerEvent} and register it as an iterable event. When the timer expires, the selected \lstinline{Event} will be run. If you're going to call this function, it is \textit{highly} recommended that you call \lstinline{prepareTimer()} first.}\end{itemize}
+The \lstinline{Event} has several critical methods:
+\begin{itemize}\item{\lstinline{Event.registerSingleEvent()} will insert the \lstinline{Event} into the \lstinline{EventManager}'s queue, where it will be run once before being removed.}\item{\lstinline{Event.registerIterableEvent()} will insert the \lstinline{Event} into the \lstinline{Event.EventManager}'s queue, and it won't be removed until it is cancelled directly (or the entire \lstinline{Event} stack is dropped through \lstinline{EventManager.dropAllEvents()}).}\item{\lstinline{Event.registerTimedEvent(int msec)} will create a new instance of a \lstinline{TimerEvent} and register it as an iterable event. When the timer expires, the selected \lstinline{Event} will be run. If you're going to invoke this method, it is \textit{highly} recommended that you call \lstinline{Event.prepareTimer()} first.}\end{itemize}
 
-That's it for starting events. For cancelling events: \begin{itemize}\item{\lstinline{cancelEvent()} will cancel the running event.}\item{\lstinline{cancelTimedEvent()} will cancel the event's execution timer.}\item{\lstinline{cancelEventAfter(int msec)} will cancel the event after a given amount of time.}\end{itemize}
+That's it for starting \lstinline{Event}s. For cancelling \lstinline{Event}s: \begin{itemize}\item{\lstinline{Event.cancelEvent()} will cancel \lstinline{Event}.}\item{\lstinline{Event.cancelTimedEvent()} will cancel \lstinline{Event}'s execution timer.}\item{\lstinline{Event.cancelEventAfter(int msec)} will cancel \lstinline{Event} after a given amount of time.}\end{itemize}
 
-The \lstinline{EventManager} is called automatically in \lstinline{RobotTemplate}. Do not modfiy \lstinline{RobotTemplate}. Do not manually invoke the \lstinline{EventManager} de-queueing function.
 \subsubsection{Task} Create a single run event which will print out some text.
-\subsubsection{Success} \begin{enumerate}\item{The text is printed out using \lstinline{DebugLog} and an \lstinline{Event}.}\item{No resources are kept longer than they are needed.}\end{enumerate}
 
-\subsection{Task 10 - Single run events and their execution order}
+\pagebreak\subsection{Single run events and their execution order}
 \subsubsection{Goal} Understand the queue nature of the \lstinline{EventManager}.
-\subsubsection{Details} The \lstinline{EventManager} uses a FIFO (First In, First Out) queue. \lstinline{Events} will be run in the order they are inserted in the queue.
-\subsubsection{Task} Create a program which will print out "Hello," then "World," then set a motor on (1,2) to 50\% power.
-\subsubsection{Success} \begin{enumerate}\item{No extraneous resources are kept.}\item{\lstinline{DebugLog} is used for printing.}\item{The motor is created using \lstinline{MotorLink} and is created as a global static resource.}\item{The program will execute successfully.}\end{enumerate}
+\subsubsection{Details} The \lstinline{EventManager} uses a FIFO (First In, First Out) queue. \lstinline{Events} will be run in the order they are inserted in the queue. This means that, if I add an event \lstinline{E_A} and then add an event \lstinline{E_B}, \lstinline{E_A} will run first, then \lstinline{E_B}.
+\subsubsection{Task} Create a program which will print out \lstinline{"Hello"} then \lstinline{"World"}, then set a motor on \lstinline{(1,2)} to 50\% power.
+\subsubsection{Success} \begin{enumerate}\item{No extraneous resources are kept.}\item{\lstinline{DebugLog} is used for printing.}\item{The motor is created using \lstinline{MotorLink} and is created as a global static resource.}\end{enumerate}
 
-\subsection{Task 11 - Iterable Events}
+\pagebreak\subsection{Iterable Events}
 \subsubsection{Goal} Understand and use iterable events.
-\subsubsection{Details} Iterable events are the same as single run events, but they are not deleted on the \lstinline{EventManager}'s cleanup step. This means they will run continuously unless cancelled expliitly.
-\subsubsection{Task} Create a program which will print out "Hello" continuously. After 1.5 seconds, a separate event should print out "World". 
-\subsubsection{Success} \begin{enumerate}\item{No resources are kept which are not needed.}\item{It operates as described above.}\end{enumerate}
+\subsubsection{Details} Iterable events are the same as single run events, but they are not deleted on the \lstinline{EventManager}'s cleanup step. This means they will run continuously unless cancelled explicitly. Events can be registered as iterable using \lstinline{Event.registerIterableEvent()}. 
+
+Event timers are events which are triggered after a certain amount of time. To create an event timer, use \lstinline{Event.registerTimerEvent(int msec)}.
+\subsubsection{Task} Create a program which will print out \lstinline{"Hello"} continuously. After 1.5 seconds, a separate event should print out \lstinline{"World"}. 
 
 \subsection{Task 12 - Iterable events and cancellation}
 \subsubsection{Goal} Understand and use iterable events.
@@ -279,13 +274,13 @@ The \lstinline{EventSequencer} is most useful during autonomous, however. Since 
 
 The tools for sequencing events are in the \lstinline{frc3128.EventManager.EventSequencer} package. A \lstinline{SequenceEvent} is still an \lstinline{Event}. A \lstinline{SingleSequence} is still a \lstinline{SequenceEvent}.
 
-The \lstinline{EventSequencer} is an iterable event which is run by the \lstinline{EventManager}. \lstinline{SequenceEvents} are always written to be single events, but have another abstract function: \lstinline{exitConditionMet()}. When \lstinline{exitConditionMet()} returns \lstinline{true}, the event is stopped, and the \lstinline{EventSequencer} moves on to the next event in the queue.
+The \lstinline{EventSequencer} is an iterable event which is run by the \lstinline{EventManager}. \lstinline{SequenceEvents} are always written to be single events, but have another abstract method: \lstinline{exitConditionMet()}. When \lstinline{exitConditionMet()} returns \lstinline{true}, the event is stopped, and the \lstinline{EventSequencer} moves on to the next event in the queue.
 
-Each \lstinline{SequenceEvent} has several internal functions, one of which is \lstinline{getRunTimeMillis()}. This function is used to determine how long the event has been running, and is useful for \lstinline{exitConditionMet} functions which depend on a certain amount of time.
+Each \lstinline{SequenceEvent} has several internal methods, one of which is \lstinline{getRunTimeMillis()}. This method is used to determine how long the event has been running, and is useful for \lstinline{exitConditionMet} methods which depend on a certain amount of time.
 
 A \lstinline{SingleSequence} event is a special case of the \lstinline{SequenceEvent} and is, for all intents and purposes, syntactic sugar. It provides an easy way to create an event which will run once and only once. Even though the \lstinline{EventSequencer} requires a \lstinline{SequenceEvent}, remember that a \lstinline{SingleSequence} is \textit{also} a \lstinline{SequenceEvent}; that's the way inheritance works.
 
-A \lstinline{SingleSequence}'s \lstinline{exitConditionMet()} function reads:
+A \lstinline{SingleSequence}'s \lstinline{exitConditionMet()} method reads:
 
 \begin{verbatim}
 	/**
