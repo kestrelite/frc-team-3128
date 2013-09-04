@@ -1,4 +1,4 @@
-/*package frc3128.Util.Connection;
+package frc3128.Util.Connection;
 
 import com.sun.squawk.util.StringTokenizer;
 import edu.wpi.first.wpilibj.Timer;
@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import javax.microedition.io.Connector;
-import javax.microedition.io.SocketConnection;*/
+import javax.microedition.io.SocketConnection;
 
 /**
  *
@@ -16,7 +16,7 @@ import javax.microedition.io.SocketConnection;*/
 //TODO Clean up connection logic and follow synchronization methods
 //TODO Remove "synchronzied" from all methods and exhcange with synced blocks
 //TODO Test Raspberry Pi communication
-/*public final class RaspberryPi {
+public final class RaspberryPi {
     private static final String RPiURL = "socket://10.31.28.12:4242";
     private static final int BUFFERSIZE = 64;
     private static final char DELIMITER = ',';
@@ -182,4 +182,4 @@ import javax.microedition.io.SocketConnection;*/
             output[i] = tokenizer.nextToken();
         return output;
     }
-}*/
+}
