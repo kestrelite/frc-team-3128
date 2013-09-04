@@ -18,46 +18,46 @@ public class ListenerManager {
                     DebugLog.log(DebugLog.LVL_SEVERE, "ListenerManager", "Duplicate event/key pair was added to the ListenerManager!");
     }
 
-	/**
-	 * Adds an Event and key to the Listener system. This has the effect of 
-	 * triggering the Event once whenever the key is invoked.
-	 * 
-	 * @param event the Event to be added to the ListenerManager
-	 * @param key   the String key with which the Event should be associated
-	 */
+    /**
+     * Adds an Event and key to the Listener system. This has the effect of 
+     * triggering the Event once whenever the key is invoked.
+     * 
+     * @param event the Event to be added to the ListenerManager
+     * @param key   the String key with which the Event should be associated
+     */
     public static void addListener(Event event, String key) {
         DebugLog.log(DebugLog.LVL_DEBUG, "ListenerManager", "Added " + event.toString() + " to " + key);
         addListener(event, key.hashCode());
     }
     
-	/**
-	 * Adds an Event and key to the Listener system. This has the effect of 
-	 * triggering the Event once whenever the key is invoked.
-	 * 
-	 * @param event the Event to be added to the ListenerManager
-	 * @param key   the integer key with which the Event should be associated
-	 */
+    /**
+     * Adds an Event and key to the Listener system. This has the effect of 
+     * triggering the Event once whenever the key is invoked.
+     * 
+     * @param event the Event to be added to the ListenerManager
+     * @param key   the integer key with which the Event should be associated
+     */
     public static void addListener(Event event, int key) {
         verifyNoDuplicate(event, key);
         ListenerManager.eventList.addElement(event);
         ListenerManager.keyList.addElement(new Integer(key));
     }
 
-	/**
-	 * Calls all Events associated with the given key. The Events will be run 
-	 * once. They will be kept in the ListenerManager's index.
-	 * 
-	 * @param key the String key whose associated Events should be run
-	 */
+    /**
+     * Calls all Events associated with the given key. The Events will be run 
+     * once. They will be kept in the ListenerManager's index.
+     * 
+     * @param key the String key whose associated Events should be run
+     */
     public static void callListener(String key) {callListener(key.hashCode());}
     
-	/**
-	 * Calls all Events associated with the given key. The Events will be run 
-	 * once. They will be kept in the ListenerManager's index.
-	 * 
-	 * @param key the integer key whose associated Events should be run
-	 */
-	public static void callListener(int key) {
+    /**
+     * Calls all Events associated with the given key. The Events will be run 
+     * once. They will be kept in the ListenerManager's index.
+     * 
+     * @param key the integer key whose associated Events should be run
+     */
+    public static void callListener(int key) {
         for(int i = 0; i < ListenerManager.keyList.size(); i++) {
             if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == key) {
                 try {
@@ -72,13 +72,13 @@ public class ListenerManager {
         }
     }
 
-	/**
-	 * Removes all Event/key pairs from the Listener table whose Event 
-	 * matches the one provided. This Event will no longer be called until 
-	 * it is re-added.
-	 * 
-	 * @param event The Event to be dropped 
-	 */
+    /**
+     * Removes all Event/key pairs from the Listener table whose Event 
+     * matches the one provided. This Event will no longer be called until 
+     * it is re-added.
+     * 
+     * @param event The Event to be dropped 
+     */
     public static void dropEvent(Event event) {
         int n = 0;
         while(n != -1) {
@@ -89,14 +89,14 @@ public class ListenerManager {
             DebugLog.log(DebugLog.LVL_DEBUG, "ListenerManager", "Listener key number " + n + " sliced from event " + event.toString());
         }
     }
-	
-	/**
-	 * Removes all Event/key pairs from the listener table whose class type is
-	 * of the one provided. This is considerably slower than dropping an Event,
-	 * so should be used sparingly.
-	 * 
-	 * @param c The class to be dropped.
-	 */
+
+    /**
+     * Removes all Event/key pairs from the listener table whose class type is
+     * of the one provided. This is considerably slower than dropping an Event,
+     * so should be used sparingly.
+     * 
+     * @param c The class to be dropped.
+     */
     public static void dropEventType(Class c) {
         for(int i = 0; i < ListenerManager.eventList.size(); i++)
             if(((Event)ListenerManager.eventList.elementAt(i)).getClass().equals(c)) {
@@ -105,18 +105,18 @@ public class ListenerManager {
         DebugLog.log(DebugLog.LVL_INFO, "ListenerManager", "Dropping event class " + c.getName());
     }
 
-	/**
-	 * Drops all Event/key pairs with the given key.
-	 * 
-	 * @param key the String key to be dropped from the table.
-	 */
-	public static void dropListener(String key) {ListenerManager.dropListener(key.hashCode());}
-	
-	/**
-	 * Drops all Event/key pairs with the given key.
-	 * 
-	 * @param key the integer key to be dropped from the table.
-	 */
+    /**
+     * Drops all Event/key pairs with the given key.
+     * 
+     * @param key the String key to be dropped from the table.
+     */
+    public static void dropListener(String key) {ListenerManager.dropListener(key.hashCode());}
+    
+    /**
+     * Drops all Event/key pairs with the given key.
+     * 
+     * @param key the integer key to be dropped from the table.
+     */
     public static void dropListener(int key) {
         DebugLog.log(DebugLog.LVL_INFO, "ListenerManager", "Dropping key " + key);
         for(int i = 0; i < ListenerManager.keyList.size(); i++) {
@@ -129,14 +129,14 @@ public class ListenerManager {
         }
     }
 
-	/**
-	 * Clears the entire Listener table.
-	 */
+    /**
+     * Clears the entire Listener table.
+     */
     public static void dropAllListeners() {
         DebugLog.log(DebugLog.LVL_INFO, "ListenerManager", "Dropped ALL " + ListenerManager.eventList.size() + " listeners.");
         ListenerManager.eventList.removeAllElements();
         ListenerManager.keyList.removeAllElements();
     }
-	
-	private ListenerManager() {}
+    
+    private ListenerManager() {}
 }

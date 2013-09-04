@@ -9,15 +9,15 @@ import frc3128.HardwareLink.GyroLink;
  */
 //TODO Test GyroEncoder
 public class GyroEncoder extends AbstractEncoder {
-	private GyroLink gyr;
-	
-	/**
-	 * Creates a gyroscope encoder.
-	 * 
-	 * @param gyr The gyroscope acting as an encoder.
-	 */
-	public GyroEncoder(Gyro gyr) {this.gyr = new GyroLink(gyr);}
-	
-	public double getAngle() {return gyr.getAngle();}
-	public double getRawValue() {return -1;}
+    private GyroLink gyr;
+    
+    /**
+     * Creates a gyroscope encoder.
+     * 
+     * @param gyr The gyroscope acting as an encoder.
+     */
+    public GyroEncoder(Gyro gyr) {this.gyr = new GyroLink(gyr);}
+    
+    public double getAngle() {return gyr.getAngle();}
+    public double getRawValue() {return -1;}
 }
