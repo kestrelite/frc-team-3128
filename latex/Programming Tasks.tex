@@ -8,8 +8,8 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
-\title{FRC Programming Tasks List}
-\author{Noah Sutton-Smolin}
+\title{FRC Programming Tasks List v0.2.0D}
+\author{Noah Sutton-Smolin\\Yousuf Soliman\\Kian Sheik}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -20,7 +20,7 @@
   aboveskip=3mm,
   belowskip=3mm,
   showstringspaces=false,
-  columns=flexible,
+%  columns=flexible,
   basicstyle={\small\ttfamily},
   numbers=none,
   numberstyle=\tiny\color{gray},
@@ -29,77 +29,73 @@
   stringstyle=\color{mauve},
   breaklines=true,
   breakatwhitespace=true
-  tabsize=3
+  tabsize=2
 }
 
 \begin{document}
 \setcounter{tocdepth}{2}\maketitle\tableofcontents\pagebreak
 
-This is a compilation of the introductory tasks for FRC programming. Each of these tasks are to be completed in order.
+This is a compilation of the introductory tasks for FRC (FIRST Robotics Competition) programming. Each of these tasks are to be completed in order. This introduction is designed to be as concise as possible, so \textbf{be sure to ask questions}.
 
-\subsection{Task 00 - Initial lesson}
+\subsection{Initial lesson}
+Don't be lazy.\\Do things right the first time.\\This is the imperative of the programmer.\\Don't be lazy.
 
-Don't be lazy.
-
-Do things right the first time.
-
-This is the imperative of the programmer.
-
-Don't be lazy.
 \section{Basic Usage}
-\subsection{Task 01 - \lstinline{DebugLog} usage}
-\subsubsection{Goal} Learn the use of \lstinline{DebugLog} to write outputs to the console
-\subsubsection{Details} One should never use \lstinline{System.out.print*} to print console outputs. The reasons are varied, but primarily, the outputs become cluttered, unreadable, and generally unusable. 
+\subsection{\lstinline{DebugLog} usage}
+\subsubsection{Goal} Learn the use of \lstinline{DebugLog} to write outputs to the console.
+\subsubsection{Details} One should never use \lstinline{System.out.print*} to print console outputs. The reasons are varied, but we do this primarily because the outputs become cluttered, unreadable, and generally unusable. 
 
-The benefit to \lstinline{DebugLog} is that it enforces three things:
-\begin{enumerate}\item{Log message severity, which can be filtered (which is useful for obvious reasons)}\item{Log message timestamps, which do not normally come with system outs}\item{Log message sources, which show where a message actually came from. This is critically important when diagnosing software issues.}\end{enumerate}
+\lstinline{DebugLog} is a class designed to beautify outputs and make them readable. It does this by enforcing three things:
+\begin{enumerate}\item{Log message severity, which can be filtered (which is useful for obvious reasons).}\item{Log message timestamps, which do not normally come with system outs.}\item{Log message sources, which show where a message actually came from. This is critically important when diagnosing software issues.}\end{enumerate}
 
-The \lstinline{RobotTemplate} class is actually what's run by the FRC software, and it interfaces with the \lstinline{Global} class. You should never modify the \lstinline{RobotTemplate} class.
+The severity levels in order are:
 
-Bear in mind, there is a critical difference between the \lstinline{DEBUG} and \lstinline{STREAM} levels: Debug is to be used for individual debugging messages. Stream is to be used for messages which would otherwise flood the console, but are useful for low-level debugs (like controller positions, or event triggering, etc.)
+\begin{enumerate}\item{\lstinline{DebugLog.LVL_ERROR}: This is used when the program has encountered an error which will cause it to exit.}\item{\lstinline{DebugLog.LVL_SEVERE}: This is used when a part of the program cannot continue as requested.}\item{\lstinline{DebugLog.LVL_WARN}: This is used when a part of the program may not function as intended, or or something has the possibilty to fail.}\item{\lstinline{DebugLog.LVL_INFO}: This is used for important operating information \textit{only}.}\item{\lstinline{DebugLog.LVL_DEBUG}: This is used for debugging outputs which are temporary and/or infrequent.}\item{\lstinline{DebugLog.LVL_STREAM}: This is used for constant outputs. For instance, controller positions are under the stream level. The difference between \lstinline{STREAM} and \lstinline{DEBUG} is critical; don't mix them up.}\end{enumerate}
+
+The \lstinline{RobotTemplate} class is actually what's run by the FRC API, and it interfaces with the \lstinline{Global} class. You should never modify the \lstinline{RobotTemplate} class.
+
 \subsubsection{Task} Write one output of each severity level to the console when teleop starts, in order, using the \lstinline{DebugLog} class.
 \subsubsection{Success} \begin{enumerate}\item{Each output is written to the console successfully.}\item{No file has been modified except for the \lstinline{Global} class.}\item{Only the \lstinline{initializeTeleop()} function in the \lstinline{Global} class has been modified.}\item{No \lstinline{System.out.*} files are used.}\end{enumerate}
 
-\subsection{Task 02 - Utilizing the \lstinline{Global} class}
+\pagebreak\subsection{Utilizing the \lstinline{Global} class}
 \subsubsection{Goal} Understand the function of the \lstinline{Global} class with respect to shared resources and robot intialization.
-\subsubsection{Details} The \lstinline{Global} class is used to hold all global resources and create initalization functions. These functions are wrapped to from RobotTemplate, which you are free to inspect.
+\subsubsection{Details} The \lstinline{Global} class is used to hold all global resources and contain initalization functions. These functions are wrapped to from \lstinline{RobotTemplate}, which you are free to inspect, \textbf{but not modify}.
 
 The \lstinline{static} modifier must be used before all \lstinline{Global} variables; if you do not know what the static modifier does, you are free to do research into it. However, in short, the static modifier makes it so that only one instance of a variable can exist in a class. This means any class resource can be accessed using \lstinline{[CLASSNAME].[RESOURCENAME]} instead of \lstinline{[INSTANCENAME].[RESOURCENAME]}.
 
-With respect to our given setup, if we had a jaguar (motor) in \lstinline{Global} declared as: \lstinline{public static final Jaguar jag1 = new Jaguar(1,2);} it can be accessed from anywhere in the code by using \lstinline{Global.jag1}; however, if we declared it like so: \lstinline{public final Jaguar jag1 = new Jaguar(1,2);} without the \lstinline{static} modifier, then it could \textit{not} be accessed using \lstinline{Global.jag1}, which makes it an ineffective declaration for our purposes.
+With respect to our given setup, if we had a \lstinline{Jaguar} (motor) in \lstinline{Global} declared as: \lstinline{public} \textit{\lstinline{static}} \lstinline{final Jaguar jag1 = new Jaguar(1,2);} it can be accessed from anywhere in the code by using \lstinline{Global.jag1}; however, if we declared it like so: \lstinline{public final Jaguar jag1 = new Jaguar(1,2);} without the \lstinline{static} modifier, then it could \textit{not} be accessed using \lstinline{Global.jag1}, which makes it an ineffective declaration for our purposes.
 
-The Watchdog is not something you should ever personally need to deal with, as it is handled by the system, but it is important to understand. The Watchdog makes sure that the robot's code hasn't stopped or frozen. The act of "feeding" the watchdog ensures that the FRC system does not automatically kill our robot. The watchdog is called using:
+The \lstinline{Watchdog} class is not something you should ever personally need to deal with, as it is handled by the system, but it is important to understand. The \lstinline{Watchdog} makes sure that the robot's code hasn't stopped or frozen. The act of ``feeding'' the watchdog ensures that the FRC system does not automatically kill our robot. The \lstinline{Watchdog} is called using: \lstinline{Watchdog.getInstance().feed();}
 
-\lstinline{Watchdog.getInstance().feed();}
+This gets the current instance of the Watchdog from the \lstinline{Watchdog} class (through the static \lstinline{getInstance()} function), and feeds it.
+\subsubsection{Task} Create a \lstinline{Jaguar} in the \lstinline{Global} class. Change its power in each of the \lstinline{initialize*} functions. Be sure to feed the \lstinline{Watchdog} somewhere once.
+\subsubsection{Success} \begin{enumerate}\item{The power was successfully set in each initialization function.}\item{\lstinline{Watchdog} was fed once.}\item{No file was modified except for \lstinline{Global}.}\end{enumerate}
 
-This gets the current instance of the Watchdog from the \lstinline{Watchdog} class (through the static getInstance() function), and feeds it.
-\subsubsection{Task} Create a \lstinline{Jaguar} in the global class. Change its power in each of the \lstinline{initialize} functions. Be sure to call \lstinline{Watchdog} somewhere once.
-\subsubsection{Success} \begin{enumerate}\item{The power was successfully set in each initialization function.}\item{The \lstinline{Watchdog} was fed once.}\item{No file was modified except for \lstinline{Global}.}\end{enumerate}
-
-\subsection{Task 03 - Understanding function timings}
+\pagebreak\subsection{Understanding function timings}
 \subsubsection{Goal} Understand when the initialization functions are called in game.
-\subsubsection{Details} The \lstinline{RobotTemplate} class controls the timings in the \lstinline{Global} class. You need to understand when and under which circumstances the functions in the Global class would be invoked. \begin{itemize}\item{\lstinline{initializeRobot()} is invoked once when the robot's code starts up.}\item{\lstinline{initializeDisabled()} is invoked once when the robot enters the disabled state before and after the game.}\item{\lstinline{initializeAutonomous()} is invoked once when the robot's autonomous phase is about to begin.}\item{\lstinline{initializeTeleop()} is invoked once when the robot's teleoperated phase is about to begin.}\end{itemize}
+\subsubsection{Details} The \lstinline{RobotTemplate} class controls the timings in the \lstinline{Global} class. You need to understand when and under which circumstances the functions in the \lstinline{Global} class would be invoked. \begin{itemize}\item{\lstinline{initializeRobot()} is invoked once when the robot's code starts up.}\item{\lstinline{initializeDisabled()} is invoked once when the robot enters the disabled state before and after the game.}\item{\lstinline{initializeAutonomous()} is invoked once when the robot's autonomous phase is about to begin.}\item{\lstinline{initializeTeleop()} is invoked once when the robot's teleoperated phase is about to begin.}\end{itemize}
 
-Every robot task in-game will be handled by the \lstinline{EventManager}. The initialization functions are only used to set up \lstinline{EventManager}'s sequencing so that everything else follows suit and makes sense. \begin{itemize}\item{\lstinline{robotKill()} is a predefined function which you can invoke when you wish to shut off the robot entirely.}\item{\lstinline{robotStop()} is a function you can define which turns off the robot without disconnecting or disabling it.}\end{itemize}
-\subsubsection{Task} None
-\subsubsection{Success} You read this section, didn't you? Go read it again.
+Every robot task in-game will be handled by the \lstinline{EventManager}. The initialization functions are only used to set up \lstinline{EventManager}'s sequencing so that everything else follows suit and makes sense. \begin{itemize}\item{\lstinline{robotKill()} is a predefined function which you can invoke when you wish to shut off the robot entirely. After invoking this method, the robot will need to be power cycled.}\item{\lstinline{robotStop()} allows you to turn off the robot without disconnecting or disabling it.}\end{itemize}
+\setcounter{subsubsection}{3}\subsubsection{Success} You read this section, didn't you? Go read it again.
 
 
-\section{Sensor and Motor Usage}\setcounter{subsection}{3}
+\pagebreak\section{Sensor and Motor Usage}\setcounter{subsection}{3}
 
-\subsection{Task 04 - Using raw motors with \lstinline{MotorLink}}
-\subsubsection{Goal} Learn how to use the \lstinline{MotorLink} class to more efficiently interface with the \lstinline{Jaguar}s
+\subsection{Using raw motors with \lstinline{MotorLink}}
+\subsubsection{Goal} Learn how to use the \lstinline{MotorLink} class to more efficiently interface with the \lstinline{Jaguar}s.
 \subsubsection{Details} The \lstinline{MotorLink} class was written with a primary purpose of simplifying the logic beind encoders (which measure the angle of wheels) and speed controllers (which control the rate that motors move). As such, \textit{all motors should be written using} \lstinline{MotorLink}. 
 
-It is important to understand how to declare a \lstinline{Jaguar}, though, for this task.
+It is important to understand how to declare a \lstinline{Jaguar}, though, for this task. A \lstinline{Jaguar} is a hardware link that's part of the FRC API which connects to a motor controller on the physical robot. One can control a motor through the \lstinline{Jaguar} class.
 
-The motor you will be creating will take one argument: a \lstinline{Jaguar}. You can declare the \lstinline{Jaguar} in-line. Explore the \lstinline{MotorLink} class and its functions. Bear in mind that it has been stripped down from its full form, as \lstinline{Events} have not been introduced yet, and the \lstinline{MotorSpeedControl} requires events.
-\subsubsection{Task} Declare a \lstinline{MotorLink} as a static resource in \lstinline{Global}. Set its powers scalar to a valid value. Set the motor power.
-\subsubsection{Success} \begin{enumerate}\item{The \lstinline{MotorLink} is declared as a static resource.}\item{The \lstinline{Jaguar} is \textit{not} declared as a static resource, and is instead consumed by \lstinline{MotorLink}.}\item{The power scalar and powers are set properly.}\item{The code is error-free.}\end{enumerate}
+The motor you will be creating will take one argument: a \lstinline{Jaguar}. You can declare the \lstinline{Jaguar} in-line. Explore the \lstinline{MotorLink} class and its functions. Bear in mind that it has been stripped down from its full form, as \lstinline{Events} have not been introduced yet, and the \lstinline{MotorSpeedControl} (a class which controls the speed of a motor) requires events.
 
-\subsection{Task 05 - Using and declaring sensors}
+Motors can be given powers from $[-1.0,1.0]$; anything out of range is invalid.
+\subsubsection{Task} Declare a \lstinline{MotorLink} as a static resource in \lstinline{Global}. Set its power scalar to a valid value. Set the motor power.
+\subsubsection{Success} \begin{enumerate}\item{The \lstinline{MotorLink} is declared as a static resource.}\item{The \lstinline{Jaguar} is \textit{not} declared as a static resource, and is instead consumed by \lstinline{MotorLink}.}\item{The power scalar and powers are set properly.}\end{enumerate}
+
+\pagebreak\subsection{Using and declaring sensors}
 \subsubsection{Goal} Declare sensors and use their values.
-subsubsection{Details} Sensors are primarily accessible through the \lstinline{frc3128.HardwareLink} package. For instance, a gyroscope will use the \lstinline{GyroLink} class (locaed in \lstinline{frc3128.HardwareLink.GyroLink}) for communications. 
+\subsubsection{Details} Sensors are primarily accessible through the \lstinline{frc3128.HardwareLink} package. For instance, a gyroscope will use the \lstinline{GyroLink} class (locaed in \lstinline{frc3128.HardwareLink.GyroLink}) for communications. 
 
 \lstinline{GyroLink} consumes a \lstinline{Gyroscope} in its constructor.
 \subsubsection{Task} Declare a new \lstinline{GyroLink} as a static \lstinline{Global} resource. Print its value on teleop init.
@@ -138,35 +134,35 @@ The \lstinline{PneumaticsManager} must be declared with a compressor. When a new
 
 An \lstinline{Event} is an abstract class. If you don't know what abstract classes are, it is strongly suggested that you look up the documentation for them. An Event must be declared as a class. That means, to create an event, you must do the following:
 
-\begin{verbatim}
+\begin{lstlisting}
 	class EventImpl extends Event {
 		public void execute() {
 			//your code
 		}
 	}
-\end{verbatim}
+\end{lstlisting}
 
 If you do not have the \lstinline{execute()} function, you will not be adhering to the \lstinline{Event} abstract class, and NetBeans will barf errors in your face.
 
 You can also declare an \lstinline{Event} inline, but it \textit{must} have an implementation.
 
-\begin{verbatim}
+\begin{lstlisting}
 	Event e = new Event() {
 		public void execute() {
 			//your code
 		}
 	};
-\end{verbatim}
+\end{lstlisting}
 
 You can also declare an \lstinline{Event} inline, and directly queue it:
 
-\begin{verbatim}
+\begin{lstlisting}
 	(new Event() {
 		public void execute() {
 			//your code
 		}
 	}).registerIterableEvent();
-\end{verbatim}
+\end{lstlisting}
 
 The \lstinline{Event} has several critical functions:
 \begin{itemize}\item{\lstinline{registerSingleEvent()} will insert the \lstinline{Event} into the \lstinline{EventManager}'s queue, and run it once before removing it.}\item{\lstinline{registerIterableEvent()} will insert the \lstinline{Event} into the \lstinline{EventManager}'s queue, and it won't be removed until it is cancelled directly (or the entire \lstinline{Event} stack is dropped).}\item{\lstinline{registerTimedEvent(int msec)} will create a new instance of a \lstinline{TimerEvent} and register it as an iterable event. When the timer expires, the selected \lstinline{Event} will be run. If you're going to call this function, it is \textit{highly} recommended that you call \lstinline{prepareTimer()} first.}\end{itemize}
