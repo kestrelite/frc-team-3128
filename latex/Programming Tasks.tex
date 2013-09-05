@@ -7,7 +7,7 @@
 \usepackage{color}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
-\title{FRC Programming Tasks List v1.0}
+\title{FRC Programming Tasks List v1.0.1}
 \author{Noah Sutton-Smolin\\Yousuf Soliman\\Kian Sheik}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -36,10 +36,12 @@
 
 This is a compilation of the introductory tasks for FRC (FIRST Robotics Competition) programming. Each of these tasks are to be completed in order. This introduction is designed to be as concise as possible, so \textbf{be sure to ask questions}.
 
+The project folders are located in the \lstinline{intro} directory of the Subversion project. Each of the major headings in this document correspond to one of the projects in that folder; be sure you're using the right one when you advance to the next major heading!
+
 \subsection{Initial lesson}
 Don't be lazy.\\Do things right the first time.\\This is the imperative of the programmer.\\Don't be lazy.
 
-\section{Basic Usage}
+\pagebreak\section{Basic Usage}
 \subsection{\lstinline{DebugLog} usage}
 \subsubsection{Goal} Learn the use of \lstinline{DebugLog} to write outputs to the console.
 \subsubsection{Details} One should never use \lstinline{System.out.print*} to print console outputs. The reasons are varied, but we do this primarily because the outputs become cluttered, unreadable, and generally unusable. 
@@ -49,16 +51,16 @@ Don't be lazy.\\Do things right the first time.\\This is the imperative of the p
 
 The severity levels in order are:
 
-\begin{enumerate}\item{\lstinline{DebugLog.LVL_ERROR}: This is used when the program has encountered an error which will cause it to exit.}\item{\lstinline{DebugLog.LVL_SEVERE}: This is used when a part of the program cannot continue as requested.}\item{\lstinline{DebugLog.LVL_WARN}: This is used when a part of the program may not function as intended, or or something has the possibilty to fail.}\item{\lstinline{DebugLog.LVL_INFO}: This is used for important operating information \textit{only}.}\item{\lstinline{DebugLog.LVL_DEBUG}: This is used for debugging outputs which are temporary and/or infrequent.}\item{\lstinline{DebugLog.LVL_STREAM}: This is used for constant outputs. For instance, controller positions are under the stream level. The difference between \lstinline{STREAM} and \lstinline{DEBUG} is critical; don't mix them up.}\end{enumerate}
+\begin{enumerate}\item{\lstinline{DebugLog.LVL_ERROR}: This is used when the program has encountered an error which will cause it to exit.}\item{\lstinline{DebugLog.LVL_SEVERE}: This is used when a part of the program cannot continue as requested.}\item{\lstinline{DebugLog.LVL_WARN}: This is used when a part of the program may not function as intended, or something has the possibilty to fail.}\item{\lstinline{DebugLog.LVL_INFO}: This is used for important operating information \textit{only}.}\item{\lstinline{DebugLog.LVL_DEBUG}: This is used for debugging outputs which are temporary and/or infrequent.}\item{\lstinline{DebugLog.LVL_STREAM}: This is used for constant outputs. For instance, controller positions are under the stream level. The difference between \lstinline{STREAM} and \lstinline{DEBUG} is critical; don't mix them up.}\end{enumerate}
 
 The \lstinline{RobotTemplate} class is actually what's run by the FRC API, and it interfaces with the \lstinline{Global} class. You should never modify the \lstinline{RobotTemplate} class.
 
 \subsubsection{Task} Write one output of each severity level to the console when teleop starts, in order, using the \lstinline{DebugLog} class.
-\subsubsection{Success} \begin{enumerate}\item{Each output is written to the console successfully.}\item{No file has been modified except for the \lstinline{Global} class.}\item{Only the \lstinline{initializeTeleop()} method in the \lstinline{Global} class has been modified.}\item{No \lstinline{System.out.*} files are used.}\end{enumerate}
+\subsubsection{Success} \begin{enumerate}\item{Each output is written to the console successfully.}\item{No file has been modified except for the \lstinline{Global} class.}\item{Only the \lstinline{initializeTeleop()} method in the \lstinline{Global} class has been modified.}\item{No \lstinline{System.out.*} classes are used.}\end{enumerate}
 
 \pagebreak\subsection{Utilizing the \lstinline{Global} class}
 \subsubsection{Goal} Understand the function of the \lstinline{Global} class with respect to shared resources and robot intialization.
-\subsubsection{Details} The \lstinline{Global} class is used to hold all global resources and contain initalization methods. These methods are wrapped to from \lstinline{RobotTemplate}, which you are free to inspect, \textbf{but not modify}.
+\subsubsection{Details} The \lstinline{Global} class is used to hold all global resources and contain initialization methods. These methods are wrapped by \lstinline{RobotTemplate}, which you are free to inspect, \textbf{but not modify}.
 
 The \lstinline{static} modifier must be used before all \lstinline{Global} variables; if you do not know what the static modifier does, you are free to do research into it. However, in short, the static modifier makes it so that only one instance of a variable can exist in a class. This means any class resource can be accessed using \lstinline{[CLASSNAME].[RESOURCENAME]} instead of \lstinline{[INSTANCENAME].[RESOURCENAME]}.
 
