@@ -7,7 +7,7 @@
 \usepackage{color}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
-\title{FRC Programming Tasks List v1.0.1}
+\title{FRC Programming Tasks List v1.0.2}
 \author{Noah Sutton-Smolin\\Yousuf Soliman\\Kian Sheik}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -47,13 +47,13 @@ Don't be lazy.\\Do things right the first time.\\This is the imperative of the p
 \subsubsection{Details} One should never use \lstinline{System.out.print*} to print console outputs. The reasons are varied, but we do this primarily because the outputs become cluttered, unreadable, and generally unusable. 
 
 \lstinline{DebugLog} is a class designed to beautify outputs and make them readable. It does this by enforcing three things:
-\begin{enumerate}\item{Log message severity, which can be filtered (which is useful for obvious reasons).}\item{Log message timestamps, which do not normally come with system outs.}\item{Log message sources, which show where a message actually came from. This is critically important when diagnosing software issues.}\end{enumerate}
+\begin{enumerate}\item{Log message severity, which can be filtered, as we do not always want to see the output.}\item{Log message timestamps, which do not normally come with system outs.}\item{Log message sources, which show where a message actually came from. This is critically important when diagnosing software issues.}\end{enumerate}
 
 The severity levels in order are:
 
 \begin{enumerate}\item{\lstinline{DebugLog.LVL_ERROR}: This is used when the program has encountered an error which will cause it to exit.}\item{\lstinline{DebugLog.LVL_SEVERE}: This is used when a part of the program cannot continue as requested.}\item{\lstinline{DebugLog.LVL_WARN}: This is used when a part of the program may not function as intended, or something has the possibilty to fail.}\item{\lstinline{DebugLog.LVL_INFO}: This is used for important operating information \textit{only}.}\item{\lstinline{DebugLog.LVL_DEBUG}: This is used for debugging outputs which are temporary and/or infrequent.}\item{\lstinline{DebugLog.LVL_STREAM}: This is used for constant outputs. For instance, controller positions are under the stream level. The difference between \lstinline{STREAM} and \lstinline{DEBUG} is critical; don't mix them up.}\end{enumerate}
 
-The \lstinline{RobotTemplate} class is actually what's run by the FRC API, and it interfaces with the \lstinline{Global} class. You should never modify the \lstinline{RobotTemplate} class.
+The \lstinline{RobotTemplate} class is actually what's run by the FRC API, and it interfaces with the \lstinline{Global} class. \textbf{You should never modify the \lstinline{RobotTemplate} class.}
 
 \subsubsection{Task} Write one output of each severity level to the console when teleop starts, in order, using the \lstinline{DebugLog} class.
 \subsubsection{Success} \begin{enumerate}\item{Each output is written to the console successfully.}\item{No file has been modified except for the \lstinline{Global} class.}\item{Only the \lstinline{initializeTeleop()} method in the \lstinline{Global} class has been modified.}\item{No \lstinline{System.out.*} classes are used.}\end{enumerate}
@@ -77,7 +77,7 @@ This gets the current instance of the Watchdog from the \lstinline{Watchdog} cla
 \subsubsection{Details} The \lstinline{RobotTemplate} class controls the timings in the \lstinline{Global} class. You need to understand when and under which circumstances the methods in the \lstinline{Global} class would be invoked. \begin{itemize}\item{\lstinline{initializeRobot()} is invoked once when the robot's code starts up.}\item{\lstinline{initializeDisabled()} is invoked once when the robot enters the disabled state before and after the game.}\item{\lstinline{initializeAutonomous()} is invoked once when the robot's autonomous phase is about to begin.}\item{\lstinline{initializeTeleop()} is invoked once when the robot's teleoperated phase is about to begin.}\end{itemize}
 
 Every robot task in-game will be handled by the \lstinline{EventManager}. The initialization methods are only used to set up \lstinline{EventManager}'s sequencing so that everything else follows suit and makes sense. \begin{itemize}\item{\lstinline{robotKill()} is a predefined function which you can invoke when you wish to shut off the robot entirely. After invoking this method, the robot will need to be power cycled.}\item{\lstinline{robotStop()} allows you to turn off the robot without disconnecting or disabling it.}\end{itemize}
-\setcounter{subsubsection}{3}\subsubsection{Success} You read this section, didn't you? Go read it again.
+\setcounter{subsubsection}{3}\subsubsection{Success} You read this section, didn't you? Good, now go read it again.
 
 
 \pagebreak\section{Sensor and Motor Usage}\setcounter{subsection}{3}
