@@ -78,12 +78,14 @@ public class DebugLog {
         if (DebugLog.totalItems % Constants.DEBUGLOG_INFO_DISPLAYFREQ == 0) {
             int currLogLevel = DebugLog.logDetail;
             DebugLog.logDetail = 3;
-            DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has skipped " + skippedItems + ", has displayed " + totalItems + " over " + ((System.currentTimeMillis() - DebugLog.startTime) / 1000.0) + " msec.");
+            DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has skipped " + skippedItems + ", has displayed " + (totalItems-skippedItems) + " over " + ((System.currentTimeMillis() - DebugLog.startTime) / 1000.0) + " msec.");
+            //TODO Fix DebugLog stats breakdown
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "Breaking down by type (0...5): " + "\n\t\tError: " + DebugLog.totalItemsType[0]
-                    + "\n\t\tSevere: " + DebugLog.totalItemsType[1]
-                    + "\n\t\tWarning: " + DebugLog.totalItemsType[2]
-                    + "\n\t\tInfo: " + DebugLog.totalItemsType[3]
-                    + "\n\t\tDebug: " + DebugLog.totalItemsType[4]);
+                    + "\n\t\tSevere: " + DebugLog.totalItemsType[0]
+                    + "\n\t\tWarning: " + DebugLog.totalItemsType[1]
+                    + "\n\t\tInfo: " + DebugLog.totalItemsType[2]
+                    + "\n\t\tDebug: " + DebugLog.totalItemsType[3]
+                    + "\n\t\tStream: " + DebugLog.totalItemsType[4]);
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog averages " + (totalItems / ((System.currentTimeMillis() - DebugLog.startTime) / 1000.0)) + " messages per second.");
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has wasted an approximate total of " + (DebugLog.wastedTimeAll / 1000.0) + " seconds, " + (DebugLog.wastedTimeText / 1000.0) + " of which was spent rendering text.");
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "If this is considerably too high, then please consider removing stream messages.");
