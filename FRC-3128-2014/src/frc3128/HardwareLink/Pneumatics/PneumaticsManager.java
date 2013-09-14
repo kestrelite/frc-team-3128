@@ -8,7 +8,6 @@ import java.util.Vector;
  * 
  * @author Noah Sutton-Smolin
  */
-//TODO Test pneumatics systems
 public class PneumaticsManager {
     private   static Compressor c;
     protected static Vector dualSolenoidList = new Vector();
