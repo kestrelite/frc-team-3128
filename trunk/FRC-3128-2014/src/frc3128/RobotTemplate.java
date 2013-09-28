@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
 import frc3128.EventManager.EventManager;
 import frc3128.EventManager.ListenerManager;
-import frc3128.Global;
 import frc3128.Util.Constants;
 import frc3128.Util.DebugLog;
 
@@ -59,9 +58,9 @@ public class RobotTemplate extends IterativeRobot {
         }
     }
     
-    public void disabledPeriodic() {        
+    public void disabledPeriodic() {
         Watchdog.getInstance().feed();
-        if(Constants.PROCESS_WHILE_DISABLED) EventManager.processEvents();
+        if(Constants.EVENT_PROCESS_WHILE_DISABLED) EventManager.processEvents();
     }
 
     // YOU'D BETTER NOT CHANGE ANYTHING

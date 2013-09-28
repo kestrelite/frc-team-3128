@@ -19,5 +19,5 @@ public class GyroEncoder extends AbstractEncoder {
     public GyroEncoder(Gyro gyr) {this.gyr = new GyroLink(gyr);}
     
     public double getAngle() {return gyr.getAngle();}
-    public double getRawValue() {return -1;}
+    public double getRawValue() {return gyr.getAngle();}
 }

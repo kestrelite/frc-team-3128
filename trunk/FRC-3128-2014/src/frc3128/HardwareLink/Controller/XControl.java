@@ -10,6 +10,7 @@ import frc3128.Util.DebugLog;
  * @author Noah Sutton-Smolin
  */
 public class XControl extends Event {
+    //TODO: Allow individual ListenerManager trigger calls
     private Joystick xControl;
     public double x1, y1, x2, y2, triggers;
     private boolean[] buttonsPressed = {false, false, false, false, false, false, false, false, false, false, false};
@@ -34,10 +35,10 @@ public class XControl extends Event {
         boolean updateJoy2 = false;
         boolean updateTriggers = false;
 
-        if(x1 != xControl.getRawAxis(XControlMap.X1_AXIS))       updateJoy1 = true;
-        if(x2 != xControl.getRawAxis(XControlMap.X2_AXIS))       updateJoy2 = true;
-        if(y1 != xControl.getRawAxis(XControlMap.Y1_AXIS))       updateJoy1 = true;
-        if(y2 != xControl.getRawAxis(XControlMap.Y2_AXIS))       updateJoy2 = true;
+        if(x1 != xControl.getRawAxis(XControlMap.X1_AXIS)) updateJoy1 = true;
+        if(x2 != xControl.getRawAxis(XControlMap.X2_AXIS)) updateJoy2 = true;
+        if(y1 != xControl.getRawAxis(XControlMap.Y1_AXIS)) updateJoy1 = true;
+        if(y2 != xControl.getRawAxis(XControlMap.Y2_AXIS)) updateJoy2 = true;
         if(triggers != xControl.getRawAxis(XControlMap.TRIGGER_AXIS)) updateTriggers = true;
 
         x1 = xControl.getRawAxis(XControlMap.X1_AXIS);

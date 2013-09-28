@@ -5,7 +5,7 @@ package frc3128.HardwareLink.Pneumatics;
  * @author Noah Sutton-Smolin
  */
 public class PistonID {
-    private int     value = -1;
+    private int     value    = -1;
     private boolean inverted = false;
     
     protected PistonID(int value) {this.value = value;}

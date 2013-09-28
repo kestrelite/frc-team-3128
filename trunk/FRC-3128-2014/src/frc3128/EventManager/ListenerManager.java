@@ -15,7 +15,7 @@ public class ListenerManager {
         for(int i = 0; i < eventList.size(); i++)
             if((Event) eventList.elementAt(i) == e)
                 if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == key)
-                    DebugLog.log(DebugLog.LVL_SEVERE, "ListenerManager", "Duplicate event/key pair was added to the ListenerManager!");
+                    DebugLog.log(DebugLog.LVL_WARN, "ListenerManager", "Duplicate event/key pair was added to the ListenerManager!");
     }
 
     /**
