@@ -100,6 +100,7 @@ public abstract class Event {
      * event will be run once, and then removed from the queue.
      */
     final public void registerSingleEvent() {
+        this.eventIsCancelled = false;
         EventManager.addSingleEvent(this);
     }
 
@@ -109,6 +110,7 @@ public abstract class Event {
      * run every iteration. It must be canceled explicitly.
      */
     final public void registerIterableEvent() {
+        this.eventIsCancelled = false;
         EventManager.addContinuousEvent(this);
     }
 
