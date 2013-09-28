@@ -79,7 +79,6 @@ public class DebugLog {
             int currLogLevel = DebugLog.logDetail;
             DebugLog.logDetail = 3;
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has skipped " + skippedItems + ", has displayed " + (totalItems-skippedItems) + " over " + ((System.currentTimeMillis() - DebugLog.startTime) / 1000.0) + " msec.");
-            //TODO Fix DebugLog stats breakdown
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "Breaking down by type (0...5): "
                     + "\n\t\tError: " + DebugLog.totalItemsType[0]
                     + "\n\t\tSevere: " + DebugLog.totalItemsType[1]
