@@ -22,12 +22,12 @@ public class MagneticPotEncoder extends AbstractEncoder {
      * @return the approximate angle from 0 to 360 degrees of the encoder
      */
     public double getAngle() {
-        double voltage = 0, value = 0;
+        double voltage = 0;//, value = 0;
         for(char i = 0; i<10; i++) {
             voltage += enc.getVoltage();
-            value += enc.getValue();
+            //value += enc.getValue();
         }
-        voltage /= 10; value /= 10;
+        voltage /= 10; //value /= 10;
         return voltage/5.0*360;
     }
 

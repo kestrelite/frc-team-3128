@@ -46,7 +46,7 @@ public class RobotMath {
         int retDir = 1 * (Math.abs(currentAngle - targetAngle) > 180 ? 1 : -1) * (currentAngle - targetAngle < 0 ? -1 : 1);
         
         //MotorDir is syntactic sugar; could just return retDir
-        if(currentAngle - targetAngle == 0 || currentAngle - targetAngle == 180) return MotorDir.EITHER;
+        if(currentAngle - targetAngle == 0 || currentAngle - targetAngle == 180) return MotorDir.NONE;
         return (retDir == 1 ? MotorDir.CW : MotorDir.CCW); 
     }
     

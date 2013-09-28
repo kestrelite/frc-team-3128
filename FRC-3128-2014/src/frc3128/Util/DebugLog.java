@@ -49,18 +49,18 @@ public class DebugLog {
         
         long logStartTime = System.currentTimeMillis(); //Diagnostic
 
-        String strLv = "[UNKN]  ";
-        if (level <= 0) strLv = "[ERROR" + Math.abs(level) + "] ";
-        if (level == 1) strLv = "[SEVERE]";
-        if (level == 2) strLv = "[**WARN]";
-        if (level == 3) strLv = "[INFO]  ";
-        if (level == 4) strLv = "[DEBUG] ";
-        if (level == 5) strLv = "[STREAM]";
+        String strLv = "  [UNKN]";
+        if(level <= 0) strLv = "[**ERROR" + Math.abs(level) + "]";
+        if(level == 1) strLv = "[SEVERE]";
+        if(level == 2) strLv = "  [WARN]";
+        if(level == 3) strLv = "  [INFO]";
+        if(level == 4) strLv = " [DEBUG]";
+        if(level == 5) strLv = "[STREAM]";
 
-        if (obj.toString().length() > DebugLog.maxTagLength && level <= DebugLog.logDetail)
+        if(obj.toString().length() > DebugLog.maxTagLength && level <= DebugLog.logDetail)
             DebugLog.maxTagLength = obj.toString().length();
 
-        if (level <= DebugLog.logDetail) {
+        if(level <= DebugLog.logDetail) {
             double textStartTime = System.currentTimeMillis(); //Diagnostic
 
             System.out.print("[" + System.currentTimeMillis() + "] "
@@ -88,6 +88,7 @@ public class DebugLog {
                     + "\n\t\tStream: " + DebugLog.totalItemsType[5]);
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog averages " + (totalItems / ((System.currentTimeMillis() - DebugLog.startTime) / 1000.0)) + " messages per second.");
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has wasted an approximate total of " + (DebugLog.wastedTimeAll / 1000.0) + " seconds, " + (DebugLog.wastedTimeText / 1000.0) + " of which was spent rendering text.");
+            DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has wasted an approximate of " + ((DebugLog.wastedTimeAll / 1000.0)/(System.currentTimeMillis() - logStartTime)) + " seconds per second.");
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "If this is considerably too high, then please consider removing stream messages.");
             DebugLog.logDetail = currLogLevel;
         }

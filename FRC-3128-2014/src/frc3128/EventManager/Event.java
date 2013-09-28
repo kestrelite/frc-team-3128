@@ -46,14 +46,13 @@ final class CancelEvent extends Event {
     
     public void execute() {
         linkedEvent.cancelEvent();
-        DebugLog.log(DebugLog.LVL_DEBUG, this, "Cancelled linked event: " + linkedEvent);
+        DebugLog.log(DebugLog.LVL_STREAM, this, "Cancelled linked event: " + linkedEvent);
     }
 }
 
 public abstract class Event {
     private boolean eventIsCancelled;
     private TimerEvent timerEvent = null;
-    private long cancelAtTime = -1;
     
     /**
      * Empty constructor
@@ -71,8 +70,7 @@ public abstract class Event {
      */
     final public void cancelEvent() {
         eventIsCancelled = true;
-        EventManager.removeEvent(this);
-        DebugLog.log(DebugLog.LVL_DEBUG, this, "Event " + this.toString() + " has been cancelled!");
+        DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + this.toString() + " has been cancelled!");
     }
 
     /**
@@ -81,7 +79,7 @@ public abstract class Event {
      * @param msec the time after which the event will cancel
      */
     final public void cancelEventAfter(int msec) {
-        DebugLog.log(DebugLog.LVL_DEBUG, this, "Canceling self by trigger after " + msec + " msec.");
+        DebugLog.log(DebugLog.LVL_STREAM, this, "Canceling self by trigger after " + msec + " msec.");
         new CancelEvent(this).registerTimedEvent(msec);
     }
     
@@ -125,6 +123,7 @@ public abstract class Event {
      * @param msec the time in milliseconds after which the event will execute.
      */
     final public void registerTimedEvent(int msec) {
+        //TODO: Allow an event to be timed multiple times; delete the timerEvent instance
         if (timerEvent == null) {
             DebugLog.log(DebugLog.LVL_WARN, this, "Timer event called before instantiation! Timer startup delay possible.");
             prepareTimer();
