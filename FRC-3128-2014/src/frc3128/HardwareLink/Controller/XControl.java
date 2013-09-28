@@ -2,6 +2,7 @@ package frc3128.HardwareLink.Controller;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc3128.EventManager.Event;
+import frc3128.EventManager.ListenerConst;
 import frc3128.EventManager.ListenerManager;
 import frc3128.Util.DebugLog;
 
@@ -10,8 +11,8 @@ import frc3128.Util.DebugLog;
  * @author Noah Sutton-Smolin
  */
 public class XControl extends Event {
-    //TODO: Allow individual ListenerManager trigger calls
     private Joystick xControl;
+    private final int port;
     public double x1, y1, x2, y2, triggers;
     private boolean[] buttonsPressed = {false, false, false, false, false, false, false, false, false, false, false};
     
@@ -21,6 +22,7 @@ public class XControl extends Event {
      * @param port the port of the controller
      */
     public XControl(int port) {
+        this.port = port;
         xControl = new Joystick(port);
         this.registerIterableEvent();
         DebugLog.log(DebugLog.LVL_DEBUG, this, "XBox Controller added self to event manager!");
@@ -53,7 +55,7 @@ public class XControl extends Event {
 
         for(int i = 1; i < 11; i++) {
             if(buttonsPressed[i] != xControl.getRawButton(i)) {
-                ListenerManager.callListener("button" + XControlMap.getBtnString(i) + (xControl.getRawButton(i) ? "Down" : "Up"));
+                ListenerManager.callListener(ListenerConst.getXCtrlListenerKey(port, i, (xControl.getRawButton(i) ? true : false)));
                 DebugLog.log(DebugLog.LVL_STREAM, this, "Button " + XControlMap.getBtnString(i) + (xControl.getRawButton(i)==true?" pressed.":" released."));
             }
             buttonsPressed[i] = xControl.getRawButton(i);

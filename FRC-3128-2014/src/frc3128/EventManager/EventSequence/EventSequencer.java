@@ -48,14 +48,12 @@ public class EventSequencer extends Event {
     }
     
     /**
-     * Resets the execution of the current sequence and stops execution.
-     */
-    public void resetSequence() {this.currentEventIndex = 0; this.cancelEvent();}
-    
-    /**
      * Starts the current EventSequencer.
      */
-    public void startSequence() {this.registerIterableEvent();}
+    public void startSequence() {
+        this.currentEventIndex = 0; 
+        this.registerIterableEvent();
+    }
     
     /**
      * Stops the current EventSequencer.

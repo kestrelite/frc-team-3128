@@ -8,7 +8,7 @@ import java.util.Vector;
  * 
  * @author Noah Sutton-Smolin
  */
-public class PneumaticsManager {
+public class PneumaticsLink {
     private   static Compressor c;
     protected static Vector dualSolenoidList = new Vector();
 
@@ -17,9 +17,9 @@ public class PneumaticsManager {
      * 
      * @param comp The compressor to be initialized 
      */
-    public PneumaticsManager(Compressor comp) {
-        PneumaticsManager.c = comp;
-        PneumaticsManager.c.stop();
+    public PneumaticsLink(Compressor comp) {
+        PneumaticsLink.c = comp;
+        PneumaticsLink.c.stop();
     }
     
     /**
@@ -90,19 +90,19 @@ public class PneumaticsManager {
     /**
      * Starts the compressor.
      */
-    public static void setCompressorStateOn() {PneumaticsManager.c.start();}
+    public static void setCompressorStateOn() {PneumaticsLink.c.start();}
 
     /**
      * Stops the compressor.
      */
-    public static void setCompressorStateOff() {PneumaticsManager.c.stop();}
+    public static void setCompressorStateOff() {PneumaticsLink.c.stop();}
 
     /**
      * 
      * @return whether the compressor is on or off
      */
     public static boolean getCompressorState() {
-        return (PneumaticsManager.c.enabled() ? true : false);
+        return (PneumaticsLink.c.enabled() ? true : false);
     }
     
     /**

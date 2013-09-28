@@ -10,10 +10,8 @@ import frc3128.Util.RobotMath;
  * 
  * @author Noah Sutton-Smolin
  */
-//TODO Test MotorLink encoders
-//TODO Test MotorLink speed controllers
 public final class MotorLink {
-    private final Jaguar            motor;
+    private final Jaguar            jag;
     private       AbstractEncoder   encoder;
     private       MotorSpeedControl spdControl;
     private       boolean           spdControlEnabled = false;
@@ -24,7 +22,7 @@ public final class MotorLink {
      * 
      * @param motor the linked motor
      */
-    public MotorLink(Jaguar motor) {this.motor = motor;}
+    public MotorLink(Jaguar motor) {this.jag = motor;}
     
     /**
      * 
@@ -69,7 +67,7 @@ public final class MotorLink {
      * 
      * @return the current speed of the motor
      */
-    public double getSpeed() {return motor.get();}
+    public double getSpeed() {return jag.get();}
     
     /**
      * Sets the speed of the motor. 
@@ -78,14 +76,14 @@ public final class MotorLink {
      */
     public void setSpeed(double spd) {
         if(spdControlEnabled) {
-            DebugLog.log(DebugLog.LVL_WARN, this, "The speed of the motor was set while a controller was active! Deleting speed controller...");
+            DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed of " + this + " was set while a controller was active! Deleting speed controller...");
             this.deleteSpeedControl();
         }
         if(spd < -1 || spd > 1) spd = (spd < 0 ? -1 : 1);
         
-        this.motor.set(reversedCheck(spd)*this.powerScalar);
+        this.jag.set(reversedCheck(spd)*this.powerScalar);
     }
-    protected void setSpeedControlled(double spd) {this.motor.set(spd);}
+    protected void setSpeedControlled(double spd) {this.jag.set(spd);}
     
     /**
      * Sets and enables an encoder to be linked with a motor.
@@ -93,7 +91,7 @@ public final class MotorLink {
      * @param encoder the Encoder to be linked
      */
     public void setEncoder(AbstractEncoder encoder) {
-        if(encoder != null) DebugLog.log(DebugLog.LVL_INFO, this, "The encoder was changed in the motor!");
+        if(encoder != null) DebugLog.log(DebugLog.LVL_WARN, this, "The encoder was changed in " + this + "!");
         this.encoder = encoder;
     }
 
@@ -116,7 +114,7 @@ public final class MotorLink {
         if(this.encoder == null) {DebugLog.log(DebugLog.LVL_ERROR, this, "Cannot set the speed controller without an encoder!"); throw new Error();}
         if(spdControlEnabled) {
             DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was set while another was active!");
-            this.motor.set(0); this.deleteSpeedControl();
+            this.jag.set(0); this.deleteSpeedControl();
         }
         this.spdControl = spdControl; this.spdControl.clearControlRun(); 
         this.spdControlEnabled = true; spdControl.registerIterableEvent();
@@ -128,7 +126,7 @@ public final class MotorLink {
     public void deleteSpeedControl() {
         if(spdControl == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "The speed controller was stopped when it did not exist!"); return;}
         if(!this.spdControlEnabled) DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller was disabled when it was not active!");
-        this.motor.set(0); this.spdControl.clearControlRun();
+        this.jag.set(0); this.spdControl.clearControlRun();
         this.spdControlEnabled = false; spdControl.cancelEvent();
     }
     

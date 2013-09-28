@@ -49,7 +49,10 @@ public class ListenerManager {
      * 
      * @param key the String key whose associated Events should be run
      */
-    public static void callListener(String key) {callListener(key.hashCode());}
+    public static void callListener(String key) {
+        DebugLog.log(DebugLog.LVL_STREAM, "ListenerManager", "Called key " + key + "; forwarded...");
+        callListener(key.hashCode());
+    }
     
     /**
      * Calls all Events associated with the given key. The Events will be run 
@@ -58,6 +61,7 @@ public class ListenerManager {
      * @param key the integer key whose associated Events should be run
      */
     public static void callListener(int key) {
+        DebugLog.log(DebugLog.LVL_STREAM, "ListenerManager", "Called key " + key);
         for(int i = 0; i < ListenerManager.keyList.size(); i++) {
             if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == key) {
                 try {

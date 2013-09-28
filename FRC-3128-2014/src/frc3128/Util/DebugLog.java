@@ -88,7 +88,6 @@ public class DebugLog {
                     + "\n\t\tStream: " + DebugLog.totalItemsType[5]);
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog averages " + (totalItems / ((System.currentTimeMillis() - DebugLog.startTime) / 1000.0)) + " messages per second.");
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has wasted an approximate total of " + (DebugLog.wastedTimeAll / 1000.0) + " seconds, " + (DebugLog.wastedTimeText / 1000.0) + " of which was spent rendering text.");
-            DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has wasted an approximate of " + ((DebugLog.wastedTimeAll / 1000.0)/(System.currentTimeMillis() - logStartTime)) + " seconds per second.");
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "If this is considerably too high, then please consider removing stream messages.");
             DebugLog.logDetail = currLogLevel;
         }
