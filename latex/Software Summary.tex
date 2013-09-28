@@ -1,0 +1,307 @@
+\documentclass[a4paper]{article}
+\usepackage[english]{babel}
+%\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\title{FRC Team 3128 Software Framework Summary v0.1}
+\author{Noah Sutton-Smolin\\Yousuf Soliman}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{black}{rgb}{0,0,0}
+
+\renewcommand\thesection{\arabic{section}}
+\renewcommand\thesubsection{\thesection.\arabic{subsection}}
+\renewcommand\thesubsubsection{\thesubsection.\arabic{subsubsection}}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+%  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=2
+}
+
+\begin{document}
+\maketitle\tableofcontents\pagebreak
+
+\section{Introduction} Welcome to the FRC Team 3128's software framework! May it help you on your further quests.\\ This framework is designed to simplify the conceptualization and execution of robotic code, specifically designed for the FIRST Robotics Competition API. It is an event-driven system; this means that the robot is controlled solely by \lstinline{Event}s. An \lstinline{Event} is simply a block of code which runs at a set interval. 
+
+This document assumes fundamental Java knowledge, including abstract classes and their implementations. These things will not be explained over the course of the document, as this is not a Java introduction; rather, it is an FRC 3128 architecture introduction. Additionally, the entire program has javadoc.
+
+While this code architecture does take some getting used to, it has increased our speed by over a factor of 100, and we hope it does the same for you. As the only setup is done during initialization, it also allows for dynamic and easy testing; again, we hope it does the same for you.\newline
+
+Should you find any errors, questions, concerns, bugs, questions, etc., please email Noah Sutton-Smolin at \lstinline{noahsutsmo@gmail.com}. We apologize for the inconvenience, and will be more than happy to update and/or fix. We will also be happy to help answer questions about how to use this API.
+
+\subsection{Why use an Event-driven system?}
+
+Event systems are particularly useful in robotic applications, as they enable responsive behavior which remains decentralized. As opposed to many other styles, which involve writing specifically what you want to do in order, the \lstinline{Event}-driven system allows you to dynamically change the order and timings of events. In addition, it allows for several tasks which would otherwise be inordinately difficult: the creation of autonomous programs (through the use of \lstinline{EventSequencer}), the creation of events which run after a certain amount of time, and high efficiency increases.
+
+One of the primary benefits belongs with controllers (called ``Joysticks'' in the FRC API; we will call them ``controllers'' for the duration of this document). Controllers are also \lstinline{Event}s, however, instead of controlling the drive train directly, they call events through the \lstinline{ListenerManager} utility. The \lstinline{ListenerManager} allows certain events to be run when the triggers are called. 
+
+Here's an example:
+
+\begin{lstlisting}
+ListenerManager.addListener(new Event() {
+	public void execute() {Global.motorSpin.setPower(0.7);}
+}, "buttonADown");
+\end{lstlisting}
+
+In this statement, we've done two things: we've first created a new \lstinline{Event}. That event simply contains code which spins up a motor. We've then registered it with the \lstinline{ListenerManager} under the listener \lstinline{"buttonADown"}. Now, if the listener \lstinline{"buttonADown"} is called elsewhere in the code, all associated \lstinline{Events} will be run. This is as simple as:
+
+\begin{lstlisting}
+ListenerManager.callListener("buttonADown");
+\end{lstlisting}
+
+In this case, when the user presses the \lstinline{A} button, the Controller event will register the change and call the appropriate listener, \lstinline{"buttonADown"}. The \lstinline{ListenerManager} then looks for any events which should run (are linked with the key), and executes them.
+
+
+\section{Core program structure}
+This section will detail where the code you write actually goes, then will detail the actual package structure for the program.\newline
+
+The first thing to cover is the \lstinline{DebugLog}, as it prettifies all of the debug outputs. It makes everything organized and neat in your outputs. It does this by enforcing three things:
+\begin{enumerate}\item{Log message severity, which can be filtered, as we do not always want to see the output.}\item{Log message timestamps, which do not normally come with system outs.}\item{Log message sources, which show where a message actually came from. This is critically important when diagnosing software issues.}\end{enumerate}
+
+The severity levels in order are:
+
+\begin{enumerate}\item{\lstinline{DebugLog.LVL_ERROR}: This is used when the program has encountered an error which will cause it to exit.}\item{\lstinline{DebugLog.LVL_SEVERE}: This is used when a part of the program cannot continue as requested.}\item{\lstinline{DebugLog.LVL_WARN}: This is used when a part of the program may not function as intended, or something has the possibilty to fail.}\item{\lstinline{DebugLog.LVL_INFO}: This is used for important operating information \textit{only}.}\item{\lstinline{DebugLog.LVL_DEBUG}: This is used for debugging outputs which are temporary and/or infrequent.}\item{\lstinline{DebugLog.LVL_STREAM}: This is used for constant outputs. For instance, controller positions are under the stream level. The difference between \lstinline{STREAM} and \lstinline{DEBUG} is critical; don't mix them up.}\end{enumerate}
+
+\subsection{Code execution}
+The \lstinline{RobotStartup} class is what the API actually runs. The robot is based of FRC's \lstinline{IterativeRobot}. This class will link directly with the Global class, and is actually what calls the \lstinline{EventManager}'s \lstinline{processEvents()} function. You should never need to modify this file, as it serves only to link the default FRC API to the rest of the code.
+
+The file that you \textit{will} need to modify is \lstinline{Global}. The \lstinline{Global} class actually controls the initialization and setup of the robot. Put all global resources in this file as \lstinline{public static [final]} values. As this system is \lstinline{Event}-driven, you won't need to actually execute any code yourself after initialization. Instead, put all \lstinline{Event}s you'd like to run in this class under the appropriate \lstinline{initialize*} function.
+
+Let's say I wanted to create a simple drive program. Here's how we would do this most effectively:
+
+\begin{lstlisting}
+public static final XControl xControl1 = new XControl(1);
+public static final MotorLink mLeft = new MotorLink(new Jaguar(1,1));
+public static final MotorLink mRight = new MotorLink(new Jaguar(1,2));
+
+public static void initializeTeleop() {
+    ListenerManager.addListener(new Event() {
+        public void execute() {
+            Global.mLeft.setPower(Global.xControl1.y1+Global.xControl1.x1);
+            Global.mLeft.setPower(Global.xControl1.y1-Global.xControl1.x1);
+        }
+    }, ListenerConst.UPDATE_JOY1);
+}\end{lstlisting}
+
+(Bear in mind, all foreign classes will be explained later. For now, all you need to know is that \lstinline{XControl} is an XBox 360 Controller, \lstinline{MotorLink} is a better way to set motor powers, and \lstinline{ListenerConst} is a class which holds the listener strings so you don't have to type them every time.)
+
+So, what does this code do? First, it creates the \lstinline{mLeft, mRight, xControl1} global resources. These can be used everywhere simply by specifying \lstinline{Global.[varname]} Then, in \lstinline{initializeTeleop()}, the program adds an \lstinline{Event} to the \lstinline{ListenerManager} which will be run when joystick 1 on the controller changes. This way, the function doesn't run every iteration, but only runs when it needs to.
+
+\subsection{Package structure}
+The following is the full package structure for our architecture:
+\begin{lstlisting}
+\---frc3128
+    +---EventManager : Used for Event control
+    |   \---EventSequence : Used to sequence events together, as in autonomous
+    +---HardwareLink
+    |   +---Controller : Used for the various allowed controllers
+    |   +---Encoder : Used for encoder declarations
+    |   +---Motor : Used for motor declarations (Jaguar not recommended)
+    |   |   \---SpeedControl : Used for motor speed controllers (incomplete)
+    |   \---Pneumatics : Used for pneumatic control
+    \---Util : Used for generic utilities, such as DebugLog
+        \---Connection : Used for external connections (incomplete)
+\end{lstlisting}
+
+
+\section{What are Events, and how do I use them effectively?}
+
+\lstinline{Event}s are blocks of code which can be run dynamically. Events have three modes: single run, iterable, and timed. 
+\begin{itemize}
+	\item{A single run \lstinline{Event} will be run once, then removed from the \lstinline{EventManager}'s queue.}
+	\item{An iterable \lstinline{Event} will run continuously until it is stopped. There are three things which will stop an \lstinline{Event}: \begin{enumerate}
+		\item{It causes itself to halt.}
+		\item{It is caused to halt by an outsdie command.}
+		\item{It throws an exception/error, which will not be handled by \lstinline{EventManager}.}
+		\end{enumerate}
+	}
+	\item{A timed \lstinline{Event} will be run after a certain amount of time. These work in a particular way; when you call a timed event, it creates an iterable \lstinline{TimerEvent}. The \lstinline{TimerEvent} will run until the time has expired, then delete itself and trigger the associated \lstinline{Event}. In this way, timed events are really just normal iterable events with a timed trigger.}
+\end{itemize}
+
+\subsection{Small blocks of code}
+
+\lstinline{Event}s can be used to handle small blocks of code or small, linear instructions. This is primarily useful when you're dealing with buttons, but has other uses. This also works well in conjunction with \lstinline{ListenerManager}. One \textbf{always declares and names these events based on their \textit{effects}}, not their triggers. For instance, you wouldn't name an event \lstinline{ButtonADownEvent}, but rather \lstinline{MotorSpinUp} and add it to the trigger for \lstinline{"buttonADown"}. 
+
+\begin{lstlisting}
+class MotorSpinUp extends Event {
+	public void execute() {Global.motorSpin.setPower(0.7);}
+}
+
+class MotorSpinDown extends Event {
+	public void execute() {Global.motorSpin.setPower(-0.2);}
+}
+\end{lstlisting}
+
+Then, elsewhere:
+
+\begin{lstlisting}
+ListenerManager.addListener(new MotorSpinUp(), "buttonADown");
+ListenerManager.addListener(new MotorSpinDown(), "buttonAUp");
+\end{lstlisting}
+
+\subsection{Drive events}
+
+Drive events work in much the same way as above, but they contain more code, and are on broader triggers. For instance, you'd put a drive event on the joystick update event, not a button event. This should be fairly straightforward, given the previous event description. 
+
+\subsection{Controller events}
+
+Controller events are much more complex. They are one of the few iterable events you'll ever run in your program. The constructor typically inserts the event into the \lstinline{EventManager}. This event needs to keep track of the state of the controller, and call appropriate listeners when there is a change. For instance, our \lstinline{AttackControl} event is defined as follows:
+
+\begin{lstlisting}
+public class AttackControl extends Event {
+    public  double    x, y, throttle;
+    public  Joystick  aControl;
+    private final int controlID;
+    private boolean[] buttonsPressed = {false, false, false, false, false, false, false, false, false, false, false};
+    
+    public AttackControl(int port) {
+        aControl = new Joystick(port);
+        controlID = port;
+        this.registerIterableEvent();
+        DebugLog.log(DebugLog.LVL_DEBUG, this, "AttackControl added self to event manager!");
+    }
+    
+    public void execute() {
+        boolean updateJoy = false, updateThrottle = false;
+        
+        if(x != aControl.getAxis(Joystick.AxisType.kX)) updateJoy = true;
+        if(y != aControl.getAxis(Joystick.AxisType.kY)) updateJoy = true;
+        if(throttle != aControl.getAxis(Joystick.AxisType.kThrottle)) updateThrottle = true;
+        
+        x = aControl.getAxis(Joystick.AxisType.kX);
+        y = aControl.getAxis(Joystick.AxisType.kY);
+        throttle = aControl.getAxis(Joystick.AxisType.kThrottle);
+        
+        if(updateJoy) ListenerManager.callListener(ListenerConst.UPDATE_ATK_JOY);
+        if(updateThrottle) ListenerManager.callListener(ListenerConst.UPDATE_ATK_THROTTLE);
+        if(updateJoy || updateThrottle) ListenerManager.callListener(ListenerConst.UPDATE_DRIVE);
+        
+        for(int i = 1; i < 11; i++) {
+            if(buttonsPressed[i] != aControl.getRawButton(i)) {
+                ListenerManager.callListener(ListenerConst.getAtkCtrlListenerKey( this.controlID, i, aControl.getRawButton(i)));
+                DebugLog.log(DebugLog.LVL_STREAM, this, "Button " + (this.controlID + "-" + i) + (aControl.getRawButton(i)==true?" pressed.":" released."));
+            }
+            buttonsPressed[i] = aControl.getRawButton(i);
+        }
+    }
+}
+\end{lstlisting}
+
+As can be seen, the \lstinline{AttackControl} event will trigger listeners whenever something in the controlelr state changes. For instance, if the throttle updates, it invokes \lstinline{ListenerConst.UPDATE_ATK_THROTTLE}. This is an example; you are free to add your own controller types as well as modify ours.
+
+\subsection{Sequencing events in autonomous}
+
+The \lstinline{EventSequencer} is the primary class used during autonomous. It allows for sequencing of as many \lstinline{SequenceEvent}s as you'd like. 
+
+A \lstinline{SequenceEvent} is almost the same as an \lstinline{Event}, wtih two major differences: First, it has an additional abstract function called \lstinline{exitConditionMet()} to indicate whether the current task has finished. Additionally, it keeps track of \textit{how long} it's been running, which allows for timings and such. There are two default variants of the \lstinline{SequenceEvent}: the \lstinline{SingleSequence} which runs once and exits, and the \lstinline{TimedSequence} which runs for a certain amount of time then exits. The default \lstinline{SequenceEvent} can be used for custom exit conditions, such as a tilt motor angled properly, or a camera in line, or some such.
+
+Let's look at an example autonomous program:
+
+\begin{lstlisting}
+public static void initializeAuto() {
+    EventSequencer autoSeq = new EventSequencer();
+
+    autoSeq.addEvent(new TimedSequence(1000) {
+        public void execute() {
+            Global.mLeft.setSpeed(0.7);
+            Global.mRight.setSpeed(0.7);
+        }
+    });
+
+    autoSeq.addEvent(new SequenceEvent() {
+        public void execute() {
+            Global.mLeft.setSpeed(-1);
+            Global.mRight.setSpeed(0);
+        }
+
+        public boolean exitConditionMet() {
+            return !(Global.mLeft.getEncoderAngle() < 50);
+        }
+    });
+
+    autoSeq.addEvent(new SingleSequence() {
+        public void execute() {
+            Global.mLeft.setSpeed(0);
+            Global.mRight.setSpeed(0);
+        }
+    });
+
+    autoSeq.startSequence();
+}
+\end{lstlisting}
+
+So, what does this do? It should be rather clear from the way it's written: When the autonomous program initializes, the it adds a timed event that moves the robot forward for one second. Then, it adds a \lstinline{SequenceEvent} which turns the robot counterclockwise until \lstinline{mLeft}'s encoder angle is less than 50 degrees. Then, it adds a single event which stops the robot from moving. Then, \lstinline{startSequence()} is called to insert \lstinline{autoSeq} into the \lstinline{EventManager}'s stack. These events will be executed in order once the \lstinline{EventManager} runs at the start of autonomous.
+
+
+\section{Hardware interface classes}
+
+The FIRST API has some organizational issues which do not fit well with the event-driven system. As a result, we've created a \lstinline{*Link} class (e.g. \lstinline{MotorLink, GyroLink}) for each piece of hardware we use. This not only allows us to customize the way hardware works, but also allows us to change the hardware interface without changing code function should their API change.
+
+All of the harware interface classes take their respective FRC API items as arguments. Why did we do this? Because otherwise it becomes atrociously unclear what you're sending to the class. For instance:
+\begin{lstlisting}
+new MotorLink(1, 2, 1, 5, 2, 3, new LinearAngleTarget(0.1, 0.1));
+\end{lstlisting}
+is vastly less clear than:
+\begin{lstlisting}
+new MotorLink(new Jaguar(1, 2), new MagneticPotEncoder(1, 5, 2, 3), new LinearAngleTarget(0.1, 0.1));
+\end{lstlisting}
+
+\subsection{Motor encoders}
+
+The encoders and speed controllers feed into the \lstinline{MotorLink} class, so we will discuss those first. The \lstinline{AbstractEncoder} class effectively creates a way for a \lstinline{MotorLink} to have an associated encoder, regardless of its type. For instance, we want the motor to handle the optical encoder as well as the magnetic potentiometer in the same way - internally, at least.
+
+All encoders must have two functions: \lstinline{getAngle()} and \lstinline{getRawValue()}. This class is abstract instead of an interface as abstract classes, for an unknown reason, are \textit{much} faster on the cRIO than interfaces. To create an encoder, simply insert \lstinline{extends AbstractEncoder}.
+
+\subsection{Motor speed controllers}
+
+The speed controllers are similar to encoders, but are significantly more complex. They work off individual time steps. They are events so as to easily facilitate this. There are four abstract functions: \lstinline{setControlTarget(), speedTimestep(), clearControlRun(), isComplete()}. 
+\begin{itemize}
+	\item{\textbf{\lstinline{setControlTarget()}} accepts the value to be controlled to, whether it is a speed, position, or other. The class accepts this value, and does whatever it needs to do with it.}
+	\item{\textbf{\lstinline{clearControlRun()}} resets the speed controller after a control run is complete.}
+	\item{\textbf{\lstinline{isComplete()}} indicates whether the speed controller's goal is complete.}
+	\item{\textbf{\lstinline{speedTimestep()}} computes the power for the associated \lstinline{MotorLink} class. It returns a \lstinline{double}, which becomes the new power of the motor.}
+\end{itemize}
+
+None of the default speed controllers are tested or complete, and this package is still in testing. Use it with some degree of caution.
+
+\subsection{MotorLink}
+
+The motor itself is controlled by the \lstinline{MotorLink} class. The motor can be associated both with a speed controller and encoder, but can also be set normally. There are a few important behaviors and features for \lstinline{MotorLink}. Bear in mind that running erroneous actions (such as deleting a nonexistent speed controller, replacing an active speed controller, setting the power while a motor is under speed control, etc.) will generally \textbf{not} stop the \lstinline{MotorLink}.
+\begin{itemize}
+	\item{Encoders and speed controllers can be added, changed, and set at any time. Changing an active speed controller produces a severe level debug message (see DebugLog). Changing an encoder at all will produce a warning.}
+	\item{The \lstinline{reverseMotor()} function will change the direction of a motor. This is important, as positive powers should generally always mean clockwise.}
+	\item{The power scalar on the motor adjusts what the maximum bound for power output is, where $0<x<1$.}
+	\item{Trying to set the motor's power while a speed controller is active will cause the speed controller to halt.}
+\end{itemize}
+
+This class is largely untested as of 9/28/13, so there may still be errors.
+
+\section{Other utilities}
+
+\lstinline{DebugLog} was covered at the start of this document. The \lstinline{Constants} class is effectively a pile of settings and flags. The comments in the constants file will explain what they are for. \lstinline{RobotMath} contains a couple basic robot math functions, and any others you feel should be added.
+
+\section{Conclusion}
+
+Hopefully this document helps introduce you to the FRC Team 3128 even-driven control system! And, additionally, we hope this helps you during competition.
+
+See you at the field!
+
+\end{document}

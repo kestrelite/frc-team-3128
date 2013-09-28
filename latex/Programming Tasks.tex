@@ -7,7 +7,7 @@
 \usepackage{color}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
-\title{FRC Programming Tasks List v1.0.2}
+\title{FRC Programming Tasks List v1.0.3}
 \author{Noah Sutton-Smolin\\Yousuf Soliman\\Kian Sheik}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -53,14 +53,14 @@ The severity levels in order are:
 
 \begin{enumerate}\item{\lstinline{DebugLog.LVL_ERROR}: This is used when the program has encountered an error which will cause it to exit.}\item{\lstinline{DebugLog.LVL_SEVERE}: This is used when a part of the program cannot continue as requested.}\item{\lstinline{DebugLog.LVL_WARN}: This is used when a part of the program may not function as intended, or something has the possibilty to fail.}\item{\lstinline{DebugLog.LVL_INFO}: This is used for important operating information \textit{only}.}\item{\lstinline{DebugLog.LVL_DEBUG}: This is used for debugging outputs which are temporary and/or infrequent.}\item{\lstinline{DebugLog.LVL_STREAM}: This is used for constant outputs. For instance, controller positions are under the stream level. The difference between \lstinline{STREAM} and \lstinline{DEBUG} is critical; don't mix them up.}\end{enumerate}
 
-The \lstinline{RobotTemplate} class is actually what's run by the FRC API, and it interfaces with the \lstinline{Global} class. \textbf{You should never modify the \lstinline{RobotTemplate} class.}
+The \lstinline{RobotStartup} class is actually what's run by the FRC API, and it interfaces with the \lstinline{Global} class. \textbf{You should never modify the \lstinline{RobotStartup} class.}
 
 \subsubsection{Task} Write one output of each severity level to the console when teleop starts, in order, using the \lstinline{DebugLog} class.
 \subsubsection{Success} \begin{enumerate}\item{Each output is written to the console successfully.}\item{No file has been modified except for the \lstinline{Global} class.}\item{Only the \lstinline{initializeTeleop()} method in the \lstinline{Global} class has been modified.}\item{No \lstinline{System.out.*} classes are used.}\end{enumerate}
 
 \pagebreak\subsection{Utilizing the \lstinline{Global} class}
 \subsubsection{Goal} Understand the function of the \lstinline{Global} class with respect to shared resources and robot intialization.
-\subsubsection{Details} The \lstinline{Global} class is used to hold all global resources and contain initialization methods. These methods are wrapped by \lstinline{RobotTemplate}, which you are free to inspect, \textbf{but not modify}.
+\subsubsection{Details} The \lstinline{Global} class is used to hold all global resources and contain initialization methods. These methods are wrapped by \lstinline{RobotStartup}, which you are free to inspect, \textbf{but not modify}.
 
 The \lstinline{static} modifier must be used before all \lstinline{Global} variables; if you do not know what the static modifier does, you are free to do research into it. However, in short, the static modifier makes it so that only one instance of a variable can exist in a class. This means any class resource can be accessed using \lstinline{[CLASSNAME].[RESOURCENAME]} instead of \lstinline{[INSTANCENAME].[RESOURCENAME]}.
 
@@ -74,7 +74,7 @@ This gets the current instance of the Watchdog from the \lstinline{Watchdog} cla
 
 \pagebreak\subsection{Understanding method timings}
 \subsubsection{Goal} Understand when the initialization methods are called in-game.
-\subsubsection{Details} The \lstinline{RobotTemplate} class controls the timings in the \lstinline{Global} class. You need to understand when and under which circumstances the methods in the \lstinline{Global} class would be invoked. \begin{itemize}\item{\lstinline{initializeRobot()} is invoked once when the robot's code starts up.}\item{\lstinline{initializeDisabled()} is invoked once when the robot enters the disabled state before and after the game.}\item{\lstinline{initializeAutonomous()} is invoked once when the robot's autonomous phase is about to begin.}\item{\lstinline{initializeTeleop()} is invoked once when the robot's teleoperated phase is about to begin.}\end{itemize}
+\subsubsection{Details} The \lstinline{RobotStartup} class controls the timings in the \lstinline{Global} class. You need to understand when and under which circumstances the methods in the \lstinline{Global} class would be invoked. \begin{itemize}\item{\lstinline{initializeRobot()} is invoked once when the robot's code starts up.}\item{\lstinline{initializeDisabled()} is invoked once when the robot enters the disabled state before and after the game.}\item{\lstinline{initializeAutonomous()} is invoked once when the robot's autonomous phase is about to begin.}\item{\lstinline{initializeTeleop()} is invoked once when the robot's teleoperated phase is about to begin.}\end{itemize}
 
 Every robot task in-game will be handled by the \lstinline{EventManager}. The initialization methods are only used to set up \lstinline{EventManager}'s sequencing so that everything else follows suit and makes sense. \begin{itemize}\item{\lstinline{robotKill()} is a predefined function which you can invoke when you wish to shut off the robot entirely. After invoking this method, the robot will need to be power cycled.}\item{\lstinline{robotStop()} allows you to turn off the robot without disconnecting or disabling it.}\end{itemize}
 \setcounter{subsubsection}{3}\subsubsection{Success} You read this section, didn't you? Good, now go read it again.
@@ -129,7 +129,7 @@ The \lstinline{PneumaticsManager} must be passed a compressor. When a new piston
 
 \subsection{Single run events}
 \subsubsection{Goal} Learn how and when certain events are executed, and how to trigger single-run events.
-\subsubsection{Details} The \lstinline{EventManager} is a rather simple block of code which drives the entire robot. It takes \lstinline{Events}, or small blocks of code, and runs them in the sequence they were queued. The \lstinline{EventManager} is called automatically in \lstinline{RobotTemplate}. Do not modfiy \lstinline{RobotTemplate}. Do not manually invoke the \lstinline{EventManager} de-queueing method.
+\subsubsection{Details} The \lstinline{EventManager} is a rather simple block of code which drives the entire robot. It takes \lstinline{Events}, or small blocks of code, and runs them in the sequence they were queued. The \lstinline{EventManager} is called automatically in \lstinline{RobotStartup}. Do not modfiy \lstinline{RobotStartup}. Do not manually invoke the \lstinline{EventManager} de-queueing method.
 
 An \lstinline{Event} is an abstract class. If you don't know what abstract classes are, it is strongly suggested that you look up the documentation for them. All \lstinline{Event}s must extend the \lstinline{Event} class with: \lstinline{extends Event}. That means, to create an event, you must do the following:
 
