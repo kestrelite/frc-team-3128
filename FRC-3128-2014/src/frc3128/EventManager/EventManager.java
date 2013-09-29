@@ -120,9 +120,20 @@ public class EventManager {
     }
 
     /**
+     * Determines whether or not an event currently exists in the stack.
+     *
+     * @return whether the event exists
+     */
+    public static boolean containsEvent(Event e) {
+        for(int i = 0; i < eventList.size(); i++)
+            if(eventList.elementAt(i).equals(e)) return true;
+        return false;
+    }
+    
+    /**
      * Temporarily enables or disables event processing.
      */
-       public static void toggleEventProcessing() {EventManager.eventProcessingDisabled = !EventManager.eventProcessingDisabled;}
+    public static void toggleEventProcessing() {EventManager.eventProcessingDisabled = !EventManager.eventProcessingDisabled;}
     
     /**
      * Disables event processing.
