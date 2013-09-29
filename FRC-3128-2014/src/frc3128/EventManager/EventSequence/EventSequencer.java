@@ -9,8 +9,19 @@ import java.util.Vector;
  * @author Noah Sutton-Smolin
  */
 public class EventSequencer extends Event {
+    private static Vector evSeqList = new Vector();
     private Vector autoSequenceList  = new Vector();
     private int    currentEventIndex = 0;
+    
+    public EventSequencer() {super(); evSeqList.addElement(this);}
+    
+    /**
+     * This will cancel ALL EventSequencers.
+     */
+    public static void stopAllSequencers() {
+        for(int i = 0; i < evSeqList.size(); i++)
+            ((EventSequencer) evSeqList.elementAt(i)).stopSequencer();
+    }
     
     /**
      * This function will be called automatically by the EventManager.<p><b>Do
@@ -18,7 +29,7 @@ public class EventSequencer extends Event {
      */
     public void execute() {
         if(currentEventIndex == autoSequenceList.size()) {
-            this.stopSequence(); 
+            this.stopSequencer(); 
             DebugLog.log(DebugLog.LVL_INFO, this, "Event Sequence complete.");
             return;
         }
@@ -50,7 +61,7 @@ public class EventSequencer extends Event {
     /**
      * Starts the current EventSequencer.
      */
-    public void startSequence() {
+    public void startSequencer() {
         this.currentEventIndex = 0; 
         this.registerIterableEvent();
     }
@@ -58,5 +69,5 @@ public class EventSequencer extends Event {
     /**
      * Stops the current EventSequencer.
      */
-    public void stopSequence() {this.cancelEvent();}
+    public void stopSequencer() {this.cancelEvent();}
 }
