@@ -12,13 +12,10 @@ public class Global {
     public static void initializeRobot() {}
     public static void initializeDisabled() {}
     public static void initializeAuto() {}
-    
     public static void initializeTeleop() {}
 
     public static void robotKill() {Watchdog.getInstance().kill();}
     public static void robotStop() {EventManager.dropAllEvents(); ListenerManager.dropAllListeners();}
 
-    private Global() {
-        
-    }
+    private Global() {}
 }

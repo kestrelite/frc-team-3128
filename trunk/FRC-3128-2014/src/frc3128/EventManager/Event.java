@@ -13,6 +13,10 @@ final class TimerEvent extends Event {
     public final void setTargetTime(long millis) {
         DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + linkedEvent.toString() + " set for " + millis + " msec from now.");
         targetTimeMillis = System.currentTimeMillis() + millis;
+        if(EventManager.containsEvent(this)) {
+            DebugLog.log(DebugLog.LVL_WARN, this, "The timer was set while it was running and before it expired! Deleting old copy...");
+            EventManager.removeEvent(this);
+        }
         EventManager.addContinuousEvent(this);
     }
 
@@ -34,9 +38,7 @@ final class TimerEvent extends Event {
         }
     }
 
-    public final void linkEvent(Event e) {
-        this.linkedEvent = e;
-    }
+    public final void linkEvent(Event e) {this.linkedEvent = e;}
 }
 
 final class CancelEvent extends Event {
@@ -54,9 +56,6 @@ public abstract class Event {
     private boolean eventIsCancelled;
     private TimerEvent timerEvent = null;
     
-    /**
-     * Empty constructor
-     */
     public Event() {}
 
     /**
@@ -119,30 +118,15 @@ public abstract class Event {
      * event. Each iteration the TimerEvent will check to see if the time has
      * expired; if it has, it will run the current event as a SingleEvent. <p>
      * Note: If the timer has not been created, then it will be created when
-     * this method is first called. It is recommended that you call
-     * Event.prepareTimer() before executing this method.
+     * this method is first called. 
      *
      * @param msec the time in milliseconds after which the event will execute.
      */
     final public void registerTimedEvent(int msec) {
-        //TODO: Allow an event to be timed multiple times; delete the timerEvent instance
         if (timerEvent == null) {
-            DebugLog.log(DebugLog.LVL_WARN, this, "Timer event called before instantiation! Timer startup delay possible.");
-            prepareTimer();
+            this.timerEvent = new TimerEvent();
+            timerEvent.linkEvent(this);
         }
         timerEvent.setTargetTime(msec);
-    }
-
-    /**
-     * Creates and links an instance of the TimerEvent. The TimerEvent must be
-     * created if Event.registerTimedEvent() is to be called. It is recommended
-     * that you call this function before invoking registerTimedEvent(). <p> You
-     * may also pass "true" to the constructor during instantiation to create
-     * the TimerEvent.
-     */
-    final public void prepareTimer() {
-        if (this.timerEvent != null) return;
-        this.timerEvent = new TimerEvent();
-        timerEvent.linkEvent(this);
     }
 }

@@ -4,7 +4,7 @@ import java.util.Vector;
 
 /**
 
- @author Noah
+ @author Noah Sutton-Smolin
  */
 public class ResourceLock {
     private static Vector lockedObjects = new Vector();
