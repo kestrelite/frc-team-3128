@@ -18,5 +18,7 @@ public class Global {
     public static void robotKill() {Watchdog.getInstance().kill();}
     public static void robotStop() {EventManager.dropAllEvents(); ListenerManager.dropAllListeners();}
 
-    private Global() {}
+    private Global() {
+        
+    }
 }
