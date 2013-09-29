@@ -1,14 +1,13 @@
 \documentclass[a4paper]{article}
 \usepackage[english]{babel}
-%\usepackage[utf8x]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{color}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
-\title{FRC Team 3128 Software Framework Summary v0.1}
-\author{Noah Sutton-Smolin\\Yousuf Soliman}
+\title{FRC Team 3128 Software Framework Summary v0.2}
+\author{Noah Sutton-Smolin}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -39,25 +38,36 @@
 \begin{document}
 \maketitle\tableofcontents\pagebreak
 
-\section{Introduction} Welcome to the FRC Team 3128's software framework! May it help you on your further quests.\\ This framework is designed to simplify the conceptualization and execution of robotic code, specifically designed for the FIRST Robotics Competition API. It is an event-driven system; this means that the robot is controlled solely by \lstinline{Event}s. An \lstinline{Event} is simply a block of code which runs at a set interval. 
+\section{Introduction} Welcome to the FRC Team 3128's software framework! We are making this available for public use by any FIRST team (attribution requested), as we have fleshed out the details and are decently pleased with the results. May it help you on your further quests.
 
-This document assumes fundamental Java knowledge, including abstract classes and their implementations. These things will not be explained over the course of the document, as this is not a Java introduction; rather, it is an FRC 3128 architecture introduction. Additionally, the entire program has javadoc.
+This framework is designed to simplify the conceptualization and execution of robotic code, specifically designed for the FIRST Robotics Competition API. It is an event-driven system; this means that the robot is controlled solely by \lstinline{Event}s. An \lstinline{Event} is simply a block of code which runs at a set interval. 
 
-While this code architecture does take some getting used to, it has increased our speed by over a factor of 100, and we hope it does the same for you. As the only setup is done during initialization, it also allows for dynamic and easy testing; again, we hope it does the same for you.\newline
+This document assumes confident Java and Object Oriented Programming knowledge, including abstract classes and their implementations. It also assumes you have some familiarity with the FRC API. Additionally, you may wish to check out our code from Google Code (titled ``frc-team-3128''). You must be using \textit{the latest FRC Java API}. These things will not be explained over the course of the document, as this is neither a Java nor Netbeans nor FRC API introduction; rather, it is an FRC 3128 architecture introduction. Additionally, the entire program has javadoc, so all functions are explained in themselves.
 
-Should you find any errors, questions, concerns, bugs, questions, etc., please email Noah Sutton-Smolin at \lstinline{noahsutsmo@gmail.com}. We apologize for the inconvenience, and will be more than happy to update and/or fix. We will also be happy to help answer questions about how to use this API.
+While this code architecture does take some getting used to, it has increased our speed by over a factor of 100, and we hope it does the same for you. As the only setup is done during initialization, it also allows for dynamic and easy testing; again, we hope it does the same for you. Here's a short list detailing some capacity of this architecture:
+
+\begin{itemize}
+	\item{Sequence together tasks during autonomous in a seamless way, which would otherwise be difficult to attain}
+	\item{Control the entire drive train during teleop}
+	\item{Dynamically add and remove buttons and their effects}
+	\item{Allow dynamic decision-making trees and heuristic algorithms}
+\end{itemize}
+
+Should you find any errors, questions, concerns, bugs, questions, etc., please email Noah Sutton-Smolin at \lstinline{noahsutsmo@gmail.com}. If so, we apologize for the inconvenience, and will be more than happy to update and/or fix. We will also be happy to help answer questions about how to use this API. 
+
+If there are any features you would like to see, please send me an email as well!
 
 \subsection{Why use an Event-driven system?}
 
 Event systems are particularly useful in robotic applications, as they enable responsive behavior which remains decentralized. As opposed to many other styles, which involve writing specifically what you want to do in order, the \lstinline{Event}-driven system allows you to dynamically change the order and timings of events. In addition, it allows for several tasks which would otherwise be inordinately difficult: the creation of autonomous programs (through the use of \lstinline{EventSequencer}), the creation of events which run after a certain amount of time, and high efficiency increases.
 
-One of the primary benefits belongs with controllers (called ``Joysticks'' in the FRC API; we will call them ``controllers'' for the duration of this document). Controllers are also \lstinline{Event}s, however, instead of controlling the drive train directly, they call events through the \lstinline{ListenerManager} utility. The \lstinline{ListenerManager} allows certain events to be run when the triggers are called. 
+One of the primary benefits belongs with controllers (called ``Joysticks'' in the FRC API; we will call them ``controllers'' for the duration of this document). Controllers are also \lstinline{Event}s; however, instead of controlling the drive train directly, they call events through the \lstinline{ListenerManager} utility. The \lstinline{ListenerManager} allows certain events to be run when the triggers are called. 
 
 Here's an example:
 
 \begin{lstlisting}
 ListenerManager.addListener(new Event() {
-	public void execute() {Global.motorSpin.setPower(0.7);}
+    public void execute() {Global.motorSpin.setPower(0.7);}
 }, "buttonADown");
 \end{lstlisting}
 
@@ -80,8 +90,7 @@ The severity levels in order are:
 
 \begin{enumerate}\item{\lstinline{DebugLog.LVL_ERROR}: This is used when the program has encountered an error which will cause it to exit.}\item{\lstinline{DebugLog.LVL_SEVERE}: This is used when a part of the program cannot continue as requested.}\item{\lstinline{DebugLog.LVL_WARN}: This is used when a part of the program may not function as intended, or something has the possibilty to fail.}\item{\lstinline{DebugLog.LVL_INFO}: This is used for important operating information \textit{only}.}\item{\lstinline{DebugLog.LVL_DEBUG}: This is used for debugging outputs which are temporary and/or infrequent.}\item{\lstinline{DebugLog.LVL_STREAM}: This is used for constant outputs. For instance, controller positions are under the stream level. The difference between \lstinline{STREAM} and \lstinline{DEBUG} is critical; don't mix them up.}\end{enumerate}
 
-\subsection{Code execution}
-The \lstinline{RobotStartup} class is what the API actually runs. The robot is based of FRC's \lstinline{IterativeRobot}. This class will link directly with the Global class, and is actually what calls the \lstinline{EventManager}'s \lstinline{processEvents()} function. You should never need to modify this file, as it serves only to link the default FRC API to the rest of the code.
+\subsection{Code execution}The \lstinline{RobotStartup} class is what the API actually runs. The robot is based of FRC's \lstinline{IterativeRobot}. This class will link directly with the Global class, and is actually what calls the \lstinline{EventManager}'s \lstinline{processEvents()} function. You should never need to modify this file, as it serves only to link the default FRC API to the rest of the code.
 
 The file that you \textit{will} need to modify is \lstinline{Global}. The \lstinline{Global} class actually controls the initialization and setup of the robot. Put all global resources in this file as \lstinline{public static [final]} values. As this system is \lstinline{Event}-driven, you won't need to actually execute any code yourself after initialization. Instead, put all \lstinline{Event}s you'd like to run in this class under the appropriate \lstinline{initialize*} function.
 
@@ -107,7 +116,7 @@ So, what does this code do? First, it creates the \lstinline{mLeft, mRight, xCon
 
 \subsection{Package structure}
 The following is the full package structure for our architecture:
-\begin{lstlisting}
+\begin{verbatim}
 \---frc3128
     +---EventManager : Used for Event control
     |   \---EventSequence : Used to sequence events together, as in autonomous
@@ -119,17 +128,17 @@ The following is the full package structure for our architecture:
     |   \---Pneumatics : Used for pneumatic control
     \---Util : Used for generic utilities, such as DebugLog
         \---Connection : Used for external connections (incomplete)
-\end{lstlisting}
+\end{verbatim}
 
 
 \section{What are Events, and how do I use them effectively?}
 
-\lstinline{Event}s are blocks of code which can be run dynamically. Events have three modes: single run, iterable, and timed. 
+\lstinline{Event}s are blocks of code which can be run dynamically. The code for an event goes inside the event's abstract \lstinline{public void execute()} function. Events have three modes: single run, iterable, and timed. 
 \begin{itemize}
 	\item{A single run \lstinline{Event} will be run once, then removed from the \lstinline{EventManager}'s queue.}
 	\item{An iterable \lstinline{Event} will run continuously until it is stopped. There are three things which will stop an \lstinline{Event}: \begin{enumerate}
 		\item{It causes itself to halt.}
-		\item{It is caused to halt by an outsdie command.}
+		\item{It is caused to halt by an outside command.}
 		\item{It throws an exception/error, which will not be handled by \lstinline{EventManager}.}
 		\end{enumerate}
 	}
@@ -294,13 +303,20 @@ The motor itself is controlled by the \lstinline{MotorLink} class. The motor can
 
 This class is largely untested as of 9/28/13, so there may still be errors.
 
+\subsection{Pneumatics}
+
+The \lstinline{PneumaticsLink} controls the pneumatic systems on the robot. The \lstinline{PistonID} class keeps track of which piston you're handling. All it holds is an index, though it can also be used to reverse the polarity of the piston (e.g. change out to in, in to out). To set a piston, simply invoke the correct \lstinline{PneumaticsLink} function on the correct \lstinline{PistonID}. The \lstinline{PneumaticsLink} currently only supports dual solenoid valves, such as Festos.
+
+The functions will not be detailed here, as they are rather self-explanatory.
+
+
 \section{Other utilities}
 
 \lstinline{DebugLog} was covered at the start of this document. The \lstinline{Constants} class is effectively a pile of settings and flags. The comments in the constants file will explain what they are for. \lstinline{RobotMath} contains a couple basic robot math functions, and any others you feel should be added.
 
 \section{Conclusion}
 
-Hopefully this document helps introduce you to the FRC Team 3128 even-driven control system! And, additionally, we hope this helps you during competition.
+Hopefully this document helps introduce you to the FRC Team 3128 even-driven control system! And, additionally, we hope this helps you during competition. The programming intro document contains information on setting up NetBeans and the FRC API. The programming tasks document contains a tutorial for newcomers on how to actually write code in this API.
 
 See you at the field!
 
