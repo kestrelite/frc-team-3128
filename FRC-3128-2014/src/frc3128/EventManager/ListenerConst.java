@@ -33,7 +33,7 @@ public class ListenerConst {
      * @param controllerPort the port number of the controller
      * @param buttonNum the button number pressed
      * @param pressed true if down, false if up
-     * @return 
+     * @return a listener for ListenerManager which XControl will trigger
      */
     public static String getXCtrlListenerKey(int controllerPort, int buttonNum, boolean pressed) {
         return "button" + controllerPort + "-" + XControlMap.getBtnString(buttonNum) + (pressed?"Down":"Up");
