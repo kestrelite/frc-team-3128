@@ -26,7 +26,7 @@ import frc3128.Util.DebugLog;
  * 
  * @author Noah Sutton-Smolin
  */
-public class RobotTemplate extends IterativeRobot {
+public class RobotStartup extends IterativeRobot {
     public void robotInit() {
         DebugLog.setLogLevel(Constants.DEBUGLOG_DEFAULT_LOGLEVEL);
         Global.initializeRobot();
@@ -60,7 +60,7 @@ public class RobotTemplate extends IterativeRobot {
     
     public void disabledPeriodic() {        
         Watchdog.getInstance().feed();
-        if(Constants.PROCESS_WHILE_DISABLED) EventManager.processEvents();
+        if(Constants.EVENT_PROCESS_WHILE_DISABLED) EventManager.processEvents();
     }
 
     // YOU'D BETTER NOT CHANGE ANYTHING

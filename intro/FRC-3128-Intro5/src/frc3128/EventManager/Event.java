@@ -13,6 +13,10 @@ final class TimerEvent extends Event {
     public final void setTargetTime(long millis) {
         DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + linkedEvent.toString() + " set for " + millis + " msec from now.");
         targetTimeMillis = System.currentTimeMillis() + millis;
+        if(EventManager.containsEvent(this)) {
+            DebugLog.log(DebugLog.LVL_WARN, this, "The timer was set while it was running and before it expired! Deleting old copy...");
+            EventManager.removeEvent(this);
+        }
         EventManager.addContinuousEvent(this);
     }
 
@@ -34,9 +38,7 @@ final class TimerEvent extends Event {
         }
     }
 
-    public final void linkEvent(Event e) {
-        this.linkedEvent = e;
-    }
+    public final void linkEvent(Event e) {this.linkedEvent = e;}
 }
 
 final class CancelEvent extends Event {
@@ -46,24 +48,15 @@ final class CancelEvent extends Event {
     
     public void execute() {
         linkedEvent.cancelEvent();
-        DebugLog.log(DebugLog.LVL_DEBUG, this, "Cancelled linked event: " + linkedEvent);
+        DebugLog.log(DebugLog.LVL_STREAM, this, "Cancelled linked event: " + linkedEvent);
     }
 }
 
 public abstract class Event {
     private boolean eventIsCancelled;
     private TimerEvent timerEvent = null;
-    private long cancelAtTime = -1;
     
-    public Event() {
-    }
-
-    public Event(boolean isTimerEvent) {
-        if (isTimerEvent) {
-            this.timerEvent = new TimerEvent();
-            timerEvent.linkEvent(this);
-        }
-    }
+    public Event() {}
 
     /**
      * This function is where the event is actually run.
@@ -76,17 +69,16 @@ public abstract class Event {
      */
     final public void cancelEvent() {
         eventIsCancelled = true;
-        EventManager.removeEvent(this);
-        DebugLog.log(DebugLog.LVL_DEBUG, this, "Event " + this.toString() + " has been cancelled!");
+        DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + this.toString() + " has been cancelled!");
     }
 
-	/**
-	 * Cancels the event after the timer has expired
-	 * 
-	 * @param msec the time after which the event will cancel
-	 */
+    /**
+     * Cancels the event after the timer has expired
+     * 
+     * @param msec the time after which the event will cancel
+     */
     final public void cancelEventAfter(int msec) {
-        DebugLog.log(DebugLog.LVL_DEBUG, this, "Canceling self by trigger after " + msec + " msec.");
+        DebugLog.log(DebugLog.LVL_STREAM, this, "Canceling self by trigger after " + msec + " msec.");
         new CancelEvent(this).registerTimedEvent(msec);
     }
     
@@ -107,6 +99,7 @@ public abstract class Event {
      * event will be run once, and then removed from the queue.
      */
     final public void registerSingleEvent() {
+        this.eventIsCancelled = false;
         EventManager.addSingleEvent(this);
     }
 
@@ -116,6 +109,7 @@ public abstract class Event {
      * run every iteration. It must be canceled explicitly.
      */
     final public void registerIterableEvent() {
+        this.eventIsCancelled = false;
         EventManager.addContinuousEvent(this);
     }
 
@@ -124,29 +118,15 @@ public abstract class Event {
      * event. Each iteration the TimerEvent will check to see if the time has
      * expired; if it has, it will run the current event as a SingleEvent. <p>
      * Note: If the timer has not been created, then it will be created when
-     * this method is first called. It is recommended that you call
-     * Event.prepareTimer() before executing this method.
+     * this method is first called. 
      *
      * @param msec the time in milliseconds after which the event will execute.
      */
     final public void registerTimedEvent(int msec) {
         if (timerEvent == null) {
-            DebugLog.log(DebugLog.LVL_WARN, this, "Timer event called before instantiation! Timer startup delay possible.");
-            prepareTimer();
+            this.timerEvent = new TimerEvent();
+            timerEvent.linkEvent(this);
         }
         timerEvent.setTargetTime(msec);
-    }
-
-    /**
-     * Creates and links an instance of the TimerEvent. The TimerEvent must be
-     * created if Event.registerTimedEvent() is to be called. It is recommended
-     * that you call this function before invoking registerTimedEvent(). <p> You
-     * may also pass "true" to the constructor during instantiation to create
-     * the TimerEvent.
-     */
-    final public void prepareTimer() {
-        if (this.timerEvent != null) return;
-        this.timerEvent = new TimerEvent();
-        timerEvent.linkEvent(this);
     }
 }

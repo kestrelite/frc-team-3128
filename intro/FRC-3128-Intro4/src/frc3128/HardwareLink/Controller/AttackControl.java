@@ -2,9 +2,9 @@ package frc3128.HardwareLink.Controller;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc3128.EventManager.Event;
+import frc3128.EventManager.ListenerConst;
 import frc3128.EventManager.ListenerManager;
 import frc3128.Util.DebugLog;
-import frc3128.Util.ListenerConst;
 
 /**
  * 
@@ -12,26 +12,26 @@ import frc3128.Util.ListenerConst;
  */
 public class AttackControl extends Event {
     public  double    x, y, throttle;
-	public  Joystick  aControl;
+    public  Joystick  aControl;
     private final int controlID;
     private boolean[] buttonsPressed = {false, false, false, false, false, false, false, false, false, false, false};
-	
-	/**
-	 * Instantiates a new AttackPad controller and starts an Event for updates.
-	 * 
-	 * @param port the port of the controller
-	 */
+    
+    /**
+     * Instantiates a new AttackPad controller and starts an Event for updates.
+     * 
+     * @param port the port of the controller
+     */
     public AttackControl(int port) {
         aControl = new Joystick(port);
         controlID = port;
         this.registerIterableEvent();
         DebugLog.log(DebugLog.LVL_DEBUG, this, "AttackControl added self to event manager!");
     }
-	
-	/**
-	 * This function will be called automatically by the EventManager.<p><b>Do
-	 * not invoke it.</b>
-	 */
+    
+    /**
+     * This function will be called automatically by the EventManager.<p><b>Do
+     * not invoke it.</b>
+     */
     public void execute() {
         boolean updateJoy = false, updateThrottle = false;
         
@@ -49,7 +49,7 @@ public class AttackControl extends Event {
         
         for(int i = 1; i < 11; i++) {
             if(buttonsPressed[i] != aControl.getRawButton(i)) {
-				ListenerManager.callListener(ListenerConst.getAtkCtrlListenerKey(this.controlID, i, aControl.getRawButton(i)));
+                ListenerManager.callListener(ListenerConst.getAtkCtrlListenerKey(this.controlID, i, aControl.getRawButton(i)));
                 DebugLog.log(DebugLog.LVL_STREAM, this, "Button " + (this.controlID + "-" + i) + (aControl.getRawButton(i)==true?" pressed.":" released."));
             }
             buttonsPressed[i] = aControl.getRawButton(i);
