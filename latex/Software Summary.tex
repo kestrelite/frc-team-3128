@@ -107,7 +107,7 @@ public static void initializeTeleop() {
     ListenerManager.addListener(new Event() {
         public void execute() {
             Global.mLeft.setPower(Global.xControl1.y1+Global.xControl1.x1);
-            Global.mLeft.setPower(Global.xControl1.y1-Global.xControl1.x1);
+            Global.mRight.setPower(Global.xControl1.y1-Global.xControl1.x1);
         }
     }, ListenerConst.UPDATE_JOY1);
 }\end{lstlisting}
