@@ -16,37 +16,37 @@
 <span class="sourceLineNo">008</span> */<a name="line.8"></a>
 <span class="sourceLineNo">009</span>//TODO Test SmartDashboard reading<a name="line.9"></a>
 <span class="sourceLineNo">010</span>public class SDRead {<a name="line.10"></a>
-<span class="sourceLineNo">011</span>        /**<a name="line.11"></a>
-<span class="sourceLineNo">012</span>         * Gets an integer value from the SmartDashboard, if it is open and connected.<a name="line.12"></a>
-<span class="sourceLineNo">013</span>         * <a name="line.13"></a>
-<span class="sourceLineNo">014</span>         * @param table the name of the table to retrieve from<a name="line.14"></a>
-<span class="sourceLineNo">015</span>         * @param key   the key for the data in the table <a name="line.15"></a>
-<span class="sourceLineNo">016</span>         * @return an integer value from the table if it exists<a name="line.16"></a>
-<span class="sourceLineNo">017</span>         *              &lt;p&gt;Null if it does not<a name="line.17"></a>
-<span class="sourceLineNo">018</span>         */<a name="line.18"></a>
-<span class="sourceLineNo">019</span>        public static int getInt(String table, String key) {return (int) NetworkTable.getTable(table).getNumber(key);}<a name="line.19"></a>
+<span class="sourceLineNo">011</span>    /**<a name="line.11"></a>
+<span class="sourceLineNo">012</span>     * Gets an integer value from the SmartDashboard, if it is open and connected.<a name="line.12"></a>
+<span class="sourceLineNo">013</span>     * <a name="line.13"></a>
+<span class="sourceLineNo">014</span>     * @param table the name of the table to retrieve from<a name="line.14"></a>
+<span class="sourceLineNo">015</span>     * @param key   the key for the data in the table <a name="line.15"></a>
+<span class="sourceLineNo">016</span>     * @return an integer value from the table if it exists<a name="line.16"></a>
+<span class="sourceLineNo">017</span>     *              &lt;p&gt;Null if it does not<a name="line.17"></a>
+<span class="sourceLineNo">018</span>     */<a name="line.18"></a>
+<span class="sourceLineNo">019</span>    public static int getInt(String table, String key) {return (int) NetworkTable.getTable(table).getNumber(key);}<a name="line.19"></a>
 <span class="sourceLineNo">020</span><a name="line.20"></a>
-<span class="sourceLineNo">021</span>        /**<a name="line.21"></a>
-<span class="sourceLineNo">022</span>         * Gets a double value from the SmartDashboard, if it is open and connected.<a name="line.22"></a>
-<span class="sourceLineNo">023</span>         * <a name="line.23"></a>
-<span class="sourceLineNo">024</span>         * @param table the name of the table to retrieve from<a name="line.24"></a>
-<span class="sourceLineNo">025</span>         * @param key   the key for the data in the table <a name="line.25"></a>
-<span class="sourceLineNo">026</span>         * @return a double value from the table if it exists<a name="line.26"></a>
-<span class="sourceLineNo">027</span>         *              &lt;p&gt;Null if it does not<a name="line.27"></a>
-<span class="sourceLineNo">028</span>         */     <a name="line.28"></a>
-<span class="sourceLineNo">029</span>        public static double getDouble(String table, String key) {return NetworkTable.getTable(table).getNumber(key);}<a name="line.29"></a>
+<span class="sourceLineNo">021</span>    /**<a name="line.21"></a>
+<span class="sourceLineNo">022</span>     * Gets a double value from the SmartDashboard, if it is open and connected.<a name="line.22"></a>
+<span class="sourceLineNo">023</span>     * <a name="line.23"></a>
+<span class="sourceLineNo">024</span>     * @param table the name of the table to retrieve from<a name="line.24"></a>
+<span class="sourceLineNo">025</span>     * @param key   the key for the data in the table <a name="line.25"></a>
+<span class="sourceLineNo">026</span>     * @return a double value from the table if it exists<a name="line.26"></a>
+<span class="sourceLineNo">027</span>     *              &lt;p&gt;Null if it does not<a name="line.27"></a>
+<span class="sourceLineNo">028</span>     */    <a name="line.28"></a>
+<span class="sourceLineNo">029</span>    public static double getDouble(String table, String key) {return NetworkTable.getTable(table).getNumber(key);}<a name="line.29"></a>
 <span class="sourceLineNo">030</span><a name="line.30"></a>
-<span class="sourceLineNo">031</span>        /**<a name="line.31"></a>
-<span class="sourceLineNo">032</span>         * Gets a double value from the SmartDashboard, if it is open and connected.<a name="line.32"></a>
-<span class="sourceLineNo">033</span>         * <a name="line.33"></a>
-<span class="sourceLineNo">034</span>         * @param table the name of the table to retrieve from<a name="line.34"></a>
-<span class="sourceLineNo">035</span>         * @param key   the key for the data in the table <a name="line.35"></a>
-<span class="sourceLineNo">036</span>         * @return a double value from the table if it exists<a name="line.36"></a>
-<span class="sourceLineNo">037</span>         *              &lt;p&gt;Null if it does not<a name="line.37"></a>
-<span class="sourceLineNo">038</span>         */             <a name="line.38"></a>
-<span class="sourceLineNo">039</span>        public static String getString(String table, String key) {return NetworkTable.getTable(table).getString(key);}<a name="line.39"></a>
+<span class="sourceLineNo">031</span>    /**<a name="line.31"></a>
+<span class="sourceLineNo">032</span>     * Gets a double value from the SmartDashboard, if it is open and connected.<a name="line.32"></a>
+<span class="sourceLineNo">033</span>     * <a name="line.33"></a>
+<span class="sourceLineNo">034</span>     * @param table the name of the table to retrieve from<a name="line.34"></a>
+<span class="sourceLineNo">035</span>     * @param key   the key for the data in the table <a name="line.35"></a>
+<span class="sourceLineNo">036</span>     * @return a double value from the table if it exists<a name="line.36"></a>
+<span class="sourceLineNo">037</span>     *              &lt;p&gt;Null if it does not<a name="line.37"></a>
+<span class="sourceLineNo">038</span>     */        <a name="line.38"></a>
+<span class="sourceLineNo">039</span>    public static String getString(String table, String key) {return NetworkTable.getTable(table).getString(key);}<a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
-<span class="sourceLineNo">041</span>        private SDRead() {}<a name="line.41"></a>
+<span class="sourceLineNo">041</span>    private SDRead() {}<a name="line.41"></a>
 <span class="sourceLineNo">042</span>}<a name="line.42"></a>
 
 

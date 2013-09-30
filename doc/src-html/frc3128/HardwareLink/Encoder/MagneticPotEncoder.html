@@ -16,34 +16,34 @@
 <span class="sourceLineNo">008</span> */<a name="line.8"></a>
 <span class="sourceLineNo">009</span>//TODO Test MagneticPotEncoder<a name="line.9"></a>
 <span class="sourceLineNo">010</span>public class MagneticPotEncoder extends AbstractEncoder {<a name="line.10"></a>
-<span class="sourceLineNo">011</span>        private AnalogChannel enc;<a name="line.11"></a>
-<span class="sourceLineNo">012</span>        <a name="line.12"></a>
-<span class="sourceLineNo">013</span>        public MagneticPotEncoder(int a, int b) {<a name="line.13"></a>
-<span class="sourceLineNo">014</span>                enc = new AnalogChannel(a, b);<a name="line.14"></a>
-<span class="sourceLineNo">015</span>        }<a name="line.15"></a>
-<span class="sourceLineNo">016</span>        <a name="line.16"></a>
-<span class="sourceLineNo">017</span>        /**<a name="line.17"></a>
-<span class="sourceLineNo">018</span>         * Gets the approximated angle from a magnetic encoder. It uses values which<a name="line.18"></a>
-<span class="sourceLineNo">019</span>         * have been estimated to high accuracy from extensive tests. Unless need be<a name="line.19"></a>
-<span class="sourceLineNo">020</span>         * , do not modify these values.<a name="line.20"></a>
-<span class="sourceLineNo">021</span>         * <a name="line.21"></a>
-<span class="sourceLineNo">022</span>         * @return the approximate angle from 0 to 360 degrees of the encoder<a name="line.22"></a>
-<span class="sourceLineNo">023</span>         */<a name="line.23"></a>
-<span class="sourceLineNo">024</span>        public double getAngle() {<a name="line.24"></a>
-<span class="sourceLineNo">025</span>        double voltage = 0, value = 0;<a name="line.25"></a>
+<span class="sourceLineNo">011</span>    private AnalogChannel enc;<a name="line.11"></a>
+<span class="sourceLineNo">012</span>    <a name="line.12"></a>
+<span class="sourceLineNo">013</span>    public MagneticPotEncoder(int a, int b) {<a name="line.13"></a>
+<span class="sourceLineNo">014</span>        enc = new AnalogChannel(a, b);<a name="line.14"></a>
+<span class="sourceLineNo">015</span>    }<a name="line.15"></a>
+<span class="sourceLineNo">016</span>    <a name="line.16"></a>
+<span class="sourceLineNo">017</span>    /**<a name="line.17"></a>
+<span class="sourceLineNo">018</span>     * Gets the approximated angle from a magnetic encoder. It uses values which<a name="line.18"></a>
+<span class="sourceLineNo">019</span>     * have been estimated to high accuracy from extensive tests. Unless need be<a name="line.19"></a>
+<span class="sourceLineNo">020</span>     * , do not modify these values.<a name="line.20"></a>
+<span class="sourceLineNo">021</span>     * <a name="line.21"></a>
+<span class="sourceLineNo">022</span>     * @return the approximate angle from 0 to 360 degrees of the encoder<a name="line.22"></a>
+<span class="sourceLineNo">023</span>     */<a name="line.23"></a>
+<span class="sourceLineNo">024</span>    public double getAngle() {<a name="line.24"></a>
+<span class="sourceLineNo">025</span>        double voltage = 0;//, value = 0;<a name="line.25"></a>
 <span class="sourceLineNo">026</span>        for(char i = 0; i&lt;10; i++) {<a name="line.26"></a>
 <span class="sourceLineNo">027</span>            voltage += enc.getVoltage();<a name="line.27"></a>
-<span class="sourceLineNo">028</span>            value += enc.getValue();<a name="line.28"></a>
+<span class="sourceLineNo">028</span>            //value += enc.getValue();<a name="line.28"></a>
 <span class="sourceLineNo">029</span>        }<a name="line.29"></a>
-<span class="sourceLineNo">030</span>        voltage /= 10; value /= 10;<a name="line.30"></a>
+<span class="sourceLineNo">030</span>        voltage /= 10; //value /= 10;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>        return voltage/5.0*360;<a name="line.31"></a>
 <span class="sourceLineNo">032</span>    }<a name="line.32"></a>
 <span class="sourceLineNo">033</span><a name="line.33"></a>
-<span class="sourceLineNo">034</span>        /**<a name="line.34"></a>
-<span class="sourceLineNo">035</span>         * <a name="line.35"></a>
-<span class="sourceLineNo">036</span>         * @return the raw voltage of the encoder<a name="line.36"></a>
-<span class="sourceLineNo">037</span>         */<a name="line.37"></a>
-<span class="sourceLineNo">038</span>        public double getRawValue() {return enc.getVoltage();}<a name="line.38"></a>
+<span class="sourceLineNo">034</span>    /**<a name="line.34"></a>
+<span class="sourceLineNo">035</span>     * <a name="line.35"></a>
+<span class="sourceLineNo">036</span>     * @return the raw voltage of the encoder<a name="line.36"></a>
+<span class="sourceLineNo">037</span>     */<a name="line.37"></a>
+<span class="sourceLineNo">038</span>    public double getRawValue() {return enc.getVoltage();}<a name="line.38"></a>
 <span class="sourceLineNo">039</span>}<a name="line.39"></a>
 
 

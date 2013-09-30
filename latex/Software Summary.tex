@@ -42,9 +42,9 @@
 
 This framework is designed to simplify the conceptualization and execution of robotic code, specifically designed for the FIRST Robotics Competition API. It is an event-driven system; this means that the robot is controlled solely by \lstinline{Event}s. An \lstinline{Event} is simply a block of code which runs at a set interval. 
 
-This document assumes confident Java and Object Oriented Programming knowledge, including abstract classes and their implementations. It also assumes you have some familiarity with the FRC API. Additionally, you may wish to check out our code from Google Code (titled ``frc-team-3128''). You must be using \textit{the latest FRC Java API}. These things will not be explained over the course of the document, as this is neither a Java nor Netbeans nor FRC API introduction; rather, it is an FRC 3128 architecture introduction. Additionally, the entire program has javadoc, so all functions are explained in themselves.
+This document assumes confident Java and Object Oriented Programming knowledge, including abstract classes and their implementations. It also assumes you have some familiarity with the FRC API. Additionally, you may wish to check out our code from Google Code (titled ``frc-team-3128''). You must be using \textit{the latest FRC Java API}. These things will not be explained over the course of the document, as this is neither a Java nor Netbeans nor FRC API introduction; rather, it is an FRC 3128 framework introduction. Additionally, the entire program has javadoc, so all functions are explained in themselves.
 
-While this code architecture does take some getting used to, it has increased our speed by over a factor of 100, and we hope it does the same for you. As the only setup is done during initialization, it also allows for dynamic and easy testing; again, we hope it does the same for you. Here's a short list detailing some capacity of this architecture:
+While this code architecture does take some getting used to, it has increased our speed by over a factor of 100, our software accuracy, and testing speed. We hope it does the same for you. As the only setup is done during initialization, it also allows for dynamic and easy testing; again, we hope it does the same for you. Here's a short list detailing some capacity of this architecture:
 
 \begin{itemize}
 	\item{Sequence together tasks during autonomous in a seamless way, which would otherwise be difficult to attain}
@@ -59,7 +59,7 @@ You may also create an issue for feature requests or bugs on our project's homep
 
 \subsection{Why use an Event-driven system?}
 
-Event systems are particularly useful in robotic applications, as they enable responsive behavior which remains decentralized. As opposed to many other styles, which involve writing specifically what you want to do in order, the \lstinline{Event}-driven system allows you to dynamically change the order and timings of events. In addition, it allows for several tasks which would otherwise be inordinately difficult: the creation of autonomous programs (through the use of \lstinline{EventSequencer}), the creation of events which run after a certain amount of time, and high efficiency increases.
+Event systems are particularly useful in robotic applications, as they enable responsive behavior which remains decentralized. Many other styles involve writing specifically what you want to do in an exact order. The \lstinline{Event}-driven system, however, allows you to dynamically change the order and timings of events with ease. In addition, it allows for several tasks which would otherwise be inordinately difficult: the creation of autonomous programs (through the use of \lstinline{EventSequencer}), the creation of events which run after a certain amount of time, and high efficiency increases.
 
 One of the primary benefits belongs with controllers (called ``Joysticks'' in the FRC API; we will call them ``controllers'' for the duration of this document). Controllers are also \lstinline{Event}s; however, instead of controlling the drive train directly, they call events through the \lstinline{ListenerManager} utility. The \lstinline{ListenerManager} allows certain events to be run when the triggers are called. 
 
@@ -71,7 +71,7 @@ ListenerManager.addListener(new Event() {
 }, "buttonADown");
 \end{lstlisting}
 
-In this statement, we've done two things: we've first created a new \lstinline{Event}. That event simply contains code which spins up a motor. We've then registered it with the \lstinline{ListenerManager} under the listener \lstinline{"buttonADown"}. Now, if the listener \lstinline{"buttonADown"} is called elsewhere in the code, all associated \lstinline{Events} will be run. This is as simple as:
+In this statement, we've done two things: we've first created a new \lstinline{Event}. That event simply contains code in its \lstinline{execute()} function which spins up a motor. We've then registered it with the \lstinline{ListenerManager} under the listener \lstinline{"buttonADown"}. Now, if the listener \lstinline{"buttonADown"} is called elsewhere in the code, all associated \lstinline{Events} will be run. This is as simple as:
 
 \begin{lstlisting}
 ListenerManager.callListener("buttonADown");
@@ -86,13 +86,13 @@ This section will detail where the code you write actually goes, then will detai
 The first thing to cover is the \lstinline{DebugLog}, as it prettifies all of the debug outputs. It makes everything organized and neat in your outputs. It does this by enforcing three things:
 \begin{enumerate}\item{Log message severity, which can be filtered, as we do not always want to see the output.}\item{Log message timestamps, which do not normally come with system outs.}\item{Log message sources, which show where a message actually came from. This is critically important when diagnosing software issues.}\end{enumerate}
 
-The severity levels in order are:
+\noindent The severity levels in order are:
 
 \begin{enumerate}\item{\lstinline{DebugLog.LVL_ERROR}: This is used when the program has encountered an error which will cause it to exit.}\item{\lstinline{DebugLog.LVL_SEVERE}: This is used when a part of the program cannot continue as requested.}\item{\lstinline{DebugLog.LVL_WARN}: This is used when a part of the program may not function as intended, or something has the possibilty to fail.}\item{\lstinline{DebugLog.LVL_INFO}: This is used for important operating information \textit{only}.}\item{\lstinline{DebugLog.LVL_DEBUG}: This is used for debugging outputs which are temporary and/or infrequent.}\item{\lstinline{DebugLog.LVL_STREAM}: This is used for constant outputs. For instance, controller positions are under the stream level. The difference between \lstinline{STREAM} and \lstinline{DEBUG} is critical; don't mix them up.}\end{enumerate}
 
 \subsection{Code execution}The \lstinline{RobotStartup} class is what the API actually runs. The robot is based of FRC's \lstinline{IterativeRobot}. This class will link directly with the Global class, and is actually what calls the \lstinline{EventManager}'s \lstinline{processEvents()} function. You should never need to modify this file, as it serves only to link the default FRC API to the rest of the code.
 
-The file that you \textit{will} need to modify is \lstinline{Global}. The \lstinline{Global} class actually controls the initialization and setup of the robot. Put all global resources in this file as \lstinline{public static [final]} values. As this system is \lstinline{Event}-driven, you won't need to actually execute any code yourself after initialization. Instead, put all \lstinline{Event}s you'd like to run in this class under the appropriate \lstinline{initialize*} function.
+The file that you \textit{will} need to modify is \lstinline{Global}. The \lstinline{Global} class actually controls the initialization and setup of the robot. Put all global resources (such as motors, gyros, etc.) in this file as \lstinline{public static [final]} values. As this system is \lstinline{Event}-driven, you won't need to actually execute any code yourself after initialization. Instead, put all \lstinline{Event}s you'd like to run in this class under the appropriate \lstinline{initialize*} function.
 
 Let's say I wanted to create a simple drive program. Here's how we would do this most effectively:
 
@@ -110,7 +110,7 @@ public static void initializeTeleop() {
     }, ListenerConst.UPDATE_JOY1);
 }\end{lstlisting}
 
-(Bear in mind, all foreign classes will be explained later. For now, all you need to know is that \lstinline{XControl} is an XBox 360 Controller, \lstinline{MotorLink} is a better way to set motor powers, and \lstinline{ListenerConst} is a class which holds the listener strings so you don't have to type them every time.)
+\textbf{These are the only changes you would need to make to create a fully functional drive program.} (Bear in mind, all foreign classes will be explained later. For now, all you need to know is that \lstinline{XControl} is an XBox 360 Controller, \lstinline{MotorLink} is a better way to set motor powers, and \lstinline{ListenerConst} is a class which holds the listener strings so you don't have to type them every time.)
 
 So, what does this code do? First, it creates the \lstinline{mLeft, mRight, xControl1} global resources. These can be used everywhere simply by specifying \lstinline{Global.[varname]} Then, in \lstinline{initializeTeleop()}, the program adds an \lstinline{Event} to the \lstinline{ListenerManager} which will be run when joystick 1 on the controller changes. This way, the function doesn't run every iteration, but only runs when it needs to.
 
@@ -123,7 +123,7 @@ The following is the full package structure for our architecture:
     +---HardwareLink
     |   +---Controller : Used for the various allowed controllers
     |   +---Encoder : Used for encoder declarations
-    |   +---Motor : Used for motor declarations (Jaguar not recommended)
+    |   +---Motor : Used for motor declarations 
     |   |   \---SpeedControl : Used for motor speed controllers (incomplete)
     |   \---Pneumatics : Used for pneumatic control
     \---Util : Used for generic utilities, such as DebugLog
@@ -133,7 +133,7 @@ The following is the full package structure for our architecture:
 
 \section{What are Events, and how do I use them effectively?}
 
-\lstinline{Event}s are blocks of code which can be run dynamically. The code for an event goes inside the event's abstract \lstinline{public void execute()} function. Events have three modes: single run, iterable, and timed. 
+\lstinline{Event}s are \textbf{small} blocks of code which can be run dynamically. The code for an event goes inside the event's abstract \lstinline{public void execute()} function. Events have three modes: single run, iterable, and timed. 
 \begin{itemize}
 	\item{A single run \lstinline{Event} will be run once, then removed from the \lstinline{EventManager}'s queue.}
 	\item{An iterable \lstinline{Event} will run continuously until it is stopped. There are three things which will stop an \lstinline{Event}: \begin{enumerate}

@@ -13,17 +13,17 @@
 <span class="sourceLineNo">005</span> * @author Noah Sutton-Smolin<a name="line.5"></a>
 <span class="sourceLineNo">006</span> */<a name="line.6"></a>
 <span class="sourceLineNo">007</span>public abstract class TimedSequence extends SequenceEvent {<a name="line.7"></a>
-<span class="sourceLineNo">008</span>        private final int killAfter;<a name="line.8"></a>
-<span class="sourceLineNo">009</span>        <a name="line.9"></a>
-<span class="sourceLineNo">010</span>        /**<a name="line.10"></a>
-<span class="sourceLineNo">011</span>         * Creates a TimedSequence event, which is used to create events which kill<a name="line.11"></a>
-<span class="sourceLineNo">012</span>         * after a certain amount of time.<a name="line.12"></a>
-<span class="sourceLineNo">013</span>         * <a name="line.13"></a>
-<span class="sourceLineNo">014</span>         * @param msec the amount of time the event should run<a name="line.14"></a>
-<span class="sourceLineNo">015</span>         */<a name="line.15"></a>
-<span class="sourceLineNo">016</span>        public TimedSequence(int msec) {killAfter = msec;}<a name="line.16"></a>
-<span class="sourceLineNo">017</span>        <a name="line.17"></a>
-<span class="sourceLineNo">018</span>        public boolean exitConditionMet() {return (this.getRunTimeMillis() &gt; killAfter);}<a name="line.18"></a>
+<span class="sourceLineNo">008</span>    private final int killAfter;<a name="line.8"></a>
+<span class="sourceLineNo">009</span>    <a name="line.9"></a>
+<span class="sourceLineNo">010</span>    /**<a name="line.10"></a>
+<span class="sourceLineNo">011</span>     * Creates a TimedSequence event, which is used to create events which kill<a name="line.11"></a>
+<span class="sourceLineNo">012</span>     * after a certain amount of time.<a name="line.12"></a>
+<span class="sourceLineNo">013</span>     * <a name="line.13"></a>
+<span class="sourceLineNo">014</span>     * @param msec the amount of time the event should run<a name="line.14"></a>
+<span class="sourceLineNo">015</span>     */<a name="line.15"></a>
+<span class="sourceLineNo">016</span>    public TimedSequence(int msec) {killAfter = msec;}<a name="line.16"></a>
+<span class="sourceLineNo">017</span>    <a name="line.17"></a>
+<span class="sourceLineNo">018</span>    public boolean exitConditionMet() {return (this.getRunTimeMillis() &gt; killAfter);}<a name="line.18"></a>
 <span class="sourceLineNo">019</span>}<a name="line.19"></a>
 
 

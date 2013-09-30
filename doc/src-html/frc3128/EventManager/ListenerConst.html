@@ -8,54 +8,47 @@
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>package frc3128.EventManager;<a name="line.1"></a>
 <span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>/**<a name="line.3"></a>
-<span class="sourceLineNo">004</span> *<a name="line.4"></a>
-<span class="sourceLineNo">005</span> * @author Noah Sutton-Smolin<a name="line.5"></a>
-<span class="sourceLineNo">006</span> */<a name="line.6"></a>
-<span class="sourceLineNo">007</span>public class ListenerConst {<a name="line.7"></a>
-<span class="sourceLineNo">008</span>        public static final String BTN_A_DOWN = "buttonADown";<a name="line.8"></a>
-<span class="sourceLineNo">009</span>        public static final String BTN_B_DOWN = "buttonBDown";<a name="line.9"></a>
-<span class="sourceLineNo">010</span>        public static final String BTN_X_DOWN = "buttonXDown";<a name="line.10"></a>
-<span class="sourceLineNo">011</span>        public static final String BTN_Y_DOWN = "buttonYDown";<a name="line.11"></a>
-<span class="sourceLineNo">012</span>        public static final String BTN_LB_DOWN = "buttonLBDown";<a name="line.12"></a>
-<span class="sourceLineNo">013</span>        public static final String BTN_RB_DOWN = "buttonRBDown";<a name="line.13"></a>
-<span class="sourceLineNo">014</span>        public static final String BTN_START_DOWN = "buttonStartDown";<a name="line.14"></a>
-<span class="sourceLineNo">015</span>        public static final String BTN_BACK_DOWN = "buttonBackDown";<a name="line.15"></a>
-<span class="sourceLineNo">016</span>        public static final String BTN_L3_DOWN = "buttonL3Down";<a name="line.16"></a>
-<span class="sourceLineNo">017</span>        public static final String BTN_R3_DOWN = "buttonR3Down";<a name="line.17"></a>
-<span class="sourceLineNo">018</span>        public static final String BTN_A_UP = "buttonAUp";<a name="line.18"></a>
-<span class="sourceLineNo">019</span>        public static final String BTN_B_UP = "buttonBUp";<a name="line.19"></a>
-<span class="sourceLineNo">020</span>        public static final String BTN_X_UP = "buttonXUp";<a name="line.20"></a>
-<span class="sourceLineNo">021</span>        public static final String BTN_Y_UP = "buttonYUp";<a name="line.21"></a>
-<span class="sourceLineNo">022</span>        public static final String BTN_LB_UP = "buttonLBUp";<a name="line.22"></a>
-<span class="sourceLineNo">023</span>        public static final String BTN_RB_UP = "buttonRBUp";<a name="line.23"></a>
-<span class="sourceLineNo">024</span>        public static final String BTN_START_UP = "buttonStartUp";<a name="line.24"></a>
-<span class="sourceLineNo">025</span>        public static final String BTN_BACK_UP = "buttonBackUp";<a name="line.25"></a>
-<span class="sourceLineNo">026</span>        public static final String BTN_L3_UP = "buttonL3Up";<a name="line.26"></a>
-<span class="sourceLineNo">027</span>        public static final String BTN_R3_UP = "buttonR3Up";<a name="line.27"></a>
-<span class="sourceLineNo">028</span><a name="line.28"></a>
-<span class="sourceLineNo">029</span>        public static final String UPDATE_JOY1 = "updateJoy1";<a name="line.29"></a>
-<span class="sourceLineNo">030</span>        public static final String UPDATE_JOY2 = "updateJoy2";<a name="line.30"></a>
-<span class="sourceLineNo">031</span>        public static final String UPDATE_TRIGGERS = "updateTriggers";<a name="line.31"></a>
-<span class="sourceLineNo">032</span>        public static final String UPDATE_DRIVE = "updateDrive";<a name="line.32"></a>
-<span class="sourceLineNo">033</span>        <a name="line.33"></a>
-<span class="sourceLineNo">034</span>        public static final String UPDATE_ATK_JOY = "updateAtkJoy";<a name="line.34"></a>
-<span class="sourceLineNo">035</span>        public static final String UPDATE_ATK_THROTTLE = "updateAtkThrottle";<a name="line.35"></a>
-<span class="sourceLineNo">036</span>        <a name="line.36"></a>
-<span class="sourceLineNo">037</span>        /**<a name="line.37"></a>
-<span class="sourceLineNo">038</span>         * Builds a string for the AttackPad controller listeners.<a name="line.38"></a>
-<span class="sourceLineNo">039</span>         * <a name="line.39"></a>
-<span class="sourceLineNo">040</span>         * @param controllerPort the port number of the controller<a name="line.40"></a>
-<span class="sourceLineNo">041</span>         * @param buttonNum      the button number pressed<a name="line.41"></a>
-<span class="sourceLineNo">042</span>         * @param pressed        true if down, false if up<a name="line.42"></a>
-<span class="sourceLineNo">043</span>         * @return a listener for ListenerManager which AttackControl will trigger<a name="line.43"></a>
-<span class="sourceLineNo">044</span>         */<a name="line.44"></a>
-<span class="sourceLineNo">045</span>        public static String getAtkCtrlListenerKey(int controllerPort, int buttonNum, boolean pressed) {<a name="line.45"></a>
-<span class="sourceLineNo">046</span>                return "button" + controllerPort + "-" + buttonNum + (pressed?"Down":"Up");<a name="line.46"></a>
-<span class="sourceLineNo">047</span>        }<a name="line.47"></a>
-<span class="sourceLineNo">048</span>        <a name="line.48"></a>
-<span class="sourceLineNo">049</span>        private ListenerConst() {}<a name="line.49"></a>
-<span class="sourceLineNo">050</span>}<a name="line.50"></a>
+<span class="sourceLineNo">003</span>import frc3128.HardwareLink.Controller.XControlMap;<a name="line.3"></a>
+<span class="sourceLineNo">004</span><a name="line.4"></a>
+<span class="sourceLineNo">005</span>/**<a name="line.5"></a>
+<span class="sourceLineNo">006</span> *<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * @author Noah Sutton-Smolin<a name="line.7"></a>
+<span class="sourceLineNo">008</span> */<a name="line.8"></a>
+<span class="sourceLineNo">009</span>public class ListenerConst {<a name="line.9"></a>
+<span class="sourceLineNo">010</span>    public static final String UPDATE_JOY1 = "updateJoy1";<a name="line.10"></a>
+<span class="sourceLineNo">011</span>    public static final String UPDATE_JOY2 = "updateJoy2";<a name="line.11"></a>
+<span class="sourceLineNo">012</span>    public static final String UPDATE_TRIGGERS = "updateTriggers";<a name="line.12"></a>
+<span class="sourceLineNo">013</span>    public static final String UPDATE_DRIVE = "updateDrive";<a name="line.13"></a>
+<span class="sourceLineNo">014</span>    <a name="line.14"></a>
+<span class="sourceLineNo">015</span>    public static final String UPDATE_ATK_JOY = "updateAtkJoy";<a name="line.15"></a>
+<span class="sourceLineNo">016</span>    public static final String UPDATE_ATK_THROTTLE = "updateAtkThrottle";<a name="line.16"></a>
+<span class="sourceLineNo">017</span>    <a name="line.17"></a>
+<span class="sourceLineNo">018</span>    /**<a name="line.18"></a>
+<span class="sourceLineNo">019</span>     * Builds a string for the AttackPad controller listeners.<a name="line.19"></a>
+<span class="sourceLineNo">020</span>     * <a name="line.20"></a>
+<span class="sourceLineNo">021</span>     * @param controllerPort the port number of the controller<a name="line.21"></a>
+<span class="sourceLineNo">022</span>     * @param buttonNum      the button number pressed<a name="line.22"></a>
+<span class="sourceLineNo">023</span>     * @param pressed        true if down, false if up<a name="line.23"></a>
+<span class="sourceLineNo">024</span>     * @return a listener for ListenerManager which AttackControl will trigger<a name="line.24"></a>
+<span class="sourceLineNo">025</span>     */<a name="line.25"></a>
+<span class="sourceLineNo">026</span>    public static String getAtkCtrlListenerKey(int controllerPort, int buttonNum, boolean pressed) {<a name="line.26"></a>
+<span class="sourceLineNo">027</span>        return "button" + controllerPort + "-" + buttonNum + (pressed?"Down":"Up");<a name="line.27"></a>
+<span class="sourceLineNo">028</span>    }<a name="line.28"></a>
+<span class="sourceLineNo">029</span>    <a name="line.29"></a>
+<span class="sourceLineNo">030</span>    /**<a name="line.30"></a>
+<span class="sourceLineNo">031</span>     * Builds a string for the XBox controller listeners.<a name="line.31"></a>
+<span class="sourceLineNo">032</span>     * <a name="line.32"></a>
+<span class="sourceLineNo">033</span>     * @param controllerPort the port number of the controller<a name="line.33"></a>
+<span class="sourceLineNo">034</span>     * @param buttonNum the button number pressed<a name="line.34"></a>
+<span class="sourceLineNo">035</span>     * @param pressed true if down, false if up<a name="line.35"></a>
+<span class="sourceLineNo">036</span>     * @return a listener for ListenerManager which XControl will trigger<a name="line.36"></a>
+<span class="sourceLineNo">037</span>     */<a name="line.37"></a>
+<span class="sourceLineNo">038</span>    public static String getXCtrlListenerKey(int controllerPort, int buttonNum, boolean pressed) {<a name="line.38"></a>
+<span class="sourceLineNo">039</span>        return "button" + controllerPort + "-" + XControlMap.getBtnString(buttonNum) + (pressed?"Down":"Up");<a name="line.39"></a>
+<span class="sourceLineNo">040</span>    }<a name="line.40"></a>
+<span class="sourceLineNo">041</span>    <a name="line.41"></a>
+<span class="sourceLineNo">042</span>    private ListenerConst() {}<a name="line.42"></a>
+<span class="sourceLineNo">043</span>}<a name="line.43"></a>
 
 
 

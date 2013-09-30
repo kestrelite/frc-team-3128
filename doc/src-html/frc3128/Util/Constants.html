@@ -13,15 +13,20 @@
 <span class="sourceLineNo">005</span> * @author Noah Sutton-Smolin<a name="line.5"></a>
 <span class="sourceLineNo">006</span> */<a name="line.6"></a>
 <span class="sourceLineNo">007</span>public class Constants {<a name="line.7"></a>
-<span class="sourceLineNo">008</span>        public static final boolean DEBUGLOG_ENABLED = true; //Enables and disables the debug log<a name="line.8"></a>
-<span class="sourceLineNo">009</span>    public static final int DEBUGLOG_DEFAULT_LOGLEVEL = 3; //Controls the standard logging level for the DebugLog<a name="line.9"></a>
-<span class="sourceLineNo">010</span>    public static final int DEBUGLOG_INFO_DISPLAYFREQ = 100; //Controls how often the DebugLog displays diagnostic information<a name="line.10"></a>
-<span class="sourceLineNo">011</span>    public static final boolean EVENT_DUPLICATE_CHECKS = true; //Whether or not the EventManager runs duplicate checks<a name="line.11"></a>
-<span class="sourceLineNo">012</span>    public static final boolean START_MCONTROL_ON_TARGETSET = true; //Whether a MotorLink should start its controller if the controller's value was set<a name="line.12"></a>
-<span class="sourceLineNo">013</span>    public static final boolean PROCESS_WHILE_DISABLED = false; //Whether or not to run the EventManager while disabled<a name="line.13"></a>
+<span class="sourceLineNo">008</span>    public static final boolean DEBUGLOG_ENABLED = true; //Enables and disables the debug log<a name="line.8"></a>
+<span class="sourceLineNo">009</span>    public static final int     DEBUGLOG_DEFAULT_LOGLEVEL = 3; //Controls the standard logging level for the DebugLog<a name="line.9"></a>
+<span class="sourceLineNo">010</span>    public static final int     DEBUGLOG_INFO_DISPLAYFREQ = 100; //Controls how often the DebugLog displays diagnostic information<a name="line.10"></a>
+<span class="sourceLineNo">011</span>    public static boolean       INTRO_MESSAGE = true; //Whether to display the welcome message<a name="line.11"></a>
+<span class="sourceLineNo">012</span><a name="line.12"></a>
+<span class="sourceLineNo">013</span>    public static final boolean START_MCONTROL_ON_TARGETSET = true; //Whether a MotorLink should start its controller if the controller's value was set<a name="line.13"></a>
 <span class="sourceLineNo">014</span>    <a name="line.14"></a>
-<span class="sourceLineNo">015</span>    private Constants() {}<a name="line.15"></a>
-<span class="sourceLineNo">016</span>}<a name="line.16"></a>
+<span class="sourceLineNo">015</span>    public static final boolean EVENT_DUPLICATE_CHECKS = true; //Whether or not the EventManager runs duplicate checks<a name="line.15"></a>
+<span class="sourceLineNo">016</span>    public static final boolean EVENT_PROCESS_WHILE_DISABLED = false; //Whether or not to run the EventManager while disabled<a name="line.16"></a>
+<span class="sourceLineNo">017</span>    public static final int     EVENT_CLEANUP_AFTER_ITER = 50; //Cleanup after iteration count<a name="line.17"></a>
+<span class="sourceLineNo">018</span>    public static final int     EVENT_CLEANUP_AFTER_DELEV = 5; //Cleanup after number of deleted events<a name="line.18"></a>
+<span class="sourceLineNo">019</span>    <a name="line.19"></a>
+<span class="sourceLineNo">020</span>    private Constants() {}<a name="line.20"></a>
+<span class="sourceLineNo">021</span>}<a name="line.21"></a>
 
 
 
