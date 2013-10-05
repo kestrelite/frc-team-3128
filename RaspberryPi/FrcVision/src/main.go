@@ -14,14 +14,10 @@ import (
 	"net/http"
 	//"image/jpeg"
 	"os"
-	"os/exec"
-	"strings"
 )
 
-var path string
 
 func GrabImage(dst, src string, fin chan bool){
-	dst = strings.Join([]string{path,dst},"/")
 	res, err := http.Get(src)
 	defer res.Body.Close()
 	if err != nil {
@@ -48,12 +44,6 @@ func GrabImage(dst, src string, fin chan bool){
 func main() {
 	src := "https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-prn1/329972_2490728718321_1082649794_o.jpg"
 	dst := "garrisonHappy.jpg"
-	stork, err := exec.Command("pwd").Output()
-	path = strings.Replace(string(stork), "\n", "", -1)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(string(path))
 
 	fin := make(chan bool)
 
