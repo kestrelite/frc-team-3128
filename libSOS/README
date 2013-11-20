@@ -1,0 +1,4 @@
+libSOS is the serial interface between the networked linux boards attatched to the sensors and camera and the cRIO.
+It runs on a Beaglebone Black connected via SPI with certian SPI drivers installed (copy the ./server/io-drivers folder to the device and run the installer script).
+
+FYI, libSOS stands for libSerial-Over-Socket
