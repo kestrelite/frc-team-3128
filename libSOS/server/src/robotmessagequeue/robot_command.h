@@ -24,9 +24,9 @@ public:
 
 	robot_command(int opcode);
 
-	robot_command(unsigned char opcode, signed short data);
+	robot_command(unsigned char opcode, boost::optional<std::vector<signed short> >);
 
-	robot_command(unsigned char opcode, signed short data, std::string extraString);
+	robot_command(unsigned char opcode,boost::optional<std::vector<signed short> >, boost::optional<std::string> extraString);
 
 	static boost::optional<robot_command> * factory(std::vector<char> bytes);
 

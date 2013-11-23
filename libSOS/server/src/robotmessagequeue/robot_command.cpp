@@ -9,6 +9,7 @@
 #include <vector>
 #include <boost/foreach.hpp>
 #include <SOSProtocol.h>
+#include <sstream>
 
 robot_command::robot_command(int opcode)
 :_opcode(opcode),
@@ -18,7 +19,7 @@ robot_command::robot_command(int opcode)
 
 }
 
-robot_command::robot_command(unsigned char opcode, signed short data)
+robot_command::robot_command(unsigned char opcode, boost::optional<std::vector<signed short> > data)
 :_opcode(opcode),
  _data(data),
  _extraString()
@@ -26,7 +27,7 @@ robot_command::robot_command(unsigned char opcode, signed short data)
 
 }
 
-robot_command::robot_command(unsigned char opcode, signed short data, std::string extraString)
+robot_command::robot_command(unsigned char opcode, boost::optional<std::vector<signed short> > data, boost::optional<std::string> extraString)
 :_opcode(opcode),
  _data(data),
  _extraString(extraString)
@@ -36,45 +37,76 @@ robot_command::robot_command(unsigned char opcode, signed short data, std::strin
 
 boost::optional<robot_command> * robot_command::factory(std::vector<char> bytes)
 {
-	std::vector<char>::const_iterator bytesIterator = bytes.begin();
+	std::vector<char>::const_iterator 		currentBytePtr(bytes.begin());
+	char 									opcode;
+	boost::optional<std::vector<short> > 	shorts;
+	boost::optional<std::string> 			string;
 
-	if(*bytesIterator != START_TRANSMISSION)
+
+	if(*currentBytePtr != START_TRANSMISSION)
 	{
+		// Bail and return empty value.
 		boost::optional<robot_command> * command = new boost::optional<robot_command>();
-		std::cerr << "RobotCommand: the header of the command is incorrect\nShould be:" << START_TRANSMISSION << " Was: " << *(++bytesIterator) << std::endl;
+		std::cerr << "RobotCommand: the header of the command is incorrect\nShould be:" << START_TRANSMISSION << " Was: " << *currentBytePtr << std::endl;
 		return command;
 	}
-	++bytesIterator;
-	boost::optional<robot_command> * command = new boost::optional<robot_command>(robot_command(*bytesIterator));
-	bytesIterator + 2;
 
-	//holds the shorts until we can construct the object
-	std::vector<short> shortStorage;
-	if(*bytesIterator == START_SHORT_TRANSMISSION)
+
+	// Have start of command.  Begin parsing.
+
+	// Get opcode.
+	++currentBytePtr;
+	opcode = *currentBytePtr;
+
+
+	// Move into shorts if any.
+	++currentBytePtr;
+	++currentBytePtr;
+
+	if(*currentBytePtr == START_SHORT_TRANSMISSION)
 	{
-		std::vector<char> shortBytesStorage;
-		while(*(++bytesIterator) != END_SHORT)
+		//give the optional type a value
+		shorts.reset(std::vector<short>());
+
+		 // Loop until we don't recieve the start of a short
+		while(*currentBytePtr == START_SHORT_TRANSMISSION)
 		{
-			shortBytesStorage.push_back(*bytesIterator);
+			std::vector<char> shortBytesStorage;
+			while(*(++currentBytePtr) != END_SHORT)
+			{
+				shortBytesStorage.push_back(*currentBytePtr);
+			}
+			shorts.get().push_back(static_cast<short>(atoi(shortBytesStorage.data())));
+			++currentBytePtr;
 		}
-		atoi(shortBytesStorage.begin());
 	}
-	else if(*bytesIterator == END_TRANSMISSION)
+
+
+	if(*currentBytePtr == START_STRING_TRANSMISSION)
 	{
-		return command;
+		std::stringstream stringstream;
+		while(*(++currentBytePtr) != END_STRING)
+		{
+
+			stringstream << *currentBytePtr;
+		}
+		string.reset(std::string(stringstream.str()));
 	}
-	return command;
+
+	return new boost::optional<robot_command>(robot_command(opcode, shorts, string));
+
 }
 
 std::ostream & operator<<(std::ostream & leftOp, const robot_command rightOp)
 {
+	leftOp << "robot_command dump: --------------------------------------" << std::endl;
 	leftOp << "Opcode: 0x" << std::hex << ((int)rightOp._opcode) << std::endl;
 	if(rightOp._data.is_initialized())
 	{
 		leftOp << "Data: ";
-		BOOST_FOREACH(const short subdata, rightOp._data.get())
+		for(short subdata : rightOp._data.get())
 		{
-			leftOp << subdata << " ";
+			leftOp << std::dec << (int)(subdata) << " ";
 		}
 		leftOp << std::endl;
 	}
@@ -82,6 +114,7 @@ std::ostream & operator<<(std::ostream & leftOp, const robot_command rightOp)
 	{
 		leftOp << "Extra String: \"" << rightOp._extraString.get() << "\"" << std::endl;
 	}
+	leftOp << std::endl;
 
 	return leftOp;
 

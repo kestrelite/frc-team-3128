@@ -11,7 +11,7 @@
 //debug socket reception
 //#define DEBUG_SOCKET_RECEPTION
 //debug spi transmission
-#define DEBUG_SERIAL_OUTPUT
+//#define DEBUG_SERIAL_OUTPUT
 //build an object from the binary transmissions - does small amounts of error checking and tells you the content of the command
 #define MAKE_ROBOT_COMMANDS
 //-----------------------------------------------------------------------------------

@@ -9,6 +9,7 @@
 #include "stdlib.h"
 #include <sstream>
 #include <iomanip>
+#include "Configuration.h"
 
 RoboSPI::RoboSPI()
 :_fstream()
