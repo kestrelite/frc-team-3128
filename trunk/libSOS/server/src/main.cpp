@@ -10,7 +10,7 @@
 //#include "ProgramOptions.h"
 #include <ThreadSafeQueue.h>
 #include <SerialSender.h>
-#include <SocketServer.h>
+#include "libSOS/SocketServer.h"
 
 int main()
 {

@@ -30,6 +30,15 @@ public:
 
 	static boost::optional<robot_command> * factory(std::vector<char> bytes);
 
+	//reads one char from the message pointed at by the iterator
+	//assumes that the iterator is at the start
+	static char parse_opcode(std::vector<char>::const_iterator & currentBytePtr);
+
+	//reads a list of shorts from the message pointed at by the iterator
+	static boost::optional<std::vector<signed short> > parse_shorts(std::vector<char>::const_iterator & currentBytePtr);
+
+	static boost::optional<std::string> parse_string(std::vector<char>::const_iterator & currentBytePtr);
+
 
 };
 
