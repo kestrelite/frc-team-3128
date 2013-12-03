@@ -8,7 +8,7 @@
 #include "robot_command.h"
 #include <vector>
 #include <boost/foreach.hpp>
-#include <SOSProtocol.h>
+#include "../libSOS/SOSProtocol.h"
 #include <sstream>
 
 robot_command::robot_command(int opcode)
@@ -42,13 +42,28 @@ boost::optional<robot_command> * robot_command::factory(std::vector<char> bytes)
 	boost::optional<std::vector<short> > 	shorts;
 	boost::optional<std::string> 			string;
 
+	opcode = parse_opcode(currentBytePtr);
 
+	// Move into shorts if any.
+	++currentBytePtr;
+	// should NOW equal END_TRANSMISSION or START_SHORT_TRANSMISSION
+
+	//returns an empty optional if there isn't a short
+	shorts = parse_shorts(currentBytePtr);
+
+	string = parse_string(currentBytePtr);
+
+	return new boost::optional<robot_command>(robot_command(opcode, shorts, string));
+
+}
+
+char robot_command::parse_opcode(std::vector<char>::const_iterator & currentBytePtr)
+{
 	if(*currentBytePtr != START_TRANSMISSION)
 	{
 		// Bail and return empty value.
-		boost::optional<robot_command> * command = new boost::optional<robot_command>();
 		std::cerr << "RobotCommand: the header of the command is incorrect\nShould be:" << START_TRANSMISSION << " Was: " << *currentBytePtr << std::endl;
-		return command;
+		return 0x0;
 	}
 
 
@@ -56,17 +71,26 @@ boost::optional<robot_command> * robot_command::factory(std::vector<char> bytes)
 
 	// Get opcode.
 	++currentBytePtr;
-	opcode = *currentBytePtr;
-
-
-	// Move into shorts if any.
-	++currentBytePtr;
+	char opcode = *currentBytePtr;
 	++currentBytePtr;
 
+	if(*currentBytePtr != END_OPCODE)
+	{
+		// Bail and return empty value.
+		std::cerr << "RobotCommand: the end of the opcode command is incorrect\nShould be:" << END_OPCODE << " Was: " << *currentBytePtr << std::endl;
+		return 0x0;
+	}
+
+	return opcode;
+}
+
+boost::optional<std::vector<signed short> > robot_command::parse_shorts(std::vector<char>::const_iterator & currentBytePtr)
+{
 	if(*currentBytePtr == START_SHORT_TRANSMISSION)
 	{
 		//give the optional type a value
-		shorts.reset(std::vector<short>());
+		std::vector<short> shortVector;
+		boost::optional<std::vector<short> > shorts(shortVector);
 
 		 // Loop until we don't recieve the start of a short
 		while(*currentBytePtr == START_SHORT_TRANSMISSION)
@@ -79,9 +103,20 @@ boost::optional<robot_command> * robot_command::factory(std::vector<char> bytes)
 			shorts.get().push_back(static_cast<short>(atoi(shortBytesStorage.data())));
 			++currentBytePtr;
 		}
+
+		return shorts;
+	}
+	else
+	{
+		//create an empty optional
+		boost::optional<std::vector<signed short> > shorts;
+		return shorts;
 	}
 
+}
 
+boost::optional<std::string> robot_command::parse_string(std::vector<char>::const_iterator & currentBytePtr)
+{
 	if(*currentBytePtr == START_STRING_TRANSMISSION)
 	{
 		std::stringstream stringstream;
@@ -90,12 +125,18 @@ boost::optional<robot_command> * robot_command::factory(std::vector<char> bytes)
 
 			stringstream << *currentBytePtr;
 		}
-		string.reset(std::string(stringstream.str()));
+
+		boost::optional<std::string> string(std::string(stringstream.str()));
+		return string;
+	}
+	else
+	{
+		boost::optional<std::string> string;
+		return string;
 	}
 
-	return new boost::optional<robot_command>(robot_command(opcode, shorts, string));
-
 }
+
 
 std::ostream & operator<<(std::ostream & leftOp, const robot_command rightOp)
 {
