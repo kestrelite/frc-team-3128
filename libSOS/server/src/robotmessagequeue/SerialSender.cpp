@@ -8,6 +8,7 @@
 #include <SerialSender.h>
 #include "robot_command.h"
 #include "Configuration.h"
+#include "../Options.h"
 
 SerialSender::SerialSender(ThreadSafeQueue<std::vector<char> > * inputQueue)
 {
@@ -22,18 +23,21 @@ void SerialSender::operator()(ThreadSafeQueue<std::vector<char> > * inputQueue)
 	while(!shouldStop)
 	{
 		std::vector<char> currentBytes = inputQueue->Dequeue();
-#ifdef MAKE_ROBOT_COMMANDS
-		boost::optional<robot_command> * command = robot_command::factory(currentBytes);
 
-		if(command->is_initialized())
+		if(Options::instance()._verbose)
 		{
-			std::cout << command->get();
+			boost::optional<robot_command> * command = robot_command::factory(currentBytes);
+
+			if(command->is_initialized())
+			{
+				std::cout << command->get();
+			}
+			else
+			{
+				std::cerr << "SerialSender: could not construct robot_command, possibly bad data?" << std::endl;
+			}
 		}
-		else
-		{
-			std::cout << "SerialSender: could not construct robot_command, possibly bad data?" << std::endl;
-		}
-#endif
+
 		roboSPI.send(currentBytes);
 	}
 	//everything should be autodestructed

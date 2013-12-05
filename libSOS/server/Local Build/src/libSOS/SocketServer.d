@@ -475,7 +475,7 @@ src/libSOS/SocketServer.d: ../src/libSOS/SocketServer.cpp \
  /home/jamie/libboost-host/include/boost/asio/windows/stream_handle_service.hpp \
  /home/jamie/libboost-host/include/boost/asio/write_at.hpp \
  /home/jamie/libboost-host/include/boost/asio/impl/write_at.hpp \
- /home/jamie/eclipse/workspace/frc-3128-beagleboard/src/qualcomm/ThreadSafeQueue.h \
+ /home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/common/ThreadSafeQueue.h \
  /home/jamie/libboost-host/include/boost/thread/mutex.hpp \
  /home/jamie/libboost-host/include/boost/thread/detail/platform.hpp \
  /home/jamie/libboost-host/include/boost/config/requires_threads.hpp \
@@ -617,7 +617,7 @@ src/libSOS/SocketServer.d: ../src/libSOS/SocketServer.cpp \
  /home/jamie/libboost-host/include/boost/utility/detail/in_place_factory_suffix.hpp \
  /home/jamie/libboost-host/include/boost/optional/optional_fwd.hpp \
  ../src/libSOS/SOSClient.h ../src/libSOS/SOSProtocol.h \
- /home/jamie/eclipse/workspace/frc-3128-beagleboard/src/Configuration.h
+ /home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/Configuration.h
 
 ../src/libSOS/SocketServer.h:
 
@@ -1571,7 +1571,7 @@ src/libSOS/SocketServer.d: ../src/libSOS/SocketServer.cpp \
 
 /home/jamie/libboost-host/include/boost/asio/impl/write_at.hpp:
 
-/home/jamie/eclipse/workspace/frc-3128-beagleboard/src/qualcomm/ThreadSafeQueue.h:
+/home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/common/ThreadSafeQueue.h:
 
 /home/jamie/libboost-host/include/boost/thread/mutex.hpp:
 
@@ -1857,4 +1857,4 @@ src/libSOS/SocketServer.d: ../src/libSOS/SocketServer.cpp \
 
 ../src/libSOS/SOSProtocol.h:
 
-/home/jamie/eclipse/workspace/frc-3128-beagleboard/src/Configuration.h:
+/home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/Configuration.h:

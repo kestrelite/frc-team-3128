@@ -45,7 +45,7 @@
 								<option id="gnu.cpp.compiler.option.debugging.other.1153455754" name="Other debugging flags" superClass="gnu.cpp.compiler.option.debugging.other" value="-gstabs" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.optimization.flags.1281448338" name="Other optimization flags" superClass="gnu.cpp.compiler.option.optimization.flags" value="" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1658783957" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/qualcomm}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/common}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/messageconverter}&quot;"/>
 									<listOptionValue builtIn="false" value="../frc-3128-beagleboard/frc-3128-beagleboard/io-headers"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/robotmessagequeue}&quot;"/>
@@ -85,7 +85,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="tests|robotmessagequeue|src|qualcomm" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="tests|robotmessagequeue|src|common" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry excluding="tests|socketlib/myLog.cpp|socketlib/myClient.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry excluding="ThreadSafeQueueTest.cpp|UnitTests.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src/tests"/>
 					</sourceEntries>
@@ -131,7 +131,7 @@
 								<option id="gnu.cpp.compiler.option.optimization.flags.1634943988" name="Other optimization flags" superClass="gnu.cpp.compiler.option.optimization.flags" value="" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1194392130" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/io-headers}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/qualcomm}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/common}&quot;"/>
 									<listOptionValue builtIn="false" value="/home/jamie/libboost/include"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.include.files.666028748" name="Include files (-include)" superClass="gnu.cpp.compiler.option.include.files"/>
@@ -164,9 +164,9 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="tests|robotmessagequeue|src|qualcomm" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-						<entry excluding="tests|socketlib/myLog.cpp|robotmessagequeue|socketlib/myClient.cpp|qualcomm" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src/qualcomm"/>
+						<entry excluding="tests|robotmessagequeue|src|common" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="tests|socketlib/myLog.cpp|robotmessagequeue|socketlib/myClient.cpp|common" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src/common"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src/robotmessagequeue"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src/tests"/>
 					</sourceEntries>
@@ -220,7 +220,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.2057349816" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/jamie/libboost-host/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/libSOS}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/qualcomm}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/common}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/messageconverter}&quot;"/>
 									<listOptionValue builtIn="false" value="../frc-3128-beagleboard/frc-3128-beagleboard/io-headers"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/robotmessagequeue}&quot;"/>
@@ -259,7 +259,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="tests|robotmessagequeue|src|qualcomm" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="tests|robotmessagequeue|src|common" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry excluding="tests|socketlib/myLog.cpp|socketlib/myClient.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry excluding="ThreadSafeQueueTest.cpp|UnitTests.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src/tests"/>
 					</sourceEntries>

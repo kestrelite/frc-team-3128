@@ -1,7 +1,7 @@
 src/robotmessagequeue/SerialSender.d: \
  ../src/robotmessagequeue/SerialSender.cpp \
- /home/jamie/eclipse/workspace/frc-3128-beagleboard/src/robotmessagequeue/SerialSender.h \
- /home/jamie/eclipse/workspace/frc-3128-beagleboard/src/qualcomm/ThreadSafeQueue.h \
+ /home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/robotmessagequeue/SerialSender.h \
+ /home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/common/ThreadSafeQueue.h \
  /home/jamie/libboost-host/include/boost/thread/mutex.hpp \
  /home/jamie/libboost-host/include/boost/thread/detail/platform.hpp \
  /home/jamie/libboost-host/include/boost/config.hpp \
@@ -348,7 +348,7 @@ src/robotmessagequeue/SerialSender.d: \
  /home/jamie/libboost-host/include/boost/preprocessor/iteration/detail/bounds/upper1.hpp \
  /home/jamie/libboost-host/include/boost/utility/detail/in_place_factory_suffix.hpp \
  /home/jamie/libboost-host/include/boost/optional/optional_fwd.hpp \
- /home/jamie/eclipse/workspace/frc-3128-beagleboard/src/Configuration.h \
+ /home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/Configuration.h \
  /home/jamie/libboost-host/include/boost/thread/thread.hpp \
  /home/jamie/libboost-host/include/boost/thread/thread_only.hpp \
  /home/jamie/libboost-host/include/boost/thread/detail/thread.hpp \
@@ -392,12 +392,13 @@ src/robotmessagequeue/SerialSender.d: \
  /home/jamie/libboost-host/include/boost/thread/detail/thread_group.hpp \
  /home/jamie/libboost-host/include/boost/thread/shared_mutex.hpp \
  /home/jamie/libboost-host/include/boost/thread/pthread/shared_mutex.hpp \
- /home/jamie/eclipse/workspace/frc-3128-beagleboard/src/robotmessagequeue/robot_spi.h \
- ../src/robotmessagequeue/robot_command.h
+ /home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/robotmessagequeue/robot_spi.h \
+ ../src/robotmessagequeue/robot_command.h \
+ ../src/robotmessagequeue/../Options.h
 
-/home/jamie/eclipse/workspace/frc-3128-beagleboard/src/robotmessagequeue/SerialSender.h:
+/home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/robotmessagequeue/SerialSender.h:
 
-/home/jamie/eclipse/workspace/frc-3128-beagleboard/src/qualcomm/ThreadSafeQueue.h:
+/home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/common/ThreadSafeQueue.h:
 
 /home/jamie/libboost-host/include/boost/thread/mutex.hpp:
 
@@ -1091,7 +1092,7 @@ src/robotmessagequeue/SerialSender.d: \
 
 /home/jamie/libboost-host/include/boost/optional/optional_fwd.hpp:
 
-/home/jamie/eclipse/workspace/frc-3128-beagleboard/src/Configuration.h:
+/home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/Configuration.h:
 
 /home/jamie/libboost-host/include/boost/thread/thread.hpp:
 
@@ -1179,6 +1180,8 @@ src/robotmessagequeue/SerialSender.d: \
 
 /home/jamie/libboost-host/include/boost/thread/pthread/shared_mutex.hpp:
 
-/home/jamie/eclipse/workspace/frc-3128-beagleboard/src/robotmessagequeue/robot_spi.h:
+/home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/robotmessagequeue/robot_spi.h:
 
 ../src/robotmessagequeue/robot_command.h:
+
+../src/robotmessagequeue/../Options.h:
