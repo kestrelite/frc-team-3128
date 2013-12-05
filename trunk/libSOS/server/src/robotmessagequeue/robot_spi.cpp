@@ -10,6 +10,7 @@
 #include <sstream>
 #include <iomanip>
 #include "Configuration.h"
+#include "../Options.h"
 
 RoboSPI::RoboSPI()
 :_fstream()
@@ -20,7 +21,7 @@ RoboSPI::RoboSPI()
 	_fstream.open(SPI_DEV);
 	if(!_fstream)
 	{
-		debug_log("RoboSPI", "Error opening spi device");
+		std::cerr << "RoboSPI: Error opening spi device" << std::endl;
 	}
 }
 
@@ -34,11 +35,16 @@ RoboSPI::~RoboSPI()
 
 void RoboSPI::send(char toSend)
 {
-#ifdef DEBUG_SERIAL_OUTPUT
-	std::cout << std::hex << std::setw(2) << ((int) toSend) << " ";
-#else
-	_fstream << toSend;
-#endif
+	if(Options::instance()._fake)
+	{
+		std::cout << std::hex << std::setw(2) << ((int) toSend) << " ";
+	}
+
+	else
+	{
+		_fstream << toSend;
+	}
+
 }
 
 void RoboSPI::send(std::vector<char> toSend)

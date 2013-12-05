@@ -279,7 +279,7 @@ src/robotmessagequeue/robot_command.d: \
  /home/jamie/libboost-host/include/boost/range/rbegin.hpp \
  /home/jamie/libboost-host/include/boost/type_traits/is_base_and_derived.hpp \
  /home/jamie/libboost-host/include/boost/foreach_fwd.hpp \
- /home/jamie/eclipse/workspace/frc-3128-beagleboard/src/libSOS/SOSProtocol.h
+ ../src/robotmessagequeue/../libSOS/SOSProtocol.h
 
 ../src/robotmessagequeue/robot_command.h:
 
@@ -839,4 +839,4 @@ src/robotmessagequeue/robot_command.d: \
 
 /home/jamie/libboost-host/include/boost/foreach_fwd.hpp:
 
-/home/jamie/eclipse/workspace/frc-3128-beagleboard/src/libSOS/SOSProtocol.h:
+../src/robotmessagequeue/../libSOS/SOSProtocol.h:
