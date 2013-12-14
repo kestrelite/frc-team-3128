@@ -475,7 +475,7 @@ src/libSOS/SocketServer.d: ../src/libSOS/SocketServer.cpp \
  /home/jamie/libboost/include/boost/asio/windows/stream_handle_service.hpp \
  /home/jamie/libboost/include/boost/asio/write_at.hpp \
  /home/jamie/libboost/include/boost/asio/impl/write_at.hpp \
- /home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/qualcomm/ThreadSafeQueue.h \
+ /home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/common/ThreadSafeQueue.h \
  /home/jamie/libboost/include/boost/thread/mutex.hpp \
  /home/jamie/libboost/include/boost/thread/detail/platform.hpp \
  /home/jamie/libboost/include/boost/config/requires_threads.hpp \
@@ -617,7 +617,105 @@ src/libSOS/SocketServer.d: ../src/libSOS/SocketServer.cpp \
  /home/jamie/libboost/include/boost/utility/detail/in_place_factory_suffix.hpp \
  /home/jamie/libboost/include/boost/optional/optional_fwd.hpp \
  ../src/libSOS/SOSClient.h ../src/libSOS/SOSProtocol.h \
- /home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/Configuration.h
+ /home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/Configuration.h \
+ /home/jamie/libboost/include/boost/thread.hpp \
+ /home/jamie/libboost/include/boost/thread/thread.hpp \
+ /home/jamie/libboost/include/boost/thread/thread_only.hpp \
+ /home/jamie/libboost/include/boost/thread/detail/thread.hpp \
+ /home/jamie/libboost/include/boost/thread/detail/thread_heap_alloc.hpp \
+ /home/jamie/libboost/include/boost/thread/pthread/thread_heap_alloc.hpp \
+ /home/jamie/libboost/include/boost/thread/detail/make_tuple_indices.hpp \
+ /home/jamie/libboost/include/boost/thread/detail/invoke.hpp \
+ /home/jamie/libboost/include/boost/thread/detail/is_convertible.hpp \
+ /home/jamie/libboost/include/boost/ref.hpp \
+ /home/jamie/libboost/include/boost/bind.hpp \
+ /home/jamie/libboost/include/boost/bind/bind.hpp \
+ /home/jamie/libboost/include/boost/mem_fn.hpp \
+ /home/jamie/libboost/include/boost/bind/mem_fn.hpp \
+ /home/jamie/libboost/include/boost/get_pointer.hpp \
+ /home/jamie/libboost/include/boost/bind/mem_fn_template.hpp \
+ /home/jamie/libboost/include/boost/bind/mem_fn_cc.hpp \
+ /home/jamie/libboost/include/boost/visit_each.hpp \
+ /home/jamie/libboost/include/boost/bind/storage.hpp \
+ /home/jamie/libboost/include/boost/bind/bind_template.hpp \
+ /home/jamie/libboost/include/boost/bind/bind_cc.hpp \
+ /home/jamie/libboost/include/boost/bind/bind_mf_cc.hpp \
+ /home/jamie/libboost/include/boost/bind/bind_mf2_cc.hpp \
+ /home/jamie/libboost/include/boost/bind/placeholders.hpp \
+ /home/jamie/libboost/include/boost/io/ios_state.hpp \
+ /home/jamie/libboost/include/boost/io_fwd.hpp \
+ /home/jamie/libboost/include/boost/functional/hash.hpp \
+ /home/jamie/libboost/include/boost/functional/hash/hash.hpp \
+ /home/jamie/libboost/include/boost/functional/hash/hash_fwd.hpp \
+ /home/jamie/libboost/include/boost/functional/hash/detail/hash_float.hpp \
+ /home/jamie/libboost/include/boost/functional/hash/detail/float_functions.hpp \
+ /home/jamie/libboost/include/boost/functional/hash/detail/limits.hpp \
+ /home/jamie/libboost/include/boost/integer/static_log2.hpp \
+ /home/jamie/libboost/include/boost/integer_fwd.hpp \
+ /home/jamie/libboost/include/boost/functional/hash/extensions.hpp \
+ /home/jamie/libboost/include/boost/detail/container_fwd.hpp \
+ /home/jamie/libboost/include/boost/preprocessor/repetition/repeat_from_to.hpp \
+ /home/jamie/libboost/include/boost/thread/detail/thread_interruption.hpp \
+ /home/jamie/libboost/include/boost/thread/v2/thread.hpp \
+ /home/jamie/libboost/include/boost/thread/detail/thread_group.hpp \
+ /home/jamie/libboost/include/boost/thread/shared_mutex.hpp \
+ /home/jamie/libboost/include/boost/thread/pthread/shared_mutex.hpp \
+ /home/jamie/libboost/include/boost/thread/once.hpp \
+ /home/jamie/libboost/include/boost/thread/pthread/once_atomic.hpp \
+ /home/jamie/libboost/include/boost/detail/no_exceptions_support.hpp \
+ /home/jamie/libboost/include/boost/atomic.hpp \
+ /home/jamie/libboost/include/boost/atomic/atomic.hpp \
+ /home/jamie/libboost/include/boost/atomic/detail/config.hpp \
+ /home/jamie/libboost/include/boost/atomic/detail/platform.hpp \
+ /home/jamie/libboost/include/boost/atomic/detail/linux-arm.hpp \
+ /home/jamie/libboost/include/boost/atomic/detail/base.hpp \
+ /home/jamie/libboost/include/boost/atomic/detail/lockpool.hpp \
+ /home/jamie/libboost/include/boost/atomic/detail/cas32weak.hpp \
+ /home/jamie/libboost/include/boost/atomic/detail/type-classification.hpp \
+ /home/jamie/libboost/include/boost/type_traits/is_signed.hpp \
+ /home/jamie/libboost/include/boost/thread/recursive_mutex.hpp \
+ /home/jamie/libboost/include/boost/thread/pthread/recursive_mutex.hpp \
+ /home/jamie/libboost/include/boost/thread/tss.hpp \
+ /home/jamie/libboost/include/boost/thread/locks.hpp \
+ /home/jamie/libboost/include/boost/thread/lock_algorithms.hpp \
+ /home/jamie/libboost/include/boost/thread/barrier.hpp \
+ /home/jamie/libboost/include/boost/thread/future.hpp \
+ /home/jamie/libboost/include/boost/thread/detail/async_func.hpp \
+ /home/jamie/libboost/include/boost/utility/result_of.hpp \
+ /home/jamie/libboost/include/boost/preprocessor/repetition/enum_shifted_params.hpp \
+ /home/jamie/libboost/include/boost/preprocessor/facilities/intercept.hpp \
+ /home/jamie/libboost/include/boost/mpl/has_xxx.hpp \
+ /home/jamie/libboost/include/boost/mpl/aux_/type_wrapper.hpp \
+ /home/jamie/libboost/include/boost/mpl/aux_/yes_no.hpp \
+ /home/jamie/libboost/include/boost/mpl/aux_/config/arrays.hpp \
+ /home/jamie/libboost/include/boost/mpl/aux_/config/has_xxx.hpp \
+ /home/jamie/libboost/include/boost/mpl/aux_/config/msvc_typename.hpp \
+ /home/jamie/libboost/include/boost/utility/detail/result_of_iterate.hpp \
+ /home/jamie/libboost/include/boost/exception_ptr.hpp \
+ /home/jamie/libboost/include/boost/exception/detail/exception_ptr.hpp \
+ /home/jamie/libboost/include/boost/scoped_ptr.hpp \
+ /home/jamie/libboost/include/boost/smart_ptr/scoped_ptr.hpp \
+ /home/jamie/libboost/include/boost/type_traits/is_fundamental.hpp \
+ /home/jamie/libboost/include/boost/function.hpp \
+ /home/jamie/libboost/include/boost/preprocessor/iterate.hpp \
+ /home/jamie/libboost/include/boost/function/detail/prologue.hpp \
+ /home/jamie/libboost/include/boost/config/no_tr1/functional.hpp \
+ /home/jamie/libboost/include/boost/function/function_base.hpp \
+ /home/jamie/libboost/include/boost/integer.hpp \
+ /home/jamie/libboost/include/boost/type_traits/composite_traits.hpp \
+ /home/jamie/libboost/include/boost/type_traits/is_union.hpp \
+ /home/jamie/libboost/include/boost/function_equal.hpp \
+ /home/jamie/libboost/include/boost/function/function_fwd.hpp \
+ /home/jamie/libboost/include/boost/preprocessor/enum.hpp \
+ /home/jamie/libboost/include/boost/preprocessor/enum_params.hpp \
+ /home/jamie/libboost/include/boost/function/detail/function_iterate.hpp \
+ /home/jamie/libboost/include/boost/function/detail/maybe_include.hpp \
+ /home/jamie/libboost/include/boost/function/function_template.hpp \
+ /home/jamie/libboost/include/boost/scoped_array.hpp \
+ /home/jamie/libboost/include/boost/smart_ptr/scoped_array.hpp \
+ /home/jamie/libboost/include/boost/thread/future_error_code.hpp \
+ /home/jamie/libboost/include/boost/detail/atomic_undef_macros.hpp \
+ /home/jamie/libboost/include/boost/detail/atomic_redef_macros.hpp
 
 ../src/libSOS/SocketServer.h:
 
@@ -1573,7 +1671,7 @@ src/libSOS/SocketServer.d: ../src/libSOS/SocketServer.cpp \
 
 /home/jamie/libboost/include/boost/asio/impl/write_at.hpp:
 
-/home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/qualcomm/ThreadSafeQueue.h:
+/home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/common/ThreadSafeQueue.h:
 
 /home/jamie/libboost/include/boost/thread/mutex.hpp:
 
@@ -1860,3 +1958,199 @@ src/libSOS/SocketServer.d: ../src/libSOS/SocketServer.cpp \
 ../src/libSOS/SOSProtocol.h:
 
 /home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/Configuration.h:
+
+/home/jamie/libboost/include/boost/thread.hpp:
+
+/home/jamie/libboost/include/boost/thread/thread.hpp:
+
+/home/jamie/libboost/include/boost/thread/thread_only.hpp:
+
+/home/jamie/libboost/include/boost/thread/detail/thread.hpp:
+
+/home/jamie/libboost/include/boost/thread/detail/thread_heap_alloc.hpp:
+
+/home/jamie/libboost/include/boost/thread/pthread/thread_heap_alloc.hpp:
+
+/home/jamie/libboost/include/boost/thread/detail/make_tuple_indices.hpp:
+
+/home/jamie/libboost/include/boost/thread/detail/invoke.hpp:
+
+/home/jamie/libboost/include/boost/thread/detail/is_convertible.hpp:
+
+/home/jamie/libboost/include/boost/ref.hpp:
+
+/home/jamie/libboost/include/boost/bind.hpp:
+
+/home/jamie/libboost/include/boost/bind/bind.hpp:
+
+/home/jamie/libboost/include/boost/mem_fn.hpp:
+
+/home/jamie/libboost/include/boost/bind/mem_fn.hpp:
+
+/home/jamie/libboost/include/boost/get_pointer.hpp:
+
+/home/jamie/libboost/include/boost/bind/mem_fn_template.hpp:
+
+/home/jamie/libboost/include/boost/bind/mem_fn_cc.hpp:
+
+/home/jamie/libboost/include/boost/visit_each.hpp:
+
+/home/jamie/libboost/include/boost/bind/storage.hpp:
+
+/home/jamie/libboost/include/boost/bind/bind_template.hpp:
+
+/home/jamie/libboost/include/boost/bind/bind_cc.hpp:
+
+/home/jamie/libboost/include/boost/bind/bind_mf_cc.hpp:
+
+/home/jamie/libboost/include/boost/bind/bind_mf2_cc.hpp:
+
+/home/jamie/libboost/include/boost/bind/placeholders.hpp:
+
+/home/jamie/libboost/include/boost/io/ios_state.hpp:
+
+/home/jamie/libboost/include/boost/io_fwd.hpp:
+
+/home/jamie/libboost/include/boost/functional/hash.hpp:
+
+/home/jamie/libboost/include/boost/functional/hash/hash.hpp:
+
+/home/jamie/libboost/include/boost/functional/hash/hash_fwd.hpp:
+
+/home/jamie/libboost/include/boost/functional/hash/detail/hash_float.hpp:
+
+/home/jamie/libboost/include/boost/functional/hash/detail/float_functions.hpp:
+
+/home/jamie/libboost/include/boost/functional/hash/detail/limits.hpp:
+
+/home/jamie/libboost/include/boost/integer/static_log2.hpp:
+
+/home/jamie/libboost/include/boost/integer_fwd.hpp:
+
+/home/jamie/libboost/include/boost/functional/hash/extensions.hpp:
+
+/home/jamie/libboost/include/boost/detail/container_fwd.hpp:
+
+/home/jamie/libboost/include/boost/preprocessor/repetition/repeat_from_to.hpp:
+
+/home/jamie/libboost/include/boost/thread/detail/thread_interruption.hpp:
+
+/home/jamie/libboost/include/boost/thread/v2/thread.hpp:
+
+/home/jamie/libboost/include/boost/thread/detail/thread_group.hpp:
+
+/home/jamie/libboost/include/boost/thread/shared_mutex.hpp:
+
+/home/jamie/libboost/include/boost/thread/pthread/shared_mutex.hpp:
+
+/home/jamie/libboost/include/boost/thread/once.hpp:
+
+/home/jamie/libboost/include/boost/thread/pthread/once_atomic.hpp:
+
+/home/jamie/libboost/include/boost/detail/no_exceptions_support.hpp:
+
+/home/jamie/libboost/include/boost/atomic.hpp:
+
+/home/jamie/libboost/include/boost/atomic/atomic.hpp:
+
+/home/jamie/libboost/include/boost/atomic/detail/config.hpp:
+
+/home/jamie/libboost/include/boost/atomic/detail/platform.hpp:
+
+/home/jamie/libboost/include/boost/atomic/detail/linux-arm.hpp:
+
+/home/jamie/libboost/include/boost/atomic/detail/base.hpp:
+
+/home/jamie/libboost/include/boost/atomic/detail/lockpool.hpp:
+
+/home/jamie/libboost/include/boost/atomic/detail/cas32weak.hpp:
+
+/home/jamie/libboost/include/boost/atomic/detail/type-classification.hpp:
+
+/home/jamie/libboost/include/boost/type_traits/is_signed.hpp:
+
+/home/jamie/libboost/include/boost/thread/recursive_mutex.hpp:
+
+/home/jamie/libboost/include/boost/thread/pthread/recursive_mutex.hpp:
+
+/home/jamie/libboost/include/boost/thread/tss.hpp:
+
+/home/jamie/libboost/include/boost/thread/locks.hpp:
+
+/home/jamie/libboost/include/boost/thread/lock_algorithms.hpp:
+
+/home/jamie/libboost/include/boost/thread/barrier.hpp:
+
+/home/jamie/libboost/include/boost/thread/future.hpp:
+
+/home/jamie/libboost/include/boost/thread/detail/async_func.hpp:
+
+/home/jamie/libboost/include/boost/utility/result_of.hpp:
+
+/home/jamie/libboost/include/boost/preprocessor/repetition/enum_shifted_params.hpp:
+
+/home/jamie/libboost/include/boost/preprocessor/facilities/intercept.hpp:
+
+/home/jamie/libboost/include/boost/mpl/has_xxx.hpp:
+
+/home/jamie/libboost/include/boost/mpl/aux_/type_wrapper.hpp:
+
+/home/jamie/libboost/include/boost/mpl/aux_/yes_no.hpp:
+
+/home/jamie/libboost/include/boost/mpl/aux_/config/arrays.hpp:
+
+/home/jamie/libboost/include/boost/mpl/aux_/config/has_xxx.hpp:
+
+/home/jamie/libboost/include/boost/mpl/aux_/config/msvc_typename.hpp:
+
+/home/jamie/libboost/include/boost/utility/detail/result_of_iterate.hpp:
+
+/home/jamie/libboost/include/boost/exception_ptr.hpp:
+
+/home/jamie/libboost/include/boost/exception/detail/exception_ptr.hpp:
+
+/home/jamie/libboost/include/boost/scoped_ptr.hpp:
+
+/home/jamie/libboost/include/boost/smart_ptr/scoped_ptr.hpp:
+
+/home/jamie/libboost/include/boost/type_traits/is_fundamental.hpp:
+
+/home/jamie/libboost/include/boost/function.hpp:
+
+/home/jamie/libboost/include/boost/preprocessor/iterate.hpp:
+
+/home/jamie/libboost/include/boost/function/detail/prologue.hpp:
+
+/home/jamie/libboost/include/boost/config/no_tr1/functional.hpp:
+
+/home/jamie/libboost/include/boost/function/function_base.hpp:
+
+/home/jamie/libboost/include/boost/integer.hpp:
+
+/home/jamie/libboost/include/boost/type_traits/composite_traits.hpp:
+
+/home/jamie/libboost/include/boost/type_traits/is_union.hpp:
+
+/home/jamie/libboost/include/boost/function_equal.hpp:
+
+/home/jamie/libboost/include/boost/function/function_fwd.hpp:
+
+/home/jamie/libboost/include/boost/preprocessor/enum.hpp:
+
+/home/jamie/libboost/include/boost/preprocessor/enum_params.hpp:
+
+/home/jamie/libboost/include/boost/function/detail/function_iterate.hpp:
+
+/home/jamie/libboost/include/boost/function/detail/maybe_include.hpp:
+
+/home/jamie/libboost/include/boost/function/function_template.hpp:
+
+/home/jamie/libboost/include/boost/scoped_array.hpp:
+
+/home/jamie/libboost/include/boost/smart_ptr/scoped_array.hpp:
+
+/home/jamie/libboost/include/boost/thread/future_error_code.hpp:
+
+/home/jamie/libboost/include/boost/detail/atomic_undef_macros.hpp:
+
+/home/jamie/libboost/include/boost/detail/atomic_redef_macros.hpp:

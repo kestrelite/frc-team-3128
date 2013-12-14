@@ -552,7 +552,7 @@ src/main.d: ../src/main.cpp ../src/ProgramOptions.h \
  /home/jamie/libboost/include/boost/program_options/detail/convert.hpp \
  /home/jamie/libboost/include/boost/program_options/variables_map.hpp \
  /home/jamie/libboost/include/boost/program_options/version.hpp \
- /home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/qualcomm/ThreadSafeQueue.h \
+ /home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/common/ThreadSafeQueue.h \
  /home/jamie/libboost/include/boost/thread/mutex.hpp \
  /home/jamie/libboost/include/boost/thread/detail/platform.hpp \
  /home/jamie/libboost/include/boost/config/requires_threads.hpp \
@@ -2101,7 +2101,7 @@ src/main.d: ../src/main.cpp ../src/ProgramOptions.h \
 
 /home/jamie/libboost/include/boost/program_options/version.hpp:
 
-/home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/qualcomm/ThreadSafeQueue.h:
+/home/jamie/eclipse/workspace/libSOS-repo/frc-team-3128/libSOS/server/src/common/ThreadSafeQueue.h:
 
 /home/jamie/libboost/include/boost/thread/mutex.hpp:
 

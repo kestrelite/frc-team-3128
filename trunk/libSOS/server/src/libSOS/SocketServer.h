@@ -27,7 +27,7 @@ public:
 
 	volatile bool socketServerShouldStop;
 
-	void operator()(tcp::socket sock);
+	void operator()(tcp::socket * sock);
 
 	void server(unsigned short port);
 };
