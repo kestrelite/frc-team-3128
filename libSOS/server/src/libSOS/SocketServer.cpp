@@ -8,14 +8,15 @@
 #include "SocketServer.h"
 #include "SOSClient.h" // get the protocol define's
 #include <Configuration.h>
+#include <boost/thread.hpp>
 
 const int max_length = 2048;
 
-void SocketServer::operator()(tcp::socket sock)
+void SocketServer::operator()(tcp::socket * sock)
 {
 	try
 	{
-		std::cout << "Starting socket server on port " << sock.local_endpoint().address().to_string() << std::endl;
+		std::cout << "Starting socket server on port " << sock->local_endpoint().address().to_string() << std::endl;
 		for (;;)
 		{
 			//  Discard characters until we see START_TRANSMISSION.
@@ -27,11 +28,11 @@ void SocketServer::operator()(tcp::socket sock)
 				char data;
 
 				// Read one incoming byte.
-				sock.read_some(boost::asio::buffer(&data, sizeof(data)), error);
+				sock->read_some(boost::asio::buffer(&data, sizeof(data)), error);
 
 				if (error == boost::asio::error::eof)
 				{
-					std::cout << "Closing connection on port " << sock.local_endpoint().address().to_string() << std::endl;
+					std::cout << "Closing connection on port " << sock->local_endpoint().address().to_string() << std::endl;
 					return;
 				}
 
@@ -72,7 +73,7 @@ void SocketServer::operator()(tcp::socket sock)
 				char data;
 
 				//get another byte
-				sock.read_some(boost::asio::buffer(&data, sizeof(data)), second_error);
+				sock->read_some(boost::asio::buffer(&data, sizeof(data)), second_error);
 
 
 #ifdef DEBUG_SOCKET_RECEPTION
@@ -82,7 +83,7 @@ void SocketServer::operator()(tcp::socket sock)
 				// Connection closed cleanly by peer.
 				if (second_error == boost::asio::error::eof)
 				{
-					std::cout << "Closing connection on port " << sock.local_endpoint().address().to_string() << std::endl;
+					std::cout << "Closing connection on port " << sock->local_endpoint().address().to_string() << std::endl;
 					return;
 				}
 
@@ -113,6 +114,8 @@ void SocketServer::operator()(tcp::socket sock)
 	{
 		std::cerr << "Exception in thread: " << e.what() << "\n";
 	}
+
+	delete sock;
 }
 
 void SocketServer::server(unsigned short port)
@@ -125,9 +128,9 @@ void SocketServer::server(unsigned short port)
 
 	while(!socketServerShouldStop)
 	{
-		tcp::socket sock(io_service);
-		acceptor.accept(sock);
-		std::thread(*this, std::move(sock)).detach();
+		tcp::socket * sock = new tcp::socket(io_service);
+		acceptor.accept(*sock);
+		boost::thread(boost::bind(&SocketServer::operator(), this, _1), sock);
 	}
 
 	//shut down threads
@@ -139,7 +142,7 @@ SocketServer::SocketServer(int port, ThreadSafeQueue<std::vector<char> > * threa
  socketServerShouldStop(false)
 {
 
-	std::thread(&SocketServer::server, this, port).detach();
+	boost::thread(boost::bind(&SocketServer::server, this, port));
 
 }
 

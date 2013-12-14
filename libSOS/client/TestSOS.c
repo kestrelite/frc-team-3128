@@ -55,6 +55,18 @@ void main(int argc, char** argv)
   sos_send_short(sockfd, 4);
   sos_send_string(sockfd, "foo bar");
   sos_end_transmission(sockfd);
+  
+  printf("opening another connection...\n");
+  int sec_sockfd = sos_connect(argv[1], atoi(argv[2]));
+  
+  printf("sending an opcode (0x2C) on BOTH connections near-simultaneously\n");
+  sos_send_opcode(sockfd, 0x2C);
+  sos_send_opcode(sec_sockfd, 0x2C);
+  sos_end_transmission(sockfd);
+  sos_end_transmission(sec_sockfd);
+  
+  printf("closing second connection\n");
+  sos_disconnect(sec_sockfd);
 
   printf("closing connection...\n");
   sos_disconnect(sockfd);

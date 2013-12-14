@@ -16,6 +16,9 @@ RoboSPI::RoboSPI()
 :_fstream()
 {
 	debug_log("RoboSPI", "Turning on SPI driver...");
+
+	//spi 0 = /dev/spidev1.0
+	//spi 1 = /dev/spidev2.0
 	system("echo BB-SPI0-01 > /sys/devices/bone_capemgr.8/slots");
 	debug_log("RoboSPI", "Setting up SPI...");
 	_fstream.open(SPI_DEV);

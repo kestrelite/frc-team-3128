@@ -1,5 +1,5 @@
 /*
- * SocketClient.h
+ * SOSClient.h
  *
  * libSOS (Serial-Over-Socket) client
  *
