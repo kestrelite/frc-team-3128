@@ -8,10 +8,10 @@ import frc3128.EventManager.Event;
  */
 public abstract class MotorSpeedControl extends Event {
     private long lastRuntime = -1;
-    private MotorLink controlledMotor = null;
+    private MotorLinkV2 controlledMotor = null;
     
     public MotorSpeedControl() {}
-    protected void setControlledMotor(MotorLink m) {controlledMotor = m;}
+    protected void setControlledMotor(MotorLinkV2 m) {controlledMotor = m;}
     
     public abstract void    setControlTarget(double val);
     public abstract double  speedTimestep(double dt);
@@ -44,7 +44,7 @@ public abstract class MotorSpeedControl extends Event {
     
     public final void execute() {
         lastRuntime = System.currentTimeMillis();
-        this.controlledMotor.setSpeedControlled(this.speedTimestep(this.getLastRuntimeDist()/1000.0));
-        if(this.isComplete()) this.controlledMotor.deleteSpeedControl();
+        this.controlledMotor.setForcedSpeed(this.speedTimestep(this.getLastRuntimeDist()/1000.0));
+        if(this.isComplete()) this.controlledMotor.stopSpeedControl();
     }
 }
