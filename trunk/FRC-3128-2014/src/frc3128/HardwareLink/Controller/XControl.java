@@ -27,6 +27,10 @@ public class XControl extends Event {
         this.registerIterableEvent();
         DebugLog.log(DebugLog.LVL_DEBUG, this, "XBox Controller added self to event manager!");
     }
+    
+    public String getButtonKey(int buttonNum, boolean pressed) {
+        return "button" + this.port + "-" + XControlMap.getBtnString(buttonNum) + (pressed?"Down":"Up");
+    }
 
     /**
      * This function will be called automatically by the EventManager.<p><b>Do

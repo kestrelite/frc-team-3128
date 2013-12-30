@@ -28,6 +28,10 @@ public class AttackControl extends Event {
         DebugLog.log(DebugLog.LVL_DEBUG, this, "AttackControl added self to event manager!");
     }
     
+    public String getAtkCtrlListenerKey(int buttonNum, boolean pressed) {
+        return "button" + this.controlID + "-" + buttonNum + (pressed?"Down":"Up");
+    }
+    
     /**
      * This function will be called automatically by the EventManager.<p><b>Do
      * not invoke it.</b>
