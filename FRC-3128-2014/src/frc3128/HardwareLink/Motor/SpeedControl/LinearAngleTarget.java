@@ -19,7 +19,7 @@ public class LinearAngleTarget extends MotorSpeedControl {
     
     public void setControlTarget(double val) {this.targetAngle = val;}
 
-    public double speedTimestep(double dt) {
+    public double speedControlStep(double dt) {
         double currentAngle = RobotMath.normalizeAngle(this.getLinkedEncoderAngle());
         targetAngle = RobotMath.normalizeAngle(this.getLinkedEncoderAngle());
         double angleDiff = RobotMath.normalizeAngle(Math.abs(currentAngle - targetAngle));

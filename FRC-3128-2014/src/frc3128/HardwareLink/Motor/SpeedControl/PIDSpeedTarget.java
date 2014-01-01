@@ -10,7 +10,7 @@ import frc3128.HardwareLink.Motor.MotorSpeedControl;
 public class PIDSpeedTarget extends MotorSpeedControl {
     public void setControlTarget(double d) {}
 
-    public double speedTimestep(double dt) {return 0;}
+    public double speedControlStep(double dt) {return 0;}
 
     public void clearControlRun() {}
     
