@@ -9,7 +9,7 @@ import frc3128.Util.RobotMath;
  */
 class DriveControl extends Event {
     double angle = 0, speed = 0, rot = 0;
-    double dTx = 0, dTy = 0, dTheta = 0;
+    double dTx = 0, dTy = 0;
     double dXLF = 0, dXLB = 0, dXRF = 0, dXRB = 0, dYLF = 0, dYLB = 0, dYRF = 0, dYRB = 0;
     double dLF = 0, dLB = 0, dRF = 0, dRB = 0;
     double tLF = 0, tLB = 0, tRF = 0, tRB = 0;
@@ -17,17 +17,15 @@ class DriveControl extends Event {
     public void execute() {
         dTx = speed * Math.cos(RobotMath.dTR(angle));
         dTy = speed * Math.sin(RobotMath.dTR(angle));
-
-        dTheta = rot;
-
+        
         dXLF = dTx - rot;
-        dYLF = dTy - dTheta;
+        dYLF = dTy - rot;
         dXLB = dTx + rot;
-        dYLB = dTy - dTheta;
+        dYLB = dTy - rot;
         dXRF = dTx - rot;
-        dYRF = dTy + dTheta;
+        dYRF = dTy + rot;
         dXRB = dTx + rot;
-        dYRB = dTy + dTheta;
+        dYRB = dTy + rot;
 
         dLF = Math.sqrt(MathUtils.pow(dXLF, 2) + MathUtils.pow(dYLF, 2));
         dLB = Math.sqrt(MathUtils.pow(dXLB, 2) + MathUtils.pow(dYLB, 2));
@@ -46,7 +44,6 @@ class DriveControl extends Event {
 }
 
 public class SwerveDrive {
-
     public SwerveDrive() {
     }
 }
