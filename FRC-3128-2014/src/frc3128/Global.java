@@ -6,7 +6,7 @@ import frc3128.EventManager.ListenerManager;
 import frc3128.HardwareLink.Controller.XControl;
 
 public class Global {
-    public static XControl xBox;
+    public static XControl xControl1 = new XControl(1);
     
     public static void initializeRobot() {}
     public static void initializeDisabled() {}

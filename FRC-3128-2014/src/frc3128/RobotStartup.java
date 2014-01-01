@@ -73,7 +73,7 @@ public class RobotStartup extends IterativeRobot {
         EventManager.processEvents();
     }
 
-    // THIS IS YOUR SOUL.
+    // DO YOU REALLY WANT TO MODIFY YOUR SOUL?
     
     public void teleopPeriodic() {
         Watchdog.getInstance().feed();

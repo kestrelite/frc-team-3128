@@ -46,7 +46,7 @@ public class MotorLinkV2 {
     }
     
     public void setSpeedController(MotorSpeedControl spdControl) {
-        if(this.spdControl != null) DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller was changed when one already existed.");
+        //if(this.spdControl != null) DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller was changed when one already existed.");
         if(this.spdControlEnabled) {
             this.spdControlEnabled = false;
             this.spdControl.cancelEvent();
