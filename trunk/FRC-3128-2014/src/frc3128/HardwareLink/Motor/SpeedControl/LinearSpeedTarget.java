@@ -34,7 +34,7 @@ public class LinearSpeedTarget extends MotorSpeedControl {
     
     public void setControlTarget(double d) {tgtSpeed = d; lastEncoderAngle = this.getLinkedEncoderAngle();}
 
-    public double speedTimestep(double dt) {
+    public double speedControlStep(double dt) {
         dtAccum += dt; if(dtAccum < refreshTime) return this.getLinkedMotorSpeed();
 
         // Power * (current rate of change) / (target rate of change) => pow * (deg/sec) / (deg/sec) => pow

@@ -14,7 +14,7 @@ public abstract class MotorSpeedControl extends Event {
     protected void setControlledMotor(MotorLinkV2 m) {controlledMotor = m;}
     
     public abstract void    setControlTarget(double val);
-    public abstract double  speedTimestep(double dt);
+    public abstract double  speedControlStep(double dt);
     public abstract void    clearControlRun();
     public abstract boolean isComplete();
     
@@ -44,7 +44,7 @@ public abstract class MotorSpeedControl extends Event {
     
     public final void execute() {
         lastRuntime = System.currentTimeMillis();
-        this.controlledMotor.setForcedSpeed(this.speedTimestep(this.getLastRuntimeDist()/1000.0));
+        this.controlledMotor.setInternalSpeed(this.speedControlStep(this.getLastRuntimeDist()/1000.0));
         if(this.isComplete()) this.controlledMotor.stopSpeedControl();
     }
 }

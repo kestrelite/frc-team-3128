@@ -23,8 +23,11 @@ public class MotorLinkV2 {
     public MotorLinkV2(Jaguar jag, AbstractEncoder enc, MotorSpeedControl spd) {this(jag, enc); this.spdControl = spd;}
     public MotorLinkV2(Jaguar jag, AbstractEncoder enc, MotorSpeedControl spd, double powscl) {this(jag, enc, spd); this.speedScalar = powscl;}
 
-    protected void setForcedSpeed(double pow) {jag.set(pow*speedScalar*(motorReversed?-1.0:1.0));}
+    protected void setInternalSpeed(double pow) {jag.set(pow*speedScalar*(motorReversed?-1.0:1.0));}
 
+    public void setSpeedScalar(double powScl) {this.speedScalar = powScl;}
+    public double getSpeedScalar(double powScl) {return this.speedScalar;}
+    
     public double getSpeed() {return jag.get();}
     public void setSpeed(double pow) {
         if(this.spdControlEnabled) {
@@ -32,10 +35,8 @@ public class MotorLinkV2 {
             this.spdControlEnabled = false;
             DebugLog.log(DebugLog.LVL_WARN, this, "The motor power was set from outside the speed controller, so the controller was canceled.");
         }
-        setForcedSpeed(pow);
+        setInternalSpeed(pow);
     }
-
-    public void setSpeedScalar(double powScl) {this.speedScalar = powScl;}
     
     public void reverseMotor() {motorReversed = !motorReversed;}
     
@@ -54,10 +55,23 @@ public class MotorLinkV2 {
     }
     
     public double getEncoderAngle() {
-        if(encoder == null) {DebugLog.log(DebugLog.LVL_SEVERE, this, "Something attempted to get the encoder value, but no encoder exists."); return 0;}
+        if(encoder == null) {DebugLog.log(DebugLog.LVL_ERROR, this, "Something attempted to get the encoder value, but no encoder exists."); return -1;}
         return encoder.getAngle();
     }
 
+    public void setControlTarget(double target) {
+        if(this.spdControl == null) {
+            DebugLog.log(DebugLog.LVL_ERROR, this, "The speed controller's target was set, but none exists.");
+            return;
+        }
+        if(!this.spdControlEnabled) {
+            DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller's target was set, but it is not enabled.");
+            return;
+        }
+        
+        this.spdControl.setControlTarget(target);
+    }
+    
     public boolean speedControlRunning() {return this.spdControlEnabled;}
     public void setSpeedControlTarget(double target) {this.spdControl.setControlTarget(target);}
     public void startSpeedControl(double target) {
