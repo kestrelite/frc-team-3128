@@ -56,12 +56,9 @@ public class RobotMath {
             return MotorDir.NONE;
         return (retDir == 1 ? MotorDir.CW : MotorDir.CCW);
     }
-    public static double dTR(double angle) {
-        return Math.PI * angle / 180.0;
-    }
-    public static double rTD(double angle) {
-        return angle * (180.0 / Math.PI);
-    }
-    private RobotMath() {
-    }
+    public static double dTR(double angle) {return Math.PI * angle / 180.0;}
+    
+    public static double rTD(double angle) {return angle * (180.0 / Math.PI);}
+    
+    private RobotMath() {}
 }

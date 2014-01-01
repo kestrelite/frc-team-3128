@@ -16,6 +16,7 @@ public class XControl extends Event {
     private final int port;
     public double x1, y1, x2, y2, triggers;
     private boolean[] buttonsPressed = {false, false, false, false, false, false, false, false, false, false, false};
+    
     /**
      * Instantiates a new XBox controller and starts an Event for updates.
      * <p/>
