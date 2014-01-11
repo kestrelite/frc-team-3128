@@ -12,6 +12,7 @@
 
 #include <boost/optional/optional.hpp>
 #include <ostream>
+#include <vector>
 
 struct robot_command
 {

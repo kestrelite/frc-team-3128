@@ -8,12 +8,12 @@
 #ifndef SERIALSENDER_H_
 #define SERIALSENDER_H_
 
-#include <ThreadSafeQueue.h>
+#include <common/ThreadSafeQueue.h>
 #include <vector>
 #include <fstream>
 #include <Configuration.h>
 #include <boost/thread/thread.hpp>
-#include "robot_spi.h"
+#include "robot_transmitter.h"
 
 class SerialSender
 {
