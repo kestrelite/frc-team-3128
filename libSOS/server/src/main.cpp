@@ -7,8 +7,15 @@
 //don't define void main if we're running unit tests.
 #ifndef UNIT_TESTS
 #include <iostream>
+#include <memory>
 #include <boost/program_options.hpp>
-#include <common/ThreadSafeQueue.h>
+#include <ThreadSafeQueue/ThreadSafeQueue.h>
+#include <EzLogger/output/LogOutput.h>
+#include <LogMacros.h>
+#include <EzLogger/output/acceptors/BasicAcceptor.h>
+#include <EzLogger/output/formatters/JamiesPrettyFormatter.h>
+#include <EzLogger/output/writers/BasicWriter.h>
+
 #include "robotmessagequeue/SerialSender.h"
 #include "libSOS/SocketServer.h"
 #include "Options.h"
@@ -66,6 +73,10 @@ void init_program_options(int argc, char ** argv)
 
 int main(int argc, char ** argv)
 {
+	auto logOutput = std::make_shared<LogOutput<BasicAcceptor, JamiesPrettyFormatter, BasicWriter>>();
+	LogCore::instance().addOutput("stdio", logOutput);
+	LOG_INFO("Start.")
+
 	init_program_options(argc, argv);
 
 	ThreadSafeQueue<std::vector<char> > * threadSafeQueue = new ThreadSafeQueue<std::vector<char> >();
@@ -76,8 +87,7 @@ int main(int argc, char ** argv)
 
 	std::cout << "Done initializing\nHit any key followed by enter to stop program." << std::endl;
 
-	char foo;
-	std::cin >> foo;
+	std::cin.get();
 
 	//serialSender will shutdown
 	serialSender.shouldStop = true;
@@ -85,7 +95,7 @@ int main(int argc, char ** argv)
 	socketServer.socketServerShouldStop = true;
 
 	//let things do their stuff
-	sleep(250);
+	sleep(1);
 
 	return 0;
 }

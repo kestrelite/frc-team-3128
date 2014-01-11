@@ -12,17 +12,13 @@
 #include <string>
 #include <fstream>
 #include <Configuration.h>
+#include <boost/asio.hpp>
 
 
 class RobotTransmitter
 {
-	boost::asio::io_service io_service;
-
-	boost::asio::ip::tcp::resolver resolver(io_service); /
-	boost::asio::ip::tcp::resolver::query query(host, Options::);
-	boost::asio::ip::tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
-	boost::asio::ip::tcp::resolver::iterator end; // 4
-
+	boost::asio::io_service _io_service;
+	boost::asio::ip::tcp::socket _socket;
 public:
 
 	RobotTransmitter();
