@@ -9,6 +9,8 @@
 #ifndef OPTIONS_H_
 #define OPTIONS_H_
 
+#include <string>
+
 class Options
 {
 private:
@@ -21,7 +23,7 @@ public:
 
 	int _port;
 
-	int _crio_port;
+	std::string _crio_hostname;
 
 	bool _fake;
 

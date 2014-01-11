@@ -18,20 +18,22 @@
 #include "../Options.h"
 
 RobotTransmitter::RobotTransmitter()
+:_io_service(),
+ _socket(_io_service)
 {
 	debug_log("RoboSPI", "Turning on SPI driver...");
 
-	system("echo BB-SPI0-01 > /sys/devices/bone_capemgr.8/slots");
+	boost::asio::ip::tcp::resolver resolver(_io_service); // 2
+	boost::asio::ip::tcp::resolver::query query(Options::instance()._crio_hostname); // 3
+	boost::asio::ip::tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
+	boost::asio::ip::tcp::resolver::iterator end;
 
-	//open the spi device
-	_fp = fopen(SPI_DEV, "r+b");
-
-	//and get a file descriptor for it
-	_fd = fileno(_fp);
-
-	//spi 0 = /dev/spidev1.0
-	//spi 1 = /dev/spidev2.0
-	debug_log("RoboSPI", "Setting up SPI...");
+	boost::system::error_code error = boost::asio::error::host_not_found;
+	while(error && endpoint_iterator != end) // loop until we find a working endpoint
+	{
+	  _socket.close();
+	  _socket.connect(*endpoint_iterator++, error);
+	}
 
 	debug_log("RoboSPI", "Done.")
 }
@@ -41,7 +43,6 @@ RobotTransmitter::RobotTransmitter()
 
 RobotTransmitter::~RobotTransmitter()
 {
-	fclose(_fp);
 }
 
 void RobotTransmitter::send(std::string toSend)

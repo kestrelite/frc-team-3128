@@ -12,7 +12,7 @@
 #include <iostream>
 #include <utility>
 #include <boost/asio.hpp>
-#include <common/ThreadSafeQueue.h>
+#include <ThreadSafeQueue/ThreadSafeQueue.h>
 #include <vector>
 
 using boost::asio::ip::tcp;

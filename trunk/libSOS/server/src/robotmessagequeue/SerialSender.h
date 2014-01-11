@@ -8,7 +8,7 @@
 #ifndef SERIALSENDER_H_
 #define SERIALSENDER_H_
 
-#include <common/ThreadSafeQueue.h>
+#include <ThreadSafeQueue/ThreadSafeQueue.h>
 #include <vector>
 #include <fstream>
 #include <Configuration.h>

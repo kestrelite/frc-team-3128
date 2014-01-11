@@ -6,7 +6,7 @@
  */
 
 #include "SocketServer.h"
-#include "SOSClient.h" // get the protocol define's
+#include "SOSProtocol.h" // get the protocol define's
 #include <Configuration.h>
 #include <boost/thread.hpp>
 

@@ -10,7 +10,7 @@
 
 Options::Options()
 :_port(SOCKET_PORT),
- _crio_port(CRIO_PORT),
+ _crio_hostname(CRIO_HOSTNAME),
 _fake(false),
 #ifdef MAKE_ROBOT_COMMANDS
 _verbose(true) //this can be set in the config file or specified via command line
