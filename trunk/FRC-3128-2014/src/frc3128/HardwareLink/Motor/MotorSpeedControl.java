@@ -1,50 +1,71 @@
 package frc3128.HardwareLink.Motor;
 
 import frc3128.EventManager.Event;
+import frc3128.Util.DebugLog;
 
 /**
  *
  * @author Noah Sutton-Smolin
  */
 public abstract class MotorSpeedControl extends Event {
-    private long lastRuntime = -1;
-    private MotorLinkV2 controlledMotor = null;
-    
-    public MotorSpeedControl() {}
-    protected void setControlledMotor(MotorLinkV2 m) {controlledMotor = m;}
-    
-    public abstract void    setControlTarget(double val);
-    public abstract double  speedControlStep(double dt);
-    public abstract void    clearControlRun();
+
+    private long lastRuntime = 0;
+    private MotorLink controlledMotor = null;
+
+    public MotorSpeedControl() {
+    }
+
+    protected void setControlledMotor(MotorLink m) {
+        controlledMotor = m;
+    }
+
+    public abstract void setControlTarget(double val);
+
+    public abstract double speedControlStep(double dt);
+
+    public abstract void clearControlRun();
+
     public abstract boolean isComplete();
-    
+
     /**
-     * 
+     *
      * @return the last runtime in system clock milliseconds
      */
-    public final long getLastRuntime() {return lastRuntime;}
-    
+    public final long getLastRuntime() {
+        return lastRuntime;
+    }
+
     /**
-     * 
+     *
      * @return how long ago the event was last called (used for dT)
      */
-    public final long getLastRuntimeDist() {return System.currentTimeMillis() - lastRuntime;}
+    public final long getLastRuntimeDist() {
+        return System.currentTimeMillis() - lastRuntime;
+    }
 
     /**
-     * 
+     *
      * @return the encoder value of the controlled motor
      */
-    public double getLinkedEncoderAngle() {return this.controlledMotor.getEncoderAngle();}
+    public double getLinkedEncoderAngle() {
+        return this.controlledMotor.getEncoderAngle();
+    }
 
     /**
-     * 
+     *
      * @return the linked motor's speed
      */
-    public double getLinkedMotorSpeed() {return this.controlledMotor.getSpeed();}
-    
+    public double getLinkedMotorSpeed() {
+        return this.controlledMotor.getSpeed();
+    }
+
     public final void execute() {
         lastRuntime = System.currentTimeMillis();
-        this.controlledMotor.setInternalSpeed(this.speedControlStep(this.getLastRuntimeDist()/1000.0));
-        if(this.isComplete()) this.controlledMotor.stopSpeedControl();
+        if (this.isComplete()) {
+            DebugLog.log(DebugLog.LVL_DEBUG, this, "Entered Delete");
+            this.controlledMotor.setInternalSpeed(0);
+            this.controlledMotor.stopSpeedControl();
+        }
+        this.controlledMotor.setInternalSpeed(this.speedControlStep(System.currentTimeMillis() - lastRuntime));
     }
 }

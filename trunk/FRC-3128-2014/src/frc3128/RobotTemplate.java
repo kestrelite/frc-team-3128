@@ -27,7 +27,7 @@ import frc3128.Util.DebugLog;
  * 
  * @author Noah Sutton-Smolin
  */
-public class RobotStartup extends IterativeRobot {
+public class RobotTemplate extends IterativeRobot {
     public void robotInit() {
         if(Constants.INTRO_MESSAGE) 
             DebugLog.log(DebugLog.LVL_INFO, "RobotStartup", "Welcome to the FRC Team 3128 Event System!");
