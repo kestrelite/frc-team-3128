@@ -21,6 +21,8 @@ public:
 
 	int _port;
 
+	int _crio_port;
+
 	bool _fake;
 
 	bool _verbose;

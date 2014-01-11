@@ -8,6 +8,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include src/tests/subdir.mk
 -include src/robotmessagequeue/subdir.mk
 -include src/libSOS/subdir.mk
 -include src/subdir.mk
@@ -40,19 +41,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: frc-3128-beagleboard
+all: libSOS-server.exe
 
 # Tool invocations
-frc-3128-beagleboard: $(OBJS) $(USER_OBJS)
+libSOS-server.exe: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
-	@echo 'Invoking: Cross G++ Linker'
-	arm-linux-gnueabi-g++ -L/home/jamie/libboost/lib -o "frc-3128-beagleboard" $(OBJS) $(USER_OBJS) $(LIBS)
+	@echo 'Invoking: Cygwin C++ Linker'
+	g++  -o "libSOS-server.exe" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(C++_DEPS)$(OBJS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) frc-3128-beagleboard
+	-$(RM) $(C++_DEPS)$(OBJS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) libSOS-server.exe
 	-@echo ' '
 
 .PHONY: all clean dependents

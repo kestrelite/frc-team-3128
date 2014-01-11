@@ -5,7 +5,7 @@
  *      Author: jamie
  */
 
-#include <SerialSender.h>
+#include "SerialSender.h"
 #include "robot_command.h"
 #include "Configuration.h"
 #include "../Options.h"
@@ -19,7 +19,7 @@ SerialSender::SerialSender(ThreadSafeQueue<std::vector<char> > * inputQueue)
 void SerialSender::operator()(ThreadSafeQueue<std::vector<char> > * inputQueue)
 {
 	std::cout << "SerialSender initializing..." << std::endl;
-	RoboSPI roboSPI;
+	RobotTransmitter roboSPI;
 	while(!shouldStop)
 	{
 		std::vector<char> currentBytes = inputQueue->Dequeue();

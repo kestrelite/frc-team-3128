@@ -7,11 +7,13 @@
 //don't define void main if we're running unit tests.
 #ifndef UNIT_TESTS
 #include <iostream>
-#include "ProgramOptions.h"
-#include <ThreadSafeQueue.h>
-#include <SerialSender.h>
+#include <boost/program_options.hpp>
+#include <common/ThreadSafeQueue.h>
+#include "robotmessagequeue/SerialSender.h"
 #include "libSOS/SocketServer.h"
 #include "Options.h"
+
+namespace po = boost::program_options;
 
 void init_program_options(int argc, char ** argv)
 {
@@ -32,7 +34,7 @@ void init_program_options(int argc, char ** argv)
 
 	if (vm.count("help"))
 	{
-	    std::cout << desc << "\n";
+	    std::cout <<  desc << "\n";
 	    exit(1);
 	}
 
@@ -66,15 +68,13 @@ int main(int argc, char ** argv)
 {
 	init_program_options(argc, argv);
 
-	std::cout << "Hello World\n";
-
 	ThreadSafeQueue<std::vector<char> > * threadSafeQueue = new ThreadSafeQueue<std::vector<char> >();
 
 	SerialSender serialSender(threadSafeQueue);
 
 	SocketServer socketServer(Options::instance()._port, threadSafeQueue);
 
-	std::cout << "Hit any key followed by enter to stop program." << std::endl;
+	std::cout << "Done initializing\nHit any key followed by enter to stop program." << std::endl;
 
 	char foo;
 	std::cin >> foo;

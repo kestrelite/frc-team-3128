@@ -6,6 +6,9 @@
 //must be the same length as NUM_SOCKETS
 #define SOCKET_PORT 5952
 
+#define CRIO_HOSTNAME 192.168.10.10
+#define CRIO_PORT 2100
+
 //debug thread management
 #define DEBUG_THREADS
 //debug socket reception

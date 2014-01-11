@@ -10,10 +10,9 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <thread>
 #include <utility>
 #include <boost/asio.hpp>
-#include <ThreadSafeQueue.h>
+#include <common/ThreadSafeQueue.h>
 #include <vector>
 
 using boost::asio::ip::tcp;
