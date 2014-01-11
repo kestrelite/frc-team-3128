@@ -2,18 +2,18 @@ package frc3128.Drive;
 
 import com.sun.squawk.util.MathUtils;
 import frc3128.EventManager.Event;
-import frc3128.HardwareLink.Motor.MotorLinkV2;
+import frc3128.HardwareLink.Motor.MotorLink;
 import frc3128.Util.RobotMath;
 
 /**
  * @author Yousuf M. Soliman
  */
 public class SwerveDrive extends Event {
-    private final MotorLinkV2 driveLF, driveRF, driveLB, driveRB;
-    private final MotorLinkV2 angleLF, angleRF, angleLB, angleRB;
+    private final MotorLink driveLF, driveRF, driveLB, driveRB;
+    private final MotorLink angleLF, angleRF, angleLB, angleRB;
     
-    public SwerveDrive(MotorLinkV2 driveFL, MotorLinkV2 driveFR, MotorLinkV2 driveBL, MotorLinkV2 driveBR, 
-            MotorLinkV2 angleFL, MotorLinkV2 angleFR, MotorLinkV2 angleBL, MotorLinkV2 angleBR) {
+    public SwerveDrive(MotorLink driveFL, MotorLink driveFR, MotorLink driveBL, MotorLink driveBR, 
+            MotorLink angleFL, MotorLink angleFR, MotorLink angleBL, MotorLink angleBR) {
         this.driveLF = driveFL; this.driveRF = driveFR; this.driveLB = driveBL; this.driveRB = driveBR; 
         this.angleLF = angleFL; this.angleRF = angleFR; this.angleLB = angleBL; this.angleRB = angleBR;
         this.driveLF.startSpeedControl(0); this.driveRF.startSpeedControl(0);

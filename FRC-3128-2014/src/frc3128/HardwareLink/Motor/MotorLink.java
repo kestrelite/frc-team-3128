@@ -5,10 +5,9 @@ import frc3128.HardwareLink.Encoder.AbstractEncoder;
 import frc3128.Util.DebugLog;
 
 /**
-
- @author Noah Sutton-Smolin
+ * @author Noah Sutton-Smolin
  */
-public class MotorLinkV2 {
+public class MotorLink {
     private final Jaguar            jag;
     private       AbstractEncoder   encoder;
     private       MotorSpeedControl spdControl;
@@ -16,14 +15,16 @@ public class MotorLinkV2 {
     private       boolean           motorReversed = false;
     private       double            speedScalar = 1;
 
-    public MotorLinkV2(Jaguar jag) {this.jag = jag;}
-    public MotorLinkV2(Jaguar jag, double powscl) {this(jag); this.speedScalar = powscl;}
-    public MotorLinkV2(Jaguar jag, AbstractEncoder enc) {this(jag); this.encoder = enc;}
-    public MotorLinkV2(Jaguar jag, AbstractEncoder enc, double powscl) {this(jag, enc); this.speedScalar = powscl;}
-    public MotorLinkV2(Jaguar jag, AbstractEncoder enc, MotorSpeedControl spd) {this(jag, enc); this.spdControl = spd;}
-    public MotorLinkV2(Jaguar jag, AbstractEncoder enc, MotorSpeedControl spd, double powscl) {this(jag, enc, spd); this.speedScalar = powscl;}
+    public MotorLink(Jaguar jag) {this.jag = jag;}
+    public MotorLink(Jaguar jag, double powscl) {this(jag); this.speedScalar = powscl;}
+    public MotorLink(Jaguar jag, AbstractEncoder enc) {this(jag); this.encoder = enc;}
+    public MotorLink(Jaguar jag, AbstractEncoder enc, double powscl) {this(jag, enc); this.speedScalar = powscl;}
+    public MotorLink(Jaguar jag, AbstractEncoder enc, MotorSpeedControl spd) {this(jag, enc); this.spdControl = spd;}
+    public MotorLink(Jaguar jag, AbstractEncoder enc, MotorSpeedControl spd, double powscl) {this(jag, enc, spd); this.speedScalar = powscl;}
 
-    protected void setInternalSpeed(double pow) {jag.set(pow*speedScalar*(motorReversed?-1.0:1.0));}
+    protected void setInternalSpeed(double pow) {
+        jag.set(pow*speedScalar*(motorReversed?-1.0:1.0));
+    }
 
     public void setSpeedScalar(double powScl) {this.speedScalar = powScl;}
     public double getSpeedScalar(double powScl) {return this.speedScalar;}
@@ -78,6 +79,7 @@ public class MotorLinkV2 {
         this.spdControl.clearControlRun();
         this.spdControl.setControlTarget(target);
         this.spdControl.setControlledMotor(this);
+        this.spdControl.registerIterableEvent();
         this.spdControlEnabled = true;
     }
     public void stopSpeedControl() {
