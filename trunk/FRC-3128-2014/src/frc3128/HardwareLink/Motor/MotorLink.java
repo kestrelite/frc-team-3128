@@ -23,6 +23,9 @@ public class MotorLink {
     public MotorLink(Jaguar jag, AbstractEncoder enc, MotorSpeedControl spd, double powscl) {this(jag, enc, spd); this.speedScalar = powscl;}
 
     protected void setInternalSpeed(double pow) {
+        if(pow == 0) {
+            jag.disable();
+        }
         jag.set(pow*speedScalar*(motorReversed?-1.0:1.0));
     }
 
