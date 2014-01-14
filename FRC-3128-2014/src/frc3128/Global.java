@@ -37,9 +37,10 @@ public class Global {
     }
 
     public static void initializeTeleop() {
-        double x = angleMotor.getEncoderAngle()+90;
+        double x = (angleMotor.getEncoderAngle()+90 < 360 ? angleMotor.getEncoderAngle()+90 : angleMotor.getEncoderAngle()-90);
         angleMotor.startSpeedControl(x);
         DebugLog.log(DebugLog.LVL_DEBUG, "Global", "Target: "+x);
+        
     }
 
     public static void robotKill() {

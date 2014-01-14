@@ -28,14 +28,13 @@ public class PIDAngleTarget extends MotorSpeedControl {
     public double speedControlStep(double dt) {
         double error = this.getLinkedEncoderAngle() - this.targetAngle;
         double pGain = this.kP*(error);
-        intGain += this.kI*error*dt/1000.0;
         DebugLog.log(DebugLog.LVL_DEBUG, this, "dt: "+dt);
         DebugLog.log(DebugLog.LVL_DEBUG, this, "Error: "+error);
         DebugLog.log(DebugLog.LVL_DEBUG, this, "P: "+(pGain));
         DebugLog.log(DebugLog.LVL_DEBUG, this, "I: "+(this.kI*intGain));
         DebugLog.log(DebugLog.LVL_DEBUG, this, "PI: "+(pGain+intGain));
         DebugLog.log(DebugLog.LVL_DEBUG, this, "Current Angle: "+this.getLinkedEncoderAngle());
-        return pGain+this.kI*intGain;
+        return pGain;
     }
 
     public void clearControlRun() {
