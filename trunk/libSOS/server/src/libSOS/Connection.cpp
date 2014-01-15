@@ -16,7 +16,7 @@ Connection::Connection(std::shared_ptr<boost::asio::ip::tcp::socket> sock, std::
 {
 	//add ourselves to the registry of connections
 	//so we can be looked up by return ID
-	Options::instance()._returnCodeRegistry[_id] = std::shared_ptr<Connection>(this);
+	Options::instance()._returnCodeRegistry[_id] = this;
 
 	_threadPtr = std::unique_ptr<boost::thread>(new boost::thread(boost::ref(*this)));
 }
@@ -44,7 +44,6 @@ void Connection::operator()()
 			//empty optional, so the read operation probably returned EOF.
 			else
 			{
-				std::cout << "Closing connection on port " << _socket._socket->local_endpoint().address().to_string() << std::endl;
 				break;
 			}
 		}
@@ -54,8 +53,12 @@ void Connection::operator()()
 		std::cerr << "Exception in Connection " << std::hex << (unsigned int)(this) << " thread: " << e.what() << "\n";
 	}
 
+	std::cout << "Closing connection on " << _socket._socket->local_endpoint().address().to_string() << ":" << _socket._socket->local_endpoint().port() << std::endl;
+
 	//unregister us from the return code registry
 	//and free our memory
 	Options::instance()._returnCodeRegistry.erase(_id);
+
+	delete this;
 
 }
