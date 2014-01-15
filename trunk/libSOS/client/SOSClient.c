@@ -17,12 +17,23 @@
 #include "SOSClient.h"
 
 const char end_transmission = END_TRANSMISSION;
+#define MAX_LEN 10
 
 /*these functions from http://www.linuxhowtos.org/C_C++/socket.htm*/
 void error(const char *msg)
 {
     perror(msg);
     exit(0);
+}
+
+// get port, IPv4 or IPv6:
+in_port_t get_in_port(struct sockaddr *sa)
+{
+    if (sa->sa_family == AF_INET) {
+        return (((struct sockaddr_in*)sa)->sin_port);
+    }
+
+    return (((struct sockaddr_in6*)sa)->sin6_port);
 }
 
 int sos_connect(char* hostname, int port)
@@ -70,19 +81,38 @@ void sos_disconnect(int sockfd)
 
 void sos_send_opcode(int sockfd, char toSend)
 {
-	char transmission[3];
+	//before we do anything, we have to encode the id of this connection in the message
+	struct sockaddr remote_endpoint = {0};
+	socklen_t remote_endpoint_length = sizeof(remote_endpoint);
+	
+	getpeername(sockfd, (struct sockaddr *) &remote_endpoint, &remote_endpoint_length);
+	
+	in_port_t remote_port = get_in_port(&remote_endpoint);
+	
+	//turn the integer port into a string
+	char id_string[MAX_LEN];
+	snprintf(id_string, MAX_LEN, "%d", remote_port);
+	int length = strlen(id_string);
+	
+	char transmission[6 + MAX_LEN];
 	transmission[0] = START_TRANSMISSION;
-	transmission[1] = toSend;
-	transmission[2] = END_OPCODE;
+	transmission[1] = START_ID;
+	
+	strcpy(transmission + 2, id_string);
+	
+	//now send the opcode
+	transmission[length + 2] = END_ID;
+	transmission[length + 3] = START_OPCODE;
+	transmission[length + 4] = toSend;
+	transmission[length + 5] = END_OPCODE;
 	if(write(sockfd, transmission, sizeof(transmission)) != sizeof(transmission))
 	{
-		error("SOSClient: 72: Write Error");
+		error("SOSClient: Write Error");
 	}
 }
 
 void sos_send_short(int sockfd, short toSend)
 {
-#define MAX_LEN 10
 	/*output for the ascii short*/
 	char 	outputString[MAX_LEN];
 	int 	length;

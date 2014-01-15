@@ -1,3 +1,3 @@
 #!/bin/bash
 
-bbfcp ../client /home/root/libSOS
+scp -r ../client root@192.168.1.23:/root/libSOS

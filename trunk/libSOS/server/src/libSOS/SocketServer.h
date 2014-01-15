@@ -12,21 +12,21 @@
 #include <iostream>
 #include <utility>
 #include <boost/asio.hpp>
-#include <ThreadSafeQueue/ThreadSafeQueue.h>
 #include <vector>
+
+#include "Connection.h"
+#include <ThreadSafeQueue/ThreadSafeQueue.h>
 
 using boost::asio::ip::tcp;
 
 class SocketServer
 {
 private:
-	ThreadSafeQueue<std::vector<char> > * _outputQueue;
+	std::shared_ptr<ThreadSafeQueue<std::vector<char>>> _outputQueue;
 public:
-	SocketServer(int port, ThreadSafeQueue<std::vector<char> > * threadSafeQueue);
+	SocketServer(int port, std::shared_ptr<ThreadSafeQueue<std::vector<char>>> threadSafeQueue);
 
 	volatile bool socketServerShouldStop;
-
-	void operator()(tcp::socket * sock);
 
 	void server(unsigned short port);
 };
