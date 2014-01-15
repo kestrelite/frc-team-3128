@@ -36,7 +36,7 @@ public:
 
 	bool _verbose;
 
-	typedef std::map<in_port_t, std::shared_ptr<Connection>> ReturnCodeMapType;
+	typedef std::map<in_port_t, Connection *> ReturnCodeMapType;
 
 	ReturnCodeMapType _returnCodeRegistry;
 
