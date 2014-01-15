@@ -75,11 +75,11 @@ int main(int argc, char ** argv)
 {
 	auto logOutput = std::make_shared<LogOutput<BasicAcceptor, JamiesPrettyFormatter, BasicWriter>>();
 	LogCore::instance().addOutput("stdio", logOutput);
-	LOG_INFO("Start.")
+	LOG_INFO("Main", "Start.")
 
 	init_program_options(argc, argv);
 
-	ThreadSafeQueue<std::vector<char> > * threadSafeQueue = new ThreadSafeQueue<std::vector<char> >();
+	auto threadSafeQueue = std::make_shared<ThreadSafeQueue<std::vector<char>>>();
 
 	SerialSender serialSender(threadSafeQueue);
 
@@ -87,6 +87,7 @@ int main(int argc, char ** argv)
 
 	std::cout << "Done initializing\nHit any key followed by enter to stop program." << std::endl;
 
+	//wait for the user to tell us to stop
 	std::cin.get();
 
 	//serialSender will shutdown

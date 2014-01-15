@@ -19,10 +19,9 @@ class SerialSender
 {
 
 public:
-	void operator()(ThreadSafeQueue<std::vector<char> > * inputQueue);
+	void operator()(std::shared_ptr<ThreadSafeQueue<std::vector<char>>>);
 
-
-	SerialSender(ThreadSafeQueue<std::vector<char> > * inputQueue);
+	SerialSender(std::shared_ptr<ThreadSafeQueue<std::vector<char>>>);
 
 	volatile bool shouldStop;
 };

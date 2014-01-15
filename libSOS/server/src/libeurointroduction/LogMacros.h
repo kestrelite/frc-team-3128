@@ -13,16 +13,39 @@
 #include <memory>
 #include <Tags.h>
 
-#define LOG_DEBUG(args)																				\
+#define LOG_DEBUG(location, args)																				\
 {																									\
-	std::shared_ptr<LogMessage> logMessage(new LogMessage({{"time", currentTime()}, {"severity", "Debug"}}));	\
+	std::shared_ptr<LogMessage> logMessage(new LogMessage({{"time", currentTime()}, {"severity", "Debug"}, {"location", location}}));	\
 	logMessage->stream() << args;\
 	LogCore::instance().log(logMessage); \
 }
 
-#define LOG_INFO(args)																				\
+#define LOG_INFO(location, args)																				\
 {																									\
-	std::shared_ptr<LogMessage> logMessage(new LogMessage({{"time", currentTime()}, {"severity", "Info"}}));	\
+	std::shared_ptr<LogMessage> logMessage(new LogMessage({{"time", currentTime()}, {"severity", "Info"}, {"location", location}}));	\
+	logMessage->stream() << args;\
+	LogCore::instance().log(logMessage); \
+}
+
+#define LOG_UNUSUAL(location, args)																				\
+{																									\
+	std::shared_ptr<LogMessage> logMessage(new LogMessage({{"time", currentTime()}, {"severity", "Unusual"}, {"location", location}}));	\
+	logMessage->stream() << args;\
+	LogCore::instance().log(logMessage); \
+}
+
+
+#define LOG_RECOVERABLE(location, args)																				\
+{																									\
+	std::shared_ptr<LogMessage> logMessage(new LogMessage({{"time", currentTime()}, {"severity", "Recoverable"}, {"location", location}}));	\
+	logMessage->stream() << args;\
+	LogCore::instance().log(logMessage); \
+}
+
+
+#define LOG_FATAL(location, args)																				\
+{																									\
+	std::shared_ptr<LogMessage> logMessage(new LogMessage({{"time", currentTime()}, {"severity", "Fatal"}, {"location", location}}));	\
 	logMessage->stream() << args;\
 	LogCore::instance().log(logMessage); \
 }

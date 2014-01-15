@@ -10,13 +10,13 @@
 #include "Configuration.h"
 #include "../Options.h"
 
-SerialSender::SerialSender(ThreadSafeQueue<std::vector<char> > * inputQueue)
+SerialSender::SerialSender(std::shared_ptr<ThreadSafeQueue<std::vector<char>>> inputQueue)
 {
 	shouldStop = false;
 	boost::thread(*this, inputQueue);
 }
 
-void SerialSender::operator()(ThreadSafeQueue<std::vector<char> > * inputQueue)
+void SerialSender::operator()(std::shared_ptr<ThreadSafeQueue<std::vector<char>>> inputQueue)
 {
 	std::cout << "SerialSender initializing..." << std::endl;
 	RobotTransmitter roboSPI;
@@ -26,11 +26,11 @@ void SerialSender::operator()(ThreadSafeQueue<std::vector<char> > * inputQueue)
 
 		if(Options::instance()._verbose)
 		{
-			boost::optional<robot_command> * command = robot_command::factory(currentBytes);
+			boost::optional<robot_command> command = robot_command::factory(currentBytes);
 
-			if(command->is_initialized())
+			if(command.is_initialized())
 			{
-				std::cout << command->get();
+				std::cout << command.get();
 			}
 			else
 			{

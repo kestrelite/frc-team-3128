@@ -10,6 +10,12 @@
 #define OPTIONS_H_
 
 #include <string>
+#include <arpa/inet.h>
+#include <map>
+#include <memory>
+
+//forward-declare this so Connection can include it
+class Connection;
 
 class Options
 {
@@ -23,11 +29,16 @@ public:
 
 	int _port;
 
-	std::string _crio_hostname;
+	std::string _crio_ip;
+	std::string _crio_port;
 
 	bool _fake;
 
 	bool _verbose;
+
+	typedef std::map<in_port_t, std::shared_ptr<Connection>> ReturnCodeMapType;
+
+	ReturnCodeMapType _returnCodeRegistry;
 
 	static Options & instance();
 

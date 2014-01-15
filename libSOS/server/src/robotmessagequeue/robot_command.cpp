@@ -11,53 +11,82 @@
 #include "../libSOS/SOSProtocol.h"
 #include <sstream>
 
-robot_command::robot_command(int opcode)
-:_opcode(opcode),
+std::string string_to_hex(const std::string& input)
+{
+    static const char* const lut = "0123456789ABCDEF";
+    size_t len = input.length();
+
+    std::string output;
+    output.reserve(2 * len);
+    for (size_t i = 0; i < len; ++i)
+    {
+        const unsigned char c = input[i];
+        output.push_back(lut[c >> 4]);
+        output.push_back(lut[c & 15]);
+    }
+    return output;
+}
+
+robot_command::robot_command(in_port_t return_id, unsigned char opcode)
+:_return_id(return_id),
+_opcode(opcode),
  _data(),
  _extraString()
 {
 
 }
 
-robot_command::robot_command(unsigned char opcode, boost::optional<std::vector<signed short> > data)
-:_opcode(opcode),
+robot_command::robot_command(in_port_t return_id, unsigned char opcode, boost::optional<std::vector<signed short> > data)
+:_return_id(return_id),
+_opcode(opcode),
  _data(data),
  _extraString()
 {
 
 }
 
-robot_command::robot_command(unsigned char opcode, boost::optional<std::vector<signed short> > data, boost::optional<std::string> extraString)
-:_opcode(opcode),
+robot_command::robot_command(in_port_t return_id, unsigned char opcode, boost::optional<std::vector<signed short> > data, boost::optional<std::string> extraString)
+:_return_id(return_id),
+_opcode(opcode),
  _data(data),
  _extraString(extraString)
 {
 
 }
 
-boost::optional<robot_command> * robot_command::factory(std::vector<char> bytes)
+boost::optional<robot_command> robot_command::factory(std::vector<char> bytes)
 {
 	std::vector<char>::const_iterator 		currentBytePtr(bytes.begin());
+	in_port_t								return_id;
 	char 									opcode;
 	boost::optional<std::vector<short> > 	shorts;
 	boost::optional<std::string> 			string;
 
+
+	return_id = parse_return_id(currentBytePtr);
+
+	++currentBytePtr;
 	opcode = parse_opcode(currentBytePtr);
 
 	// Move into shorts if any.
 	++currentBytePtr;
 	// should NOW equal END_TRANSMISSION or START_SHORT_TRANSMISSION
 
+	std::cout << "currentBytePtr: " << std::hex << *currentBytePtr << std::endl;
+
+
+	std::cout << "command: " << string_to_hex(std::string(bytes.begin(), bytes.end())) << std::endl;
+
 	//returns an empty optional if there isn't a short
 	shorts = parse_shorts(currentBytePtr);
 
 	string = parse_string(currentBytePtr);
 
-	return new boost::optional<robot_command>(robot_command(opcode, shorts, string));
+	return boost::optional<robot_command>(robot_command(return_id, opcode, shorts, string));
 
 }
 
-char robot_command::parse_opcode(std::vector<char>::const_iterator & currentBytePtr)
+in_port_t robot_command::parse_return_id(std::vector<char>::const_iterator & currentBytePtr)
 {
 	if(*currentBytePtr != START_TRANSMISSION)
 	{
@@ -66,9 +95,26 @@ char robot_command::parse_opcode(std::vector<char>::const_iterator & currentByte
 		return 0x0;
 	}
 
-
 	// Have start of command.  Begin parsing.
 
+
+	++currentBytePtr;
+	//should now equal START_ID
+	++currentBytePtr;
+	//should now be the first byte of the ASCII-encoded id
+
+	std::vector<char> IDStorage;
+	while(*(++currentBytePtr) != END_ID)
+	{
+		IDStorage.push_back(*currentBytePtr);
+	}
+
+	//should now equl END_ID
+	return static_cast<in_port_t>(atoi(IDStorage.data()));
+}
+
+char robot_command::parse_opcode(std::vector<char>::const_iterator & currentBytePtr)
+{
 	// Get opcode.
 	++currentBytePtr;
 	char opcode = *currentBytePtr;
@@ -80,7 +126,6 @@ char robot_command::parse_opcode(std::vector<char>::const_iterator & currentByte
 		std::cerr << "RobotCommand: the end of the opcode command is incorrect\nShould be:" << END_OPCODE << " Was: " << *currentBytePtr << std::endl;
 		return 0x0;
 	}
-
 	return opcode;
 }
 
@@ -141,6 +186,9 @@ boost::optional<std::string> robot_command::parse_string(std::vector<char>::cons
 std::ostream & operator<<(std::ostream & leftOp, const robot_command rightOp)
 {
 	leftOp << "robot_command dump: --------------------------------------" << std::endl;
+
+	leftOp << "Return ID: " << std::dec << rightOp._return_id << std::endl;
+
 	leftOp << "Opcode: 0x" << std::hex << ((int)rightOp._opcode) << std::endl;
 	if(rightOp._data.is_initialized())
 	{
