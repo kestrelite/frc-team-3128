@@ -5,12 +5,14 @@
 
 #include "SOSClient.h"
 #include <stdio.h>
+#include <stdlib.h>
 
-void main(int argc, char** argv)
+int main(int argc, char** argv)
 {
   if(argc != 3)
   {
-    error("Usage: testsos <hostname> <port>\nex: testsos localhost 2987\n");
+	printf("Usage: testsos <hostname> <port>\nex: testsos localhost 2987\n");
+	return 1;
   }
   
   printf("trying to connect on %s:%s...\n", argv[1], argv[2]);
@@ -70,5 +72,7 @@ void main(int argc, char** argv)
 
   printf("closing connection...\n");
   sos_disconnect(sockfd);
+  
+  return 0;
   
 }
