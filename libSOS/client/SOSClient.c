@@ -14,6 +14,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <netinet/tcp.h>
+
 #include "SOSClient.h"
 
 const char end_transmission = END_TRANSMISSION;
@@ -57,11 +58,11 @@ int sos_connect(char* hostname, int port)
 		 	exit(0);
 	 }
 
-	 bzero((char *) &serv_addr, sizeof(serv_addr));
+	 memset((char *) &serv_addr, 0, sizeof(serv_addr));
 
 	 serv_addr.sin_family = AF_INET;
 
-	 bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
+	 memcpy((char *)&serv_addr.sin_addr.s_addr, (char *)server->h_addr, server->h_length);
 
 	 serv_addr.sin_port = htons(portno);
 
