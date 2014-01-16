@@ -105,7 +105,7 @@ void sos_send_opcode(int sockfd, char toSend)
 	transmission[length + 3] = START_OPCODE;
 	transmission[length + 4] = toSend;
 	transmission[length + 5] = END_OPCODE;
-	if(write(sockfd, transmission, sizeof(transmission)) != sizeof(transmission))
+	if(write(sockfd, transmission, (6 + length)) != (6 + length))
 	{
 		error("SOSClient: Write Error");
 	}
