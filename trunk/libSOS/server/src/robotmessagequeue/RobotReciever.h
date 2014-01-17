@@ -18,27 +18,25 @@
 #include <Options.h>
 #include <libSOS/Connection.h>
 
-class RobotReceiver
+class RobotRouter
 {
 private:
 
 	volatile bool _shouldStop;
 
 	//socket to read from
-	Socket _socketWrapper;
+	std::shared_ptr<ThreadSafeQueue<std::vector<char>>> _inputQueuePtr;
 
 	//thread for the run function
 	boost::thread _thread;
 
 	void run();
 
-	std::vector<char> readCommand();
-
 public:
 
-	RobotReceiver(std::shared_ptr<boost::asio::ip::tcp::socket> socket);
+	RobotRouter(std::shared_ptr<ThreadSafeQueue<std::vector<char>>> inputQueuePtr);
 
-	virtual ~RobotReceiver();
+	virtual ~RobotRouter();
 };
 
 #endif /* ROBOTRECEIVER_H_ */

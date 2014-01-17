@@ -29,8 +29,7 @@ public:
 
 	int _port;
 
-	std::string _crio_ip;
-	std::string _crio_port;
+	in_port_t  _crio_port;
 
 	bool _fake;
 

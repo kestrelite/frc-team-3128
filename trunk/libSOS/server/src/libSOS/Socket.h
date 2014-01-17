@@ -12,13 +12,6 @@
 #include <boost/asio.hpp>
 #include <ThreadSafeQueue/ThreadSafeQueue.h>
 
-//we need to use a common impl object so that socket can be copy-constructed;
-
-class SocketImpl
-{
-
-};
-
 class Socket
 {
 public:

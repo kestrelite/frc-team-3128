@@ -10,7 +10,6 @@
 
 Options::Options()
 :_port(SOCKET_PORT),
- _crio_ip(CRIO_IP),
  _crio_port(CRIO_PORT),
 _fake(false),
 #ifdef MAKE_ROBOT_COMMANDS
