@@ -8,27 +8,27 @@
 #include <robotmessagequeue/RobotReciever.h>
 #include <LogMacros.h>
 
-RobotReceiver::RobotReceiver(std::shared_ptr<boost::asio::ip::tcp::socket> socket)
+RobotRouter::RobotRouter(std::shared_ptr<ThreadSafeQueue<std::vector<char>>> inputQueuePtr)
 :_shouldStop(false),
- _socketWrapper(socket),
-_thread(&RobotReceiver::run, this)
+ _inputQueuePtr(inputQueuePtr),
+_thread(&RobotRouter::run, this)
 {
 
 }
 
-RobotReceiver::~RobotReceiver()
+RobotRouter::~RobotRouter()
 {
 
 }
 
-void RobotReceiver::run()
+void RobotRouter::run()
 {
 	LOG_INFO("RobotReciever", "Thread starting up...")
 	boost::system::error_code error;
 
 	while(!_shouldStop)
 	{
-		boost::optional<std::vector<char>> currentBytes = _socketWrapper.readNextCode();
+		boost::optional<std::vector<char>> currentBytes = _inputQueuePtr->Dequeue();
 
 		if(error)
 		{

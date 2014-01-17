@@ -6,8 +6,7 @@
 //must be the same length as NUM_SOCKETS
 #define SOCKET_PORT 5952
 
-#define CRIO_IP "127.0.0.1"
-#define CRIO_PORT "9543"
+#define CRIO_PORT 4545
 
 //debug thread management
 #define DEBUG_THREADS

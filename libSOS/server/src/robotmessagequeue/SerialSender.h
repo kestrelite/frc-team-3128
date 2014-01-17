@@ -13,7 +13,10 @@
 #include <fstream>
 #include <Configuration.h>
 #include <boost/thread/thread.hpp>
-#include "robot_transmitter.h"
+#include <boost/asio.hpp>
+
+#include <libSOS/Connection.h>
+#include "RobotReciever.h"
 
 class SerialSender
 {
