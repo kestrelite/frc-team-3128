@@ -1,11 +1,15 @@
 #ifndef ROBOTCOMMAND_H_
 #define ROBOTCOMMAND_H_
 
+//get in_port_t
+#include <arpa/inet.h>
+
 typedef struct RobotCommand
 {
+	in_port_t return_id;
 	char opcode;
-	char* string;
-	short shorts[]; // here we use GCC's zero-length arrays
+	char string[25];
+	short shorts[50];
 } RobotCommand;
 
 
