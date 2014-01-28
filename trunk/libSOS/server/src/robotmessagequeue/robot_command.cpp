@@ -72,9 +72,6 @@ boost::optional<robot_command> robot_command::factory(std::vector<char> bytes)
 	++currentBytePtr;
 	// should NOW equal END_TRANSMISSION or START_SHORT_TRANSMISSION
 
-	std::cout << "currentBytePtr: " << std::hex << *currentBytePtr << std::endl;
-
-
 	std::cout << "command: " << string_to_hex(std::string(bytes.begin(), bytes.end())) << std::endl;
 
 	//returns an empty optional if there isn't a short
@@ -98,8 +95,6 @@ in_port_t robot_command::parse_return_id(std::vector<char>::const_iterator & cur
 	// Have start of command.  Begin parsing.
 
 
-	++currentBytePtr;
-	//should now equal START_ID
 	++currentBytePtr;
 	//should now be the first byte of the ASCII-encoded id
 

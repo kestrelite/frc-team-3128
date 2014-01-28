@@ -30,6 +30,7 @@ void init_program_options(int argc, char ** argv)
 	    ("verbose", "show contents of commands")
 	    ("fake", "just print things instead of writing them to the serial port")
 	    ("port", po::value<int>(), "set port to start on\ndefault: 5952")
+	    ("crioport", po::value<int>(), "set port to start crio server on")
 	    ("help", "print this message")
 	;
 
@@ -57,11 +58,20 @@ void init_program_options(int argc, char ** argv)
 
 	if (vm.count("port"))
 	{
-	    std::cout << "Port was set to " << vm["port"].as<int>() << "." << std::endl;
-
 	    int port = vm["port"].as<int>();
+
+	    std::cout << "Port was set to " << port  << "." << std::endl;
 	    Options::instance()._port = port;
 	}
+
+	if (vm.count("crioport"))
+	{
+	    int crioport = vm["port"].as<int>();
+
+	    std::cout << "Crio port was set to " << crioport << "." << std::endl;
+	    Options::instance()._crio_port = crioport;
+	}
+
 	else
 	{
 		std::cout << "Port defaulting to " << SOCKET_PORT << std::endl;
