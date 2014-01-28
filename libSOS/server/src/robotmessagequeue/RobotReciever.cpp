@@ -18,7 +18,7 @@ _thread(&RobotRouter::run, this)
 
 RobotRouter::~RobotRouter()
 {
-
+	_thread.interrupt();
 }
 
 void RobotRouter::run()
@@ -28,7 +28,17 @@ void RobotRouter::run()
 
 	while(!_shouldStop)
 	{
-		boost::optional<std::vector<char>> currentBytes = _inputQueuePtr->Dequeue();
+		boost::optional<std::vector<char>> currentBytes;
+
+		try
+		{
+				currentBytes = _inputQueuePtr->Dequeue();
+		}
+		catch(boost::thread_interrupted & error)
+		{
+				//thread stopped
+				break;
+		}
 
 		if(error)
 		{
@@ -45,7 +55,7 @@ void RobotRouter::run()
 		}
 		if(Options::instance()._verbose)
 		{
-			std::cout << "Received command: " << command.get();
+			LOG_INFO( "SerialSender",  "Received command: " << command.get())
 		}
 
 		//find the connection denoted by this id and send the data on its socket

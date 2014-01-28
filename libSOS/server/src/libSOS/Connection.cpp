@@ -50,10 +50,10 @@ void Connection::operator()()
 	}
 	catch (std::exception& e)
 	{
-		std::cerr << "Exception in Connection " << std::hex << (unsigned int)(this) << " thread: " << e.what() << "\n";
+		LOG_RECOVERABLE("Connection",  "Exception in Connection " << std::hex << (unsigned int)(this) << " thread: " << e.what() << "\n");
 	}
 
-	std::cout << "Closing connection on " << _socket._socket->local_endpoint().address().to_string() << ":" << _socket._socket->local_endpoint().port() << std::endl;
+	LOG_INFO("Connection",  "Closing connection on " << _socket._socket->local_endpoint().address().to_string() << ":" << _socket._socket->local_endpoint().port() << std::endl);
 
 	//unregister us from the return code registry
 	//and free our memory
