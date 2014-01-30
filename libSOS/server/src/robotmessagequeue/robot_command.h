@@ -13,7 +13,11 @@
 #include <boost/optional/optional.hpp>
 #include <ostream>
 #include <vector>
+#ifdef _WIN32_WINNT
+typedef uint16_t 	in_port_t;
+#else
 #include <arpa/inet.h>
+#endif
 
 struct robot_command
 {

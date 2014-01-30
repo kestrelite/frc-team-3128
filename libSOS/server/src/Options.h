@@ -10,7 +10,11 @@
 #define OPTIONS_H_
 
 #include <string>
+#ifdef _WIN32_WINNT
+typedef uint16_t 	in_port_t;
+#else
 #include <arpa/inet.h>
+#endif
 #include <map>
 #include <memory>
 
