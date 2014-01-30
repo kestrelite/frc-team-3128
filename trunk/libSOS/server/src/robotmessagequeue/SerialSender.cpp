@@ -9,6 +9,7 @@
 #include "robot_command.h"
 #include "Configuration.h"
 #include "../Options.h"
+
 #include <LogMacros.h>
 
 SerialSender::SerialSender(std::shared_ptr<ThreadSafeQueue<std::vector<char>>> inputQueue)

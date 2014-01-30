@@ -11,7 +11,6 @@
 #include <ThreadSafeQueue/ThreadSafeQueue.h>
 #include <vector>
 #include <fstream>
-#include <Configuration.h>
 #include <boost/thread/thread.hpp>
 #include <boost/asio.hpp>
 

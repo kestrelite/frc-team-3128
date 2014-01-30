@@ -28,6 +28,7 @@
 #define SOCKETCLIENT_H_
 
 #include <netinet/in.h>
+#include <stdbool.h>
 
 struct sockaddr_in serv_addr;
 struct hostent *server;
@@ -46,5 +47,12 @@ void sos_send_string(int sockfd, char* toSend);
 
 void sos_end_transmission(int sockfd);
 
+//sees if there are bytes on the socket
+bool sos_check_waiting_command(int sockfd);
+
+//reads one command from the socket
+//blocks until a full command is read
+//returns the length of the array in length
+char * sos_read_next_command(int sockfd);
 
 #endif /* SOCKETCLIENT_H_ */

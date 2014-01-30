@@ -14,6 +14,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <netinet/tcp.h>
+#include <sys/ioctl.h>
 
 #include "SOSClient.h"
 
@@ -147,6 +148,43 @@ void sos_send_string(int sockfd, char* toSend)
 	}
 }
 
+bool sos_check_waiting_command(int sockfd)
+{
+	int bytes_waiting;
+	
+	//get number of bytes waiting
+	ioctl(sockfd, FIONREAD, &bytes_waiting);
+	
+	//if no bytes waiting, return false
+	return bytes_waiting;
+}
+
+char * sos_read_next_command(int sockfd)
+{
+	char* commandPtr = malloc(100 * sizeof(char));
+	size_t length = 50;
+	unsigned int counter = 0;
+	
+	do
+	{
+		if(read(sockfd, (commandPtr + counter), 1))
+		{
+			error("SOSClient: couldn't read from socket");
+		}
+		
+		++counter;
+		
+		//increase size of length
+		if(counter == length)
+		{
+			length += 100;
+			commandPtr = (char*) realloc(commandPtr, counter);
+		}
+	}
+	while(commandPtr[counter - 1] != END_TRANSMISSION);
+	
+	return commandPtr;
+}
 
 void sos_end_transmission(int sockfd)
 {

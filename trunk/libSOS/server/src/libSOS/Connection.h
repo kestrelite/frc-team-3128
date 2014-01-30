@@ -10,7 +10,11 @@
 
 #include <boost/thread/thread.hpp>
 #include <boost/asio.hpp>
+#ifdef _WIN32_WINNT
+typedef uint16_t 	in_port_t;
+#else
 #include <arpa/inet.h>
+#endif
 
 #include "Socket.h"
 #include <Options.h>

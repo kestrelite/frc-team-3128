@@ -1,7 +1,4 @@
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <netinet/tcp.h>
 #include <iostream>
 #include <vector>
 #include <boost/thread/thread.hpp>
@@ -24,23 +21,32 @@ void messageEchoer(std::shared_ptr<ThreadSafeQueue<std::vector<char>>> queue)
 
 int main(int argc, char** argv)
 {
-	if(argc != 2)
-	{
-		std::cerr << "Usage: criogenic <port>\nex: criogenic 2987\n";
-		exit(0);
-	}
-	
 	//set up logging
 	auto logOutput = std::make_shared<LogOutput<BasicAcceptor, JamiesPrettyFormatter, BasicWriter>>();
 	LogCore::instance().addOutput("stdio", logOutput);
 
 	auto queue = std::make_shared<ThreadSafeQueue<std::vector<char>>>();
-	SocketServer socketServer(atoi(argv[1]), queue);
+
+	boost::asio::io_service io_service;
+
+	auto socket = std::make_shared<boost::asio::ip::tcp::socket>(io_service);
+
+	boost::asio::ip::tcp::endpoint libSOS_endpoint(boost::asio::ip::address::from_string("127.0.0.1"), 4545, boost::asio::ip::tcp::v4());
+
+	try
+	{
+		socket->connect(libSOS_endpoint);
+	}
+	catch(std::exception & error)
+	{
+		LOG_FATAL("Criogenic", "Error Connecting: " << error.what());
+	}
+	auto connection = std::make_shared<Connection>(socket, queue);
+
 	boost::thread(&messageEchoer, queue);
 	
 	std::cout << "Hit any key followed by enter to stop program." << std::endl;
 
 	std::cin.get();
 
-	socketServer.socketServerShouldStop = true;
 }
