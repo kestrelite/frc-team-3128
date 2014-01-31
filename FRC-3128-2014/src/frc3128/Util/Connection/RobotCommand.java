@@ -28,11 +28,14 @@ public class RobotCommand
     
     public RobotCommand(int return_id, byte opcode)
     {
+        _return_id = return_id;
         _opcode = opcode;
     }
     
     public RobotCommand(int return_id, byte opcode, Vector shorts)
     {
+        _return_id = return_id;
+        
         _opcode = opcode;
 
         _shorts = shorts;
@@ -40,6 +43,8 @@ public class RobotCommand
 
     public RobotCommand(int return_id, byte opcode, Vector shorts, String extraString)
     {
+        _return_id = return_id;
+        
         _opcode = opcode;
 
         _shorts = shorts;
@@ -73,25 +78,17 @@ public class RobotCommand
             string += "\n";
         }
 
-        string += "Extra String: " + _extraString + "\n";
+        if(_extraString != null)
+        {
+            string += "Extra String: " + _extraString + "\n";
+        }
         return string;
     }
 
         //Parsing code originally written in c++, where it was a lot... better
     
-    public static RobotCommand factory(byte[] bytes)
-    {
-        //stone knives and bearskins...
-        Vector currentBytePtr = new Vector();
-        for(int counter = 0; counter < bytes.length; counter++)
-        {
-            currentBytePtr.addElement(Byte.valueOf(bytes[counter]));
-        }
-        
-        return factory(currentBytePtr);
-    }
 
-    public static RobotCommand factory(Vector currentBytePtr)
+    public static RobotCommand factory(byte[] currentBytePtr)
     {
         int return_id = parseReturnID(currentBytePtr);
         
@@ -108,29 +105,29 @@ public class RobotCommand
         //needs to be class scope so that it can keep its state after a function call
         static int iterator = 0;
 
-    static byte parseOpcode(Vector currentBytePtr)
+    static byte parseOpcode(byte[] currentBytePtr)
     {
         // Get opcode.
         ++iterator;
-        byte opcode = ((Byte)currentBytePtr.elementAt(iterator)).byteValue();
+        byte opcode = currentBytePtr[iterator];
         ++iterator;
 
-        if(((Byte)currentBytePtr.elementAt(iterator)).byteValue() != SOSProtocol.END_OPCODE)
+        if(currentBytePtr[iterator] != SOSProtocol.END_OPCODE)
         {
                 // Bail and return empty value.
-                DebugLog.log(DebugLog.LVL_ERROR, null, "RobotCommand: the end of the opcode command is incorrect\nShould be:" + SOSProtocol.END_OPCODE + " Was: " + ((Byte)currentBytePtr.elementAt(iterator)).byteValue());
+                DebugLog.log(DebugLog.LVL_ERROR, null, "RobotCommand: the end of the opcode command is incorrect\nShould be:" + SOSProtocol.END_OPCODE + " Was: " + currentBytePtr[iterator]);
                 return 0x0;
         }
 
         return opcode;
     }
     
-    static int parseReturnID(Vector currentBytePtr)
+    static int parseReturnID(byte[] currentBytePtr)
     {
-        if(((Byte)currentBytePtr.elementAt(iterator)).byteValue() != SOSProtocol.START_TRANSMISSION)
+        if(currentBytePtr[iterator] != SOSProtocol.START_TRANSMISSION)
         {
                 // Bail and return empty value.
-            DebugLog.log(DebugLog.LVL_ERROR, null, "RobotCommand: the header of the command is incorrect\nShould be:" + SOSProtocol.START_TRANSMISSION + " Was: " + currentBytePtr.elementAt(iterator));
+            DebugLog.log(DebugLog.LVL_ERROR, "RobotCommand", "the header of the command is incorrect\nShould be:" + SOSProtocol.START_TRANSMISSION + " Was: " + currentBytePtr[iterator]);
             return 0x0;
         }
 
@@ -138,42 +135,41 @@ public class RobotCommand
 
 
 	++iterator;
-	//should now equal START_ID
-	++iterator;
 	//should now be the first byte of the ASCII-encoded id
 
         //max of 10 ASCII digit short
         char[] returnBytesStorage = new char[10];
         int returnBytesIterator = 0;
 
-        while(((Byte)currentBytePtr.elementAt(++iterator)).byteValue() != SOSProtocol.END_SHORT)
+        while(currentBytePtr[++iterator] != SOSProtocol.END_ID)
         {
-                returnBytesStorage[returnBytesIterator] = (char)(((Byte)currentBytePtr.elementAt(iterator)).byteValue());
+                returnBytesStorage[returnBytesIterator] = (char)currentBytePtr[iterator];
                 ++returnBytesIterator;
         }
-
-        return Integer.valueOf(String.valueOf(returnBytesStorage)).intValue();
+        
+        System.out.println("\"" + String.valueOf(returnBytesStorage, 0, returnBytesIterator + 1) + "\"");
+        return Integer.parseInt(String.valueOf(returnBytesStorage, 0, returnBytesIterator + 1));
     }
 
-static Vector parseShorts(Vector currentBytePtr)
+static Vector parseShorts(byte[] currentBytePtr)
 {
-	if(((Byte)currentBytePtr.elementAt(iterator)).byteValue() == SOSProtocol.START_SHORT_TRANSMISSION)
+	if(currentBytePtr[iterator] == SOSProtocol.START_SHORT_TRANSMISSION)
 	{
 		Vector shortVector = new Vector();
 
 		 // Loop until we don't recieve the start of a short
-		while(((Byte)currentBytePtr.elementAt(iterator)).byteValue() == SOSProtocol.START_SHORT_TRANSMISSION)
+		while(currentBytePtr[iterator] == SOSProtocol.START_SHORT_TRANSMISSION)
 		{
                     //max of 10 ASCII digit short
 			char[] shortBytesStorage = new char[10];
                         int shortBytesIterator = 0;
                         
-			while(((Byte)currentBytePtr.elementAt(++iterator)).byteValue() != SOSProtocol.END_SHORT)
+			while(currentBytePtr[iterator] != SOSProtocol.END_SHORT)
 			{
-				shortBytesStorage[shortBytesIterator] = (char)(((Byte)currentBytePtr.elementAt(iterator)).byteValue());
+				shortBytesStorage[shortBytesIterator] = (char)(currentBytePtr[iterator]);
                                 ++shortBytesIterator;
 			}
-                        
+                         ++shortBytesIterator;
 			shortVector.addElement(Integer.valueOf(String.valueOf(shortBytesStorage)));
 			++iterator;
 		}
@@ -187,14 +183,14 @@ static Vector parseShorts(Vector currentBytePtr)
 
 }
 
-static String parseString(Vector currentBytePtr)
+static String parseString(byte[] currentBytePtr)
 {
-	if(((Byte)currentBytePtr.elementAt(iterator)).byteValue() == SOSProtocol.START_STRING_TRANSMISSION)
+	if(currentBytePtr[iterator] == SOSProtocol.START_STRING_TRANSMISSION)
 	{
 		String stringstream = new String();
-		while(((Byte)currentBytePtr.elementAt(++iterator)).byteValue()!= SOSProtocol.END_STRING)
+		while(currentBytePtr[++iterator]!= SOSProtocol.END_STRING)
 		{
-        		stringstream += ((Byte)currentBytePtr.elementAt(iterator)).byteValue();
+        		stringstream += currentBytePtr[iterator];
 		}
 
 		return stringstream;
