@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package frc3128.Util.Connection;
 
 import com.sun.squawk.util.Arrays;
@@ -17,7 +12,7 @@ import javax.microedition.io.SocketConnection;
 /**
  * Connects over SPI with the Beaglebone
  *
- * @author jamie
+ * @author Jamie
  */
 public class Beaglebone extends Event {
 

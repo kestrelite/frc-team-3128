@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package frc3128.Util.Connection;
 
 /**
  *
- * @author jamie
+ * @author Jamie
  */
-public class SOSProtocol 
-{
+public class SOSProtocol {
     static char START_TRANSMISSION = 0x01;
     static char START_ID = 0x05;
     static char END_ID = 0x0A;
