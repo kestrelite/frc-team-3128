@@ -1,6 +1,5 @@
 package frc3128.Util;
 
-import com.sun.squawk.util.MathUtils;
 import frc3128.HardwareLink.Motor.MotorDir;
 
 /**

@@ -12,7 +12,7 @@ import java.util.Vector;
  *
  * @author Yousuf Soliman
  */
-public class RbtCommandController extends Event {
+public class RobotCommandController extends Event {
     private Beaglebone b;
     public RobotCommand Command;
     /**
@@ -21,7 +21,7 @@ public class RbtCommandController extends Event {
      * <p/>
      * @param port the port of the controller
      */
-    public RbtCommandController() {
+    public RobotCommandController() {
         b = new Beaglebone();
         this.registerIterableEvent();
         DebugLog.log(DebugLog.LVL_DEBUG, this, "Robot Command Controller added self to event manager!");
