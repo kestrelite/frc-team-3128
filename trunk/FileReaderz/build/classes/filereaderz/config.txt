@@ -1,4 +1,0 @@
-var,double,mars,1.5
-var,double,hashtag,2.9342
-var,filereaderz.ClassForStuff,something,$hashtag
-execute,$something,sayThings,$mars
