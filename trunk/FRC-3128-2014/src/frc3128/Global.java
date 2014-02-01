@@ -5,18 +5,23 @@ import frc3128.EventManager.EventManager;
 import frc3128.EventManager.ListenerManager;
 
 import frc3128.Util.Connection.Beaglebone;
+import frc3128.Util.DebugLog;
 
 public class Global {
-    public static void initializeRobot() {}
+
+    public static void initializeRobot() {
+        DebugLog.setLogLevel(DebugLog.LVL_DEBUG);
+    }
+
     public static void initializeDisabled() {}
+
     public static void initializeAuto() {}
-    public static void initializeTeleop() 
-    {
-        
+
+    public static void initializeTeleop() {
         Beaglebone beaglebone = new Beaglebone();
         beaglebone.registerIterableEvent();
     }
- 
+
     public static void robotKill() {
         Watchdog.getInstance().kill();
     }
@@ -26,6 +31,5 @@ public class Global {
         ListenerManager.dropAllListeners();
     }
 
-    private Global() {
-    }
+    private Global() {}
 }
