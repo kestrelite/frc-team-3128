@@ -41,6 +41,7 @@ public class Beaglebone extends Event {
             DebugLog.log(DebugLog.LVL_SEVERE, this, "Error connecting: " + ex.getMessage());
         }
         DebugLog.log(DebugLog.LVL_INFO, this, "Connected to beaglebone.");
+        this.registerIterableEvent();
     }
 
     public synchronized void connect() throws IOException {
@@ -72,6 +73,17 @@ public class Beaglebone extends Event {
             DebugLog.log(DebugLog.LVL_ERROR, ex, "Connection Error!");
             ex.printStackTrace();
         }
+    }
+
+    public RobotCommand getCmd() {
+        readCommandBytes();
+        //if there's one complete command in storage, parse it and use it
+        if ((placeInCommandInProgress > -1) && (commandInProgress[placeInCommandInProgress] == SOSProtocol.END_TRANSMISSION)) {
+            RobotCommand command = RobotCommand.factory(commandInProgress);
+            placeInCommandInProgress = -1;
+            return command;
+        }
+        return null;
     }
 
     public void execute() {

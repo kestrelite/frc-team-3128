@@ -17,10 +17,10 @@ public class RobotCommand {
     //but we need to round up here
     //java, folks
 
-    int _return_id;
-    byte _opcode;
-    Vector _shorts;
-    String _extraString;
+    public int _return_id;
+    public byte _opcode;
+    public Vector _params;
+    public String _extraString;
 
     public RobotCommand(int return_id, byte opcode) {
         _return_id = return_id;
@@ -30,13 +30,13 @@ public class RobotCommand {
     public RobotCommand(int return_id, byte opcode, Vector shorts) {
         _return_id = return_id;
         _opcode = opcode;
-        _shorts = shorts;
+        _params = shorts;
     }
 
     public RobotCommand(int return_id, byte opcode, Vector shorts, String extraString) {
         _return_id = return_id;
         _opcode = opcode;
-        _shorts = shorts;
+        _params = shorts;
         _extraString = extraString;
     }
 
@@ -50,10 +50,10 @@ public class RobotCommand {
         string += "Return ID: " + _return_id + "\n";
         string += "Opcode: " + Integer.toHexString(_opcode) + "\n";
         //Print out each short
-        if (_shorts != null) {
+        if (_params != null) {
             string += "Shorts: ";
-            for (int counter = 0; counter < _shorts.size(); ++counter) {
-                string += _shorts.elementAt(counter) + " ";
+            for (int counter = 0; counter < _params.size(); ++counter) {
+                string += _params.elementAt(counter) + " ";
             }
             string += "\n";
         }
@@ -99,10 +99,7 @@ public class RobotCommand {
             DebugLog.log(DebugLog.LVL_ERROR, "RobotCommand", "the header of the command is incorrect\nShould be:" + SOSProtocol.START_TRANSMISSION + " Was: " + currentBytePtr[iterator]);
             return 0x0;
         }
-
         // Have start of command.  Begin parsing.
-
-
         ++iterator;
         //should now be the first byte of the ASCII-encoded id
 
@@ -149,5 +146,9 @@ public class RobotCommand {
             return stringstream;
         }
         return null;
+    }
+    
+    public String params() {
+        return (this._params == null ? "" : this._params.toString());
     }
 }
