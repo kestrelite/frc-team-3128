@@ -75,7 +75,7 @@ public class DebugLog {
         DebugLog.totalItems++;
         DebugLog.totalItemsType[level]++;
 
-        if (DebugLog.totalItems % Constants.DEBUGLOG_INFO_DISPLAYFREQ == 0) {
+        if (DebugLog.totalItems % Constants.DEBUGLOG_INFO_DISPLAYFREQ != 0 && false) {
             int currLogLevel = DebugLog.logDetail;
             DebugLog.logDetail = 3;
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has skipped " + skippedItems + ", has displayed " + (totalItems-skippedItems) + " over " + ((System.currentTimeMillis() - DebugLog.startTime) / 1000.0) + " msec.");
