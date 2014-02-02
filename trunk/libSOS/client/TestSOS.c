@@ -3,9 +3,11 @@
  * attempts to use SOSClient to communicate with the server
  */
 
+#include "RobotCommand.h"
 #include "SOSClient.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 int main(int argc, char** argv)
 {
@@ -66,6 +68,22 @@ int main(int argc, char** argv)
   sos_send_opcode(sec_sockfd, 0x2C);
   sos_end_transmission(sockfd);
   sos_end_transmission(sec_sockfd);
+    
+  sleep(1);
+  
+  for(int commands_printed = 0; commands_printed < 8; commands_printed++)
+  {
+	  char* commandBytes = sos_read_next_command(sockfd);
+	  
+	  printf("parsing command %d", commands_printed);
+	  
+	  RobotCommand * commandPtr = rc_factory(commandBytes);
+	  free(commandBytes);
+	  
+	  rc_print(commandPtr);
+	  
+	  rc_free(commandPtr);
+  }
   
   printf("closing second connection\n");
   sos_disconnect(sec_sockfd);

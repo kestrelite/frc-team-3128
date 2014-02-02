@@ -1,0 +1,1 @@
+testsos localhost 5952

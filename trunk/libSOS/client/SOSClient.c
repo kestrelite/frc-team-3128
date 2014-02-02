@@ -87,9 +87,11 @@ void sos_send_opcode(int sockfd, char toSend)
 	struct sockaddr remote_endpoint = {0};
 	socklen_t remote_endpoint_length = sizeof(remote_endpoint);
 	
-	getpeername(sockfd, (struct sockaddr *) &remote_endpoint, &remote_endpoint_length);
+	getsockname(sockfd, (struct sockaddr *) &remote_endpoint, &remote_endpoint_length);
 	
-	in_port_t remote_port = get_in_port(&remote_endpoint);
+	in_port_t remote_port = ntohs(get_in_port(&remote_endpoint));
+	
+	printf("On port %u\n", remote_port);
 	
 	//turn the integer port into a string
 	char id_string[MAX_LEN];
@@ -159,25 +161,29 @@ bool sos_check_waiting_command(int sockfd)
 	return bytes_waiting;
 }
 
+#define SIZE_OF_STRING_EXPANSION 50
+
 char * sos_read_next_command(int sockfd)
 {
-	char* commandPtr = malloc(100 * sizeof(char));
-	size_t length = 50;
+	char* commandPtr = malloc(SIZE_OF_STRING_EXPANSION * sizeof(char));
+	size_t length = SIZE_OF_STRING_EXPANSION;
 	unsigned int counter = 0;
 	
 	do
 	{
-		if(read(sockfd, (commandPtr + counter), 1))
+		if(read(sockfd, (commandPtr + counter), 1) != 1)
 		{
 			error("SOSClient: couldn't read from socket");
 		}
+		
+		printf("%02x\n", commandPtr[counter]);
 		
 		++counter;
 		
 		//increase size of length
 		if(counter == length)
 		{
-			length += 100;
+			length += SIZE_OF_STRING_EXPANSION;
 			commandPtr = (char*) realloc(commandPtr, counter);
 		}
 	}
@@ -190,7 +196,7 @@ void sos_end_transmission(int sockfd)
 {
 	if(write(sockfd, &end_transmission, 1) != 1)
 	{
-		error("SOSClient: 120: Write Error");
+		error("SOSClient: Write Error");
 	}
 }
 
