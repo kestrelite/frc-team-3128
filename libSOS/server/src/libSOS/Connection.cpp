@@ -12,8 +12,9 @@ Connection::Connection(std::shared_ptr<boost::asio::ip::tcp::socket> sock, std::
 :_outputQueue(outputQueue),
  _socket(sock),
  _threadPtr(),
- _id(sock->local_endpoint().port())
+ _id(sock->remote_endpoint().port())
 {
+	LOG_DEBUG("Connection", "My ID is " << std::dec << _id);
 	//add ourselves to the registry of connections
 	//so we can be looked up by return ID
 	Options::instance()._returnCodeRegistry[_id] = this;

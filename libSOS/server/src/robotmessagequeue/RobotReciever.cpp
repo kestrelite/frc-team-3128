@@ -65,6 +65,13 @@ void RobotRouter::run()
 		if(returnConnectionIterator == Options::instance()._returnCodeRegistry.end())
 		{
 			LOG_RECOVERABLE("RobotReceiver", "return id " << command.get()._return_id << " not in registry.\nThe previous code isn't going to get where it was going.")
+			for(Options::ReturnCodeMapType::value_type currentPair : Options::instance()._returnCodeRegistry)
+			{
+				LOG_DEBUG("RobotRouter", "registry: " << std::dec << currentPair.first)
+			}
+
+			//if not found, get next command and try again
+			break;
 		}
 
 		(*returnConnectionIterator).second->_socket.write(*currentBytes);

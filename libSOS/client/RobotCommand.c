@@ -69,8 +69,8 @@ short * parse_shorts(char * currentBytePtr, int * iterator, unsigned int * short
 
 	if(*(currentBytePtr + *(iterator)) == START_SHORT_TRANSMISSION)
 	{
-		short * shortVector = NULL;
-		*(shorts_len) = 0;
+		short * shortVector = malloc(sizeof(short));
+		*(shorts_len) = 1;
 		
 		 // Loop until we don't receive the start of a short
 		while(*(currentBytePtr + *(iterator)) == START_SHORT_TRANSMISSION)
@@ -126,13 +126,13 @@ char* parse_string(char * currentBytePtr, int * iterator)
 
 }
 
-RobotCommand * factory(char * currentBytePtr)
+RobotCommand * rc_factory(char * currentBytePtr)
 {
 	int 									iterator = 0;
 	in_port_t								return_id;
 	char 									opcode;
 	short *			 						shorts = NULL;
-	unsigned int							shorts_len = 0;
+	size_t									shorts_len = 0;
 	char* 									string = NULL;
 
 
@@ -146,10 +146,53 @@ RobotCommand * factory(char * currentBytePtr)
 	// should NOW equal END_TRANSMISSION or START_SHORT_TRANSMISSION
 
 	//returns an empty optional if there isn't a short
+	//we take ownership of returned buffer
 	shorts = parse_shorts(currentBytePtr, &iterator, &shorts_len);
 	
+	//we take ownership of returned pointer
 	string = parse_string(currentBytePtr, &iterator);
 	
 	//maybe someday we'll find a way to utilise our variable-length short parser
 	assert(shorts_len <= sizeof(member_size(RobotCommand, shorts)));
+	
+	RobotCommand * commandPtr = malloc(sizeof(RobotCommand));
+	
+	commandPtr->return_id = return_id;
+	commandPtr->opcode = opcode;
+	commandPtr->shorts = shorts;
+	commandPtr->shorts_len = shorts_len;
+	commandPtr->string = string;
+	
+	return commandPtr;
+}
+
+void rc_print(RobotCommand * commandPtr)
+{
+	printf("Robot Command Dump:\n");
+	printf("return_id: %u\n", commandPtr->return_id);
+	printf("opcode: %x\n", commandPtr->opcode);
+	if(commandPtr->shorts_len > 0)
+	{
+		printf("shorts: ");
+		for(int counter = 0; counter < commandPtr->shorts_len; ++counter)
+		{
+			printf("%d ", commandPtr->shorts[counter]);
+		}	
+		printf("\n");
+	}
+	
+	if(commandPtr->string != NULL)
+	{
+		printf("string: %s\n", commandPtr->string);
+	}
+	
+	printf("\n");
+	
+}
+
+void rc_free(RobotCommand * commandPtr)
+{
+	free(commandPtr->string);
+	free(commandPtr->shorts);
+	free(commandPtr);
 }
