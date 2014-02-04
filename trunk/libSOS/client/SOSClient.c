@@ -83,6 +83,13 @@ void sos_disconnect(int sockfd)
 
 void sos_send_opcode(int sockfd, char toSend)
 {
+	
+	if((toSend < MAX_CONTROL_CODE) && (toSend >= MIN_CONTROL_CODE))
+	{
+		printf("Opcode value %x is within the range of protocol control characters", toSend);
+		exit(1);
+	}
+
 	//before we do anything, we have to encode the id of this connection in the message
 	struct sockaddr remote_endpoint = {0};
 	socklen_t remote_endpoint_length = sizeof(remote_endpoint);
@@ -125,9 +132,9 @@ void sos_send_short(int sockfd, short toSend)
 	snprintf(outputString, sizeof(outputString), "%d", toSend);
 	length = strlen(outputString);
 
-	transmission[0] = START_SHORT_TRANSMISSION;
+	transmission[0] = START_PARAMS;
 	strcpy(transmission + 1, outputString);
-	transmission[length + 1] = END_SHORT;
+	transmission[length + 1] = END_PARAMS;
 	if(write(sockfd, transmission, length + 2) != length + 2)
 	{
 		error("SOSClient: 92: Write Error");
@@ -139,7 +146,7 @@ void sos_send_string(int sockfd, char* toSend)
 	int length = strlen(toSend);
 	char transmission[128 + 2];
 
-	transmission[0] = START_STRING_TRANSMISSION;
+	transmission[0] = START_STRING;
 	strcpy(transmission + 1, toSend);
 	transmission[length + 1] = END_STRING;
 

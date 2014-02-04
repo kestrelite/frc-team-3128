@@ -30,7 +30,6 @@
 #include "libSOS/SocketServer.h"
 #include "Options.h"
 #include "Configuration.h"
-#include "StackTrace/StackTrace.h"
 
 namespace po = boost::program_options;
 

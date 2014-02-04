@@ -83,6 +83,12 @@ boost::optional<robot_command> robot_command::factory(std::vector<char> bytes)
 
 }
 
+#if 0
+
+	std::vector<char> myVec(currentBytePtr, std::find(currentBytePtr, endBytePtr, END_ID));
+
+#endif
+
 in_port_t robot_command::parse_return_id(std::vector<char>::const_iterator & currentBytePtr)
 {
 	if(*currentBytePtr != START_TRANSMISSION)
@@ -97,6 +103,8 @@ in_port_t robot_command::parse_return_id(std::vector<char>::const_iterator & cur
 
 	++currentBytePtr;
 	//should now be the first byte of the ASCII-encoded id
+
+	currentBytePtr.
 
 	std::vector<char> IDStorage;
 	while(*(++currentBytePtr) != END_ID)
