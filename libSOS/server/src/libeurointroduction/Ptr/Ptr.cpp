@@ -12,7 +12,7 @@ Ptr::Ptr()
 
 }
 
-static unsigned int getValue(void* ptr)
+unsigned int Ptr::getValue(void* ptr)
 {
 	return (unsigned int)(ptr);
 }

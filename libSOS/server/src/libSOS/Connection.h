@@ -25,7 +25,7 @@ class Connection
 	std::shared_ptr<ThreadSafeQueue<std::vector<char>>> _outputQueue;
 
 public:
-	Socket _socket;
+	std::shared_ptr<boost::asio::ip::tcp::socket> _socket;
 
 private:
 	std::unique_ptr<boost::thread> 	_threadPtr;
@@ -37,6 +37,13 @@ public:
 
 	//runs the internal reader thread
 	void operator()();
+
+	//reads one RobotCommand's bytes from the socket and returns them
+	boost::optional<std::vector<char>> readNextCode();
+
+	//writes the vector<char> of bytes to the socket
+	//returns the error_code produced
+	boost::system::error_code write(std::vector<char> & toSend);
 
 	virtual ~Connection();
 };

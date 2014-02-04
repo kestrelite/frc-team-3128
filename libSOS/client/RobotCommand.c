@@ -1,3 +1,5 @@
+// Utility services for creating and manipulating RobotCommand objects.
+
 #include "RobotCommand.h"
 #include "SOSProtocol.h"
 
@@ -5,194 +7,228 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#define member_size(type, member) sizeof(((type *)0)->member)
-
-in_port_t parse_return_id(char * currentBytePtr, int * iterator)
+// returns a buffer on the heap containing a series of bytes extracted
+// from the specified buffer.  Caller owns buffer,
+char * extract_bytes_until
+(
+	char const * const 	start_ptr,				// Byte to start looking in.
+	char				terminating_value,		// Stop extracting when we see this value.
+	size_t      		max_length,				// Error if we try to extract more than this.
+	size_t *			length_ptr				// Pointer to location to receive extracted length.
+)
 {
-	if(*(currentBytePtr + *(iterator)) != START_TRANSMISSION)
+	char const *	current_byte_ptr = start_ptr;
+	char * 			return_buf = malloc(max_length);
+	int 			return_buf_index = 0;
+	*length_ptr = 0;
+	
+	while(*current_byte_ptr != terminating_value)
+	{
+		return_buf[return_buf_index] = *current_byte_ptr;
+		++return_buf_index;
+		++current_byte_ptr;
+		++(*length_ptr);
+		
+		assert(*length_ptr <= max_length);
+	}
+	
+	*length_ptr =- 1;
+	
+	return return_buf;
+}
+
+
+// Parses and returns the return_id field from the specified serialized RobotCommand message.
+// Supplied byte_index indicates the first byte of the serialized message.
+in_port_t parse_return_id(char const * const current_byte_ptr, int * byte_index_ptr)
+{
+	if(current_byte_ptr[*byte_index_ptr] != START_TRANSMISSION)
 	{
 		// Bail and return empty value.
-		printf("RobotCommand: the header of the command is incorrect\nShould be: %x Was: %x\n", START_TRANSMISSION, *(currentBytePtr + *(iterator)));
+		printf("RobotCommand: the header of the command is incorrect\nShould be: %x Was: %x\n", START_TRANSMISSION, current_byte_ptr[*byte_index_ptr]);
 		return 0x0;
 	}
 
 	// Have start of command.  Begin parsing.
 
-
-	++*(iterator);
-	//should now equal START_ID
-	++*(iterator);
+	++*(byte_index_ptr);
+	assert(current_byte_ptr[*byte_index_ptr] == START_ID);
+	++*(byte_index_ptr);
 	//should now be the first byte of the ASCII-encoded id
 
-	char* IDStorage = malloc(11);
-	int IDStorageIterator = 0;
+	// We are expecting up to 10 ASCII digits to represent a |in_port_t| value, plus trailing NULL.
+	#define MAX_RETURN_ID_STRING_LENGTH 10
+	int id_storage_length;
 	
-	while(*(currentBytePtr + (++*(iterator))) != END_ID)
-	{
-		*(IDStorage + IDStorageIterator) = *(currentBytePtr + *(iterator));
-		++IDStorageIterator;
-	}
+	// Copy bytes until END_ID encountered.
+	char* id_storage = extract_bytes_until((current_byte_ptr + *byte_index_ptr), END_ID, MAX_RETURN_ID_STRING_LENGTH, &id_storage_length);
 	
-	//insert a null to stop atoi from
-	//reading into unknown memory
-	IDStorage[10] = 0x0;
+	// NULL-terminate our string for atoi().
+	id_storage[id_storage_length + 1] = 0x0;
 	
-	//do this here so we can free IDStorage
-	in_port_t return_id = atoi(IDStorage);
+	//do this here so we can free id_storage
+	in_port_t return_id = atoi(id_storage);
 
-	free(IDStorage);
-	
-	//should now equal END_ID
+	// Release buffer.
+	free(id_storage);
+
 	return return_id;
 }
-char parse_opcode(char * currentBytePtr, int * iterator)
-{
-	// Get opcode.
-	++*(iterator);
-	char opcode = *(currentBytePtr + *(iterator));
-	++*(iterator);
 
-	if(*(currentBytePtr + *(iterator)) != END_OPCODE)
+// Parses and returns the opcode field from the specified serialized RobotCommand message.
+// Supplied byte_index indicates the index of START_OPCODE.
+// Returns 0 on error.
+char parse_opcode(char const * const current_byte_ptr, int * byte_index_ptr)
+{
+	assert(current_byte_ptr[*byte_index_ptr] == START_OPCODE);
+	++(*byte_index_ptr);
+
+	char opcode = current_byte_ptr[*byte_index_ptr];
+	++(*byte_index_ptr);
+
+	if(current_byte_ptr[*byte_index_ptr] != END_OPCODE)
 	{
 		// Bail and return empty value.
-		printf("RobotCommand: the end of the opcode command is incorrect\nShould be: %x Was: %x\n", END_OPCODE, *(currentBytePtr + *(iterator)));
+		printf("RobotCommand: the end of the opcode command is incorrect\nShould be: %x Was: %x\n", END_OPCODE, current_byte_ptr[*byte_index_ptr]);
 		return 0x0;
 	}
+	
 	return opcode;
 }
 
-//reads as many shorts as possible from the command
-//if it can't find any, it returns NULL
-short * parse_shorts(char * currentBytePtr, int * iterator, unsigned int * shorts_len)
+// Reads as many params as possible from the command and returns a pointer to an array of them,
+// as well as the count of params found.  If it can't find any parameters, it returns NULL.
+// |byte_index| assumed to indicate START_PARAMS; if not, assumes no params present.
+double * parse_params(char const * const current_byte_ptr, int * byte_index_ptr, unsigned int * params_count_ptr)
 {
-	*(shorts_len) = 0;
-
-	if(*(currentBytePtr + *(iterator)) == START_SHORT_TRANSMISSION)
+	if(current_byte_ptr[*byte_index_ptr] != START_PARAMS)
 	{
-		short * shortVector = malloc(sizeof(short));
-		*(shorts_len) = 1;
+		// No parameters in this message.
+		*params_count_ptr = 0;
+		return NULL;
+	}
+
+	// Allocate buffer for one parameter.
+	// A double should fit within a 50-byte string.  We will want a null-terminated representation.
+	#define MAX_PARAM_STRING_LENGTH 50
+	param_type * param_vector = malloc(MAX_PARAM_STRING_LENGTH + 1);
+	*params_count_ptr = 1;
+	
+	 // Loop until we don't receive the start of a parameter
+	while(current_byte_ptr[*byte_index_ptr] == START_PARAMS)
+	{
+		unsigned int param_bytes_length;
+		*byte_index_ptr += 1;
 		
-		 // Loop until we don't receive the start of a short
-		while(*(currentBytePtr + *(iterator)) == START_SHORT_TRANSMISSION)
-		{
-			char shortBytesStorage[11];
-			unsigned int shortBytesIterator = 0;
-			
-			while(*(currentBytePtr + (++(*(iterator)))) != END_SHORT)
-			{
-				*(shortBytesStorage + shortBytesIterator) = *(currentBytePtr + *(iterator));
-			}
-			
-			//increase size of shortVector by 1
-			shortVector = (short *) realloc(shortVector, (*(shorts_len) + 1) * sizeof(short));
-			++shorts_len;
-			
-			//provide an endstop for atoi
-			shortBytesStorage[10] = 0x0;
-			
-			*(shortVector + *(shorts_len)) = atoi(shortBytesStorage);
-			++(*(iterator));
-		}
-
-		return shortVector;
-	}
-	else
-	{
-		return NULL;
+		// Copy bytes of parameter's ASCII representation to a separate buffer.
+		char* param_bytes_buffer = extract_bytes_until((current_byte_ptr + *byte_index_ptr), END_PARAMS, MAX_PARAM_STRING_LENGTH, &param_bytes_length);
+		
+		//increase size of param_vector by 1
+		++(*params_count_ptr);
+		param_vector = (param_type *) realloc(param_vector, ((*params_count_ptr) * sizeof(param_type)));
+		
+		
+		//provide an endstop for strtod
+		param_bytes_buffer[param_bytes_length + 1] = 0x0;
+		
+		
+		// Extract |double| into the array we're returning.
+		param_vector[*params_count_ptr] = strtod(param_bytes_buffer, NULL);
+		
+		
+		// Advance to next input byte.
+		++(*byte_index_ptr);
 	}
 
+	return param_vector;
 }
 
-//tries to read a string from the bytes given
-//returns null if it fails
-char* parse_string(char * currentBytePtr, int * iterator)
+// Reads a string parameter from the command and returns a pointer to a heap buffer
+// containing the string (caller takes ownership of buffer).
+// If it can't find any string, it returns NULL.
+char* parse_string(char const * const current_byte_ptr, int * byte_index_ptr, size_t * string_length_ptr)
 {
-	if(*(currentBytePtr + *(iterator)) == START_STRING_TRANSMISSION)
+	//size of buffer to hold string
+	#define MAX_STRING_LENGTH 50
+	
+	if(current_byte_ptr[*byte_index_ptr] != START_STRING)
 	{
-		char * string;
-		int counter = 0;
-		while(*(currentBytePtr + (++(*(iterator)))) != END_STRING)
-		{
-			*(string + counter) = *(currentBytePtr + *(iterator));
-			++counter;
-		}
-
-		return string;
-	}
-	else
-	{
+		// No string parameter found.
+		*string_length_ptr = 0;
 		return NULL;
 	}
-
+	
+	// Extract and return the string.
+	return extract_bytes_until((current_byte_ptr + *byte_index_ptr), END_STRING, MAX_STRING_LENGTH, string_length_ptr);
 }
 
-RobotCommand * rc_factory(char * currentBytePtr)
+
+RobotCommand * rc_factory(char const * const current_byte_ptr)
 {
-	int 									iterator = 0;
+	int 									byte_index = 0;
 	in_port_t								return_id;
 	char 									opcode;
-	short *			 						shorts = NULL;
-	size_t									shorts_len = 0;
+	param_type *			 				params = NULL;
+	size_t									params_count = 0;
+	size_t									string_length = 0;
 	char* 									string = NULL;
 
 
-	return_id = parse_return_id(currentBytePtr, &iterator);
+	return_id = parse_return_id(current_byte_ptr, &byte_index);
 
-	++iterator;
-	opcode = parse_opcode(currentBytePtr, &iterator);
+	++byte_index;
+	opcode = parse_opcode(current_byte_ptr, &byte_index);
 
-	// Move into shorts if any.
-	++iterator;
-	// should NOW equal END_TRANSMISSION or START_SHORT_TRANSMISSION
+	// Move into params if any.
+	++byte_index;
+	// should NOW equal END_TRANSMISSION or START_PARAMS
 
-	//returns an empty optional if there isn't a short
+	//returns an empty optional if there isn't a param_type
 	//we take ownership of returned buffer
-	shorts = parse_shorts(currentBytePtr, &iterator, &shorts_len);
+	params = parse_params(current_byte_ptr, &byte_index, &params_count);
 	
 	//we take ownership of returned pointer
-	string = parse_string(currentBytePtr, &iterator);
+	string = parse_string(current_byte_ptr, &byte_index, &string_length);
 	
-	//maybe someday we'll find a way to utilise our variable-length short parser
-	assert(shorts_len <= sizeof(member_size(RobotCommand, shorts)));
+	RobotCommand * command_ptr = malloc(sizeof(RobotCommand));
 	
-	RobotCommand * commandPtr = malloc(sizeof(RobotCommand));
+	command_ptr->return_id 			= return_id;
+	command_ptr->opcode 			= opcode;
+	command_ptr->params 			= params;
+	command_ptr->params_count 		= params_count;
+	command_ptr->string 			= string;
+	command_ptr->string_length 		= string_length;
 	
-	commandPtr->return_id = return_id;
-	commandPtr->opcode = opcode;
-	commandPtr->shorts = shorts;
-	commandPtr->shorts_len = shorts_len;
-	commandPtr->string = string;
-	
-	return commandPtr;
+	return command_ptr;
 }
 
-void rc_print(RobotCommand * commandPtr)
+void rc_print(RobotCommand * command_ptr)
 {
 	printf("Robot Command Dump:\n");
-	printf("return_id: %u\n", commandPtr->return_id);
-	printf("opcode: %x\n", commandPtr->opcode);
-	if(commandPtr->shorts_len > 0)
+	printf("return_id: %u\n", command_ptr->return_id);
+	printf("opcode: %x\n", command_ptr->opcode);
+	if(command_ptr->params_count > 0)
 	{
-		printf("shorts: ");
-		for(int counter = 0; counter < commandPtr->shorts_len; ++counter)
+		printf("params: ");
+		for(int counter = 0; counter < command_ptr->params_count; ++counter)
 		{
-			printf("%d ", commandPtr->shorts[counter]);
+			printf("%d ", command_ptr->params[counter]);
 		}	
 		printf("\n");
 	}
 	
-	if(commandPtr->string != NULL)
+	if(command_ptr->string != NULL)
 	{
-		printf("string: %s\n", commandPtr->string);
+		printf("string: %s\n", command_ptr->string);
 	}
 	
 	printf("\n");
 	
 }
 
-void rc_free(RobotCommand * commandPtr)
+void rc_free(RobotCommand * command_ptr)
 {
-	free(commandPtr->string);
-	free(commandPtr->shorts);
-	free(commandPtr);
+	free(command_ptr->string);
+	free(command_ptr->params);
+	free(command_ptr);
 }
