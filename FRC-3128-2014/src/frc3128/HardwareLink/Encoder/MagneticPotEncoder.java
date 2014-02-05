@@ -9,9 +9,16 @@ import edu.wpi.first.wpilibj.AnalogChannel;
 //TODO Test MagneticPotEncoder
 public class MagneticPotEncoder extends AbstractEncoder {
     private AnalogChannel enc;
+    private final double offset;
     
     public MagneticPotEncoder(int a, int b) {
+        enc = new AnalogChannel(a, b); 
+        this.offset = 0;
+    }
+    
+    public MagneticPotEncoder(double offset, int a, int b) {
         enc = new AnalogChannel(a, b);
+        this.offset = offset;
     }
     
     /**
@@ -28,7 +35,7 @@ public class MagneticPotEncoder extends AbstractEncoder {
             //value += enc.getValue();
         }
         voltage /= 10; //value /= 10;
-        return voltage/5.0*360;
+        return (voltage/5.0*360.0)+offset;
     }
 
     /**

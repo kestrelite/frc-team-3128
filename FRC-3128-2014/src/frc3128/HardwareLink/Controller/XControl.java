@@ -11,7 +11,6 @@ import frc3128.Util.DebugLog;
  * @author Noah Sutton-Smolin
  */
 public class XControl extends Event {
-
     private Joystick xControl;
     private final int port;
     public double x1, y1, x2, y2, triggers;
@@ -60,7 +59,8 @@ public class XControl extends Event {
         x2 = xControl.getRawAxis(XControlMap.X2_AXIS);
         y1 = xControl.getRawAxis(XControlMap.Y1_AXIS);
         y2 = xControl.getRawAxis(XControlMap.Y2_AXIS);
-
+        triggers = xControl.getRawAxis(XControlMap.TRIGGER_AXIS);
+        
         if (updateJoy1)
             ListenerManager.callListener("updateJoy1");
         if (updateJoy2)

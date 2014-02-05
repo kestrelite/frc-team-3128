@@ -7,12 +7,12 @@ import frc3128.Util.DebugLog;
  *
  * @author Noah Sutton-Smolin
  */
-public abstract class MotorSpeedControl extends Event {
+public abstract class MotorControl extends Event {
 
     private long lastRuntime = 0;
     private MotorLink controlledMotor = null;
 
-    public MotorSpeedControl() {
+    public MotorControl() {
     }
 
     protected void setControlledMotor(MotorLink m) {
@@ -64,8 +64,7 @@ public abstract class MotorSpeedControl extends Event {
         if (this.isComplete()) {
             DebugLog.log(DebugLog.LVL_DEBUG, this, "Entered Delete");
             this.controlledMotor.setInternalSpeed(0);
-            this.controlledMotor.stopSpeedControl();
         }
-        this.controlledMotor.setInternalSpeed(this.speedControlStep(System.currentTimeMillis() - lastRuntime));
+        this.controlledMotor.setInternalSpeed(this.speedControlStep(this.getLastRuntimeDist()));
     }
 }
