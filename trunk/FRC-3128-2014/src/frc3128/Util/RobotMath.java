@@ -25,7 +25,12 @@ public class RobotMath {
     }
 
     public static double angleDistance(double angle1, double angle2) {
-        return normalizeAngle(angle2) - normalizeAngle(angle1);
+        double dist =  normalizeAngle(angle2) - normalizeAngle(angle1);
+        if(Math.abs(dist) > 180) {
+            double sgn = RobotMath.sgn(dist);
+            return -sgn*(360-Math.abs(dist));
+        }
+        return dist;
     }
 
     public static double sgn(double n) {
@@ -77,8 +82,8 @@ public class RobotMath {
         return Math.PI * angle / 180.0;
     }
 
-    public static double rTD(double angle) {
-        return angle * (180.0 / Math.PI);
+    public static double rTD(double rad) {
+        return rad * (180.0 / Math.PI);
     }
 
     private RobotMath() {

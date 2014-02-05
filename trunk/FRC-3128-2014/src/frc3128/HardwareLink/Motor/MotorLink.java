@@ -1,6 +1,6 @@
 package frc3128.HardwareLink.Motor;
 
-import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.Talon;
 import frc3128.HardwareLink.Encoder.AbstractEncoder;
 import frc3128.Util.DebugLog;
 
@@ -9,47 +9,44 @@ import frc3128.Util.DebugLog;
  */
 public class MotorLink {
 
-    private final Jaguar jag;
+    private final Talon talon;
     private AbstractEncoder encoder;
-    private MotorSpeedControl spdControl;
+    private MotorControl spdControl;
     private boolean spdControlEnabled = false;
     private boolean motorReversed = false;
     private double speedScalar = 1;
 
-    public MotorLink(Jaguar jag) {
-        this.jag = jag;
+    public MotorLink(Talon talon) {
+        this.talon = talon;
     }
 
-    public MotorLink(Jaguar jag, double powscl) {
-        this(jag);
+    public MotorLink(Talon talon, double powscl) {
+        this(talon);
         this.speedScalar = powscl;
     }
 
-    public MotorLink(Jaguar jag, AbstractEncoder enc) {
-        this(jag);
+    public MotorLink(Talon talon, AbstractEncoder enc) {
+        this(talon);
         this.encoder = enc;
     }
 
-    public MotorLink(Jaguar jag, AbstractEncoder enc, double powscl) {
-        this(jag, enc);
+    public MotorLink(Talon talon, AbstractEncoder enc, double powscl) {
+        this(talon, enc);
         this.speedScalar = powscl;
     }
 
-    public MotorLink(Jaguar jag, AbstractEncoder enc, MotorSpeedControl spd) {
-        this(jag, enc);
+    public MotorLink(Talon talon, AbstractEncoder enc, MotorControl spd) {
+        this(talon, enc);
         this.spdControl = spd;
     }
 
-    public MotorLink(Jaguar jag, AbstractEncoder enc, MotorSpeedControl spd, double powscl) {
-        this(jag, enc, spd);
+    public MotorLink(Talon talon, AbstractEncoder enc, MotorControl spd, double powscl) {
+        this(talon, enc, spd);
         this.speedScalar = powscl;
     }
 
     protected void setInternalSpeed(double pow) {
-        if (pow == 0) {
-            jag.set(0);
-        }
-        jag.set(pow * speedScalar * (motorReversed ? -1.0 : 1.0));
+        talon.pidWrite(pow * speedScalar * (motorReversed ? -1.0 : 1.0));
     }
 
     public void setSpeedScalar(double powScl) {
@@ -61,7 +58,7 @@ public class MotorLink {
     }
 
     public double getSpeed() {
-        return jag.get();
+        return talon.get();
     }
 
     public void setSpeed(double pow) {
@@ -84,7 +81,7 @@ public class MotorLink {
         this.encoder = enc;
     }
 
-    public void setSpeedController(MotorSpeedControl spdControl) {
+    public void setSpeedController(MotorControl spdControl) {
         //if(this.spdControl != null) DebugLog.log(DebugLog.LVL_WARN, this, "The speed controller was changed when one already existed.");
         if (this.spdControlEnabled) {
             this.spdControlEnabled = false;
@@ -122,7 +119,7 @@ public class MotorLink {
         this.spdControl.setControlTarget(target);
     }
 
-    public void startSpeedControl(double target) {
+    public void startControl(double target) {
         this.spdControl.clearControlRun();
         this.spdControl.setControlTarget(target);
         this.spdControl.setControlledMotor(this);
@@ -131,6 +128,8 @@ public class MotorLink {
     }
 
     public void stopSpeedControl() {
+        DebugLog.log(DebugLog.LVL_DEBUG, this, "Talon GET: "+this.talon.get());
+        this.talon.set(0);
         this.spdControl.cancelEvent();
         this.spdControlEnabled = false;
     }

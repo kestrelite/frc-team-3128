@@ -1,6 +1,6 @@
 package frc3128.HardwareLink.Motor.SpeedControl;
 
-import frc3128.HardwareLink.Motor.MotorSpeedControl;
+import frc3128.HardwareLink.Motor.MotorControl;
 import frc3128.Util.RobotMath;
 
 /**
@@ -9,7 +9,7 @@ import frc3128.Util.RobotMath;
  * @author Noah Sutton-Smolin
  */
 //TODO Test LinearSpeedTarget
-public class LinearSpeedTarget extends MotorSpeedControl {
+public class LinearSpeedTarget extends MotorControl {
     private double tgtSpeed;
     private double dtAccum;
     private double refreshTime = 50;
