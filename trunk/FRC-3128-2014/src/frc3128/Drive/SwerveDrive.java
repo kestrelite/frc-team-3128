@@ -10,10 +10,10 @@ import frc3128.Util.DebugLog;
 import frc3128.Util.RobotMath;
 
 public class SwerveDrive extends Event {
-
+    double c = 24;
     private static final double SILLY_ROTATIONAL_CONSTANT = 6.779661;
-    private final double xPosL = -12.77374, xPosR = 12.77374, xPosB = 0.0;
-    private final double yPosL = 7.375, yPosR = 7.375, yPosB = -14.75;
+    private final double xPosL = -12.77374/c, xPosR = 12.77374/c, xPosB = 0.0/c;
+    private final double yPosL = 7.375/c, yPosR = 7.375/c, yPosB = -14.75/c;
     private double vel, theta, rot, xVel, yVel;
     private double spdL, spdR, spdB;
     private double angL, angR, angB;
@@ -28,25 +28,21 @@ public class SwerveDrive extends Event {
 
         vel = Math.sqrt(MathUtils.pow(x1, 2) + MathUtils.pow(y1, 2));
         theta = RobotMath.rTD(MathUtils.atan2(y1, x1))-90.0;
-        rot = (x2 / 128.0) * SwerveDrive.SILLY_ROTATIONAL_CONSTANT;
+        rot = (x2) * SwerveDrive.SILLY_ROTATIONAL_CONSTANT;
 
         DebugLog.log(DebugLog.LVL_DEBUG, this, "Theta: "+theta);
         
-        //Global.rotFR.setControlTarget(theta-18);
-        //Global.rotFL.setControlTarget(theta-55);
-        //Global.rotBk.setControlTarget(theta-10);
+	xVel = vel * Math.cos(RobotMath.dTR(theta));
+	yVel = vel * Math.sin(RobotMath.dTR(theta));
         
-//	xVel = vel * Math.cos(theta);
-//	yVel = vel * Math.sin(theta);
-//        
-//        spdL = Math.sqrt(MathUtils.pow(xVel+(rot*yPosL), 2) + MathUtils.pow(yVel-(rot*xPosL), 2));
-//        angL = 180 / Math.PI * (MathUtils.atan2(xVel+(rot*yPosL), yVel-(rot*xPosL)));
-//        
-//        spdB = Math.sqrt(MathUtils.pow(xVel+(rot*yPosB), 2) + MathUtils.pow(yVel-(rot*xPosB), 2));
-//        angB = 180 / Math.PI * (MathUtils.atan2(xVel+(rot*yPosB), yVel-(rot*xPosB)));
-//        
-//        spdR = Math.sqrt(MathUtils.pow(xVel+(rot*yPosR), 2) + MathUtils.pow(yVel-(rot*xPosR), 2));
-//        angR = 180 / Math.PI * (MathUtils.atan2(xVel+(rot*yPosR), yVel-(rot*xPosR)));
+        spdL = Math.sqrt(MathUtils.pow(xVel+(rot*yPosL), 2) + MathUtils.pow(yVel-(rot*xPosL), 2));
+        angL = 180 / Math.PI * (MathUtils.atan2(xVel+(rot*yPosL), yVel-(rot*xPosL)));
+        
+        spdB = Math.sqrt(MathUtils.pow(xVel+(rot*yPosB), 2) + MathUtils.pow(yVel-(rot*xPosB), 2));
+        angB = 180 / Math.PI * (MathUtils.atan2(xVel+(rot*yPosB), yVel-(rot*xPosB)));
+        
+        spdR = Math.sqrt(MathUtils.pow(xVel+(rot*yPosR), 2) + MathUtils.pow(yVel-(rot*xPosR), 2));
+        angR = 180 / Math.PI * (MathUtils.atan2(xVel+(rot*yPosR), yVel-(rot*xPosR)));
 //        
 //        this.driveB.setSpeed(spdB);
 //        this.driveL.setSpeed(spdL);

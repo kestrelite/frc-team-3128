@@ -62,7 +62,6 @@ public abstract class MotorControl extends Event {
     public final void execute() {
         lastRuntime = System.currentTimeMillis();
         if (this.isComplete()) {
-            DebugLog.log(DebugLog.LVL_DEBUG, this, "Entered Delete");
             this.controlledMotor.setInternalSpeed(0);
         }
         this.controlledMotor.setInternalSpeed(this.speedControlStep(this.getLastRuntimeDist()));

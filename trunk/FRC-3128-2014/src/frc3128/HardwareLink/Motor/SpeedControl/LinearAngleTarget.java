@@ -29,10 +29,10 @@ public class LinearAngleTarget extends MotorControl {
     public double speedControlStep(double dt) {
         double error = RobotMath.angleDistance(this.getLinkedEncoderAngle(), this.targetAngle);
         double sgn = RobotMath.sgn(error); 
-        double pGain = this.kP * sgn * (error);
+        double pGain = sgn*(Math.abs(error))*((1-this.minSpeed)/90.0)+this.minSpeed;
         pGain = (Math.abs(pGain) > this.minSpeed ? pGain : RobotMath.getMotorDirToTarget(this.getLinkedEncoderAngle(), this.targetAngle)*this.minSpeed);
-        DebugLog.log(DebugLog.LVL_DEBUG, this, "Error: " + error);
-        DebugLog.log(DebugLog.LVL_DEBUG, this, "Current Angle: " + this.getLinkedEncoderAngle());
+        DebugLog.log(DebugLog.LVL_STREAM, this, "Error: " + error);
+        DebugLog.log(DebugLog.LVL_STREAM, this, "Current Angle: " + this.getLinkedEncoderAngle());
         if(isComplete()) return 0;
         return pGain;
     }
