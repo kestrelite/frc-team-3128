@@ -23,10 +23,6 @@ import frc3128.Util.DebugLog;
  * THIS FILE IS YOUR SOUL.
  */
 
-/**
- * 
- * @author Noah Sutton-Smolin
- */
 public class RobotTemplate extends IterativeRobot {
     public void robotInit() {
         if(Constants.INTRO_MESSAGE) 

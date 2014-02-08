@@ -25,18 +25,18 @@ public class RobotMath {
     }
 
     public static double angleDistance(double angle1, double angle2) {
-        double dist =  normalizeAngle(angle2) - normalizeAngle(angle1);
-        if(Math.abs(dist) > 180) {
+        double dist = normalizeAngle(angle2) - normalizeAngle(angle1);
+        if (Math.abs(dist) > 180) {
             double sgn = RobotMath.sgn(dist);
-            return -sgn*(360-Math.abs(dist));
+            return -sgn * (360 - Math.abs(dist));
         }
         return dist;
     }
 
     public static double sgn(double n) {
-        return Math.abs(n)/n;
+        return Math.abs(n) / n;
     }
-    
+
     /**
      *
      * @param pow motor power
