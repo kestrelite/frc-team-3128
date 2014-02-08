@@ -67,6 +67,18 @@ public class Global {
                 Global.shooter.setSpeed(0);
             }
         }, xControl.getButtonKey("A", false));
+        
+        ListenerManager.addListener(new Event() {
+            public void execute() {
+                Global.shooter.setSpeed(-.5);
+            }
+        }, xControl.getButtonKey("B", true));
+        
+        ListenerManager.addListener(new Event() {
+            public void execute() {
+                Global.shooter.setSpeed(0);
+            }
+        }, xControl.getButtonKey("B", false));
     }
 
     public static void robotKill() {
