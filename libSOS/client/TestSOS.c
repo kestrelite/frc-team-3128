@@ -71,19 +71,41 @@ int main(int argc, char** argv)
     
   sleep(1);
   
-  for(int commands_printed = 0; commands_printed < 8; commands_printed++)
+  for(int commands_printed = 0; commands_printed < 7; commands_printed++)
   {
+	  // read up the bytes of the next response.
+	  // NB: Take ownership of returned pointer.
 	  char* commandBytes = sos_read_next_command(sockfd);
 	  
-	  printf("parsing command %d", commands_printed);
+	  printf("parsing command %d\n", commands_printed);
 	  
+	  // De-serialize command bytes.
+	  // NB: Take ownership of returned pointer.
 	  RobotCommand * commandPtr = rc_factory(commandBytes);
+	  
 	  free(commandBytes);
 	  
 	  rc_print(commandPtr);
 	  
 	  rc_free(commandPtr);
   }
+  
+  //handle the last command that was sent on a different socket
+  // read up the bytes of the next response.
+  // NB: Take ownership of returned pointer.
+  char* commandBytes = sos_read_next_command(sec_sockfd);
+  
+  printf("parsing command 8n");
+  
+  // De-serialize command bytes.
+  // NB: Take ownership of returned pointer.
+  RobotCommand * commandPtr = rc_factory(commandBytes);
+  
+  free(commandBytes);
+  
+  rc_print(commandPtr);
+  
+  rc_free(commandPtr);
   
   printf("closing second connection\n");
   sos_disconnect(sec_sockfd);

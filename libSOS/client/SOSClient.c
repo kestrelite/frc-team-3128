@@ -16,6 +16,8 @@
 #include <netinet/tcp.h>
 #include <sys/ioctl.h>
 
+#include <assert.h>
+
 #include "SOSClient.h"
 
 const char end_transmission = END_TRANSMISSION;
@@ -168,7 +170,7 @@ bool sos_check_waiting_command(int sockfd)
 	return bytes_waiting;
 }
 
-#define SIZE_OF_STRING_EXPANSION 50
+#define SIZE_OF_STRING_EXPANSION 300
 
 char * sos_read_next_command(int sockfd)
 {
@@ -183,16 +185,9 @@ char * sos_read_next_command(int sockfd)
 			error("SOSClient: couldn't read from socket");
 		}
 		
-		printf("%02x\n", commandPtr[counter]);
-		
 		++counter;
 		
-		//increase size of length
-		if(counter == length)
-		{
-			length += SIZE_OF_STRING_EXPANSION;
-			commandPtr = (char*) realloc(commandPtr, counter);
-		}
+		assert(counter < SIZE_OF_STRING_EXPANSION);
 	}
 	while(commandPtr[counter - 1] != END_TRANSMISSION);
 	

@@ -22,6 +22,7 @@ char * extract_bytes_until
 	int 			return_buf_index = 0;
 	*length_ptr = 0;
 	
+	// Copy up until terminating_value encountered.
 	while(*current_byte_ptr != terminating_value)
 	{
 		return_buf[return_buf_index] = *current_byte_ptr;
@@ -30,10 +31,7 @@ char * extract_bytes_until
 		++(*length_ptr);
 		
 		assert(*length_ptr <= max_length);
-		
 	}
-	
-	*length_ptr =- 1;
 	
 	return return_buf;
 }
@@ -57,14 +55,13 @@ in_port_t parse_return_id(char const * const current_byte_ptr, int * byte_index_
 	++*(byte_index_ptr);
 	//should now be the first byte of the ASCII-encoded id
 
-	// We are expecting up to 10 ASCII digits to represent a |in_port_t| value, plus trailing NULL.
+	// We are expecting up to 10 ASCII digits to represent a |in_port_t| value.
 	#define MAX_RETURN_ID_STRING_LENGTH 10
 	int id_storage_length;
 	
 	// Copy bytes until END_ID encountered.
 	char* id_storage = extract_bytes_until((current_byte_ptr + *byte_index_ptr), END_ID, MAX_RETURN_ID_STRING_LENGTH, &id_storage_length);
 	
-	printf("id_storage_length: %d\n", id_storage_length);
 	(*byte_index_ptr) += id_storage_length;
 	
 	// NULL-terminate our string for atoi().
@@ -84,7 +81,6 @@ in_port_t parse_return_id(char const * const current_byte_ptr, int * byte_index_
 // Returns 0 on error.
 char parse_opcode(char const * const current_byte_ptr, int * byte_index_ptr)
 {
-	printf("current_byte_ptr: %x\n", current_byte_ptr[*byte_index_ptr]);
 	assert(current_byte_ptr[*byte_index_ptr] == START_OPCODE);
 	++(*byte_index_ptr);
 
@@ -116,8 +112,12 @@ double * parse_params(char const * const current_byte_ptr, int * byte_index_ptr,
 	// Allocate buffer for one parameter.
 	// A double should fit within a 50-byte string.  We will want a null-terminated representation.
 	#define MAX_PARAM_STRING_LENGTH 50
-	param_type * param_vector = malloc(MAX_PARAM_STRING_LENGTH + 1);
-	*params_count_ptr = 1;
+	
+	// Maximum number of parameters in a command.
+	#define MAX_PARAM_VECTOR_LENGTH 100
+	
+	param_type * param_vector = malloc(MAX_PARAM_VECTOR_LENGTH * sizeof(double));
+	*params_count_ptr = 0;
 	
 	 // Loop until we don't receive the start of a parameter
 	while(current_byte_ptr[*byte_index_ptr] == START_PARAMS)
@@ -126,22 +126,23 @@ double * parse_params(char const * const current_byte_ptr, int * byte_index_ptr,
 		*byte_index_ptr += 1;
 		
 		// Copy bytes of parameter's ASCII representation to a separate buffer.
-		char* param_bytes_buffer = extract_bytes_until((current_byte_ptr + *byte_index_ptr), END_PARAMS, MAX_PARAM_STRING_LENGTH, &param_bytes_length);
-		
-		//increase size of param_vector by 1
-		++(*params_count_ptr);
-		param_vector = (param_type *) realloc(param_vector, ((*params_count_ptr) * sizeof(param_type)));
-		
+		// NB: Take ownership of returned heap buffer.
+		char* param_bytes_buffer = extract_bytes_until((current_byte_ptr + *byte_index_ptr), END_PARAMS, MAX_PARAM_STRING_LENGTH - 1, &param_bytes_length);
 		
 		//provide an endstop for strtod
-		param_bytes_buffer[param_bytes_length + 1] = 0x0;
-		
+		param_bytes_buffer[param_bytes_length] = 0x0;
 		
 		// Extract |double| into the array we're returning.
 		param_vector[*params_count_ptr] = strtod(param_bytes_buffer, NULL);
 		
+		// Heap buffer no longer needed.
+		free(param_bytes_buffer);
+		
+		//move index to where we stopped reading
+		(*byte_index_ptr) += param_bytes_length;
 		
 		// Advance to next input byte.
+		++(*params_count_ptr);
 		++(*byte_index_ptr);
 	}
 
@@ -164,7 +165,11 @@ char* parse_string(char const * const current_byte_ptr, int * byte_index_ptr, si
 	}
 	
 	// Extract and return the string.
-	return extract_bytes_until((current_byte_ptr + *byte_index_ptr), END_STRING, MAX_STRING_LENGTH, string_length_ptr);
+	char* string = extract_bytes_until((current_byte_ptr + *byte_index_ptr), END_STRING, MAX_STRING_LENGTH, string_length_ptr);
+	
+	string[*string_length_ptr] = '\0';
+	
+	return	string;
 }
 
 
@@ -217,14 +222,14 @@ void rc_print(RobotCommand * command_ptr)
 		printf("params: ");
 		for(int counter = 0; counter < command_ptr->params_count; ++counter)
 		{
-			printf("%d ", command_ptr->params[counter]);
+			printf("%0.4f ", command_ptr->params[counter]);
 		}	
 		printf("\n");
 	}
 	
 	if(command_ptr->string != NULL)
 	{
-		printf("string: %s\n", command_ptr->string);
+		printf("string: \"%s\"\n", command_ptr->string);
 	}
 	
 	printf("\n");

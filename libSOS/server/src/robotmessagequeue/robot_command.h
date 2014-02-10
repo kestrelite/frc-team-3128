@@ -38,20 +38,20 @@ public:
 
 	robot_command(in_port_t return_id, unsigned char opcode,boost::optional<std::vector<param_t> >, boost::optional<std::string> extraString);
 
-	static boost::optional<robot_command> factory(std::vector<char> bytes);
+	static boost::optional<robot_command> factory(std::vector<char> const & bytes);
 
 	//reads the return_id from the message
 	//assumes the iterator is at the start
-	static in_port_t parse_return_id(std::vector<char>::const_iterator & currentBytePtr, std::vector<char> & bytes);
+	static in_port_t parse_return_id(std::vector<char> const & bytes);
 
 	//reads one char from the message pointed at by the iterator
 	//assumes that the iterator is at START_OPCODE
-	static char parse_opcode(std::vector<char>::const_iterator & currentBytePtr, std::vector<char> & bytes);
+	static char parse_opcode(std::vector<char> const & bytes);
 
 	//reads a list of shorts from the message pointed at by the iterator
-	static boost::optional<std::vector<param_t> > parse_params(std::vector<char>::const_iterator & currentBytePtr, std::vector<char> & bytes);
+	static boost::optional<std::vector<param_t> > parse_params(std::vector<char> const & bytes);
 
-	static boost::optional<std::string> parse_string(std::vector<char>::const_iterator & currentBytePtr, std::vector<char> & bytes);
+	static boost::optional<std::string> parse_string(std::vector<char> const & bytes);
 
 
 };
