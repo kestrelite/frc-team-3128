@@ -18,7 +18,7 @@ void messageEchoer(std::shared_ptr<ThreadSafeQueue<std::vector<char>>> queue, st
 	{
 		std::vector<char> bytes = queue->Dequeue();
 		LOG_DEBUG("Criogenic", "Received message " << counter++);
-		//connection->write(bytes);
+		connection->write(bytes);
 	}
 }
 
