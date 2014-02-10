@@ -10,13 +10,14 @@
 
 #include <boost/thread/thread.hpp>
 #include <boost/asio.hpp>
+#include <boost/optional.hpp>
+
 #ifdef _WIN32_WINNT
 typedef uint16_t 	in_port_t;
 #else
 #include <arpa/inet.h>
 #endif
 
-#include "Socket.h"
 #include <Options.h>
 #include <LogMacros.h>
 

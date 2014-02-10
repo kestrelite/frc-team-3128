@@ -9,7 +9,7 @@
 #define SOSPROTOCOL_H_
 
 /*
- * Description of the commnication protocol:
+ * Description of the communication protocol:
  *
  *	0x01 (start of transmission)
  *	0x05 (start of id)
@@ -27,17 +27,39 @@
  *	0x06 (end or transmission)
  */
 
+/* Range of allowable control codes.  All codes below
+   must be in this range.
+*/
+#define MIN_CONTROL_CODE			0x00
+#define MAX_CONTROL_CODE			0x10
+
+/* Start and end of overall message. */
 #define START_TRANSMISSION 			0x01
-#define START_ID 					0x05
-#define END_ID	 					0x0A
-#define START_OPCODE				0x0D
-#define END_OPCODE 					0x04
-#define START_SHORT_TRANSMISSION 	0x09
-#define END_SHORT 					0x0B
-#define START_STRING_TRANSMISSION 	0x02
-#define END_STRING 					0x03
 #define END_TRANSMISSION 			0x06
 
+/* Start and end of sender id field, which must be unique for each sender.
+   Encoded as an |unsigned int| in ASCII.
+*/
+#define START_ID 					0x05
+#define END_ID	 					0x0A
 
+/* Start and end of opcode, which is unique to each message and which
+   tells the robot what command is being issued.
+   Encoded as a byte.
+*/
+#define START_OPCODE				0x0D
+#define END_OPCODE 					0x04
+
+/* Start and end of one or more parameter values. (Omitted if no parameters
+    are included.)  Each parameter is an ASCII-encoded double value.
+*/
+#define START_PARAMS 				0x09
+#define END_PARAMS 					0x0B
+
+/* Start and end of string parameter.  (Omitted if no string included.)
+    If present, consists of one or more ASCII bytes.  Must be NULL terminated.
+*/
+#define START_STRING 				0x02
+#define END_STRING 					0x03
 
 #endif /* SOSPROTOCOL_H_ */

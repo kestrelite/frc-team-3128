@@ -18,7 +18,7 @@ void messageEchoer(std::shared_ptr<ThreadSafeQueue<std::vector<char>>> queue, st
 	{
 		std::vector<char> bytes = queue->Dequeue();
 		LOG_DEBUG("Criogenic", "Received message " << counter++);
-		connection->_socket.write(bytes);
+		//connection->write(bytes);
 	}
 }
 
@@ -56,6 +56,6 @@ int main(int argc, char** argv)
 
 	std::cin.get();
 
-	connection->_socket._socket->close();
+	connection->_socket->close();
 
 }

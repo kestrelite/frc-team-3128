@@ -71,9 +71,9 @@ void SerialSender::operator()(std::shared_ptr<ThreadSafeQueue<std::vector<char>>
 					}
 				}
 
-				if(connectionPtr->_socket._socket->is_open())
+				if(connectionPtr->_socket->is_open())
 				{
-					if(connectionPtr->_socket.write(currentBytes))
+					if(connectionPtr->write(currentBytes))
 					{
 						LOG_INFO("SerialSender", "Restarting server...")
 						break;

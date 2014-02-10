@@ -30,6 +30,7 @@ char * extract_bytes_until
 		++(*length_ptr);
 		
 		assert(*length_ptr <= max_length);
+		
 	}
 	
 	*length_ptr =- 1;
@@ -63,6 +64,9 @@ in_port_t parse_return_id(char const * const current_byte_ptr, int * byte_index_
 	// Copy bytes until END_ID encountered.
 	char* id_storage = extract_bytes_until((current_byte_ptr + *byte_index_ptr), END_ID, MAX_RETURN_ID_STRING_LENGTH, &id_storage_length);
 	
+	printf("id_storage_length: %d\n", id_storage_length);
+	(*byte_index_ptr) += id_storage_length;
+	
 	// NULL-terminate our string for atoi().
 	id_storage[id_storage_length + 1] = 0x0;
 	
@@ -80,6 +84,7 @@ in_port_t parse_return_id(char const * const current_byte_ptr, int * byte_index_
 // Returns 0 on error.
 char parse_opcode(char const * const current_byte_ptr, int * byte_index_ptr)
 {
+	printf("current_byte_ptr: %x\n", current_byte_ptr[*byte_index_ptr]);
 	assert(current_byte_ptr[*byte_index_ptr] == START_OPCODE);
 	++(*byte_index_ptr);
 

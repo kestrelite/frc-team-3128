@@ -10,6 +10,8 @@
 #include <boost/foreach.hpp>
 #include "../libSOS/SOSProtocol.h"
 #include <sstream>
+#include <LogMacros.h>
+#include <iomanip>
 
 std::string string_to_hex(const std::string& input)
 {
@@ -30,25 +32,25 @@ std::string string_to_hex(const std::string& input)
 robot_command::robot_command(in_port_t return_id, unsigned char opcode)
 :_return_id(return_id),
 _opcode(opcode),
- _data(),
+ _params(),
  _extraString()
 {
 
 }
 
-robot_command::robot_command(in_port_t return_id, unsigned char opcode, boost::optional<std::vector<signed short> > data)
+robot_command::robot_command(in_port_t return_id, unsigned char opcode, boost::optional<std::vector<param_t> > data)
 :_return_id(return_id),
 _opcode(opcode),
- _data(data),
+ _params(data),
  _extraString()
 {
 
 }
 
-robot_command::robot_command(in_port_t return_id, unsigned char opcode, boost::optional<std::vector<signed short> > data, boost::optional<std::string> extraString)
+robot_command::robot_command(in_port_t return_id, unsigned char opcode, boost::optional<std::vector<param_t> > data, boost::optional<std::string> extraString)
 :_return_id(return_id),
 _opcode(opcode),
- _data(data),
+ _params(data),
  _extraString(extraString)
 {
 
@@ -59,27 +61,27 @@ boost::optional<robot_command> robot_command::factory(std::vector<char> bytes)
 	std::vector<char>::const_iterator 		currentBytePtr(bytes.begin());
 	in_port_t								return_id;
 	char 									opcode;
-	boost::optional<std::vector<short> > 	shorts;
+	boost::optional<std::vector<param_t> > 	params;
 	boost::optional<std::string> 			string;
 
 
-	return_id = parse_return_id(currentBytePtr);
+	return_id = parse_return_id(currentBytePtr, bytes);
 
 	++currentBytePtr;
-	opcode = parse_opcode(currentBytePtr);
+	opcode = parse_opcode(currentBytePtr, bytes);
 
-	// Move into shorts if any.
+	// Move into params if any.
 	++currentBytePtr;
 	// should NOW equal END_TRANSMISSION or START_SHORT_TRANSMISSION
 
-	std::cout << "command: " << string_to_hex(std::string(bytes.begin(), bytes.end())) << std::endl;
+	std::cout << "command: " << std::setw(2) << string_to_hex(std::string(bytes.begin(), bytes.end())) << std::endl;
 
-	//returns an empty optional if there isn't a short
-	shorts = parse_shorts(currentBytePtr);
+	//returns an empty optional if there isn't a param
+	params = parse_params(currentBytePtr, bytes);
 
-	string = parse_string(currentBytePtr);
+	string = parse_string(currentBytePtr, bytes);
 
-	return boost::optional<robot_command>(robot_command(return_id, opcode, shorts, string));
+	return boost::optional<robot_command>(robot_command(return_id, opcode, params, string));
 
 }
 
@@ -89,9 +91,10 @@ boost::optional<robot_command> robot_command::factory(std::vector<char> bytes)
 
 #endif
 
-in_port_t robot_command::parse_return_id(std::vector<char>::const_iterator & currentBytePtr)
+in_port_t robot_command::parse_return_id(std::vector<char>::const_iterator & currentBytPtr, std::vector<char> & bytes)
 {
-	if(*currentBytePtr != START_TRANSMISSION)
+	std::vector<char>::const_iterator currentBytePtr = std::find(bytes.cbegin(), bytes.cend(), START_TRANSMISSION);
+	if(currentBytePtr == bytes.end())
 	{
 		// Bail and return empty value.
 		std::cerr << "RobotCommand: the header of the command is incorrect\nShould be:" << START_TRANSMISSION << " Was: " << *currentBytePtr << std::endl;
@@ -104,20 +107,26 @@ in_port_t robot_command::parse_return_id(std::vector<char>::const_iterator & cur
 	++currentBytePtr;
 	//should now be the first byte of the ASCII-encoded id
 
-	currentBytePtr.
+	++currentBytePtr;
 
-	std::vector<char> IDStorage;
-	while(*(++currentBytePtr) != END_ID)
-	{
-		IDStorage.push_back(*currentBytePtr);
-	}
+	//copy elements from currentBytePtr to END_ID into IDStorage
+	std::vector<char>::const_iterator endIDPtr=std::find(currentBytePtr, bytes.cend(), (char)(END_ID));
+	std::vector<char> IDStorage(currentBytePtr, (endIDPtr));
 
-	//should now equl END_ID
+	//backstop atoi
+	IDStorage.push_back(0x0);
+
+	//move iterator to IDStorage's position
+	//currentBytePtr += std::distance(currentBytePtr, endIDPtr);
+
+	//should now equal END_ID
 	return static_cast<in_port_t>(atoi(IDStorage.data()));
 }
 
-char robot_command::parse_opcode(std::vector<char>::const_iterator & currentBytePtr)
+char robot_command::parse_opcode(std::vector<char>::const_iterator & currentBytPtr, std::vector<char> & bytes)
 {
+	std::vector<char>::const_iterator currentBytePtr = std::find(bytes.cbegin(), bytes.cend(), START_OPCODE);
+
 	// Get opcode.
 	++currentBytePtr;
 	char opcode = *currentBytePtr;
@@ -126,62 +135,72 @@ char robot_command::parse_opcode(std::vector<char>::const_iterator & currentByte
 	if(*currentBytePtr != END_OPCODE)
 	{
 		// Bail and return empty value.
-		std::cerr << "RobotCommand: the end of the opcode command is incorrect\nShould be:" << END_OPCODE << " Was: " << *currentBytePtr << std::endl;
+		LOG_RECOVERABLE("RobotCommand", " the end of the opcode command is incorrect\nShould be:" << END_OPCODE << " Was: " << *currentBytePtr);
 		return 0x0;
 	}
 	return opcode;
 }
 
-boost::optional<std::vector<signed short> > robot_command::parse_shorts(std::vector<char>::const_iterator & currentBytePtr)
+boost::optional<std::vector<robot_command::param_t> > robot_command::parse_params(std::vector<char>::const_iterator & currentBytPtr, std::vector<char> & bytes)
 {
-	if(*currentBytePtr == START_SHORT_TRANSMISSION)
-	{
-		//give the optional type a value
-		std::vector<short> shortVector;
-		boost::optional<std::vector<short> > shorts(shortVector);
+	std::vector<char>::const_iterator currentBytePtr = std::find(bytes.cbegin(), bytes.cend(), START_PARAMS);
 
-		 // Loop until we don't recieve the start of a short
-		while(*currentBytePtr == START_SHORT_TRANSMISSION)
-		{
-			std::vector<char> shortBytesStorage;
-			while(*(++currentBytePtr) != END_SHORT)
-			{
-				shortBytesStorage.push_back(*currentBytePtr);
-			}
-			shorts.get().push_back(static_cast<short>(atoi(shortBytesStorage.data())));
-			++currentBytePtr;
-		}
+	//create an empty optional
+	boost::optional<std::vector<param_t> > params;
 
-		return shorts;
-	}
-	else
+
+	// Handle case where START_SHORT_TRANSMISSION does not occur.
+	if(currentBytePtr == bytes.cend())
 	{
-		//create an empty optional
-		boost::optional<std::vector<signed short> > shorts;
-		return shorts;
+		return params;
 	}
+
+
+	//give the optional type a value
+	params.reset(std::vector<robot_command::param_t>());
+
+
+	 // Loop until we don't recieve the start of a param
+	while(*currentBytePtr == START_PARAMS)
+	{
+		//copy elements from currentBytePtr to END_PARAMS into paramBytesStorage
+		std::vector<char>::const_iterator endShortPtr = std::find(currentBytePtr, bytes.cend(), (char)(END_PARAMS));
+		std::vector<char> paramBytesStorage((currentBytePtr + 1), endShortPtr);
+
+		//backstop atoi
+		paramBytesStorage.push_back(0x0);
+
+		currentBytePtr += std::distance(currentBytePtr, endShortPtr);
+
+		params.get().push_back(strtod(paramBytesStorage.data(), NULL));
+
+		++currentBytePtr;
+	}
+
+	return params;
 
 }
 
-boost::optional<std::string> robot_command::parse_string(std::vector<char>::const_iterator & currentBytePtr)
+
+boost::optional<std::string> robot_command::parse_string(std::vector<char>::const_iterator & currentBytPtr, std::vector<char> & bytes)
 {
-	if(*currentBytePtr == START_STRING_TRANSMISSION)
-	{
-		std::stringstream stringstream;
-		while(*(++currentBytePtr) != END_STRING)
-		{
+	std::vector<char>::const_iterator currentBytePtr = std::find(bytes.cbegin(), bytes.cend(), START_STRING);
 
-			stringstream << *currentBytePtr;
-		}
+	boost::optional<std::string> optional_string;
 
-		boost::optional<std::string> string(std::string(stringstream.str()));
-		return string;
-	}
-	else
+	if(currentBytePtr == bytes.cend())
 	{
-		boost::optional<std::string> string;
-		return string;
+		return optional_string;
+
 	}
+
+	++currentBytePtr;
+
+	std::vector<char>::const_iterator endStringPtr=std::find(currentBytePtr, bytes.cend(), (char)(END_STRING));
+	std::string string(currentBytePtr, endStringPtr);
+
+	optional_string.reset(string);
+	return optional_string;
 
 }
 
@@ -193,12 +212,12 @@ std::ostream & operator<<(std::ostream & leftOp, const robot_command rightOp)
 	leftOp << "Return ID: " << std::dec << rightOp._return_id << std::endl;
 
 	leftOp << "Opcode: 0x" << std::hex << ((int)rightOp._opcode) << std::endl;
-	if(rightOp._data.is_initialized())
+	if(rightOp._params.is_initialized())
 	{
 		leftOp << "Data: ";
-		for(short subdata : rightOp._data.get())
+		for(robot_command::param_t subdata : rightOp._params.get())
 		{
-			leftOp << std::dec << (int)(subdata) << " ";
+			leftOp << std::dec << subdata << " ";
 		}
 		leftOp << std::endl;
 	}

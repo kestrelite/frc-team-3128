@@ -74,7 +74,7 @@ void RobotRouter::run()
 			break;
 		}
 
-		(*returnConnectionIterator).second->_socket.write(*currentBytes);
+		(*returnConnectionIterator).second->write(*currentBytes);
 	}
 	LOG_INFO("RobotReciever", "Thread shutting down...")
 }

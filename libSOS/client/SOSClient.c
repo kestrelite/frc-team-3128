@@ -19,7 +19,7 @@
 #include "SOSClient.h"
 
 const char end_transmission = END_TRANSMISSION;
-#define MAX_LEN 10
+#define MAX_LEN 50
 
 /*these functions from http://www.linuxhowtos.org/C_C++/socket.htm*/
 void error(const char *msg)
@@ -122,14 +122,14 @@ void sos_send_opcode(int sockfd, char toSend)
 	}
 }
 
-void sos_send_short(int sockfd, short toSend)
+void sos_send_param(int sockfd, param_type toSend)
 {
 	/*output for the ascii short*/
 	char 	outputString[MAX_LEN];
 	int 	length;
 	char 	transmission[MAX_LEN + sizeof(char) + sizeof(char)];  /* Add space for opcodes.*/
 
-	snprintf(outputString, sizeof(outputString), "%d", toSend);
+	snprintf(outputString, sizeof(outputString), "%.8f", toSend);
 	length = strlen(outputString);
 
 	transmission[0] = START_PARAMS;
