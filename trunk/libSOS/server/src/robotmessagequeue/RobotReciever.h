@@ -13,7 +13,6 @@
 #include <map>
 
 #include <ThreadSafeQueue/ThreadSafeQueue.h>
-#include <libSOS/Socket.h>
 #include "robot_command.h"
 #include <Options.h>
 #include <libSOS/Connection.h>

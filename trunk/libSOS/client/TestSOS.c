@@ -28,35 +28,35 @@ int main(int argc, char** argv)
   //test that we can send short data
   printf("sending an opcode (0x27) with data \"1\"\n");
   sos_send_opcode(sockfd, 0x27);
-  sos_send_short(sockfd, 1);
+  sos_send_param(sockfd, 1);
   sos_end_transmission(sockfd);
 
   //test that we can send multiple shorts
   printf("sending an opcode (0x28) with data \"1, 2, 3\"\n");
   sos_send_opcode(sockfd, 0x28);
-  sos_send_short(sockfd, 1);
-  sos_send_short(sockfd, 2);
-  sos_send_short(sockfd, 3);
+  sos_send_param(sockfd, 1);
+  sos_send_param(sockfd, 2);
+  sos_send_param(sockfd, 3);
   sos_end_transmission(sockfd);
 
   //test that we can send two-digit numbers
   printf("sending an opcode (0x29) with data \"24\"\n");
   sos_send_opcode(sockfd, 0x29);
-  sos_send_short(sockfd, 24);
+  sos_send_param(sockfd, 24);
   sos_end_transmission(sockfd);
 
   //test that we can send negative numbers
-  printf("sending an opcode (0x2A) with data \"-27, -1, 8\"\n");
+  printf("sending an opcode (0x2A) with data \"-27, -1, 8.975\"\n");
   sos_send_opcode(sockfd, 0x2A);
-  sos_send_short(sockfd, -27);
-  sos_send_short(sockfd, -1);
-  sos_send_short(sockfd, 8);
+  sos_send_param(sockfd, -27);
+  sos_send_param(sockfd, -1);
+  sos_send_param(sockfd, 8.975);
   sos_end_transmission(sockfd);
 
   //test that we can send a string
   printf("sending an opcode (0x2B) with data \"4\" and string \"foo bar\"\n");
   sos_send_opcode(sockfd, 0x2B);
-  sos_send_short(sockfd, 4);
+  sos_send_param(sockfd, 4);
   sos_send_string(sockfd, "foo bar");
   sos_end_transmission(sockfd);
   

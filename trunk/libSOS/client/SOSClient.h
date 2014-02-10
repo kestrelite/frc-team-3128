@@ -30,6 +30,8 @@
 #include <netinet/in.h>
 #include <stdbool.h>
 
+#include "RobotCommand.h"
+
 struct sockaddr_in serv_addr;
 struct hostent *server;
 
@@ -41,7 +43,7 @@ void sos_disconnect();
 
 void sos_send_opcode(int sockfd, char toSend);
 
-void sos_send_short(int sockfd, short toSend);
+void sos_send_param(int sockfd, param_type toSend);
 
 void sos_send_string(int sockfd, char* toSend);
 
