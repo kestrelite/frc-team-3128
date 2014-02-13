@@ -1,6 +1,5 @@
 package frc3128.Util.Connection;
 
-import com.sun.squawk.util.Arrays;
 import frc3128.EventManager.Event;
 import frc3128.Util.DebugLog;
 import java.io.IOException;
@@ -31,7 +30,9 @@ public class Beaglebone extends Event {
         try {
             DebugLog.log(DebugLog.LVL_INFO, this, "Connecting to " + BBURL);
             connect();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) 
+        {
             ex.printStackTrace();
             DebugLog.log(DebugLog.LVL_SEVERE, this, "Error connecting: " + ex.getMessage());
         }
@@ -57,7 +58,7 @@ public class Beaglebone extends Event {
                 int data = inStream.read();
                 //check for EOF
                 if (data == -1) {
-                    DebugLog.log(DebugLog.LVL_STREAM, this, "Got EOF.");
+                    DebugLog.log(DebugLog.LVL_DEBUG, this, "Got EOF.");
                     return;
                 }
                 commandInProgress[placeInCommandInProgress + 1] = (byte) data;
@@ -79,6 +80,32 @@ public class Beaglebone extends Event {
             return command;
         }
         return null;
+    }
+    
+    /**
+     * Sends the byte array over the socket connection
+     * @param command 
+     */
+    public void sendCmd(byte[] command)
+    {
+        try 
+        {
+            outStream.write(command);
+        }
+        catch (IOException ex)
+        {
+            DebugLog.log(DebugLog.LVL_ERROR, this, "Error writing to output stream: " + ex.getMessage());
+        }
+    }
+    
+    /**
+     * Converts the command to bytes and then sends it.
+     * Equivalent to calling sendCmd(someCommand.reencodeCommand());
+     * @param command 
+     */
+    public void sendCmd(RobotCommand command)
+    {
+        sendCmd(command.reencodeCommand());
     }
 
     public void execute() {

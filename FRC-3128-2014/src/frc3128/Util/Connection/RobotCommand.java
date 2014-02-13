@@ -13,14 +13,11 @@ import java.util.Vector;
  * @author jamie
  */
 public class RobotCommand {
-    //this is an unsigned int in the c++ program
-    //but we need to round up here
-    //java, folks
 
     public int _return_id;
     public byte _opcode;
     public Vector _params;
-    public String _extraString;
+    public String _string;
 
     public RobotCommand(int return_id, byte opcode) {
         _return_id = return_id;
@@ -37,12 +34,12 @@ public class RobotCommand {
         _return_id = return_id;
         _opcode = opcode;
         _params = shorts;
-        _extraString = extraString;
+        _string = extraString;
     }
 
     public RobotCommand(int return_id, byte opcode, String extraString) {
         _opcode = opcode;
-        _extraString = extraString;
+        _string = extraString;
     }
 
     public String toString() {
@@ -58,8 +55,8 @@ public class RobotCommand {
             string += "\n";
         }
 
-        if (_extraString != null) {
-            string += "Extra String: " + _extraString + "\n";
+        if (_string != null) {
+            string += "Extra String: " + _string + "\n";
         }
         return string;
     }
@@ -70,7 +67,7 @@ public class RobotCommand {
         ++iterator;
         byte opcode = parseOpcode(currentBytePtr);
         iterator++;
-        Vector shorts = parseShorts(currentBytePtr);
+        Vector shorts = parseParams(currentBytePtr);
         String extraString = parseString(currentBytePtr);
         iterator = 0;
         return new RobotCommand(return_id, opcode, shorts, extraString);
@@ -114,20 +111,20 @@ public class RobotCommand {
         return Integer.parseInt(String.valueOf(returnBytesStorage, 0, returnBytesIterator));
     }
 
-    static Vector parseShorts(byte[] currentBytePtr) {
-        if (currentBytePtr[iterator] == SOSProtocol.START_SHORT_TRANSMISSION) {
+    static Vector parseParams(byte[] currentBytePtr) {
+        if (currentBytePtr[iterator] == SOSProtocol.START_PARAM) {
             Vector shortVector = new Vector();
 
             // Loop until we don't recieve the start of a short
-            while (currentBytePtr[iterator] == SOSProtocol.START_SHORT_TRANSMISSION) {
+            while (currentBytePtr[iterator] == SOSProtocol.START_PARAM) {
                 //max of 10 ASCII digit short
-                char[] shortBytesStorage = new char[10];
-                int shortBytesIterator = 0;
+                char[] paramBytesStorage = new char[10];
+                int paramBytesIterator = 0;
                 ++iterator;
-                while (currentBytePtr[iterator] != SOSProtocol.END_SHORT) {
-                    shortBytesStorage[shortBytesIterator++] = (char) currentBytePtr[iterator++];
+                while (currentBytePtr[iterator] != SOSProtocol.END_PARAM) {
+                    paramBytesStorage[paramBytesIterator++] = (char) currentBytePtr[iterator++];
                 }
-                shortVector.addElement(Integer.valueOf(String.valueOf(shortBytesStorage, 0, shortBytesIterator)));
+                shortVector.addElement(Double.valueOf(String.valueOf(paramBytesStorage, 0, paramBytesIterator)));
                 ++iterator;
             }
             return shortVector;
@@ -138,7 +135,7 @@ public class RobotCommand {
     }
 
     static String parseString(byte[] currentBytePtr) {
-        if (currentBytePtr[iterator] == SOSProtocol.START_STRING_TRANSMISSION) {
+        if (currentBytePtr[iterator] == SOSProtocol.START_STRING) {
             String stringstream = new String();
             while (currentBytePtr[++iterator] != SOSProtocol.END_STRING) {
                 stringstream += currentBytePtr[iterator];
@@ -151,4 +148,99 @@ public class RobotCommand {
     public String params() {
         return (this._params == null ? "" : this._params.toString());
     }
+/**
+ * Encodes this RobotCCommand encodes it back into a binary transmission
+ * @param command
+ * @return 
+ */
+    byte[] reencodeCommand()
+    {
+        byte[] returnIDBytes = reencodeReturnID();
+        
+        byte[] opcodeBytes = reencodeOpcode();
+        
+        byte[] paramBytes = null;
+        
+        if(_params != null)
+        {
+            paramBytes = reencodeParams();
+        }
+        
+        byte[] stringBytes = {0};
+        
+        if(_string != null) 
+        {
+            stringBytes = reencodeString();
+        }
+        
+        //create the final array, adding up the total lengths of all the parts if they exist
+        byte[] commandBytes = new byte
+        [
+                returnIDBytes.length + 
+                opcodeBytes.length + 
+                (_params != null ? paramBytes.length : 0) + 
+                (_string != null ? stringBytes.length : 0) +
+                1 /* for the end transmission character*/
+        ];
+        
+        System.arraycopy(returnIDBytes, 0, commandBytes, 0, returnIDBytes.length);
+        System.arraycopy(opcodeBytes, 0, commandBytes, returnIDBytes.length, opcodeBytes.length);
+        
+        if(_params != null)
+        {
+            System.arraycopy(paramBytes, 0, commandBytes, (returnIDBytes.length + opcodeBytes.length), paramBytes.length);
+        }
+        
+        if(_string != null)
+        {
+            System.arraycopy(stringBytes, 0, commandBytes, (returnIDBytes.length + opcodeBytes.length + paramBytes.length), stringBytes.length);
+        }
+        
+        //add end transmission character
+        commandBytes[commandBytes.length - 1] = SOSProtocol.END_TRANSMISSION;
+        
+        return commandBytes;
+    }
+    
+    private byte[] reencodeReturnID() 
+    {
+        String returnID = SOSProtocol.START_TRANSMISSION + 
+                SOSProtocol.START_ID +
+                Integer.toString(_return_id) +
+                SOSProtocol.END_ID;
+        
+        return returnID.getBytes();
+    }
+    
+    private byte[] reencodeOpcode() 
+    {
+        byte[] opcodeBytes = new byte[]{SOSProtocol.START_OPCODE, _opcode, SOSProtocol.END_OPCODE};
+        
+        return opcodeBytes;
+    }
+    
+    private byte[] reencodeParams() 
+    {
+        String paramBytes = Integer.toString(SOSProtocol.START_PARAM);
+        
+        for(int counter = 0; counter < _params.size(); --counter)
+        {
+            paramBytes += _params.elementAt(counter).toString();
+        }
+        
+        paramBytes += SOSProtocol.END_PARAM;
+        
+        return paramBytes.getBytes();
+    }
+    
+    private byte[] reencodeString() 
+    {
+        String string = SOSProtocol.START_STRING + 
+                _string +
+                SOSProtocol.END_STRING;
+        
+        return string.getBytes();
+    }
+
+
 }
