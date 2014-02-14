@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * 
  * @author Yousuf Soliman
  */
-//TODO Test SmartDashboard writing
 public class SDWrite {
     /**
      * Writes String data to the SmartDashboard, if it is open and connected.

@@ -11,6 +11,7 @@ public class DebugLog {
     public static final int LVL_WARN = 2;
     public static final int LVL_SEVERE = 1;
     public static final int LVL_ERROR = 0;
+
     private static int logDetail = Constants.DEBUGLOG_DEFAULT_LOGLEVEL;
     private static int maxTagLength = 0;
     private static final int initTagLength = 32;

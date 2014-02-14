@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
  * 
  * @author Yousuf Soliman
  */
-//TODO Test SmartDashboard reading
 public class SDRead {
     /**
      * Gets an integer value from the SmartDashboard, if it is open and connected.

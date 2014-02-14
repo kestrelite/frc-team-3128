@@ -9,7 +9,6 @@ import java.util.Vector;
  * @author Noah Sutton-Smolin
  */
 
-//Several untested modifications; rollback to revision 122 if it fails, though I don't know why it would
 public class EventManager {
     private static Vector  eventList               = new Vector();
     private static Vector  singleEventListFlag     = new Vector();

@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.AnalogChannel;
  *
  * @author Noah Sutton-Smolin
  */
-//TODO Test MagneticPotEncoder
 public class MagneticPotEncoder extends AbstractEncoder {
     private AnalogChannel enc;
     private final double offset;
