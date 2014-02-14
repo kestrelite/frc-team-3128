@@ -84,26 +84,28 @@ public class SwerveDrive extends Event {
         ListenerManager.addListener(new Event() {
             public void execute() {
                 Global.rotBk.setSpeed(-1);
-                Global.rotFL.setSpeed(-1);
-                Global.rotFR.setSpeed(-1);
+                Global.shooter.setSpeed(-1);
             }
         }, Global.xControl.getButtonKey("A", true));
 
         ListenerManager.addListener(new Event() {
             public void execute() {
-                Global.rotBk.setSpeed(1);
-                Global.rotFL.setSpeed(1);
-                Global.rotFR.setSpeed(1);
+                Global.shooter.setSpeed(1);
             }
         }, Global.xControl.getButtonKey("B", true));
 
         ListenerManager.addListener(new Event() {
             public void execute() {
-                Global.rotBk.setSpeed(0);
-                Global.rotFL.setSpeed(0);
-                Global.rotFR.setSpeed(0);
+                Global.shooter.setSpeed(0);
             }
-        }, Global.xControl.getButtonKey("X", true));
+        }, Global.xControl.getButtonKey("A", false));
+        
+        ListenerManager.addListener(new Event() {
+            public void execute() {
+                Global.shooter.setSpeed(0);
+            }
+        }, Global.xControl.getButtonKey("B", false));
+        
         ListenerManager.addListener(new SwerveDrive(), "updateDrive");        
     }
 }
