@@ -8,7 +8,6 @@ import frc3128.Util.RobotMath;
  * 
  * @author Noah Sutton-Smolin
  */
-//TODO Test LinearSpeedTarget
 public class LinearSpeedTarget extends MotorControl {
     private double tgtSpeed;
     private double dtAccum;

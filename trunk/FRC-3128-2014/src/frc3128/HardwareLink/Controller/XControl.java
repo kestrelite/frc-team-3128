@@ -6,10 +6,6 @@ import frc3128.EventManager.ListenerConst;
 import frc3128.EventManager.ListenerManager;
 import frc3128.Util.DebugLog;
 
-/**
- *
- * @author Noah Sutton-Smolin
- */
 public class XControl extends Event {
     private Joystick xControl;
     private final int port;

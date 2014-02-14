@@ -1,5 +1,8 @@
 package frc3128.Util;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
 /**
  *
  * @author Noah Sutton-Smolin
@@ -16,6 +19,8 @@ public class Constants {
     public static final boolean EVENT_PROCESS_WHILE_DISABLED = false; //Whether or not to run the EventManager while disabled
     public static final int     EVENT_CLEANUP_AFTER_ITER = 50; //Cleanup after iteration count
     public static final int     EVENT_CLEANUP_AFTER_DELEV = 5; //Cleanup after number of deleted events
+    
+    public static Alliance getAlliance() {return DriverStation.getInstance().getAlliance();}
     
     private Constants() {}
 }

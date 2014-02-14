@@ -1,24 +1,19 @@
-package frc3128.Drive;
+package frc3128;
 
 import com.sun.squawk.util.MathUtils;
 import frc3128.EventManager.Event;
+import frc3128.EventManager.ListenerManager;
 import frc3128.Global;
-import frc3128.HardwareLink.Controller.XControl;
-import frc3128.HardwareLink.GyroLink;
-import frc3128.HardwareLink.Motor.MotorLink;
 import frc3128.Util.DebugLog;
 import frc3128.Util.RobotMath;
 
 public class SwerveDrive extends Event {
-    private final double dimConst = 7;
+    private final double dimConst = 8;
     private final double xPosL = -12.77374 / dimConst, xPosR = 12.77374 / dimConst, xPosB = 0.0 / dimConst;
     private final double yPosL = 7.375 / dimConst, yPosR = 7.375 / dimConst, yPosB = -14.75 / dimConst;
     private double vel, theta, rot, xVel, yVel;
     private double spdL, spdR, spdB;
     private double angL, angR, angB;
-
-    public SwerveDrive() {
-    }
 
     public static double[] optimizeSwerve(double ang1, double ang2, double vel) {
         double a = RobotMath.angleDistance(ang2, ang1);
@@ -43,14 +38,10 @@ public class SwerveDrive extends Event {
         double x2 = Math.abs(Global.xControl.x2) > thresh ? Global.xControl.x2 : 0.0;
 
         vel = -(Math.sqrt(MathUtils.pow(x1, 2) + MathUtils.pow(y1, 2)));
-
         rot = x2;
 
-        if (Math.abs(vel) > 0.1) {
-            theta = RobotMath.rTD(MathUtils.atan2(y1, x1)) - Global.gyr.getAngle();
-        } else {
-            vel = 0;
-        }
+        if (Math.abs(vel) > 0.1) {theta = RobotMath.rTD(MathUtils.atan2(y1, x1));} 
+            else {vel = 0;}
 
         xVel = vel * Math.cos(RobotMath.dTR(theta));
         yVel = vel * Math.sin(RobotMath.dTR(theta));
@@ -87,5 +78,32 @@ public class SwerveDrive extends Event {
         Global.drvFR.setSpeed(r[1] / 2);
         Global.drvFL.setSpeed(l[1] / 2);
         Global.drvBk.setSpeed(b[1] / 2);
+    }
+    
+    public SwerveDrive() {
+        ListenerManager.addListener(new Event() {
+            public void execute() {
+                Global.rotBk.setSpeed(-1);
+                Global.rotFL.setSpeed(-1);
+                Global.rotFR.setSpeed(-1);
+            }
+        }, Global.xControl.getButtonKey("A", true));
+
+        ListenerManager.addListener(new Event() {
+            public void execute() {
+                Global.rotBk.setSpeed(1);
+                Global.rotFL.setSpeed(1);
+                Global.rotFR.setSpeed(1);
+            }
+        }, Global.xControl.getButtonKey("B", true));
+
+        ListenerManager.addListener(new Event() {
+            public void execute() {
+                Global.rotBk.setSpeed(0);
+                Global.rotFL.setSpeed(0);
+                Global.rotFR.setSpeed(0);
+            }
+        }, Global.xControl.getButtonKey("X", true));
+        ListenerManager.addListener(new SwerveDrive(), "updateDrive");        
     }
 }
