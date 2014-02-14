@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package frc3128.Util.Connection;
 
 import frc3128.Util.DebugLog;
@@ -10,10 +5,9 @@ import java.util.Vector;
 
 /**
  *
- * @author jamie
+ * @author Jamie
  */
 public class RobotCommand {
-
     public int _return_id;
     public byte _opcode;
     public Vector _params;
@@ -46,18 +40,16 @@ public class RobotCommand {
         String string = "Robot Command dump:---------------\n";
         string += "Return ID: " + _return_id + "\n";
         string += "Opcode: " + Integer.toHexString(_opcode) + "\n";
+        
         //Print out each short
         if (_params != null) {
             string += "Shorts: ";
-            for (int counter = 0; counter < _params.size(); ++counter) {
+            for (int counter = 0; counter < _params.size(); ++counter) 
                 string += _params.elementAt(counter) + " ";
-            }
             string += "\n";
         }
 
-        if (_string != null) {
-            string += "Extra String: " + _string + "\n";
-        }
+        if (_string != null) string += "Extra String: " + _string + "\n";
         return string;
     }
 
@@ -121,25 +113,20 @@ public class RobotCommand {
                 char[] paramBytesStorage = new char[10];
                 int paramBytesIterator = 0;
                 ++iterator;
-                while (currentBytePtr[iterator] != SOSProtocol.END_PARAM) {
+                while (currentBytePtr[iterator] != SOSProtocol.END_PARAM)
                     paramBytesStorage[paramBytesIterator++] = (char) currentBytePtr[iterator++];
-                }
                 shortVector.addElement(Double.valueOf(String.valueOf(paramBytesStorage, 0, paramBytesIterator)));
                 ++iterator;
             }
             return shortVector;
-        } else {
-            return null;
-        }
-
+        } else return null;
     }
 
     static String parseString(byte[] currentBytePtr) {
         if (currentBytePtr[iterator] == SOSProtocol.START_STRING) {
             String stringstream = new String();
-            while (currentBytePtr[++iterator] != SOSProtocol.END_STRING) {
+            while (currentBytePtr[++iterator] != SOSProtocol.END_STRING)
                 stringstream += currentBytePtr[iterator];
-            }
             return stringstream;
         }
         return null;
@@ -148,30 +135,24 @@ public class RobotCommand {
     public String params() {
         return (this._params == null ? "" : this._params.toString());
     }
-/**
- * Encodes this RobotCCommand encodes it back into a binary transmission
- * @param command
- * @return 
- */
-    byte[] reencodeCommand()
-    {
+    
+    /**
+     * Encodes this RobotCCommand encodes it back into a binary transmission
+     * @param command
+     * @return 
+     */
+    byte[] reencodeCommand() {
         byte[] returnIDBytes = reencodeReturnID();
-        
         byte[] opcodeBytes = reencodeOpcode();
-        
         byte[] paramBytes = null;
         
         if(_params != null)
-        {
             paramBytes = reencodeParams();
-        }
         
         byte[] stringBytes = {0};
         
         if(_string != null) 
-        {
             stringBytes = reencodeString();
-        }
         
         //create the final array, adding up the total lengths of all the parts if they exist
         byte[] commandBytes = new byte
@@ -187,23 +168,16 @@ public class RobotCommand {
         System.arraycopy(opcodeBytes, 0, commandBytes, returnIDBytes.length, opcodeBytes.length);
         
         if(_params != null)
-        {
             System.arraycopy(paramBytes, 0, commandBytes, (returnIDBytes.length + opcodeBytes.length), paramBytes.length);
-        }
-        
         if(_string != null)
-        {
             System.arraycopy(stringBytes, 0, commandBytes, (returnIDBytes.length + opcodeBytes.length + paramBytes.length), stringBytes.length);
-        }
         
         //add end transmission character
         commandBytes[commandBytes.length - 1] = SOSProtocol.END_TRANSMISSION;
-        
         return commandBytes;
     }
     
-    private byte[] reencodeReturnID() 
-    {
+    private byte[] reencodeReturnID() {
         String returnID = SOSProtocol.START_TRANSMISSION + 
                 SOSProtocol.START_ID +
                 Integer.toString(_return_id) +
@@ -212,35 +186,26 @@ public class RobotCommand {
         return returnID.getBytes();
     }
     
-    private byte[] reencodeOpcode() 
-    {
+    private byte[] reencodeOpcode() {
         byte[] opcodeBytes = new byte[]{SOSProtocol.START_OPCODE, _opcode, SOSProtocol.END_OPCODE};
-        
         return opcodeBytes;
     }
     
-    private byte[] reencodeParams() 
-    {
+    private byte[] reencodeParams() {
         String paramBytes = Integer.toString(SOSProtocol.START_PARAM);
         
         for(int counter = 0; counter < _params.size(); --counter)
-        {
             paramBytes += _params.elementAt(counter).toString();
-        }
         
         paramBytes += SOSProtocol.END_PARAM;
-        
         return paramBytes.getBytes();
     }
     
-    private byte[] reencodeString() 
-    {
+    private byte[] reencodeString() {
         String string = SOSProtocol.START_STRING + 
                 _string +
                 SOSProtocol.END_STRING;
         
         return string.getBytes();
     }
-
-
 }

@@ -14,7 +14,6 @@ import javax.microedition.io.SocketConnection;
  * @author Jamie
  */
 public class Beaglebone extends Event {
-
     private static final String BBURL = "socket://10.31.28.144:4545";
     private byte[] commandInProgress;
     private short placeInCommandInProgress;
@@ -30,9 +29,7 @@ public class Beaglebone extends Event {
         try {
             DebugLog.log(DebugLog.LVL_INFO, this, "Connecting to " + BBURL);
             connect();
-        }
-        catch (IOException ex) 
-        {
+        } catch (IOException ex) {
             ex.printStackTrace();
             DebugLog.log(DebugLog.LVL_SEVERE, this, "Error connecting: " + ex.getMessage());
         }
@@ -84,16 +81,13 @@ public class Beaglebone extends Event {
     
     /**
      * Sends the byte array over the socket connection
+     * 
      * @param command 
      */
-    public void sendCmd(byte[] command)
-    {
-        try 
-        {
+    public void sendCmd(byte[] command) {
+        try {
             outStream.write(command);
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             DebugLog.log(DebugLog.LVL_ERROR, this, "Error writing to output stream: " + ex.getMessage());
         }
     }
@@ -101,12 +95,10 @@ public class Beaglebone extends Event {
     /**
      * Converts the command to bytes and then sends it.
      * Equivalent to calling sendCmd(someCommand.reencodeCommand());
+     * 
      * @param command 
      */
-    public void sendCmd(RobotCommand command)
-    {
-        sendCmd(command.reencodeCommand());
-    }
+    public void sendCmd(RobotCommand command) {sendCmd(command.reencodeCommand());}
 
     public void execute() {
         readCommandBytes();
