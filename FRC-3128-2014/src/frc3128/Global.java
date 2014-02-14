@@ -19,7 +19,7 @@ public class Global {
     public static final MagneticPotEncoder encBk = new MagneticPotEncoder(20, 1, 1);
     public static final MagneticPotEncoder encFR = new MagneticPotEncoder(-48, 1, 2);
     public static final MagneticPotEncoder encFL = new MagneticPotEncoder(17, 1, 3);
-    public static final GyroLink gyr = new GyroLink(new Gyro(1, 4));
+    //public static final GyroLink gyr = new GyroLink(new Gyro(1, 4));
     
     public static MotorLink rotFR = new MotorLink(new Talon(1, 8), encFR, new LinearAngleTarget(.1, 5, 0.005)); //OFFSET: -55 DEG
     public static MotorLink rotFL = new MotorLink(new Talon(1, 9), encFL, new LinearAngleTarget(.1, 5, 0.005)); //OFFSET: -18 DEG
@@ -38,6 +38,9 @@ public class Global {
     public static void initializeRobot() {
         redLights.setOff(); blueLights.setOff();
         DebugLog.setLogLevel(DebugLog.LVL_DEBUG);
+        Global.rotBk.startControl(0);
+        Global.rotFL.startControl(0);
+        Global.rotFR.startControl(0);
     }
 
     public static void initializeDisabled() {
@@ -50,9 +53,7 @@ public class Global {
 
     public static void initializeTeleop() {
         new LightChangeEvent(redLights, blueLights).registerSingleEvent();
-        Global.rotBk.startControl(0);
-        Global.rotFL.startControl(0);
-        Global.rotFR.startControl(0);
+        SwerveDrive swerve = new SwerveDrive();
     }
 
     public static void robotKill() {Watchdog.getInstance().kill();}
