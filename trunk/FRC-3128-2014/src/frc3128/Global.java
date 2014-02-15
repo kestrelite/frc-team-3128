@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Watchdog;
+import frc3128.EventManager.Event;
 import frc3128.EventManager.EventManager;
 import frc3128.EventManager.ListenerManager;
 import frc3128.HardwareLink.Controller.XControl;
@@ -53,7 +54,29 @@ public class Global {
 
     public static void initializeTeleop() {
         new LightChangeEvent(redLights, blueLights).registerSingleEvent();
-        SwerveDrive swerve = new SwerveDrive();
+        ListenerManager.addListener(new Event() {
+            public void execute() {
+                Global.shooter.setSpeed(-1);
+            }
+        }, Global.xControl.getButtonKey("A", true));
+
+        ListenerManager.addListener(new Event() {
+            public void execute() {
+                Global.shooter.setSpeed(1);
+            }
+        }, Global.xControl.getButtonKey("B", true));
+
+        ListenerManager.addListener(new Event() {
+            public void execute() {
+                Global.shooter.setSpeed(0);
+            }
+        }, Global.xControl.getButtonKey("A", false));
+        
+        ListenerManager.addListener(new Event() {
+            public void execute() {
+                Global.shooter.setSpeed(0);
+            }
+        }, Global.xControl.getButtonKey("B", false));
     }
 
     public static void robotKill() {Watchdog.getInstance().kill();}

@@ -83,7 +83,6 @@ public class SwerveDrive extends Event {
     public SwerveDrive() {
         ListenerManager.addListener(new Event() {
             public void execute() {
-                Global.rotBk.setSpeed(-1);
                 Global.shooter.setSpeed(-1);
             }
         }, Global.xControl.getButtonKey("A", true));
