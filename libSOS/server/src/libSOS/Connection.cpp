@@ -108,7 +108,7 @@ boost::optional<std::vector<char>> Connection::readNextCode()
                 }
                 else
                 {
-                        LOG_UNUSUAL("Socket", "Ignoring byte with value " << std::hex << data)
+                      printf("[Connection] Ignoring byte with value %x\n", data);
                 }
         }
 
