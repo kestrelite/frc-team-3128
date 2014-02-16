@@ -47,10 +47,8 @@ public abstract class MotorControl extends Event {
     public final void execute() {
         lastRuntime = System.currentTimeMillis();
         if (this.isComplete()) {
-            DebugLog.log(DebugLog.LVL_DEBUG, this, "FTHIS");
             this.controlledMotor.setInternalSpeed(0);
         }
-        DebugLog.log(DebugLog.LVL_DEBUG, this, "T: "+this.speedControlStep(this.getLastRuntimeDist()));
         this.controlledMotor.setInternalSpeed(this.speedControlStep(this.getLastRuntimeDist()));
     }
 }

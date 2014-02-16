@@ -9,6 +9,7 @@ import frc3128.EventManager.Event;
 public abstract class SequenceEvent extends Event {
     private long    startTime      = -1;
     private boolean eventIsRunning = false;
+    private EventSequencer eventSequencer;
     
     public SequenceEvent() {super();}
     
@@ -34,6 +35,20 @@ public abstract class SequenceEvent extends Event {
      */
     final protected long getRunTimeMillis() {return (startTime == -1 ? -1 : System.currentTimeMillis() - this.startTime);}
 
+    /**
+     * Set the internal EventSequencer for the SequenceEvent
+     * 
+     * @param es the linked EventSequencer
+     */
+    final protected void setEventSequencer(EventSequencer es) {this.eventSequencer = es;}
+    
+    /**
+     * Gets the linked EventSequencer.
+     * 
+     * @return the linked EventSequencer
+     */
+    final public EventSequencer getEventSequencer() {return this.eventSequencer;}
+    
     /**
      * 
      * @return whether the current SequenceEvent's exit condition has been met

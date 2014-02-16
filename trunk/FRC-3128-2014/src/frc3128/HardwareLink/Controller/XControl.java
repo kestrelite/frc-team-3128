@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc3128.EventManager.Event;
 import frc3128.EventManager.ListenerConst;
 import frc3128.EventManager.ListenerManager;
+import frc3128.Global;
 import frc3128.Util.DebugLog;
 
 public class XControl extends Event {
@@ -63,7 +64,7 @@ public class XControl extends Event {
             ListenerManager.callListener("updateJoy2");
         if (updateTriggers)
             ListenerManager.callListener("updateTriggers");
-        if (updateJoy1 || updateJoy2 || updateTriggers)
+        if (updateJoy1 || updateJoy2 || updateTriggers || Math.abs(Global.gyr.getRate()) > 3)
             ListenerManager.callListener("updateDrive");
 
         for (int i = 1; i < 11; i++) {
