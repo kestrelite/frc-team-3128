@@ -28,7 +28,9 @@ int main()
     namedWindow("goal",1);
 	
 	frame = cv::imread("test_images/test1.png");
-	cvtColor(frame, edges, CV_32F);
+	cvtColor(frame, edges, CV_RGB2HSL);
+	
+	c
 	
 	GaussianBlur(edges, edges, Size(7, 7), 1.5, 1.5);
 	
