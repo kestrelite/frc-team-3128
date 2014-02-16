@@ -55,6 +55,7 @@ public class EventSequencer extends Event {
      */
     public void addEvent(SequenceEvent seqEvent) {
         this.autoSequenceList.addElement(seqEvent);
+        seqEvent.setEventSequencer(this);
         DebugLog.log(DebugLog.LVL_DEBUG, this, "Event " + seqEvent.getClass().getName() + " added to array at index " + (this.autoSequenceList.size()-1));
     }
     

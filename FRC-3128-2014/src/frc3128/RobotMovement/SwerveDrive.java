@@ -1,8 +1,7 @@
-package frc3128;
+package frc3128.RobotMovement;
 
 import com.sun.squawk.util.MathUtils;
 import frc3128.EventManager.Event;
-import frc3128.EventManager.ListenerManager;
 import frc3128.Global;
 import frc3128.Util.DebugLog;
 import frc3128.Util.RobotMath;
@@ -18,11 +17,9 @@ public class SwerveDrive extends Event {
     public static double[] optimizeSwerve(double ang1, double ang2, double vel) {
         double a = RobotMath.angleDistance(ang2, ang1);
         double o[] = new double[2];
-        DebugLog.log(DebugLog.LVL_DEBUG, "OptimizeSwerve", "DIST: " + a);
         if (Math.abs(a) > 90) {
             o[0] = ang2 + 180;
             o[1] = -vel;
-            DebugLog.log(DebugLog.LVL_DEBUG, "OptimizeSwerve", "DIST > 90");
         } else {
             o[0] = ang2;
             o[1] = vel;
@@ -40,7 +37,7 @@ public class SwerveDrive extends Event {
         vel = -(Math.sqrt(MathUtils.pow(x1, 2) + MathUtils.pow(y1, 2)));
         rot = x2;
 
-        if (Math.abs(vel) > 0.1) {theta = RobotMath.rTD(MathUtils.atan2(y1, x1));} 
+        if (Math.abs(vel) > 0.1) {theta = RobotMath.rTD(MathUtils.atan2(y1, x1)) + Global.gyr.getAngle();} 
             else {vel = 0;}
 
         xVel = vel * Math.cos(RobotMath.dTR(theta));
@@ -75,36 +72,11 @@ public class SwerveDrive extends Event {
             l[1] /= scl;
             b[1] /= scl;
         }
-        Global.drvFR.setSpeed(r[1] / 2);
+        Global.drvFR.setSpeed(-r[1] / 2);
         Global.drvFL.setSpeed(l[1] / 2);
-        Global.drvBk.setSpeed(b[1] / 2);
+        Global.drvBk.setSpeed(-b[1] / 2);
     }
     
-    public SwerveDrive() {
-        ListenerManager.addListener(new Event() {
-            public void execute() {
-                Global.shooter.setSpeed(-1);
-            }
-        }, Global.xControl.getButtonKey("A", true));
-
-        ListenerManager.addListener(new Event() {
-            public void execute() {
-                Global.shooter.setSpeed(1);
-            }
-        }, Global.xControl.getButtonKey("B", true));
-
-        ListenerManager.addListener(new Event() {
-            public void execute() {
-                Global.shooter.setSpeed(0);
-            }
-        }, Global.xControl.getButtonKey("A", false));
-        
-        ListenerManager.addListener(new Event() {
-            public void execute() {
-                Global.shooter.setSpeed(0);
-            }
-        }, Global.xControl.getButtonKey("B", false));
-        
-        ListenerManager.addListener(new SwerveDrive(), "updateDrive");        
+    public SwerveDrive() {        
     }
 }
