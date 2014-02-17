@@ -7,7 +7,7 @@ import frc3128.Util.DebugLog;
 import frc3128.Util.RobotMath;
 
 public class SwerveDrive extends Event {
-    private final double dimConst = 8;
+    private final double dimConst = 10;
     private final double xPosL = -12.77374 / dimConst, xPosR = 12.77374 / dimConst, xPosB = 0.0 / dimConst;
     private final double yPosL = 7.375 / dimConst, yPosR = 7.375 / dimConst, yPosB = -14.75 / dimConst;
     private double vel, theta, rot, xVel, yVel;
@@ -18,7 +18,7 @@ public class SwerveDrive extends Event {
         double a = RobotMath.angleDistance(ang2, ang1);
         double o[] = new double[2];
         if (Math.abs(a) > 90) {
-            o[0] = ang2 + 180;
+            o[0] = ang2 + 180.0;
             o[1] = -vel;
         } else {
             o[0] = ang2;
@@ -37,8 +37,10 @@ public class SwerveDrive extends Event {
         vel = -(Math.sqrt(MathUtils.pow(x1, 2) + MathUtils.pow(y1, 2)));
         rot = x2;
 
-        if (Math.abs(vel) > 0.1) {theta = RobotMath.rTD(MathUtils.atan2(y1, x1)) + Global.gyr.getAngle();} 
-            else {vel = 0;}
+        if (Math.abs(vel) > 0.1)
+            theta = RobotMath.rTD(MathUtils.atan2(y1, x1)) + Global.gyr.getAngle();
+        else 
+            vel = 0;
 
         xVel = vel * Math.cos(RobotMath.dTR(theta));
         yVel = vel * Math.sin(RobotMath.dTR(theta));
@@ -47,24 +49,24 @@ public class SwerveDrive extends Event {
         angL = RobotMath.rTD(MathUtils.atan2(yVel + (rot * xPosL), xVel - (rot * yPosL)));
 
         spdB = Math.sqrt(MathUtils.pow(xVel + (rot * yPosB), 2) + MathUtils.pow(yVel - (rot * xPosB), 2));
-        angB = 180 / Math.PI * (MathUtils.atan2(yVel + (rot * xPosB), xVel - (rot * yPosB)));
+        angB = 180.0 / Math.PI * (MathUtils.atan2(yVel + (rot * xPosB), xVel - (rot * yPosB)));
 
         spdR = Math.sqrt(MathUtils.pow(xVel + (rot * yPosR), 2) + MathUtils.pow(yVel - (rot * xPosR), 2));
-        angR = 180 / Math.PI * (MathUtils.atan2(yVel + (rot * xPosR), xVel - (rot * yPosR)));
+        angR = 180.0 / Math.PI * (MathUtils.atan2(yVel + (rot * xPosR), xVel - (rot * yPosR)));
 
-        DebugLog.log(DebugLog.LVL_DEBUG, "Global", "Theta: " + theta);
-        DebugLog.log(DebugLog.LVL_DEBUG, "Global", "r: " + angR);
-        DebugLog.log(DebugLog.LVL_DEBUG, "Global", "l: " + angL);
-        DebugLog.log(DebugLog.LVL_DEBUG, "Global", "b: " + angB);
-        DebugLog.log(DebugLog.LVL_DEBUG, "Global", "rot: " + rot);
+        //DebugLog.log(DebugLog.LVL_STREAM, this, "Theta: " + theta);
+        //DebugLog.log(DebugLog.LVL_STREAM, this, "r: " + angR);
+        //DebugLog.log(DebugLog.LVL_STREAM, this, "l: " + angL);
+        //DebugLog.log(DebugLog.LVL_STREAM, this, "b: " + angB);
+        //DebugLog.log(DebugLog.LVL_STREAM, this, "rot: " + rot);
 
         double[] r = optimizeSwerve(Global.rotFR.getEncoderAngle(), angR, spdR);
         double[] l = optimizeSwerve(Global.rotFL.getEncoderAngle(), angL, spdL);
         double[] b = optimizeSwerve(Global.rotBk.getEncoderAngle(), angB, spdB);
-
-        Global.rotFR.setControlTarget(r[0]);
-        Global.rotFL.setControlTarget(l[0]);
-        Global.rotBk.setControlTarget(b[0]);
+        
+        Global.rotFR.setControlTarget(r[0]+(x1 == 0 && x2 != 0 ? 0.1 : 0));
+        Global.rotFL.setControlTarget(l[0]+(x1 == 0 && x2 != 0 ? 0.1 : 0));
+        Global.rotBk.setControlTarget(b[0]+(x1 == 0 && x2 != 0 ? 0.1 : 0));
 
         if (Math.abs(r[1]) > 1 || Math.abs(l[1]) > 1 || Math.abs(b[1]) > 1) {
             double scl = Math.max(Math.abs(r[1]), Math.max(Math.abs(l[1]), Math.abs(b[1])));
@@ -72,11 +74,11 @@ public class SwerveDrive extends Event {
             l[1] /= scl;
             b[1] /= scl;
         }
-        Global.drvFR.setSpeed(-r[1] / 2);
-        Global.drvFL.setSpeed(l[1] / 2);
-        Global.drvBk.setSpeed(-b[1] / 2);
+        Global.drvFR.setSpeed(r[1]);
+        Global.drvFL.setSpeed(-l[1]);
+        Global.drvBk.setSpeed(b[1]);
     }
     
     public SwerveDrive() {        
-    }
+    }   
 }

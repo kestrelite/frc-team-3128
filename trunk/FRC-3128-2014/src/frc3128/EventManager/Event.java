@@ -1,5 +1,6 @@
 package frc3128.EventManager;
 
+import frc3128.Util.Constants;
 import frc3128.Util.DebugLog;
 
 /**
@@ -11,7 +12,7 @@ final class TimerEvent extends Event {
     private long targetTimeMillis = -1;
 
     public final void setTargetTime(long millis) {
-        DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + linkedEvent.toString() + " set for " + millis + " msec from now.");
+        if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + linkedEvent.toString() + " set for " + millis + " msec from now.");
         targetTimeMillis = System.currentTimeMillis() + millis;
         if(EventManager.containsEvent(this)) {
             DebugLog.log(DebugLog.LVL_WARN, this, "The timer was set while it was running and before it expired! Deleting old copy...");
@@ -32,7 +33,7 @@ final class TimerEvent extends Event {
         }
 
         if (System.currentTimeMillis() > targetTimeMillis) {
-            DebugLog.log(DebugLog.LVL_STREAM, this, "Running timed event " + this.linkedEvent.toString());
+            if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, this, "Running timed event " + this.linkedEvent.toString());
             linkedEvent.registerSingleEvent();
             this.destroyTimer();
         }
@@ -43,12 +44,11 @@ final class TimerEvent extends Event {
 
 final class CancelEvent extends Event {
     private Event linkedEvent;
-    
     public CancelEvent(Event l) {this.linkedEvent = l;}
     
     public void execute() {
         linkedEvent.cancelEvent();
-        DebugLog.log(DebugLog.LVL_STREAM, this, "Cancelled linked event: " + linkedEvent);
+        if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, this, "Cancelled linked event: " + linkedEvent);
     }
 }
 
@@ -69,7 +69,7 @@ public abstract class Event {
      */
     final public void cancelEvent() {
         eventIsCancelled = true;
-        DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + this.toString() + " has been cancelled!");
+        if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + this.toString() + " has been cancelled!");
     }
 
     /**
@@ -78,7 +78,7 @@ public abstract class Event {
      * @param msec the time after which the event will cancel
      */
     final public void cancelEventAfter(int msec) {
-        DebugLog.log(DebugLog.LVL_STREAM, this, "Canceling self by trigger after " + msec + " msec.");
+        if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, this, "Canceling self by trigger after " + msec + " msec.");
         new CancelEvent(this).registerTimedEvent(msec);
     }
     

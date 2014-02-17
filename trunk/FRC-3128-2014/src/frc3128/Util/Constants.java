@@ -10,15 +10,18 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 public class Constants {
     public static final boolean DEBUGLOG_ENABLED = true; //Enables and disables the debug log
     public static final int     DEBUGLOG_DEFAULT_LOGLEVEL = 3; //Controls the standard logging level for the DebugLog
-    public static final int     DEBUGLOG_INFO_DISPLAYFREQ = 10; //Controls how often the DebugLog displays diagnostic information
+    public static final int     DEBUGLOG_INFO_DISPLAYFREQ = 350; //Controls how often the DebugLog displays diagnostic information
     public static boolean       INTRO_MESSAGE = true; //Whether to display the welcome message
 
     public static final boolean START_MCONTROL_ON_TARGETSET = true; //Whether a MotorLink should start its controller if the controller's value was set
     
     public static final boolean EVENT_DUPLICATE_CHECKS = true; //Whether or not the EventManager runs duplicate checks
     public static final boolean EVENT_PROCESS_WHILE_DISABLED = false; //Whether or not to run the EventManager while disabled
+    public static final boolean EVENT_SHOW_STREAM_MSG = true; //Whether to show the stream messages from EventManager
     public static final int     EVENT_CLEANUP_AFTER_ITER = 50; //Cleanup after iteration count
     public static final int     EVENT_CLEANUP_AFTER_DELEV = 5; //Cleanup after number of deleted events
+    
+    public static final boolean ARM_ENABLED = false; //Enables or disables the arm
     
     public static Alliance getAlliance() {return DriverStation.getInstance().getAlliance();}
     

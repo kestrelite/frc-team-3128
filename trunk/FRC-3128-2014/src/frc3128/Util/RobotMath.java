@@ -40,7 +40,7 @@ public class RobotMath {
     public static double sgn(double n) {
         return Math.abs(n) / n;
     }
-
+    
     /**
      *
      * @param pow motor power
