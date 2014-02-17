@@ -23,22 +23,20 @@ public class LinearAngleTarget extends MotorControl {
     }
 
     public void setControlTarget(double val) {
-        this.targetAngle = val;
+        this.targetAngle = (val % 180 == 0 ? this.targetAngle : val);
     }
 
     public double speedControlStep(double dt) {
         double error = RobotMath.angleDistance(this.getLinkedEncoderAngle(), this.targetAngle);
         double sgn = RobotMath.sgn(error); 
-        double pGain = sgn*(Math.abs(error))*((1-this.minSpeed)/180.0)+this.minSpeed;
+        double pGain = sgn*(Math.abs(error))*((1-this.minSpeed)/90.0)+this.minSpeed;
         pGain = (Math.abs(pGain) > this.minSpeed ? pGain : RobotMath.getMotorDirToTarget(this.getLinkedEncoderAngle(), this.targetAngle)*this.minSpeed);
-        DebugLog.log(DebugLog.LVL_STREAM, this, "Error: " + error);
-        DebugLog.log(DebugLog.LVL_STREAM, this, "Current Angle: " + this.getLinkedEncoderAngle());
+        
         if(Math.abs(error) < threshold) {return 0;}
         return pGain;
     }
 
-    public void clearControlRun() {
-    }
+    public void clearControlRun() {}
 
     public boolean isComplete() {
         double x =  Math.abs(RobotMath.angleDistance(this.getLinkedEncoderAngle(), this.targetAngle));

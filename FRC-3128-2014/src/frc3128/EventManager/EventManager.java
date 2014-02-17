@@ -30,13 +30,13 @@ public class EventManager {
     }
 
     protected static void addSingleEvent(Event event) {
-        DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Adding SINGLE event " + event.toString());
+        if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Adding SINGLE event " + event.toString());
         checkForDuplicates(event);
         insertIntoEvents(event, true);
     }
 
     protected static void addContinuousEvent(Event event) {
-        DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Adding CONTINUOUS event " + event.toString());
+        if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Adding CONTINUOUS event " + event.toString());
         checkForDuplicates(event);
         insertIntoEvents(event, false);
     }
@@ -55,12 +55,12 @@ public class EventManager {
             
             Event event = (Event) eventList.elementAt(i);
             if(((Boolean) singleEventListFlag.elementAt(i)).booleanValue()) {
-                DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Marking single event " + event.toString() + " for deletion.");
+                if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Marking single event " + event.toString() + " for deletion.");
                 deleteFlag.setElementAt(Boolean.TRUE, i); deletedEvents++;
             }
             if(event.shouldRun()) {
                 try{
-                    DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Running event " + event.toString()); 
+                    if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Running event " + event.toString()); 
                     event.execute();
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -71,12 +71,12 @@ public class EventManager {
                 }
             }
             if(!event.shouldRun()) {
-                DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Cancelled event " + event.toString() + " being marked for deletion.");
+                if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Cancelled event " + event.toString() + " being marked for deletion.");
                 deleteFlag.setElementAt(Boolean.TRUE, i); deletedEvents++;
             }
         }
         if(deletedEvents >= Constants.EVENT_CLEANUP_AFTER_DELEV) {
-            DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Running cleanupEvents from " + deletedEvents + 
+            if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Running cleanupEvents from " + deletedEvents + 
                     " deleted events (>=" + Constants.EVENT_CLEANUP_AFTER_DELEV + ").");
             cleanupEvents();
         }
@@ -91,14 +91,14 @@ public class EventManager {
                 deleteFlag.removeElementAt(i);
                 i--; count++;
             }
-        if(count != 0) DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Cleaned up events, total: " + count);
+        if(count != 0 && Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Cleaned up events, total: " + count);
     }
 
     protected static void removeEvent(Event event) {
         int removedEventCount = 0;
         for(int i = 0; i < eventList.size(); i++)
             if(event.equals((Event) eventList.elementAt(i))) {
-                DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "By request, marking event " + ((Event) eventList.elementAt(i)).toString() + " for deletion.");
+                if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "By request, marking event " + ((Event) eventList.elementAt(i)).toString() + " for deletion.");
                 deleteFlag.setElementAt(Boolean.TRUE, i);
                 removedEventCount++;
             }

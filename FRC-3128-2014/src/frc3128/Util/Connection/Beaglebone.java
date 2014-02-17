@@ -14,7 +14,7 @@ import javax.microedition.io.SocketConnection;
  * @author Jamie
  */
 public class Beaglebone extends Event {
-    private static final String BBURL = "socket://10.31.28.144:4545";
+    private static final String BBURL = "socket://10.31.28.13:4545";
     private byte[] commandInProgress;
     private short placeInCommandInProgress;
     private SocketConnection socket;
@@ -59,7 +59,7 @@ public class Beaglebone extends Event {
                     return;
                 }
                 commandInProgress[placeInCommandInProgress + 1] = (byte) data;
-                DebugLog.log(DebugLog.LVL_STREAM, this, "Beaglebone read byte " + Integer.toHexString(data) + " into slot " + (placeInCommandInProgress + 1));
+                DebugLog.log(DebugLog.LVL_DEBUG, this, "Beaglebone read byte " + Integer.toHexString(data) + " into slot " + (placeInCommandInProgress + 1));
                 ++placeInCommandInProgress;
             }
         } catch (IOException ex) {
@@ -105,7 +105,8 @@ public class Beaglebone extends Event {
         //if there's one complete command in storage, parse it and use it
         if ((placeInCommandInProgress > -1) && (commandInProgress[placeInCommandInProgress] == SOSProtocol.END_TRANSMISSION)) {
             RobotCommand command = RobotCommand.factory(commandInProgress);
-            DebugLog.log(DebugLog.LVL_STREAM, this, "Beaglebone read " + command.toString());
+            this.sendCmd(command);
+            DebugLog.log(DebugLog.LVL_DEBUG, this, "Beaglebone read " + command.toString());
             placeInCommandInProgress = -1;
             DebugLog.log(DebugLog.LVL_STREAM, this, "Done parsing.");
         }

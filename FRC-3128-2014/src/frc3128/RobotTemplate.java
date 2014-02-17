@@ -37,7 +37,8 @@ public class RobotTemplate extends IterativeRobot {
     boolean autonomousHasBeenInit = false;
     public void autonomousInit() {
         if(!autonomousHasBeenInit) {
-            EventManager.dropAllEvents(); ListenerManager.dropAllListeners();
+            EventManager.dropAllEvents(); 
+            ListenerManager.dropAllListeners();
             Global.initializeAuto(); 
             autonomousHasBeenInit = true; 
             teleopHasBeenInit = false;
@@ -51,7 +52,9 @@ public class RobotTemplate extends IterativeRobot {
     public void teleopInit() {
         if(!teleopHasBeenInit) {
             EventSequencer.stopAllSequencers();
-            Global.initializeTeleop(); 
+            EventManager.dropAllEvents();
+            ListenerManager.dropAllListeners();
+            Global.initializeTeleop();
             teleopHasBeenInit = true; 
             autonomousHasBeenInit = false;
         }

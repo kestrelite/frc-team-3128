@@ -1,7 +1,6 @@
 package frc3128.HardwareLink.Motor;
 
 import frc3128.EventManager.Event;
-import frc3128.Util.DebugLog;
 
 /**
  *
@@ -46,9 +45,8 @@ public abstract class MotorControl extends Event {
 
     public final void execute() {
         lastRuntime = System.currentTimeMillis();
-        if (this.isComplete()) {
+        if (this.isComplete())
             this.controlledMotor.setInternalSpeed(0);
-        }
         this.controlledMotor.setInternalSpeed(this.speedControlStep(this.getLastRuntimeDist()));
     }
 }
