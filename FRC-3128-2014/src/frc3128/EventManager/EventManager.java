@@ -26,7 +26,7 @@ public class EventManager {
         if(!Constants.EVENT_DUPLICATE_CHECKS) return;
         for(int i = 0; i < eventList.size(); i++)
             if(event.equals((Event) eventList.elementAt(i)) && !(deleteFlag.elementAt(i) == Boolean.TRUE))
-                DebugLog.log(DebugLog.LVL_WARN, "EventManager", "Event ( ^ ) being registered is a duplicate of another event!");
+                DebugLog.log(DebugLog.LVL_WARN, "EventManager", "Event ("+event+") being registered is a duplicate of another event!");
     }
 
     protected static void addSingleEvent(Event event) {
@@ -61,11 +61,14 @@ public class EventManager {
             if(event.shouldRun()) {
                 try{
                     if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, "EventManager", "Running event " + event.toString()); 
+                    long time = System.currentTimeMillis();
                     event.execute();
+                    if(Constants.EVENT_DIAGNOSE_RUNTIMES) event.addRun(System.currentTimeMillis() - time);
+                    if(Constants.EVENT_DIAGNOSE_RUNTIMES && EventManager.iteration % Constants.EVENT_DISPLAY_DIAG_AFTER == 0) 
+                        DebugLog.log(DebugLog.LVL_DEBUG, "EventManager", "Event " + event.toString() + " took " + event.getAverageRunTime() + " avgmsec ("+EventManager.iteration+"it).");
                 } catch(Exception e) {
                     e.printStackTrace();
                     DebugLog.log(DebugLog.LVL_ERROR, event.toString(), "Uncaught exception in event: " + e.getMessage());
-                    e.printStackTrace();
                     DebugLog.log(DebugLog.LVL_ERROR, event.toString(), "Due to error, deleting event: " + event.toString());
                     deleteFlag.setElementAt(Boolean.TRUE, i); deletedEvents++;
                 }

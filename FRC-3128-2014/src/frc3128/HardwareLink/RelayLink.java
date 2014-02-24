@@ -25,4 +25,18 @@ public class RelayLink {
      * Sets the relay off.
      */
     public void setOff() {rel.set(Relay.Value.kOff);}
+    
+    /**
+     * 
+     * @return the current state of the relay
+     */
+    public Relay.Value getState() {return rel.get();}
+    
+    /**
+     * Switch the state of the relay.
+     */
+    public void setFlipped() {
+        if(getState().equals(Relay.Value.kForward)) {setOff(); return;}
+        if(getState().equals(Relay.Value.kOff)) {setOn();}
+    }
 }

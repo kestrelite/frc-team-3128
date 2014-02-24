@@ -56,6 +56,9 @@ public abstract class Event {
     private boolean eventIsCancelled;
     private TimerEvent timerEvent = null;
     
+    private long runTimeTotalMillis = 0;
+    private long runCount           = 0;
+    
     public Event() {}
 
     /**
@@ -90,6 +93,10 @@ public abstract class Event {
         timerEvent.cancelEvent();
     }
 
+    /**
+     * 
+     * @return whether the event should run (not canceled)
+     */
     final protected boolean shouldRun() {
         return !eventIsCancelled;
     }
@@ -128,5 +135,23 @@ public abstract class Event {
             timerEvent.linkEvent(this);
         }
         timerEvent.setTargetTime(msec);
+    }
+    
+    /**
+     * Adds a specific runtime to the event's current running time.
+     * 
+     * @param millis time the event was running
+     */
+    final protected void addRun(long millis) {
+        this.runCount++; this.runTimeTotalMillis += millis;
+    }
+    
+    /**
+     * Gets the event's average running time.
+     * 
+     * @return avg time in msec
+     */
+    final public double getAverageRunTime() {
+        return runCount == 0 ? 0 : ((double)this.runTimeTotalMillis)/((double)this.runCount);
     }
 }

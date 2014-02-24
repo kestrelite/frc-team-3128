@@ -1,5 +1,6 @@
 package frc3128.RobotMovement;
 
+import frc3128.EventManager.Event;
 import frc3128.EventManager.EventSequence.EventSequencer;
 import frc3128.EventManager.EventSequence.SequenceEvent;
 import frc3128.EventManager.EventSequence.SingleSequence;
@@ -15,15 +16,15 @@ public class AutoConfig {
     public static void initialize() {
         EventSequencer es = new EventSequencer();
         es.addEvent(new SequenceEvent() { //Drive forward to shooting range
-            public boolean exitConditionMet() {return this.getRunTimeMillis() > 750;}
+            public boolean exitConditionMet() {return this.getRunTimeMillis() > 2500;}
             public void execute() {
                 Global.rotBk.setControlTarget(90);
                 Global.rotFL.setControlTarget(90);
                 Global.rotFR.setControlTarget(90);
                 
-                Global.drvBk.setSpeed(1.0);
-                Global.drvFL.setSpeed(1.0);
-                Global.drvFR.setSpeed(1.0);
+                Global.drvBk.setSpeed(-0.50);
+                Global.drvFL.setSpeed(0.50);
+                Global.drvFR.setSpeed(-0.50);
             }
         });
         es.addEvent(new SingleSequence() { //Stop motors
@@ -38,53 +39,31 @@ public class AutoConfig {
             public void execute() {}
         });
 
-        es.addEvent(new SingleSequence() { //Stop the arm cocking event
-            public void execute() {Global.cockShooter.cancelEvent();}
-        });
-        es.addEvent(new SequenceEvent() { //Run arm until cocked
-            public boolean exitConditionMet() {return Global.shooterTSensor.get();}
-            public void execute() {Global.mShooter.setSpeed(-1.0);}
-        });
         es.addEvent(new SequenceEvent() { //Run arm until launched
             public boolean exitConditionMet() {return !Global.shooterTSensor.get();}
-            public void execute() {Global.mShooter.setSpeed(-1.0);}
-        });        
-        es.addEvent(new SingleSequence() { //Re-enable the arm cocking event for teleop
-            public void execute() {Global.cockShooter.registerIterableEvent();}
+            public void execute() {if(Global.ballTSensor0.get() || Global.ballTSensor1.get()) {Global.mShooter.setSpeed(-1.0);}}
         });
+        
         es.addEvent(new DelaySequence(1000));
-
-        es.addEvent(new SequenceEvent() { //Drive forward into goal
-            public boolean exitConditionMet() {return this.getRunTimeMillis() > 2500;}
-            public void execute() {
-                Global.rotBk.setControlTarget(90+Global.gyr.getAngle());
-                Global.rotFL.setControlTarget(90+Global.gyr.getAngle());
-                Global.rotFR.setControlTarget(90+Global.gyr.getAngle());
-                
-                Global.drvBk.setSpeed(1.0);
-                Global.drvFL.setSpeed(1.0);
-                Global.drvFR.setSpeed(1.0);
-            }
-        });
-       es.addEvent(new SingleSequence() { //Stop motors
-            public void execute() {
-                Global.drvBk.setSpeed(0);
-                Global.drvFL.setSpeed(0);
-                Global.drvFR.setSpeed(0);
-            }
-        });
+        
         es.addEvent(new SingleSequence() { //Do a dance
             public void execute() {
                 new LightsFlashEvent(Global.blueLights, true, 1250).registerIterableEvent();
                 new LightsFlashEvent(Global.redLights, false, 1250).registerIterableEvent();
             }
         });
+        
+        Global.mArmMove.setSpeed(-0.45);
+        (new Event() {
+            public void execute() {Global.mArmMove.setSpeed(0);}
+        }).registerTimedEvent(300);
+        
         es.startSequencer();
     }
     
     public static boolean isHot() {
         DebugLog.log(DebugLog.LVL_SEVERE, "AutoConfig", "isHot event missing!");
-        return false;
+        return true;
     }
     
     private AutoConfig() {}

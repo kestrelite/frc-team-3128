@@ -1,5 +1,6 @@
 package frc3128.EventManager;
 
+import frc3128.Util.Constants;
 import frc3128.Util.DebugLog;
 import java.util.Vector;
 
@@ -50,7 +51,7 @@ public class ListenerManager {
      * @param key the String key whose associated Events should be run
      */
     public static void callListener(String key) {
-        DebugLog.log(DebugLog.LVL_STREAM, "ListenerManager", "Called key " + key + "; forwarded...");
+        if(Constants.LISTENER_SHOW_DEBUG_CALLS) DebugLog.log(DebugLog.LVL_STREAM, "ListenerManager", "Called key " + key + "; forwarded...");
         callListener(key.hashCode());
     }
     
@@ -61,7 +62,7 @@ public class ListenerManager {
      * @param key the integer key whose associated Events should be run
      */
     public static void callListener(int key) {
-        DebugLog.log(DebugLog.LVL_STREAM, "ListenerManager", "Called key " + key);
+        if(Constants.LISTENER_SHOW_DEBUG_CALLS) DebugLog.log(DebugLog.LVL_STREAM, "ListenerManager", "Called key " + key);
         for(int i = 0; i < ListenerManager.keyList.size(); i++) {
             if(((Integer) ListenerManager.keyList.elementAt(i)).intValue() == key) {
                 try {

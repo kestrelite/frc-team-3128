@@ -1,6 +1,7 @@
 package frc3128.EventManager.EventSequence;
 
 import frc3128.EventManager.Event;
+import frc3128.Util.Constants;
 import frc3128.Util.DebugLog;
 import java.util.Vector;
 
@@ -38,12 +39,12 @@ public class EventSequencer extends Event {
         
         if(!ptr.isRunning()) {
             ptr.startSequenceEvent();
-            DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + ptr.getClass().getName() + " started ("+currentEventIndex+").");
+            if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + ptr.getClass().getName() + " started ("+currentEventIndex+").");
         }
         ptr.execute();
         if(ptr.exitConditionMet()) {
             currentEventIndex++; 
-            DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + ptr.getClass().getName() + " ended (" + (currentEventIndex - 1) + ").");
+            if(Constants.EVENT_SHOW_STREAM_MSG) DebugLog.log(DebugLog.LVL_STREAM, this, "Event " + ptr.getClass().getName() + " ended (" + (currentEventIndex - 1) + ").");
         }
     }
     
