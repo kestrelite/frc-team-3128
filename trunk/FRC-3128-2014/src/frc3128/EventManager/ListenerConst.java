@@ -10,7 +10,8 @@ public class ListenerConst {
     public static final String UPDATE_JOY1 = "updateJoy1";
     public static final String UPDATE_JOY2 = "updateJoy2";
     public static final String UPDATE_TRIGGERS = "updateTriggers";
-    public static final String UPDATE_DRIVE = "updateDrive";
+    public static final String UPDATE_X_DRIVE = "updateDrive";
+    public static final String UPDATE_ATK_DRIVE = "updateAtkDrive";
     
     public static final String UPDATE_ATK_JOY = "updateAtkJoy";
     public static final String UPDATE_ATK_THROTTLE = "updateAtkThrottle";

@@ -5,6 +5,7 @@ import frc3128.EventManager.Event;
 import frc3128.EventManager.ListenerConst;
 import frc3128.EventManager.ListenerManager;
 import frc3128.Global;
+import frc3128.Util.Constants;
 import frc3128.Util.DebugLog;
 
 public class XControl extends Event {
@@ -58,19 +59,16 @@ public class XControl extends Event {
         y2 = xControl.getRawAxis(XControlMap.Y2_AXIS);
         triggers = xControl.getRawAxis(XControlMap.TRIGGER_AXIS);
         
-        if (updateJoy1)
-            ListenerManager.callListener("updateJoy1");
-        if (updateJoy2)
-            ListenerManager.callListener("updateJoy2");
-        if (updateTriggers)
-            ListenerManager.callListener("updateTriggers");
-        if (updateJoy1 || updateJoy2 || updateTriggers || Math.abs(Global.gyr.getRate()) > 3)
+        if(updateJoy1)     ListenerManager.callListener("updateJoy1");
+        if(updateJoy2)     ListenerManager.callListener("updateJoy2");
+        if(updateTriggers) ListenerManager.callListener("updateTriggers");
+        if(updateJoy1 || updateJoy2 || updateTriggers || Math.abs(Global.gyr.getRate()) > 3)
             ListenerManager.callListener("updateDrive");
 
         for (int i = 1; i < 11; i++) {
             if (buttonsPressed[i] != xControl.getRawButton(i)) {
                 ListenerManager.callListener(ListenerConst.getXCtrlListenerKey(port, i, (xControl.getRawButton(i) ? true : false)));
-                DebugLog.log(DebugLog.LVL_STREAM, this, "Button " + XControlMap.getBtnString(i) + (xControl.getRawButton(i) == true ? " pressed." : " released."));
+                if(Constants.LISTENER_SHOW_DEBUG_CALLS) DebugLog.log(DebugLog.LVL_STREAM, this, "Button " + XControlMap.getBtnString(i) + (xControl.getRawButton(i) == true ? " pressed." : " released."));
             }
             buttonsPressed[i] = xControl.getRawButton(i);
         }

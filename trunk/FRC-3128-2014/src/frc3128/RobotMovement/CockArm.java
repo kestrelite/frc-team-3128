@@ -9,7 +9,7 @@ public class CockArm extends Event {
     private boolean cockArmActive = true;
     
     public void execute() {
-        if(!cockArmActive || !Constants.ARM_ENABLED) return;
+        if(!cockArmActive || !Constants.SHOOTER_ENABLED) return;
         if(!Global.shooterTSensor.get()) //touch sensor pressed
             Global.mShooter.setSpeed(-1.0);
         else

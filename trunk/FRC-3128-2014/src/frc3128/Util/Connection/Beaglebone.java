@@ -13,7 +13,7 @@ import javax.microedition.io.SocketConnection;
  *
  * @author Jamie
  */
-public class Beaglebone extends Event {
+public final class Beaglebone extends Event {
     private static final String BBURL = "socket://10.31.28.13:4545";
     private byte[] commandInProgress;
     private short placeInCommandInProgress;
@@ -26,21 +26,26 @@ public class Beaglebone extends Event {
         commandInProgress = new byte[200];
         placeInCommandInProgress = -1;
 
-        try {
-            DebugLog.log(DebugLog.LVL_INFO, this, "Connecting to " + BBURL);
-            connect();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            DebugLog.log(DebugLog.LVL_SEVERE, this, "Error connecting: " + ex.getMessage());
-        }
-        DebugLog.log(DebugLog.LVL_INFO, this, "Connected to beaglebone.");
+        DebugLog.log(DebugLog.LVL_INFO, this, "Connecting to " + BBURL);
+        connect();
         this.registerIterableEvent();
     }
-
-    public synchronized void connect() throws IOException {
-        socket = (SocketConnection) Connector.open(BBURL);//, Connector.READ_WRITE, true);
-        inStream = socket.openInputStream();
-        outStream = socket.openOutputStream();
+    
+    public synchronized void connect() {
+        (new Thread() {
+            public void run() {
+                try {
+                    socket = (SocketConnection) Connector.open(BBURL);
+                    inStream = socket.openInputStream();
+                    outStream = socket.openOutputStream();
+                    DebugLog.log(DebugLog.LVL_INFO, "Beaglebone", "The Beaglebone connection has been established.");
+                } catch (IOException ex) {
+                    if(ex.getMessage().startsWith("ConnectException"))
+                        DebugLog.log(DebugLog.LVL_ERROR, "Beaglebone", "The Beaglebone connection could NOT be established!");
+                    ex.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     /**
@@ -101,6 +106,7 @@ public class Beaglebone extends Event {
     public void sendCmd(RobotCommand command) {sendCmd(command.reencodeCommand());}
 
     public void execute() {
+        if(socket == null) return;
         readCommandBytes();
         //if there's one complete command in storage, parse it and use it
         if ((placeInCommandInProgress > -1) && (commandInProgress[placeInCommandInProgress] == SOSProtocol.END_TRANSMISSION)) {
@@ -108,7 +114,7 @@ public class Beaglebone extends Event {
             this.sendCmd(command);
             DebugLog.log(DebugLog.LVL_DEBUG, this, "Beaglebone read " + command.toString());
             placeInCommandInProgress = -1;
-            DebugLog.log(DebugLog.LVL_STREAM, this, "Done parsing.");
+            DebugLog.log(DebugLog.LVL_DEBUG, this, "Done parsing.");
         }
     }
 }

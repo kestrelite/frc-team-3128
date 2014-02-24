@@ -45,13 +45,13 @@ public class DebugLog {
      * source.
      * @param text the message to be logged.
      */
-    public static void log(int level, Object obj, String text) {
+    public synchronized static void log(int level, Object obj, String text) {
         if(!Constants.DEBUGLOG_ENABLED) return;
         
         long logStartTime = System.currentTimeMillis(); //Diagnostic
 
         String strLv = "  [UNKN]";
-        if(level <= 0) strLv = "[**ERROR" + Math.abs(level) + "]";
+        if(level <= 0) strLv = "[ERROR" + Math.abs(level) + "]";
         if(level == 1) strLv = "[SEVERE]";
         if(level == 2) strLv = "  [WARN]";
         if(level == 3) strLv = "  [INFO]";
@@ -76,7 +76,7 @@ public class DebugLog {
         DebugLog.totalItems++;
         DebugLog.totalItemsType[level]++;
 
-        if(DebugLog.totalItems % Constants.DEBUGLOG_INFO_DISPLAYFREQ == 0) {
+        if(Constants.DEBUGLOG_INFO_DISPLAYFREQ != 0 && DebugLog.totalItems % Constants.DEBUGLOG_INFO_DISPLAYFREQ == 0) {
             int currLogLevel = DebugLog.logDetail;
             DebugLog.logDetail = 3;
             DebugLog.log(DebugLog.LVL_INFO, "DebugLog", "DebugLog has skipped " + skippedItems + ", has displayed " + (totalItems-skippedItems) + " over " + ((System.currentTimeMillis() - DebugLog.startTime) / 1000.0) + " msec.");
