@@ -8,13 +8,18 @@ import frc3128.EventManager.EventSequence.DelaySequence;
 import frc3128.Global;
 import frc3128.Util.DebugLog;
 
-/**
- *
- * @author Noah Sutton-Smolin
- */
 public class AutoConfig {
     public static void initialize() {
         EventSequencer es = new EventSequencer();
+        
+        es.addEvent(new InitSwerveDrive()); //Initialize Swerve Drive Wheel Orientation
+        es.addEvent(new SingleSequence() { //Stop Turning Motors
+            public void execute() {
+                Global.rotBk.setSpeed(0);
+                Global.rotFL.setSpeed(0);
+                Global.rotFR.setSpeed(0);
+            }
+        });
         es.addEvent(new SequenceEvent() { //Drive forward to shooting range
             public boolean exitConditionMet() {return this.getRunTimeMillis() > 2500;}
             public void execute() {
