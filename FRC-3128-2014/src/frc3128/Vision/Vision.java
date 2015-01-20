@@ -49,14 +49,12 @@ public class Vision {
         double verticalScore;
     };
 
-    public static void init() {
-        //try initializing in RobotMap if this doesn't work
-        Global.camera = AxisCamera.getInstance("10.31.28.11");  // get an instance of the Global.camera        
+    public static boolean targetRecognition() {
+        if(Global.camera == null) return true;
+        
         cc = new CriteriaCollection();      // create the criteria for the particle filter
         cc.addCriteria(MeasurementType.IMAQ_MT_AREA, AREA_MINIMUM, 65535, false);
-    }
 
-    public static boolean targetRecognition() throws NIVisionException {
         TargetReport target = new TargetReport();
         int verticalTargets[] = new int[MAX_PARTICLES];
         int horizontalTargets[] = new int[MAX_PARTICLES];
@@ -73,11 +71,11 @@ public class Vision {
              */
             ColorImage image;
             BinaryImage thresholdImage, filteredImage;
-            image = Global.camera.getImage();     // comment if using stored images
-            //DO NOT CHANGE THESE VALUES BELOW. 
+            image = Global.camera.getImage();
+            //DO NOT CHANGE THESE VALUES BELOW.
             thresholdImage = image.thresholdHSV(105, 137, 230, 255, 73, 183);   // keep only green objects 
             
-            DebugLog.log(DebugLog.LVL_INFO, "Vision", "Just finished thresholding");
+            //DebugLog.log(DebugLog.LVL_INFO, "Vision", "Just finished thresholding");
             //thresholdImage.write("/threshold.bmp");
             filteredImage = thresholdImage.particleFilter(cc);           // filter out small particles
             //filteredImage.write("/filteredImage.bmp");
@@ -155,7 +153,9 @@ public class Vision {
             image.free();
 
         } catch (AxisCameraException ex) {        // this is needed if the Global.camera.getImage() is called
-            ex.printStackTrace();
+            return false;
+        } catch (NIVisionException ex) {
+            return false;
         }
         return target.Hot;
     }

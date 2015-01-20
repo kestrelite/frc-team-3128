@@ -60,11 +60,11 @@ public final class Beaglebone extends Event {
                 int data = inStream.read();
                 //check for EOF
                 if (data == -1) {
-                    DebugLog.log(DebugLog.LVL_DEBUG, this, "Got EOF.");
+                    //DebugLog.log(DebugLog.LVL_DEBUG, this, "Got EOF.");
                     return;
                 }
                 commandInProgress[placeInCommandInProgress + 1] = (byte) data;
-                DebugLog.log(DebugLog.LVL_DEBUG, this, "Beaglebone read byte " + Integer.toHexString(data) + " into slot " + (placeInCommandInProgress + 1));
+                //DebugLog.log(DebugLog.LVL_DEBUG, this, "Beaglebone read byte " + Integer.toHexString(data) + " into slot " + (placeInCommandInProgress + 1));
                 ++placeInCommandInProgress;
             }
         } catch (IOException ex) {
@@ -112,9 +112,9 @@ public final class Beaglebone extends Event {
         if ((placeInCommandInProgress > -1) && (commandInProgress[placeInCommandInProgress] == SOSProtocol.END_TRANSMISSION)) {
             RobotCommand command = RobotCommand.factory(commandInProgress);
             this.sendCmd(command);
-            DebugLog.log(DebugLog.LVL_DEBUG, this, "Beaglebone read " + command.toString());
+            //DebugLog.log(DebugLog.LVL_DEBUG, this, "Beaglebone read " + command.toString());
             placeInCommandInProgress = -1;
-            DebugLog.log(DebugLog.LVL_DEBUG, this, "Done parsing.");
+            //DebugLog.log(DebugLog.LVL_DEBUG, this, "Done parsing.");
         }
     }
 }

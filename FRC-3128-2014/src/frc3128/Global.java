@@ -28,19 +28,18 @@ import frc3128.Util.LightChangeEvent;
 public class Global {
     public static final GyroLink gyr = new GyroLink(new Gyro(1, 1));
     public static final DigitalInput shooterTSensor = new DigitalInput(1, 4);
-    public static final DigitalInput ballTSensor0 = new DigitalInput(1, 1);
-    public static final DigitalInput ballTSensor1 = new DigitalInput(1, 2);
+    public static final DigitalInput ballTSensor = new DigitalInput(1, 1);
     
-    public static final MagneticPotEncoder encFR = new MagneticPotEncoder(-60, 1, 2);
-    public static final MagneticPotEncoder encFL = new MagneticPotEncoder(17, 1, 3);
-    public static final MagneticPotEncoder encBk = new MagneticPotEncoder(-50, 1, 4);
+    public static final MagneticPotEncoder encFR = new MagneticPotEncoder(180-333, 1, 2); //Clockwise is positive. 
+    public static final MagneticPotEncoder encFL = new MagneticPotEncoder(180-327, 1, 3);
+    public static final MagneticPotEncoder encBk = new MagneticPotEncoder(180-195, 1, 4);
     
-    public static MotorLink rotFR = new MotorLink(new Talon(1, 8), encFR, new LinearAngleTarget(.40, 4, 0.005)); //OFFSET: -55 DEG
-    public static MotorLink rotFL = new MotorLink(new Talon(1, 9), encFL, new LinearAngleTarget(.40, 4, 0.005)); //OFFSET: -18 DEG
-    public static MotorLink rotBk = new MotorLink(new Talon(1, 7), encBk, new LinearAngleTarget(.40, 4, 0.005)); //OFFSET: -10 DEG
-    public static MotorLink drvFR = new MotorLink(new Talon(1, 1));
-    public static MotorLink drvFL = new MotorLink(new Talon(1, 2));
-    public static MotorLink drvBk = new MotorLink(new Talon(1, 3));
+    public static MotorLink rotFR = new MotorLink(new Talon(1, 8), encFR, new LinearAngleTarget(.40, 3, 0.005, 2.0));
+    public static MotorLink rotFL = new MotorLink(new Talon(1, 9), encFL, new LinearAngleTarget(.40, 3, 0.005, 2.0));
+    public static MotorLink rotBk = new MotorLink(new Talon(1, 7), encBk, new LinearAngleTarget(.40, 3, 0.005, 2.0));
+    public static MotorLink drvFR = new MotorLink(new Talon(1, 1), 0.856); //137.5
+    public static MotorLink drvFL = new MotorLink(new Talon(1, 2), 1.000); //113.6
+    public static MotorLink drvBk = new MotorLink(new Talon(1, 3), 0.904); //130.0
     
     public static MotorLink mShooter = new MotorLink(new Talon(1, 4));
     public static MotorLink mArmRoll = new MotorLink(new Talon(1, 6));
@@ -55,7 +54,9 @@ public class Global {
     public static RelayLink camLights = new RelayLink(new Relay(1, 3));
     public static LightsFlashEvent redLightsFlash = new LightsFlashEvent(Global.redLights, false);
     public static LightsFlashEvent blueLightsFlash = new LightsFlashEvent(Global.blueLights, true);
-    public static AxisCamera camera;
+
+    public static AxisCamera camera;// = AxisCamera.getInstance("10.31.28.11");
+    public static double gyrBias = 180;
                 
     public static void initializeRobot() {
         redLights.setOff();
@@ -75,30 +76,49 @@ public class Global {
 
     public static void initializeAuto() {
         new LightChangeEvent(redLights, blueLights).registerSingleEvent();
+        Global.camLights.setOn();
+        Global.rotBk.startControl(90);
+        Global.rotFL.startControl(90);
+        Global.rotFR.startControl(90);
         Global.cockShooter.registerIterableEvent();
         AutoConfig.initialize();
     }
-
+    
     public static void initializeTeleop() {
         new LightChangeEvent(redLights, blueLights).registerSingleEvent();
-        Global.camLights.setOn();
+        Global.camLights.setOff();
         Global.cockShooter.registerIterableEvent();
         xControl = new XControl(1);
         aControl = new AttackControl(2);
-        
         Global.rotBk.startControl(90);
         Global.rotFL.startControl(90);
         Global.rotFR.startControl(90);
 
+        (new Event() {
+            public void execute() {
+                DebugLog.log(DebugLog.LVL_INFO, "Global", "FL: " + Global.rotFL.getEncoderAngle());
+                DebugLog.log(DebugLog.LVL_INFO, "Global", "FR: " + Global.rotFR.getEncoderAngle());
+                DebugLog.log(DebugLog.LVL_INFO, "Global", "BK: " + Global.rotBk.getEncoderAngle());
+            }
+        }).registerIterableEvent();
+        
         ListenerManager.addListener(new Event() {
             public void execute() {
                 Global.gyr.resetAngle();
+                gyrBias = 0;
             }
         }, xControl.getButtonKey("Y", true));
         ListenerManager.addListener(new Event() {
             public void execute() {
+                Global.gyr.resetAngle();
+                gyrBias = 180;
+            }
+        }, xControl.getButtonKey("B", true));
+        
+        ListenerManager.addListener(new Event() {
+            public void execute() {
                 Global.cockShooter.cancelEvent();
-                Global.mShooter.setSpeed(-1.0);
+                Global.mShooter.setSpeed(1);
             }
         }, Global.xControl.getButtonKey("X", true));
         ListenerManager.addListener(new Event() {
@@ -110,16 +130,16 @@ public class Global {
         ListenerManager.addListener(new Event() {
             public void execute() {
                 Global.cockShooter.cancelEvent();
-                if(Global.ballTSensor0.get() || Global.ballTSensor1.get())
-                    Global.mShooter.setSpeed(1);
+                Global.mShooter.setSpeed(- 1);
             }
-        }, Global.xControl.getButtonKey("B", true));
+        }, Global.xControl.getButtonKey("RB", true));
         ListenerManager.addListener(new Event() {
             public void execute() {
                 Global.cockShooter.registerIterableEvent();
                 Global.mShooter.setSpeed(0);
             }
-        }, Global.xControl.getButtonKey("B", false));
+        }, Global.xControl.getButtonKey("RB", false));
+        
         ListenerManager.addListener(new Event() {
             public void execute() {Global.cockShooter.stopArmCock();}
         }, Global.xControl.getButtonKey(XControlMap.BACK, true));
@@ -130,25 +150,24 @@ public class Global {
         ListenerManager.addListener(new Event() {
             public void execute() {
                 double trgrs = Global.aControl.y;
-                trgrs = Math.abs(trgrs) > 0.1 ? trgrs : 0;
-                Global.mArmRoll.setSpeed(-trgrs);
+                if(Math.abs(trgrs) > 0.25)
+                    Global.mArmMove.setSpeed(0.55*(trgrs > 0 ? 1 : -1));
+                else 
+                    Global.mArmMove.setSpeed(0);
             }
-        }, ListenerConst.UPDATE_ATK_JOY);        
+        }, ListenerConst.UPDATE_ATK_JOY);
         ListenerManager.addListener(new Event() {
-            public void execute() {Global.mArmMove.setSpeed(-0.45);}
+            public void execute() {Global.mArmRoll.setSpeed(0.90);}
         }, Global.aControl.getListenerKey(1, true));
         ListenerManager.addListener(new Event() {
-            public void execute() {Global.mArmMove.setSpeed(0);}
+            public void execute() {Global.mArmRoll.setSpeed(0);}
         }, Global.aControl.getListenerKey(1, false));
         ListenerManager.addListener(new Event() {
-            public void execute() {Global.mArmMove.setSpeed(0.45);}
+            public void execute() {Global.mArmRoll.setSpeed(-0.90);}
         }, Global.aControl.getListenerKey(3, true));
         ListenerManager.addListener(new Event() {
-            public void execute() {Global.mArmMove.setSpeed(0);}
+            public void execute() {Global.mArmRoll.setSpeed(0);}
         }, Global.aControl.getListenerKey(3, false));
-        ListenerManager.addListener(new Event() {
-            public void execute() {(new LightChangeEvent(redLights, blueLights)).registerSingleEvent();}
-        }, Global.aControl.getListenerKey(4, true));
         ListenerManager.addListener(new Event() {
             public void execute() {redLights.setFlipped(); blueLights.setFlipped();}
         }, Global.aControl.getListenerKey(5, true));
@@ -159,7 +178,7 @@ public class Global {
     public static void robotKill() {Watchdog.getInstance().kill();}
     public static void robotStop() {
         EventManager.dropAllEvents();
-        ListenerManager.dropAllListeners();
+    ListenerManager.dropAllListeners();
         redLights.setOff();
         blueLights.setOff();
     }
